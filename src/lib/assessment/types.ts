@@ -1,0 +1,176 @@
+export type Sexo = "masculino" | "feminino";
+
+export interface Medicamento {
+  id: string;
+  nome: string;
+  acao: string;
+}
+
+export interface Modalidade {
+  id: string;
+  modalidade: string;
+  tempoPratica: string;
+  horario: string;
+  duracao: string;
+  frequenciaSemanal: string;
+  diasSemana: string;
+  diasDescanso: string;
+}
+
+export interface Suplemento {
+  id: string;
+  nome: string;
+  dose: string;
+  horario: string;
+  frequencia: string;
+}
+
+export interface Refeicao {
+  id: string;
+  refeicao: string;
+  horario: string;
+  local: string;
+  descricao: string;
+}
+
+export interface ExameLaboratorial {
+  id: string;
+  exame: string;
+  resultado: string;
+  unidade: string;
+  referencia: string;
+  data?: string;
+  status: "dentro" | "abaixo" | "acima" | "indeterminado";
+}
+
+export type MetodoTMB = "harris-benedict" | "mifflin";
+export type EstrategiaEnergetica = "deficit" | "normocalorica" | "superavit";
+
+export interface Assessment {
+  // 1. Dados básicos
+  nome: string;
+  dataNascimento: string;
+  sexo: Sexo | "";
+  dataAvaliacao: string;
+
+  // 2. Anamnese — informações gerais
+  profissao: string;
+  jaFezDieta: "sim" | "nao" | "";
+  objetivos: string[];
+  objetivoPrincipal: string;
+  incomodoFisico: string;
+  pesoDesejado: string;
+  maiorDificuldade: string;
+  motivacao: string;
+  faltaParaDez: string;
+
+  // Histórico clínico
+  historicoPeso: string;
+  hma: string;
+  hmp: string;
+  hmf: string;
+
+  medicamentos: Medicamento[];
+
+  // Exames bioquímicos
+  possuiExames: "sim" | "nao" | "";
+  planoSaude: "sim" | "nao" | "";
+  observacoesExames: string;
+
+  // Alergias e restrições
+  alergia: "sim" | "nao" | "";
+  alergiaDescricao: string;
+  restricaoAlimentar: "nao" | "vegetariano" | "vegano" | "";
+
+  // EAAs
+  eaas: "sim" | "nao" | "";
+  eaasDescricao: string;
+
+  habitosSociais: string[];
+
+  // Revisão de sistemas
+  funcaoEstomacal: string;
+  frequenciaEvacuacao: string;
+  bristol: string;
+  consumoAgua: string;
+  armstrong: string;
+
+  // Sono
+  horaDormir: string;
+  horaAcordar: string;
+  qualidadeSono: string;
+
+  // 3. Rotina de trabalho
+  entradaTrabalho: string;
+  saidaTrabalho: string;
+  intervaloRefeicoes: string;
+  cozinhaTrabalho: "sim" | "nao" | "";
+
+  modalidades: Modalidade[];
+
+  // Rotina alimentar
+  quemPrepara: "propria" | "outra" | "";
+  quemPreparaOutra: string;
+  comeFora: "sim" | "nao" | "";
+  comeForaFrequencia: string;
+  comeForaDias: string;
+
+  // Fome e apetite
+  horariosFome: string[];
+  horariosFomePersonalizado: string;
+  observacoesFome: string;
+
+  // Suplementação
+  usaSuplemento: "sim" | "nao" | "";
+  suplementos: Suplemento[];
+  aceitaWhey: "sim" | "nao" | "";
+
+  // Preferências e aversões
+  prefVegetais: string;
+  prefFrutas: string;
+  prefLacteos: string;
+  prefCafeCha: string;
+  acucarAdocante: string;
+  aceitaCafeComLeite: "sim" | "nao" | "";
+  prefProteinas: string;
+  prefCarboidratos: string;
+  prefCereais: string;
+  prefGorduras: string;
+  prefDoces: string;
+  aversoes: string;
+
+  diarioAlimentar: Refeicao[];
+
+  // Evolução do peso
+  tempoAlimentacaoAtual: string;
+  evolucaoPeso: string;
+  observacoesEvolucao: string;
+
+  // 4. Antropometria
+  altura: string;
+  alturaUnidade: "cm" | "m";
+  peso: string;
+  percentualGordura: string;
+  metodoGordura: string;
+  dataAvaliacaoAntropometrica: string;
+
+  // 5. Exames laboratoriais
+  exames: ExameLaboratorial[];
+
+  // 6. Cálculos energéticos
+  metodoTMB: MetodoTMB;
+  fatorAtividade: string;
+  estrategia: EstrategiaEnergetica;
+  percentualAjuste: string;
+  caloriasManuais: string;
+}
+
+export interface AnaliseIA {
+  sintese: string;
+  composicaoCorporal: string;
+  gastoEnergetico: string;
+  hidratacao: string;
+  estrategiaEnergetica: string;
+  pontosAtencao: string[];
+  sugestaoTecnica: string;
+}
