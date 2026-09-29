@@ -9,6 +9,7 @@ import {
 import type { AnaliseIA } from "@/lib/assessment/types";
 import { examesParaRelatorio } from "@/lib/assessment/report-exams";
 import { diarioParaRelatorio } from "@/lib/assessment/food-diary";
+import { intervencoesParaRelatorio } from "@/lib/assessment/interventions";
 
 import { ExamesTable } from "../ExamesTable";
 import { Panel } from "../fields";
@@ -200,6 +201,49 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
               ))}
             </ul>
           </Bloco>
+        )}
+
+        {intervencoesParaRelatorio(analise.intervencoes).length > 0 && (
+          <div className="mt-8 rounded-[14px] bg-ink p-6 text-white">
+            <h3 className="font-display text-sm font-semibold uppercase tracking-[0.14em]">
+              Mudanças e intervenções sugeridas
+            </h3>
+            <div className="mt-4 space-y-6">
+              {intervencoesParaRelatorio(analise.intervencoes).map((g) => (
+                <div key={g.id}>
+                  <p
+                    className={`inline-block rounded-full px-3 py-1 font-mono text-[10px] uppercase tracking-[0.16em] ${
+                      g.id === "alta"
+                        ? "bg-destructive text-white"
+                        : g.id === "moderada"
+                          ? "bg-accent text-white"
+                          : "bg-white/15 text-white"
+                    }`}
+                  >
+                    {g.label}
+                  </p>
+                  <div className="mt-3 space-y-4">
+                    {g.categorias.map((c) => (
+                      <div key={c.categoria}>
+                        <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/60">
+                          {c.categoria}
+                        </p>
+                        <ul className="mt-2 space-y-2.5">
+                          {c.itens.map((i, idx) => (
+                            <li key={idx} className="border-l-2 border-white/25 pl-3 text-[13px] leading-relaxed">
+                              {i.problema && <p className="font-semibold">{i.problema}</p>}
+                              <p>→ {i.intervencao}</p>
+                              {i.justificativa && <p className="text-white/70">→ {i.justificativa}</p>}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
 
         <Bloco titulo="Sugestão técnica">

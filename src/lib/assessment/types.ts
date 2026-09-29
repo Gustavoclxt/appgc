@@ -174,6 +174,16 @@ export interface Assessment {
   caloriasManuais: string;
 }
 
+export type PrioridadeIntervencao = "alta" | "moderada" | "baixa";
+
+export interface IntervencaoIA {
+  categoria: string;
+  prioridade: PrioridadeIntervencao;
+  problema: string;
+  intervencao: string;
+  justificativa: string;
+}
+
 export interface AnaliseIA {
   sintese: string;
   composicaoCorporal: string;
@@ -181,5 +191,6 @@ export interface AnaliseIA {
   hidratacao: string;
   estrategiaEnergetica: string;
   pontosAtencao: string[];
+  intervencoes: IntervencaoIA[];
   sugestaoTecnica: string;
 }

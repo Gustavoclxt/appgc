@@ -12,6 +12,7 @@ import {
 import type { AnaliseIA, Assessment } from "./types";
 import { examesParaRelatorio } from "./report-exams";
 import { diarioParaRelatorio } from "./food-diary";
+import { intervencoesParaRelatorio } from "./interventions";
 
 const MARGEM = 16;
 const LARGURA = 210;
@@ -211,6 +212,47 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
     if (analise.pontosAtencao.length) {
       titulo("Pontos de atenção");
       for (const p of analise.pontosAtencao) paragrafo(`• ${p}`);
+    }
+    const grupos = intervencoesParaRelatorio(analise.intervencoes);
+    if (grupos.length) {
+      titulo("Mudanças e intervenções sugeridas");
+      const cores: Record<string, [number, number, number]> = {
+        alta: [185, 50, 50],
+        moderada: [15, 111, 106],
+        baixa: [120, 130, 140],
+      };
+      for (const g of grupos) {
+        quebra(10);
+        const [r, gg, b] = cores[g.id] ?? [120, 130, 140];
+        doc.setFillColor(r, gg, b);
+        doc.roundedRect(MARGEM, y - 4, 70, 6, 1.5, 1.5, "F");
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(8.5);
+        doc.setTextColor(255, 255, 255);
+        doc.text(g.label.toUpperCase(), MARGEM + 2.5, y);
+        y += 7;
+        for (const c of g.categorias) {
+          quebra(6);
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(9);
+          doc.setTextColor(91, 102, 114);
+          doc.text(c.categoria.toUpperCase(), MARGEM, y);
+          y += 5;
+          for (const i of c.itens) {
+            if (i.problema) {
+              quebra(5);
+              doc.setFont("helvetica", "bold");
+              doc.setFontSize(9.5);
+              doc.setTextColor(22, 32, 43);
+              doc.text(doc.splitTextToSize(i.problema, CONTEUDO)[0] ?? "", MARGEM, y);
+              y += 4.8;
+            }
+            paragrafo(`→ ${i.intervencao}`);
+            if (i.justificativa) paragrafo(`→ ${i.justificativa}`);
+          }
+        }
+        y += 2;
+      }
     }
     titulo("Sugestão técnica");
     paragrafo(analise.sugestaoTecnica);
