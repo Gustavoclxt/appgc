@@ -168,7 +168,9 @@ export interface Assessment {
   metodoTMB: MetodoTMB;
   fatorAtividade: string;
   estrategia: EstrategiaEnergetica;
+  tipoAjuste: "percentual" | "kcal";
   percentualAjuste: string;
+  kcalAjuste: string;
   caloriasManuais: string;
 }
 

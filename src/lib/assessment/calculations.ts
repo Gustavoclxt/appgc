@@ -148,6 +148,7 @@ export interface DerivedResults {
   aguaMax: number | null;
   caloriasSugeridas: number | null;
   percentualAjuste: number | null;
+  ajusteKcal: number | null;
   sono: { horas: number; restoMinutos: number } | null;
   jornada: { horas: number; restoMinutos: number } | null;
 }
@@ -178,11 +179,16 @@ export function deriveResults(a: Assessment): DerivedResults {
   const agua = pesoKg !== null ? calculateWaterRequirement(pesoKg) : null;
 
   const percentualAjuste = parseNumero(a.percentualAjuste);
+  const kcalAjuste = parseNumero(a.kcalAjuste);
+  const modoKcal = a.estrategia !== "normocalorica" && a.tipoAjuste === "kcal";
   let caloriasSugeridas: number | null = null;
   if (vet !== null) {
     if (a.estrategia === "normocalorica") {
       caloriasSugeridas = parseNumero(a.caloriasManuais) ?? vet;
-    } else if (percentualAjuste !== null) {
+    } else if (modoKcal && kcalAjuste !== null) {
+      caloriasSugeridas =
+        a.estrategia === "deficit" ? vet - kcalAjuste : vet + kcalAjuste;
+    } else if (!modoKcal && percentualAjuste !== null) {
       caloriasSugeridas =
         a.estrategia === "deficit"
           ? calculateCalorieDeficit(vet, percentualAjuste)
@@ -206,6 +212,7 @@ export function deriveResults(a: Assessment): DerivedResults {
     aguaMax: agua?.max ?? null,
     caloriasSugeridas,
     percentualAjuste,
+    ajusteKcal: modoKcal ? kcalAjuste : null,
     sono: calculateSleepDuration(a.horaDormir, a.horaAcordar),
     jornada: calculateWorkDuration(a.entradaTrabalho, a.saidaTrabalho),
   };

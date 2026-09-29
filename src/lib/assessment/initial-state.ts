@@ -119,7 +119,9 @@ export function createEmptyAssessment(): Assessment {
     metodoTMB: "harris-benedict",
     fatorAtividade: "",
     estrategia: "normocalorica",
+    tipoAjuste: "percentual",
     percentualAjuste: "",
+    kcalAjuste: "",
     caloriasManuais: "",
   };
 }
