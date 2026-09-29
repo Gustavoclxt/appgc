@@ -8,6 +8,7 @@ import {
 } from "@/lib/assessment/calculations";
 import type { AnaliseIA } from "@/lib/assessment/types";
 import { examesParaRelatorio } from "@/lib/assessment/report-exams";
+import { diarioParaRelatorio } from "@/lib/assessment/food-diary";
 
 import { ExamesTable } from "../ExamesTable";
 import { Panel } from "../fields";
@@ -59,6 +60,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
   }
 
   const examesDoRelatorio = examesParaRelatorio(a.exames);
+  const diarioDoRelatorio = diarioParaRelatorio(a.diarioAlimentar);
 
   return (
     <section>
@@ -135,6 +137,30 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
             {a.observacoesExames && (
               <p className="mt-3 text-[13px] text-ink-soft">{a.observacoesExames}</p>
             )}
+          </Bloco>
+        )}
+
+        {diarioDoRelatorio.length > 0 && (
+          <Bloco titulo="Diário alimentar">
+            <div className="divide-y divide-line/70 border-y border-line/70">
+              {diarioDoRelatorio.map((refeicao) => (
+                <div key={refeicao.id} className="grid gap-1 py-3 sm:grid-cols-[150px_1fr] sm:gap-5">
+                  <div>
+                    <p className="font-medium">{refeicao.refeicao}</p>
+                    <p className="font-mono text-[11px] text-ink-soft">
+                      {[refeicao.horario, refeicao.local].filter(Boolean).join(" · ") || "—"}
+                    </p>
+                  </div>
+                  <ul className="space-y-1">
+                    {refeicao.alimentos.map((alimento, index) => (
+                      <li key={`${refeicao.id}-${index}`} className="text-[13px] text-ink">
+                        {alimento}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
           </Bloco>
         )}
 
