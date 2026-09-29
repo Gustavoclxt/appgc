@@ -41,7 +41,7 @@ function Bloco({ titulo, children }: { titulo: string; children: React.ReactNode
 export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props) {
   if (!analise) {
     return (
-      <Panel titulo="Resultado da avaliação" meta="Etapa 7">
+      <Panel titulo="Resultado da avaliação" meta="Etapa 6">
         <p className="max-w-2xl text-[13px] leading-relaxed text-ink-soft">
           Ao analisar a avaliação, os dados preenchidos e os cálculos realizados são reunidos em um
           relatório técnico objetivo. A sugestão produzida é um apoio à decisão e não constitui
