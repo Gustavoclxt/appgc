@@ -104,7 +104,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
             label="Massa livre de gordura"
             valor={d.massaLivreGordura !== null ? `${fmt2(d.massaLivreGordura)} kg` : "—"}
           />
-          <Dado label="Método de TMB" valor={labelMetodo[a.metodoTMB]} />
+          <Dado label="Método de TMB" valor={(labelMetodo[a.metodoTMB] ?? "")} />
           <Dado label="TMB" valor={d.tmb !== null ? `${fmtInt(d.tmb)} kcal/dia` : "—"} />
           <Dado
             label="Fator de atividade"
@@ -119,7 +119,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
                 : "—"
             }
           />
-          <Dado label="Estratégia" valor={labelEstrategia[a.estrategia]} />
+          <Dado label="Estratégia" valor={(labelEstrategia[a.estrategia] ?? "")} />
           <Dado
             label="Calorias sugeridas"
             valor={d.caloriasSugeridas !== null ? `${fmtInt(d.caloriasSugeridas)} kcal/dia` : "—"}

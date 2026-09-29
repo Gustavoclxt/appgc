@@ -223,8 +223,8 @@ export function Readout({
 }: {
   label: string;
   valor: string;
-  sub?: string;
-  destaque?: string;
+  sub?: string | undefined;
+  destaque?: string | undefined;
 }) {
   return (
     <div className="settle">

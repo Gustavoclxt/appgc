@@ -113,7 +113,7 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
   }
 
   titulo("Gasto energético");
-  linha("Método", labelMetodo[a.metodoTMB]);
+  linha("Método", (labelMetodo[a.metodoTMB] ?? ""));
   linha("TMB", d.tmb !== null ? `${fmtInt(d.tmb)} kcal/dia` : "—");
   linha("Fator de atividade", d.fatorAtividade !== null ? fmt2(d.fatorAtividade) : "—");
   linha("VET", d.vet !== null ? `${fmtInt(d.vet)} kcal/dia` : "—");
@@ -129,7 +129,7 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
   );
 
   titulo("Conduta energética");
-  linha("Estratégia", labelEstrategia[a.estrategia]);
+  linha("Estratégia", (labelEstrategia[a.estrategia] ?? ""));
   linha("Percentual", d.percentualAjuste !== null ? `${d.percentualAjuste}%` : "—");
   linha("VET", d.vet !== null ? `${fmtInt(d.vet)} kcal/dia` : "—");
   linha(

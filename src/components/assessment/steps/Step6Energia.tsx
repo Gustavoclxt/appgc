@@ -58,7 +58,7 @@ export function Step6Energia({ a, set, d }: StepProps) {
           <MetricCard
             label="TMB"
             valor={d.tmb !== null ? fmtInt(d.tmb) : "—"}
-            sub={`kcal/dia · ${labelMetodo[a.metodoTMB]}`}
+            sub={`kcal/dia · ${(labelMetodo[a.metodoTMB] ?? "")}`}
           />
           <MetricCard
             label="VET"
