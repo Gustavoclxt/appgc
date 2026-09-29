@@ -31,9 +31,6 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
     <div className="space-y-6">
       <Panel titulo="Informações gerais" meta="Anamnese de 1ª consulta">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <Field label="Profissão">
-            <TextInput value={a.profissao} onChange={(v) => set("profissao", v)} />
-          </Field>
           <Field label="Já fez dieta e/ou consultou nutricionista anteriormente?">
             <OptionRow value={a.jaFezDieta} onChange={(v) => set("jaFezDieta", v as typeof a.jaFezDieta)} options={simNao} />
           </Field>
@@ -82,9 +79,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             </Field>
           </div>
         </div>
-      </Panel>
-
-      <Panel titulo="Medicamentos" meta="tabela dinâmica">
+        <SubTitle>Medicamentos</SubTitle>
         <div className="space-y-3">
           {a.medicamentos.map((m, i) => (
             <div key={m.id} className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_0.8fr_1fr_auto]">
