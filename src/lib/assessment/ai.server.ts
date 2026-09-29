@@ -1,10 +1,7 @@
 const GATEWAY = "https://ai.gateway.lovable.dev/v1/chat/completions";
+const MODEL = "openai/gpt-6-astra";
 
-export async function chatJSON(
-  systemPrompt: string,
-  userPrompt: string,
-  model = "google/gemini-3.7-flash",
-): Promise<unknown> {
+export async function chatJSON(systemPrompt: string, userPrompt: string): Promise<unknown> {
   const apiKey = process.env["LOVABLE_API_KEY"];
   if (!apiKey) throw new Error("Serviço de análise indisponível no momento.");
 
@@ -15,7 +12,8 @@ export async function chatJSON(
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model,
+      model: MODEL,
+      reasoning_effort: "low",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },
@@ -26,7 +24,8 @@ export async function chatJSON(
 
   if (!res.ok) {
     const detalhe = await res.text();
-    if (res.status === 429) throw new Error("Limite de uso da análise atingido. Tente novamente em instantes.");
+    if (res.status === 429)
+      throw new Error("Limite de uso da análise atingido. Tente novamente em instantes.");
     if (res.status === 402) throw new Error("Créditos de IA esgotados no espaço de trabalho.");
     throw new Error(`Falha na análise (${res.status}): ${detalhe.slice(0, 200)}`);
   }
