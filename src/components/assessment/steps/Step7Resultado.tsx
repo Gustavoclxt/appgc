@@ -228,12 +228,32 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
                         <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/60">
                           {c.categoria}
                         </p>
-                        <ul className="mt-2 space-y-2.5">
+                        <ul className="mt-2 space-y-3">
                           {c.itens.map((i, idx) => (
-                            <li key={idx} className="border-l-2 border-white/25 pl-3 text-[13px] leading-relaxed">
-                              {i.problema && <p className="font-semibold">{i.problema}</p>}
-                              <p>→ {i.intervencao}</p>
-                              {i.justificativa && <p className="text-white/70">→ {i.justificativa}</p>}
+                            <li key={idx} className="border-l-2 border-white/25 pl-3">
+                              {i.problema && (
+                                <p className="text-[13px] font-semibold leading-snug text-white">
+                                  {i.problema}
+                                </p>
+                              )}
+                              <ul className="mt-1.5 space-y-1">
+                                {i.acoes.map((acao, j) => (
+                                  <li
+                                    key={j}
+                                    className="flex gap-1.5 text-[13px] leading-relaxed text-white/90"
+                                  >
+                                    <span aria-hidden className="shrink-0 text-white/45">
+                                      →
+                                    </span>
+                                    <span>{acao}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                              {i.justificativa && (
+                                <p className="mt-1 text-[11px] leading-snug text-white/50">
+                                  {i.justificativa}
+                                </p>
+                              )}
                             </li>
                           ))}
                         </ul>
