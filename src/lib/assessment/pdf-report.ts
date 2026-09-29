@@ -247,8 +247,8 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
               doc.text(doc.splitTextToSize(i.problema, CONTEUDO)[0] ?? "", MARGEM, y);
               y += 4.8;
             }
-            paragrafo(`→ ${i.intervencao}`);
-            if (i.justificativa) paragrafo(`→ ${i.justificativa}`);
+            paragrafo(`> ${i.intervencao}`);
+            if (i.justificativa) paragrafo(`Justificativa: ${i.justificativa}`);
           }
         }
         y += 2;
