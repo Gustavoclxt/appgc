@@ -138,7 +138,14 @@ export function buildResumo(a: Assessment, d: DerivedResults): string {
 
   t += "\n## Estratégia energética\n";
   t += li("Estratégia", labelEstrategia[a.estrategia]);
-  t += li("Percentual de ajuste", d.percentualAjuste !== null ? `${d.percentualAjuste}%` : "");
+  t += li(
+    "Ajuste",
+    d.ajusteKcal !== null
+      ? `${fmtInt(d.ajusteKcal)} kcal`
+      : d.percentualAjuste !== null
+        ? `${d.percentualAjuste}%`
+        : "",
+  );
   t += li("Calorias sugeridas (kcal/dia)", d.caloriasSugeridas !== null ? fmtInt(d.caloriasSugeridas) : "");
 
   if (a.exames.length) {

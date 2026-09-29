@@ -133,7 +133,14 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
 
   titulo("Conduta energética");
   linha("Estratégia", (labelEstrategia[a.estrategia] ?? ""));
-  linha("Percentual", d.percentualAjuste !== null ? `${d.percentualAjuste}%` : "—");
+  linha(
+    "Ajuste",
+    d.ajusteKcal !== null
+      ? `${fmtInt(d.ajusteKcal)} kcal`
+      : d.percentualAjuste !== null
+        ? `${d.percentualAjuste}%`
+        : "—",
+  );
   linha("VET", d.vet !== null ? `${fmtInt(d.vet)} kcal/dia` : "—");
   linha(
     "Calorias sugeridas",

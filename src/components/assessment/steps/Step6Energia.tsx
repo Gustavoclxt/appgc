@@ -104,22 +104,57 @@ export function Step6Energia({ a, set, d }: StepProps) {
 
         {a.estrategia !== "normocalorica" && (
           <div className="mt-5 space-y-4">
-            <Field label={a.estrategia === "deficit" ? "Déficit" : "Superávit"}>
+            <Field label="Forma do ajuste">
               <OptionRow
-                value={a.percentualAjuste}
-                onChange={(v) => set("percentualAjuste", v)}
-                options={percentuais}
+                value={a.tipoAjuste}
+                onChange={(v) => v && set("tipoAjuste", v as typeof a.tipoAjuste)}
+                options={[
+                  { value: "percentual", label: "Percentual do VET" },
+                  { value: "kcal", label: "Valor fixo em kcal" },
+                ]}
               />
             </Field>
-            <div className="max-w-xs">
-              <Field label="Percentual personalizado">
-                <UnitInput
-                  value={a.percentualAjuste}
-                  onChange={(v) => set("percentualAjuste", v)}
-                  unidade="%"
-                />
-              </Field>
-            </div>
+
+            {a.tipoAjuste === "kcal" ? (
+              <>
+                <Field label={a.estrategia === "deficit" ? "Déficit" : "Superávit"}>
+                  <OptionRow
+                    value={kcalPersonalizado ? "" : a.kcalAjuste}
+                    onChange={(v) => set("kcalAjuste", v)}
+                    options={kcalPresets}
+                  />
+                </Field>
+                <div className="max-w-xs">
+                  <Field label="Valor personalizado" hint="Informe o valor desejado em kcal.">
+                    <UnitInput
+                      value={a.kcalAjuste}
+                      onChange={(v) => set("kcalAjuste", v)}
+                      unidade="kcal"
+                      placeholder="Ex.: 600"
+                    />
+                  </Field>
+                </div>
+              </>
+            ) : (
+              <>
+                <Field label={a.estrategia === "deficit" ? "Déficit" : "Superávit"}>
+                  <OptionRow
+                    value={a.percentualAjuste}
+                    onChange={(v) => set("percentualAjuste", v)}
+                    options={percentuais}
+                  />
+                </Field>
+                <div className="max-w-xs">
+                  <Field label="Percentual personalizado">
+                    <UnitInput
+                      value={a.percentualAjuste}
+                      onChange={(v) => set("percentualAjuste", v)}
+                      unidade="%"
+                    />
+                  </Field>
+                </div>
+              </>
+            )}
           </div>
         )}
 
@@ -140,8 +175,20 @@ export function Step6Energia({ a, set, d }: StepProps) {
           <MetricCard label="VET" valor={d.vet !== null ? fmtInt(d.vet) : "—"} sub="kcal/dia" />
           <MetricCard
             label="Ajuste"
-            valor={d.percentualAjuste !== null ? `${d.percentualAjuste}%` : "—"}
-            sub={a.estrategia === "normocalorica" ? "normocalórica" : "percentual aplicado"}
+            valor={
+              d.ajusteKcal !== null
+                ? `${fmtInt(d.ajusteKcal)} kcal`
+                : d.percentualAjuste !== null
+                  ? `${d.percentualAjuste}%`
+                  : "—"
+            }
+            sub={
+              a.estrategia === "normocalorica"
+                ? "normocalórica"
+                : a.tipoAjuste === "kcal"
+                  ? "valor fixo aplicado"
+                  : "percentual aplicado"
+            }
           />
           <MetricCard
             label="Prescrição"
