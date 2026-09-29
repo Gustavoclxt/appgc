@@ -242,11 +242,28 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
               doc.setFont("helvetica", "bold");
               doc.setFontSize(9.5);
               doc.setTextColor(22, 32, 43);
-              doc.text(doc.splitTextToSize(i.problema, CONTEUDO)[0] ?? "", MARGEM, y);
+              doc.text(doc.splitTextToSize(i.problema, CONTEUDO - 3)[0] ?? "", MARGEM, y);
               y += 4.8;
             }
-            paragrafo(`> ${i.intervencao}`);
-            if (i.justificativa) paragrafo(`Justificativa: ${i.justificativa}`);
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(9);
+            doc.setTextColor(40, 50, 60);
+            for (const acao of i.acoes) {
+              quebra(4.6);
+              doc.text(doc.splitTextToSize(`> ${acao}`, CONTEUDO - 3)[0] ?? "", MARGEM + 2.5, y);
+              y += 4.4;
+            }
+            if (i.justificativa) {
+              quebra(4);
+              doc.setFontSize(8);
+              doc.setTextColor(120, 130, 140);
+              doc.text(
+                doc.splitTextToSize(i.justificativa, CONTEUDO - 3)[0] ?? "",
+                MARGEM + 2.5,
+                y,
+              );
+              y += 4;
+            }
           }
         }
         y += 2;
