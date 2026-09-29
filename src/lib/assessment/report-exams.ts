@@ -1,6 +1,11 @@
 import type { ExameLaboratorial } from "./types";
 
-const EXAMES_SEMPRE_INCLUIDOS = ["vitamina d", "vitamina b12", "ferro", "ferritina"];
+const EXAMES_SEMPRE_INCLUIDOS = [
+  ["vitamina d", "25 oh vitamina d", "25 hidroxi vitamina d"],
+  ["vitamina b12", "cobalamina"],
+  ["ferro", "ferro serico"],
+  ["ferritina"],
+];
 
 function normalizarNome(nome: string) {
   return nome
@@ -16,8 +21,10 @@ export function examesParaRelatorio(exames: ExameLaboratorial[]) {
     if (exame.status === "abaixo" || exame.status === "acima") return true;
 
     const nome = normalizarNome(exame.exame);
-    return EXAMES_SEMPRE_INCLUIDOS.some(
-      (exameObrigatorio) => nome === exameObrigatorio || nome.startsWith(`${exameObrigatorio} `),
+    return EXAMES_SEMPRE_INCLUIDOS.some((aliases) =>
+      aliases.some(
+        (alias) => nome === alias || nome.startsWith(`${alias} `) || nome.endsWith(` ${alias}`),
+      ),
     );
   });
 }
