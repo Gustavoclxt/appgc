@@ -212,6 +212,7 @@ export function deriveResults(a: Assessment): DerivedResults {
     aguaMax: agua?.max ?? null,
     caloriasSugeridas,
     percentualAjuste,
+    ajusteKcal: modoKcal ? kcalAjuste : null,
     sono: calculateSleepDuration(a.horaDormir, a.horaAcordar),
     jornada: calculateWorkDuration(a.entradaTrabalho, a.saidaTrabalho),
   };
