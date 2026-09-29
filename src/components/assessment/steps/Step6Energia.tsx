@@ -16,9 +16,16 @@ const fatores = [
 
 const percentuais = ["5", "10", "15", "20"].map((p) => ({ value: p, label: `${p}%` }));
 
+const kcalPresets = ["250", "500", "750", "1000"].map((k) => ({
+  value: k,
+  label: `${k} kcal`,
+}));
+
 export function Step6Energia({ a, set, d }: StepProps) {
   const fatorPersonalizado =
     a.fatorAtividade !== "" && !fatores.some((f) => f.value === a.fatorAtividade);
+  const kcalPersonalizado =
+    a.kcalAjuste !== "" && !kcalPresets.some((k) => k.value === a.kcalAjuste);
 
   return (
     <div className="space-y-6">
