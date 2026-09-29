@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { StepRail } from "@/components/assessment/StepRail";
@@ -57,7 +57,11 @@ function Index() {
 
   const etapaAtual = ETAPAS.find((e) => e.id === etapa) ?? ETAPAS[0];
 
-  async function onAnalisar() {
+  const analiseEmCursoRef = useRef(false);
+
+  const onAnalisar = useCallback(async () => {
+    if (analiseEmCursoRef.current) return;
+    analiseEmCursoRef.current = true;
     setAnalisando(true);
     try {
       const resumo = buildResumo(dados, derivados);
@@ -66,9 +70,20 @@ function Index() {
     } catch (erro) {
       toast.error(erro instanceof Error ? erro.message : "Não foi possível gerar a análise.");
     } finally {
+      analiseEmCursoRef.current = false;
       setAnalisando(false);
     }
-  }
+  }, [analisar, dados, derivados]);
+
+  const disparoAutomaticoRef = useRef(false);
+
+  useEffect(() => {
+    if (etapa !== ETAPAS.length) return;
+    if (disparoAutomaticoRef.current) return;
+    if (analise !== null || analisando) return;
+    disparoAutomaticoRef.current = true;
+    void onAnalisar();
+  }, [etapa, analise, analisando, onAnalisar]);
 
   async function onGerarPdf() {
     try {
