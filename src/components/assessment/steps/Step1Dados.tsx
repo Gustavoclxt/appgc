@@ -32,6 +32,9 @@ export function Step1Dados({ a, set, d }: StepProps) {
               ]}
             />
           </Field>
+          <Field label="Profissão" className="sm:col-span-2">
+            <TextInput value={a.profissao} onChange={(v) => set("profissao", v)} />
+          </Field>
         </div>
       </Panel>
     </div>

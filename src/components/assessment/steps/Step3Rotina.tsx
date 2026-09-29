@@ -60,9 +60,7 @@ export function Step3Rotina({ a, set, d }: StepProps) {
             Tempo de trabalho: {d.jornada.horas} horas e {d.jornada.restoMinutos} minutos.
           </p>
         )}
-      </Panel>
-
-      <Panel titulo="Treino e rotina" meta="modalidades">
+        <SubTitle>Treino e rotina</SubTitle>
         <div className="space-y-4">
           {a.modalidades.map((m, i) => (
             <div key={m.id} className="rounded-[10px] bg-white/70 p-4 ring-1 ring-line">
