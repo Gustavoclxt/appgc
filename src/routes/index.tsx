@@ -135,21 +135,27 @@ function Index() {
           <p className="font-mono text-[11px] text-ink-soft">Valores atualizados em tempo real</p>
         </div>
 
-        {etapa === 1 && <Step1Dados {...props} />}
-        {etapa === 2 && <Step2Anamnese {...props} />}
-        {etapa === 3 && <Step3Rotina {...props} />}
-        {etapa === 4 && <Step4Antropometria {...props} />}
-        {etapa === 5 && <Step5Exames {...props} />}
-        {etapa === 6 && <Step6Energia {...props} />}
-        {etapa === 7 && (
-          <Step7Resultado
-            {...props}
-            analise={analise}
-            analisando={analisando}
-            onAnalisar={onAnalisar}
-          />
+        {etapa === 1 && (
+          <div className="space-y-6">
+            <Step1Dados {...props} />
+            <Step2Anamnese {...props} />
+          </div>
         )}
-        {etapa === 8 && <Step8Pdf onGerar={onGerarPdf} temAnalise={analise !== null} />}
+        {etapa === 2 && <Step3Rotina {...props} />}
+        {etapa === 3 && <Step4Antropometria {...props} />}
+        {etapa === 4 && <Step5Exames {...props} />}
+        {etapa === 5 && <Step6Energia {...props} />}
+        {etapa === 6 && (
+          <div className="space-y-6">
+            <Step7Resultado
+              {...props}
+              analise={analise}
+              analisando={analisando}
+              onAnalisar={onAnalisar}
+            />
+            <Step8Pdf onGerar={onGerarPdf} temAnalise={analise !== null} />
+          </div>
+        )}
 
         <div className="mt-8 flex items-center justify-between gap-3 no-print">
           <button

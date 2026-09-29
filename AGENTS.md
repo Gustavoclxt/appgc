@@ -11,3 +11,4 @@
 
 - Centralize a seleção de exames do relatório em um helper compartilhado para manter a prévia e o PDF idênticos.
 - Centralize a formatação do diário alimentar em um helper compartilhado para manter a prévia e o PDF idênticos.
+- Mantenha o fluxo principal em seis etapas, com Dados/Anamnese juntos e Relatório/PDF juntos, para reduzir a navegação.

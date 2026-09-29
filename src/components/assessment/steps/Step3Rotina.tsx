@@ -20,7 +20,7 @@ const simNao = [
 export function Step3Rotina({ a, set, d }: StepProps) {
   return (
     <div className="space-y-6">
-      <Panel titulo="Rotina de trabalho" meta="Etapa 3">
+      <Panel titulo="Rotina de trabalho" meta="Etapa 2">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label="Entrada">
             <TextInput type="time" value={a.entradaTrabalho} onChange={(v) => set("entradaTrabalho", v)} />

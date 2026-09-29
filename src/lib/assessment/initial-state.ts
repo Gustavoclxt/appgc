@@ -125,12 +125,10 @@ export function createEmptyAssessment(): Assessment {
 }
 
 export const ETAPAS = [
-  { id: 1, titulo: "Dados", nomeCompleto: "Dados básicos" },
-  { id: 2, titulo: "Anamnese", nomeCompleto: "Anamnese de 1ª consulta" },
-  { id: 3, titulo: "Rotina", nomeCompleto: "Rotina, treino e alimentação" },
-  { id: 4, titulo: "Antropometria", nomeCompleto: "Antropometria & resultados calculados" },
-  { id: 5, titulo: "Exames", nomeCompleto: "Exames laboratoriais" },
-  { id: 6, titulo: "Energia", nomeCompleto: "Cálculos energéticos" },
-  { id: 7, titulo: "Resultado", nomeCompleto: "Relatório da avaliação" },
-  { id: 8, titulo: "PDF", nomeCompleto: "Gerar PDF" },
+  { id: 1, titulo: "Dados", nomeCompleto: "Dados básicos e anamnese" },
+  { id: 2, titulo: "Rotina", nomeCompleto: "Rotina, treino e alimentação" },
+  { id: 3, titulo: "Antropometria", nomeCompleto: "Antropometria & resultados calculados" },
+  { id: 4, titulo: "Exames", nomeCompleto: "Exames laboratoriais" },
+  { id: 5, titulo: "Energia", nomeCompleto: "Cálculos energéticos" },
+  { id: 6, titulo: "Relatório", nomeCompleto: "Relatório da avaliação e PDF" },
 ] as const;
