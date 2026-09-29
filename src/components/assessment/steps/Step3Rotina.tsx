@@ -29,8 +29,24 @@ export function Step3Rotina({ a, set, d }: StepProps) {
             <TextInput type="time" value={a.saidaTrabalho} onChange={(v) => set("saidaTrabalho", v)} />
           </Field>
           <Field label="Intervalo para refeições">
-            <TextInput value={a.intervaloRefeicoes} onChange={(v) => set("intervaloRefeicoes", v)} />
+            <OptionRow
+              value={a.intervaloRefeicoes}
+              onChange={(v) => {
+                set("intervaloRefeicoes", v as typeof a.intervaloRefeicoes);
+                if (v !== "sim") set("intervaloRefeicoesHorarios", "");
+              }}
+              options={simNao}
+            />
           </Field>
+          {a.intervaloRefeicoes === "sim" && (
+            <Field label="Horários dos intervalos">
+              <TextInput
+                value={a.intervaloRefeicoesHorarios}
+                onChange={(v) => set("intervaloRefeicoesHorarios", v)}
+                placeholder="Ex.: 10:00 e 15:30"
+              />
+            </Field>
+          )}
           <Field label="Possui cozinha/copa no trabalho?">
             <OptionRow
               value={a.cozinhaTrabalho}
@@ -289,7 +305,15 @@ export function Step3Rotina({ a, set, d }: StepProps) {
             <LongText value={a.prefCafeCha} onChange={(v) => set("prefCafeCha", v)} rows={2} />
           </Field>
           <Field label="Utiliza açúcar ou adoçante?">
-            <TextInput value={a.acucarAdocante} onChange={(v) => set("acucarAdocante", v)} />
+            <OptionRow
+              value={a.acucarAdocante}
+              onChange={(v) => set("acucarAdocante", v)}
+              options={[
+                { value: "Açúcar", label: "Açúcar" },
+                { value: "Adoçante", label: "Adoçante" },
+                { value: "Não adoça", label: "Não adoça" },
+              ]}
+            />
           </Field>
           <Field label="Aceita café com leite?">
             <OptionRow
@@ -355,6 +379,32 @@ export function Step3Rotina({ a, set, d }: StepProps) {
                   Remover refeição
                 </RowButton>
               </div>
+
+              {r.refeicao.trim().toLocaleLowerCase("pt-BR") === "jantar" && (
+                <div className="mt-3">
+                  <RowButton
+                    onClick={() => {
+                      const almoco = a.diarioAlimentar.find(
+                        (refeicao) => refeicao.refeicao.trim().toLocaleLowerCase("pt-BR") === "almoço",
+                      );
+                      if (!almoco) return;
+                      set(
+                        "diarioAlimentar",
+                        a.diarioAlimentar.map((refeicao, refeicaoIndex) =>
+                          refeicaoIndex === i
+                            ? {
+                                ...refeicao,
+                                alimentos: almoco.alimentos.map((item) => ({ ...item, id: novoId() })),
+                              }
+                            : refeicao,
+                        ),
+                      );
+                    }}
+                  >
+                    Copiar Almoço
+                  </RowButton>
+                </div>
+              )}
 
               <div className="mt-4 space-y-2 border-t border-line/70 pt-4">
                 {r.alimentos.map((item, itemIndex) => (

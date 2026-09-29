@@ -87,7 +87,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
       <Panel titulo="Medicamentos" meta="tabela dinâmica">
         <div className="space-y-3">
           {a.medicamentos.map((m, i) => (
-            <div key={m.id} className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_1fr_auto]">
+            <div key={m.id} className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_0.8fr_1fr_auto]">
               <TextInput
                 value={m.nome}
                 placeholder="Medicamento"
@@ -95,6 +95,16 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
                   set(
                     "medicamentos",
                     a.medicamentos.map((x, j) => (j === i ? { ...x, nome: v } : x)),
+                  )
+                }
+              />
+              <TextInput
+                value={m.dose}
+                placeholder="Dose"
+                onChange={(v) =>
+                  set(
+                    "medicamentos",
+                    a.medicamentos.map((x, j) => (j === i ? { ...x, dose: v } : x)),
                   )
                 }
               />
@@ -114,7 +124,9 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             </div>
           ))}
           <RowButton
-            onClick={() => set("medicamentos", [...a.medicamentos, { id: novoId(), nome: "", acao: "" }])}
+            onClick={() =>
+              set("medicamentos", [...a.medicamentos, { id: novoId(), nome: "", dose: "", acao: "" }])
+            }
           >
             + Adicionar medicamento
           </RowButton>
@@ -185,7 +197,22 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             />
           </Field>
           <Field label="Frequência de evacuação">
-            <TextInput value={a.frequenciaEvacuacao} onChange={(v) => set("frequenciaEvacuacao", v)} />
+            <Select
+              value={a.frequenciaEvacuacao}
+              onChange={(v) => set("frequenciaEvacuacao", v)}
+              options={[
+                "1 vez por dia",
+                "2 vezes por dia",
+                "3 vezes por dia",
+                "1 vez por semana",
+                "2 vezes por semana",
+                "3 vezes por semana",
+                "4 vezes por semana",
+                "5 vezes por semana",
+                "6 vezes por semana",
+                "Dia sim, dia não",
+              ].map((opcao) => ({ value: opcao, label: opcao }))}
+            />
           </Field>
           <Field label="Escala de Bristol">
             <Select
