@@ -20,6 +20,7 @@ const simNao = [
 ];
 
 const objetivos = [
+  { value: "Emagrecimento", label: "Emagrecimento" },
   { value: "Recomposição corporal", label: "Recomposição corporal" },
   { value: "Hipertrofia", label: "Hipertrofia" },
   { value: "Longevidade", label: "Longevidade" },
@@ -39,17 +40,10 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           <Field label="Qual seu objetivo (motivo da consulta)?" className="sm:col-span-2">
             <MultiOptionRow values={a.objetivos} onChange={(v) => set("objetivos", v)} options={objetivos} />
           </Field>
-          <Field label="Objetivo principal" className="sm:col-span-2">
-            <OptionRow
-              value={a.objetivoPrincipal}
-              onChange={(v) => set("objetivoPrincipal", v)}
-              options={objetivos}
-            />
-          </Field>
           <Field label="No seu físico, o que mais lhe incomoda atualmente?">
             <TextInput value={a.incomodoFisico} onChange={(v) => set("incomodoFisico", v)} />
           </Field>
-          <Field label="Peso desejado">
+          <Field label="Peso desejado (Opcional - em caso de emagrecimento)">
             <UnitInput value={a.pesoDesejado} onChange={(v) => set("pesoDesejado", v)} unidade="kg" />
           </Field>
           <Field label="Qual sua maior dificuldade relacionada ao seu objetivo?">

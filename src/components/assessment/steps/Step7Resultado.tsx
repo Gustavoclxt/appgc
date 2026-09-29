@@ -7,6 +7,7 @@ import {
   labelMetodo,
 } from "@/lib/assessment/calculations";
 import type { AnaliseIA } from "@/lib/assessment/types";
+import { examesParaRelatorio } from "@/lib/assessment/report-exams";
 
 import { ExamesTable } from "../ExamesTable";
 import { Panel } from "../fields";
@@ -57,6 +58,8 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
     );
   }
 
+  const examesDoRelatorio = examesParaRelatorio(a.exames);
+
   return (
     <section>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -93,7 +96,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
         </div>
 
         <div className="mt-5 grid grid-cols-1 gap-x-10 gap-y-2 sm:grid-cols-2">
-          <Dado label="Objetivo principal" valor={a.objetivoPrincipal || "—"} />
+          <Dado label="Objetivos" valor={a.objetivos.join(", ") || "—"} />
           <Dado label="IMC" valor={d.imc !== null ? `${fmt2(d.imc)} — ${d.classificacaoIMC}` : "—"} />
           <Dado
             label="% de gordura"
@@ -126,9 +129,9 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
           />
         </div>
 
-        {a.exames.length > 0 && (
+        {examesDoRelatorio.length > 0 && (
           <Bloco titulo="Exames laboratoriais">
-            <ExamesTable exames={a.exames} />
+            <ExamesTable exames={examesDoRelatorio} />
             {a.observacoesExames && (
               <p className="mt-3 text-[13px] text-ink-soft">{a.observacoesExames}</p>
             )}

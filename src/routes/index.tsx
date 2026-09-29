@@ -94,10 +94,12 @@ function Index() {
             <div className="grid size-8 place-items-center rounded-[10px] bg-ink font-mono text-xs font-medium text-white">
               {String(etapa).padStart(2, "0")}
             </div>
-            <div className="leading-tight">
-              <p className="font-display text-sm font-semibold tracking-tight">Avaliação Clínica</p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-soft">
-                Nutrição Esportiva
+            <div className="max-w-[230px] leading-tight sm:max-w-none">
+              <p className="font-display text-sm font-semibold tracking-tight">
+                Aplicativo para Avaliação Clínica Nutricional
+              </p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-soft">
+                GC - Excelência em Nutrição
               </p>
             </div>
           </div>
@@ -106,7 +108,7 @@ function Index() {
               Sessão única · sem armazenamento
             </span>
             <span className="hidden h-4 w-px bg-line sm:inline-block" />
-            <span className="font-mono text-[11px] text-ink-soft">
+            <span className="hidden font-mono text-[11px] text-ink-soft md:inline">
               Paciente: <span className="text-ink">{dados.nome || "—"}</span>
             </span>
           </div>
