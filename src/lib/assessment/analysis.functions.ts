@@ -42,7 +42,6 @@ export const analisarAvaliacao = createServerFn({ method: "POST" })
     const { chatJSON } = await import("./ai.server");
     const resultado = (await chatJSON(SISTEMA_ANALISE, data.resumo)) as Record<string, unknown>;
     const texto = (v: unknown) => (typeof v === "string" ? v : "");
-    const campo = (k: string) => resultado[k];
     return {
       sintese: texto(resultado["sintese"]),
       composicaoCorporal: texto(resultado["composicaoCorporal"]),
