@@ -43,15 +43,15 @@ export const analisarAvaliacao = createServerFn({ method: "POST" })
     const resultado = (await chatJSON(SISTEMA_ANALISE, data.resumo)) as Record<string, unknown>;
     const texto = (v: unknown) => (typeof v === "string" ? v : "");
     return {
-      sintese: texto(resultado.sintese),
-      composicaoCorporal: texto(resultado.composicaoCorporal),
-      gastoEnergetico: texto(resultado.gastoEnergetico),
-      hidratacao: texto(resultado.hidratacao),
-      estrategiaEnergetica: texto(resultado.estrategiaEnergetica),
-      pontosAtencao: Array.isArray(resultado.pontosAtencao)
-        ? resultado.pontosAtencao.filter((p): p is string => typeof p === "string")
+      sintese: texto(resultado["sintese"]),
+      composicaoCorporal: texto(resultado["composicaoCorporal"]),
+      gastoEnergetico: texto(resultado["gastoEnergetico"]),
+      hidratacao: texto(resultado["hidratacao"]),
+      estrategiaEnergetica: texto(resultado["estrategiaEnergetica"]),
+      pontosAtencao: Array.isArray(resultado["pontosAtencao"])
+        ? resultado["pontosAtencao"].filter((p): p is string => typeof p === "string")
         : [],
-      sugestaoTecnica: texto(resultado.sugestaoTecnica),
+      sugestaoTecnica: texto(resultado["sugestaoTecnica"]),
     };
   });
 
@@ -65,19 +65,19 @@ export const extrairExames = createServerFn({ method: "POST" })
       "google/gemini-3.1-flash-lite",
     )) as { exames?: unknown };
 
-    const lista = Array.isArray(resultado.exames) ? resultado.exames : [];
+    const lista = Array.isArray(resultado["exames"]) ? resultado["exames"] : [];
     const statusValidos = ["dentro", "abaixo", "acima", "indeterminado"] as const;
 
     return lista
       .filter((e): e is Record<string, unknown> => typeof e === "object" && e !== null)
       .map((e) => {
-        const status = String(e.status ?? "indeterminado");
+        const status = String(e["status"] ?? "indeterminado");
         return {
-          exame: String(e.exame ?? "").trim(),
-          resultado: String(e.resultado ?? "").trim(),
-          unidade: String(e.unidade ?? "").trim(),
-          referencia: String(e.referencia ?? "").trim(),
-          data: String(e.data ?? "").trim(),
+          exame: String(e["exame"] ?? "").trim(),
+          resultado: String(e["resultado"] ?? "").trim(),
+          unidade: String(e["unidade"] ?? "").trim(),
+          referencia: String(e["referencia"] ?? "").trim(),
+          data: String(e["data"] ?? "").trim(),
           status: (statusValidos as readonly string[]).includes(status)
             ? (status as (typeof statusValidos)[number])
             : ("indeterminado" as const),

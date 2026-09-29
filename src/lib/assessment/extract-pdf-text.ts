@@ -22,6 +22,5 @@ export async function extractPdfText(file: File): Promise<string> {
       .trim();
     if (linha) partes.push(linha);
   }
-  await doc.destroy();
   return partes.join("\n");
 }

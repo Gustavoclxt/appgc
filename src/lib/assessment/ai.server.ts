@@ -1,7 +1,11 @@
 const GATEWAY = "https://ai.gateway.lovable.dev/v1/chat/completions";
 const MODEL = "openai/gpt-6-astra";
 
-export async function chatJSON(systemPrompt: string, userPrompt: string): Promise<unknown> {
+export async function chatJSON(
+  systemPrompt: string,
+  userPrompt: string,
+  model: string = MODEL,
+): Promise<unknown> {
   const apiKey = process.env["LOVABLE_API_KEY"];
   if (!apiKey) throw new Error("Serviço de análise indisponível no momento.");
 
@@ -12,7 +16,7 @@ export async function chatJSON(systemPrompt: string, userPrompt: string): Promis
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: MODEL,
+      model,
       reasoning_effort: "low",
       messages: [
         { role: "system", content: systemPrompt },
