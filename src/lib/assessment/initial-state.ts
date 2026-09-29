@@ -69,6 +69,7 @@ export function createEmptyAssessment(): Assessment {
     entradaTrabalho: "",
     saidaTrabalho: "",
     intervaloRefeicoes: "",
+    intervaloRefeicoesHorarios: "",
     cozinhaTrabalho: "",
 
     modalidades: [],
@@ -115,7 +116,7 @@ export function createEmptyAssessment(): Assessment {
 
     exames: [],
 
-    metodoTMB: "mifflin",
+    metodoTMB: "harris-benedict",
     fatorAtividade: "",
     estrategia: "normocalorica",
     percentualAjuste: "",

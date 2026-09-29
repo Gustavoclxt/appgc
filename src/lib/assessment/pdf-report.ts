@@ -11,6 +11,7 @@ import {
 } from "./calculations";
 import type { AnaliseIA, Assessment } from "./types";
 import { examesParaRelatorio } from "./report-exams";
+import { diarioParaRelatorio } from "./food-diary";
 
 const MARGEM = 16;
 const LARGURA = 210;
@@ -27,6 +28,7 @@ const statusLabel: Record<string, string> = {
 export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA | null) {
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const examesDoRelatorio = examesParaRelatorio(a.exames);
+  const diarioDoRelatorio = diarioParaRelatorio(a.diarioAlimentar);
   let y = MARGEM;
 
   const quebra = (altura: number) => {
@@ -166,6 +168,29 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
     y += 2;
     if (a.observacoesExames) {
       paragrafo(`Observações: ${a.observacoesExames}`);
+    }
+  }
+
+  if (diarioDoRelatorio.length) {
+    titulo("Diário alimentar");
+    for (const refeicao of diarioDoRelatorio) {
+      quebra(7);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9.5);
+      doc.setTextColor(22, 32, 43);
+      doc.text(refeicao.refeicao, MARGEM, y);
+      const detalhes = [refeicao.horario, refeicao.local].filter(Boolean).join(" · ");
+      if (detalhes) {
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8.5);
+        doc.setTextColor(91, 102, 114);
+        doc.text(detalhes, MARGEM + 58, y);
+      }
+      y += 4.8;
+      for (const alimento of refeicao.alimentos) {
+        paragrafo(`• ${alimento}`);
+      }
+      y += 1;
     }
   }
 

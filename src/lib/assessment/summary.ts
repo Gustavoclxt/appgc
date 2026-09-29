@@ -8,6 +8,7 @@ import {
   type DerivedResults,
 } from "./calculations";
 import type { Assessment } from "./types";
+import { diarioParaRelatorio } from "./food-diary";
 
 const li = (label: string, valor: string | number | null | undefined) =>
   valor === null || valor === undefined || valor === "" ? "" : `${label}: ${valor}\n`;
@@ -37,7 +38,7 @@ export function buildResumo(a: Assessment, d: DerivedResults): string {
   t += li("HMP", a.hmp);
   t += li("HMF", a.hmf);
   if (a.medicamentos.length)
-    t += `Medicamentos: ${a.medicamentos.map((m) => `${m.nome} (${m.acao})`).join("; ")}\n`;
+    t += `Medicamentos: ${a.medicamentos.map((m) => `${m.nome} | dose: ${m.dose || "não informada"} | ação: ${m.acao || "não informada"}`).join("; ")}\n`;
 
   t += "\n## Hábitos e restrições\n";
   t += li("Alergia/intolerância", a.alergia === "sim" ? a.alergiaDescricao || "sim" : a.alergia);
@@ -61,7 +62,12 @@ export function buildResumo(a: Assessment, d: DerivedResults): string {
   );
   t += li("Qualidade do sono", a.qualidadeSono);
   t += li("Jornada de trabalho", d.jornada ? `${d.jornada.horas}h ${d.jornada.restoMinutos}min` : "");
-  t += li("Intervalo para refeições", a.intervaloRefeicoes);
+  t += li(
+    "Intervalo para refeições",
+    a.intervaloRefeicoes === "sim"
+      ? `sim${a.intervaloRefeicoesHorarios ? ` — ${a.intervaloRefeicoesHorarios}` : ""}`
+      : a.intervaloRefeicoes,
+  );
   t += li("Cozinha no trabalho", a.cozinhaTrabalho);
 
   if (a.modalidades.length) {
@@ -94,17 +100,11 @@ export function buildResumo(a: Assessment, d: DerivedResults): string {
   t += li("Doces", a.prefDoces);
   t += li("Aversões", a.aversoes);
 
-  const diario = a.diarioAlimentar.filter(
-    (r) => r.horario || r.local || r.alimentos.some((item) => item.alimento || item.quantidade),
-  );
+  const diario = diarioParaRelatorio(a.diarioAlimentar);
   if (diario.length) {
     t += "\n## Diário alimentar\n";
     for (const r of diario) {
-      const alimentos = r.alimentos
-        .filter((item) => item.alimento || item.quantidade)
-        .map((item) => `${item.alimento || "alimento não informado"} (${item.quantidade || "quantidade não informada"})`)
-        .join("; ");
-      t += `- ${r.refeicao} | ${r.horario} | ${r.local} | ${alimentos}\n`;
+      t += `- ${r.refeicao} | ${r.horario} | ${r.local} | ${r.alimentos.join("; ")}\n`;
     }
   }
 

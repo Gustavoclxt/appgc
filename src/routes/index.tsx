@@ -13,7 +13,7 @@ import { Step6Energia } from "@/components/assessment/steps/Step6Energia";
 import { Step7Resultado } from "@/components/assessment/steps/Step7Resultado";
 import { Step8Pdf } from "@/components/assessment/steps/Step8Pdf";
 import { analisarAvaliacao } from "@/lib/assessment/analysis.functions";
-import { deriveResults } from "@/lib/assessment/calculations";
+import { deriveResults, fmtData } from "@/lib/assessment/calculations";
 import { createEmptyAssessment, ETAPAS } from "@/lib/assessment/initial-state";
 import { buildResumo } from "@/lib/assessment/summary";
 import type { AnaliseIA, Assessment } from "@/lib/assessment/types";
@@ -79,6 +79,11 @@ function Index() {
     }
   }
 
+  function avancar() {
+    setEtapa((e) => Math.min(ETAPAS.length, e + 1));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   const props = { a: dados, set, d: derivados };
 
   return (
@@ -104,12 +109,12 @@ function Index() {
             </div>
           </div>
           <div className="ml-auto flex items-center gap-3">
-            <span className="hidden font-mono text-[11px] text-ink-soft sm:inline">
-              Sessão única · sem armazenamento
-            </span>
-            <span className="hidden h-4 w-px bg-line sm:inline-block" />
-            <span className="hidden font-mono text-[11px] text-ink-soft md:inline">
+            <span className="hidden text-right font-mono text-[11px] leading-relaxed text-ink-soft sm:inline">
               Paciente: <span className="text-ink">{dados.nome || "—"}</span>
+              <br />
+              Idade: <span className="text-ink">{derivados.idade !== null ? `${derivados.idade} anos` : "—"}</span>
+              {" · "}
+              Avaliação: <span className="text-ink">{fmtData(dados.dataAvaliacao)}</span>
             </span>
           </div>
         </div>
@@ -158,7 +163,7 @@ function Index() {
           {etapa < ETAPAS.length ? (
             <button
               type="button"
-              onClick={() => setEtapa((e) => Math.min(ETAPAS.length, e + 1))}
+              onClick={avancar}
               className="rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90"
             >
               Avançar

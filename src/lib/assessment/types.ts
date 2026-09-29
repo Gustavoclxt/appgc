@@ -3,6 +3,7 @@ export type Sexo = "masculino" | "feminino";
 export interface Medicamento {
   id: string;
   nome: string;
+  dose: string;
   acao: string;
 }
 
@@ -108,7 +109,8 @@ export interface Assessment {
   // 3. Rotina de trabalho
   entradaTrabalho: string;
   saidaTrabalho: string;
-  intervaloRefeicoes: string;
+  intervaloRefeicoes: "sim" | "nao" | "";
+  intervaloRefeicoesHorarios: string;
   cozinhaTrabalho: "sim" | "nao" | "";
 
   modalidades: Modalidade[];
