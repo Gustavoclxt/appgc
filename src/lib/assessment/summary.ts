@@ -23,7 +23,6 @@ export function buildResumo(a: Assessment, d: DerivedResults): string {
   t += li("Profissão", a.profissao);
 
   t += "\n## Objetivo\n";
-  t += li("Objetivo principal", a.objetivoPrincipal);
   t += li("Objetivos", a.objetivos.join(", "));
   t += li("Peso desejado (kg)", a.pesoDesejado);
   t += li("O que mais incomoda", a.incomodoFisico);
@@ -95,10 +94,18 @@ export function buildResumo(a: Assessment, d: DerivedResults): string {
   t += li("Doces", a.prefDoces);
   t += li("Aversões", a.aversoes);
 
-  const diario = a.diarioAlimentar.filter((r) => r.descricao || r.horario);
+  const diario = a.diarioAlimentar.filter(
+    (r) => r.horario || r.local || r.alimentos.some((item) => item.alimento || item.quantidade),
+  );
   if (diario.length) {
     t += "\n## Diário alimentar\n";
-    for (const r of diario) t += `- ${r.refeicao} | ${r.horario} | ${r.local} | ${r.descricao}\n`;
+    for (const r of diario) {
+      const alimentos = r.alimentos
+        .filter((item) => item.alimento || item.quantidade)
+        .map((item) => `${item.alimento || "alimento não informado"} (${item.quantidade || "quantidade não informada"})`)
+        .join("; ");
+      t += `- ${r.refeicao} | ${r.horario} | ${r.local} | ${alimentos}\n`;
+    }
   }
 
   t += "\n## Evolução do peso\n";

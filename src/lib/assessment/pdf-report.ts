@@ -10,6 +10,7 @@ import {
   type DerivedResults,
 } from "./calculations";
 import type { AnaliseIA, Assessment } from "./types";
+import { examesParaRelatorio } from "./report-exams";
 
 const MARGEM = 16;
 const LARGURA = 210;
@@ -25,6 +26,7 @@ const statusLabel: Record<string, string> = {
 
 export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA | null) {
   const doc = new jsPDF({ unit: "mm", format: "a4" });
+  const examesDoRelatorio = examesParaRelatorio(a.exames);
   let y = MARGEM;
 
   const quebra = (altura: number) => {
@@ -93,8 +95,7 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
   linha("Data", fmtData(a.dataAvaliacao));
 
   titulo("Objetivo");
-  linha("Objetivo principal", a.objetivoPrincipal || "—");
-  if (a.objetivos.length) linha("Objetivos", a.objetivos.join(", "));
+  linha("Objetivos", a.objetivos.length ? a.objetivos.join(", ") : "—");
 
   titulo("Antropometria");
   linha("Peso", d.pesoKg !== null ? `${fmt2(d.pesoKg)} kg` : "—");
@@ -137,7 +138,7 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
     d.caloriasSugeridas !== null ? `${fmtInt(d.caloriasSugeridas)} kcal/dia` : "—",
   );
 
-  if (a.exames.length) {
+  if (examesDoRelatorio.length) {
     titulo("Exames laboratoriais");
     quebra(8);
     doc.setFont("helvetica", "bold");
@@ -154,7 +155,7 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
     y += 4;
     doc.setFont("helvetica", "normal");
     doc.setTextColor(22, 32, 43);
-    for (const e of a.exames) {
+    for (const e of examesDoRelatorio) {
       quebra(6);
       doc.text(doc.splitTextToSize(e.exame, 66)[0] ?? "", MARGEM, y);
       doc.text(`${e.resultado} ${e.unidade}`.trim(), MARGEM + 70, y);

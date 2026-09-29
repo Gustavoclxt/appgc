@@ -25,12 +25,18 @@ export interface Suplemento {
   frequencia: string;
 }
 
+export interface AlimentoDiario {
+  id: string;
+  alimento: string;
+  quantidade: string;
+}
+
 export interface Refeicao {
   id: string;
   refeicao: string;
   horario: string;
   local: string;
-  descricao: string;
+  alimentos: AlimentoDiario[];
 }
 
 export interface ExameLaboratorial {
@@ -57,7 +63,6 @@ export interface Assessment {
   profissao: string;
   jaFezDieta: "sim" | "nao" | "";
   objetivos: string[];
-  objetivoPrincipal: string;
   incomodoFisico: string;
   pesoDesejado: string;
   maiorDificuldade: string;

@@ -326,47 +326,127 @@ export function Step3Rotina({ a, set, d }: StepProps) {
       </Panel>
 
       <Panel titulo="Diário alimentar">
-        <div className="space-y-3">
+        <div className="space-y-4">
           {a.diarioAlimentar.map((r, i) => (
-            <div key={r.id} className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_auto_1fr_2fr_auto]">
-              <TextInput
-                value={r.refeicao}
-                placeholder="Refeição"
-                onChange={(v) =>
-                  set("diarioAlimentar", a.diarioAlimentar.map((x, j) => (j === i ? { ...x, refeicao: v } : x)))
-                }
-              />
-              <TextInput
-                type="time"
-                value={r.horario}
-                onChange={(v) =>
-                  set("diarioAlimentar", a.diarioAlimentar.map((x, j) => (j === i ? { ...x, horario: v } : x)))
-                }
-              />
-              <TextInput
-                value={r.local}
-                placeholder="Local"
-                onChange={(v) =>
-                  set("diarioAlimentar", a.diarioAlimentar.map((x, j) => (j === i ? { ...x, local: v } : x)))
-                }
-              />
-              <TextInput
-                value={r.descricao}
-                placeholder="Quantidade - Alimento"
-                onChange={(v) =>
-                  set("diarioAlimentar", a.diarioAlimentar.map((x, j) => (j === i ? { ...x, descricao: v } : x)))
-                }
-              />
-              <RowButton onClick={() => set("diarioAlimentar", a.diarioAlimentar.filter((_, j) => j !== i))}>
-                Remover
-              </RowButton>
+            <div key={r.id} className="rounded-[10px] bg-white/50 p-4 ring-1 ring-line">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_auto_1fr_auto]">
+                <TextInput
+                  value={r.refeicao}
+                  placeholder="Refeição"
+                  onChange={(v) =>
+                    set("diarioAlimentar", a.diarioAlimentar.map((x, j) => (j === i ? { ...x, refeicao: v } : x)))
+                  }
+                />
+                <TextInput
+                  type="time"
+                  value={r.horario}
+                  onChange={(v) =>
+                    set("diarioAlimentar", a.diarioAlimentar.map((x, j) => (j === i ? { ...x, horario: v } : x)))
+                  }
+                />
+                <TextInput
+                  value={r.local}
+                  placeholder="Local"
+                  onChange={(v) =>
+                    set("diarioAlimentar", a.diarioAlimentar.map((x, j) => (j === i ? { ...x, local: v } : x)))
+                  }
+                />
+                <RowButton onClick={() => set("diarioAlimentar", a.diarioAlimentar.filter((_, j) => j !== i))}>
+                  Remover refeição
+                </RowButton>
+              </div>
+
+              <div className="mt-4 space-y-2 border-t border-line/70 pt-4">
+                {r.alimentos.map((item, itemIndex) => (
+                  <div key={item.id} className="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_1fr_auto]">
+                    <TextInput
+                      value={item.alimento}
+                      placeholder="Alimento"
+                      onChange={(v) =>
+                        set(
+                          "diarioAlimentar",
+                          a.diarioAlimentar.map((refeicao, refeicaoIndex) =>
+                            refeicaoIndex === i
+                              ? {
+                                  ...refeicao,
+                                  alimentos: refeicao.alimentos.map((alimento, alimentoIndex) =>
+                                    alimentoIndex === itemIndex ? { ...alimento, alimento: v } : alimento,
+                                  ),
+                                }
+                              : refeicao,
+                          ),
+                        )
+                      }
+                    />
+                    <TextInput
+                      value={item.quantidade}
+                      placeholder="Quantidade"
+                      onChange={(v) =>
+                        set(
+                          "diarioAlimentar",
+                          a.diarioAlimentar.map((refeicao, refeicaoIndex) =>
+                            refeicaoIndex === i
+                              ? {
+                                  ...refeicao,
+                                  alimentos: refeicao.alimentos.map((alimento, alimentoIndex) =>
+                                    alimentoIndex === itemIndex ? { ...alimento, quantidade: v } : alimento,
+                                  ),
+                                }
+                              : refeicao,
+                          ),
+                        )
+                      }
+                    />
+                    <RowButton
+                      onClick={() =>
+                        set(
+                          "diarioAlimentar",
+                          a.diarioAlimentar.map((refeicao, refeicaoIndex) =>
+                            refeicaoIndex === i
+                              ? { ...refeicao, alimentos: refeicao.alimentos.filter((_, j) => j !== itemIndex) }
+                              : refeicao,
+                          ),
+                        )
+                      }
+                    >
+                      Remover alimento
+                    </RowButton>
+                  </div>
+                ))}
+                <RowButton
+                  onClick={() =>
+                    set(
+                      "diarioAlimentar",
+                      a.diarioAlimentar.map((refeicao, refeicaoIndex) =>
+                        refeicaoIndex === i
+                          ? {
+                              ...refeicao,
+                              alimentos: [
+                                ...refeicao.alimentos,
+                                { id: novoId(), alimento: "", quantidade: "" },
+                              ],
+                            }
+                          : refeicao,
+                      ),
+                    )
+                  }
+                >
+                  + Adicionar alimento
+                </RowButton>
+              </div>
             </div>
           ))}
           <RowButton
             onClick={() =>
               set("diarioAlimentar", [
                 ...a.diarioAlimentar,
-                { id: novoId(), refeicao: "", horario: "", local: "", descricao: "" },
+                {
+                  id: novoId(),
+                  refeicao: "",
+                  horario: "",
+                  local: "",
+                  alimentos: [{ id: novoId(), alimento: "", quantidade: "" }],
+                },
               ])
             }
           >

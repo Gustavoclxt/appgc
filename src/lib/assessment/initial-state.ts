@@ -9,7 +9,13 @@ const refeicoesIniciais: Refeicao[] = [
   "Lanche da tarde",
   "Jantar",
   "Ceia",
-].map((refeicao) => ({ id: uid(), refeicao, horario: "", local: "", descricao: "" }));
+].map((refeicao) => ({
+  id: uid(),
+  refeicao,
+  horario: "",
+  local: "",
+  alimentos: [{ id: uid(), alimento: "", quantidade: "" }],
+}));
 
 export const novoId = uid;
 
@@ -24,7 +30,6 @@ export function createEmptyAssessment(): Assessment {
     profissao: "",
     jaFezDieta: "",
     objetivos: [],
-    objetivoPrincipal: "",
     incomodoFisico: "",
     pesoDesejado: "",
     maiorDificuldade: "",
