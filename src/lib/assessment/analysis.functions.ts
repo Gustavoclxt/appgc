@@ -33,7 +33,7 @@ REGRA PRINCIPAL — CONTEXTO CLÍNICO INTEGRADO:
 SEÇÕES:
 - "sintese": visão global da anamnese; não repita campos, identifique o que é clinicamente relevante para a estratégia nutricional e as relações entre os achados.
 - "pontosAtencao": derivados de toda a anamnese, não de um subconjunto predefinido.
-- "intervencoes": MUDANÇAS E INTERVENÇÕES SUGERIDAS — ações práticas, específicas para ESTE paciente, para o nutricionista considerar na conduta. Cada item: categoria (uma de: ${CATEGORIAS.join("; ")}), prioridade ("alta" = maior impacto sobre o objetivo; "moderada" = ajuste relevante; "baixa" = otimização/adesão/praticidade), problema identificado (curto), intervenção sugerida (ação contextualizada e prática) e justificativa (citando os dados do paciente que a sustentam). Use apenas categorias justificadas pelos dados; não preencha todas obrigatoriamente. Evite sugestões genéricas como "comer melhor", "beber mais água", "dormir melhor".
+- "intervencoes": MUDANÇAS E INTERVENÇÕES SUGERIDAS — um checklist de condutas, curto e escaneável, para o nutricionista considerar. Cada item: categoria (uma de: ${CATEGORIAS.join("; ")}), prioridade ("alta" = maior impacto sobre o objetivo; "moderada" = ajuste relevante; "baixa" = otimização/adesão/praticidade), "problema" (o que observar: constatação curta e objetiva, máx. 8 palavras, citando o dado relevante quando útil — ex.: "Superávit atual: 500 kcal"), "acoes" (2 a 4 ações curtas e diretas, cada uma com no máximo ~10 palavras, iniciadas por verbo no infinitivo, cada uma em um item separado do array; sem justificar dentro da ação) e "justificativa" (opcional, uma frase muito curta citando o dado do paciente que sustenta a conduta; omitir quando o problema já for autoexplicativo). Use apenas categorias justificadas pelos dados; não preencha todas obrigatoriamente. Evite sugestões genéricas como "comer melhor", "beber mais água", "dormir melhor". Frases longas e parágrafos corridos são proibidos neste bloco.
 - "sugestaoTecnica": coerência entre objetivo, composição corporal, gasto energético, histórico ponderal, rotina, treino, sono, comportamento alimentar, preferências/aversões, sintomas gastrointestinais, hidratação, medicamentos, suplementos, exames e diário alimentar.
 
 REGRAS OBRIGATÓRIAS:
@@ -51,7 +51,7 @@ Responda APENAS um objeto JSON com estas chaves:
   "hidratacao": "leitura da faixa de 30-35 mL/kg frente à ingestão relatada",
   "estrategiaEnergetica": "leitura da estratégia escolhida, ajuste, VET e calorias sugeridas",
   "pontosAtencao": ["item", "item"],
-  "intervencoes": [ { "categoria": "", "prioridade": "alta", "problema": "", "intervencao": "", "justificativa": "" } ],
+  "intervencoes": [ { "categoria": "", "prioridade": "alta", "problema": "", "acoes": ["", ""], "justificativa": "" } ],
   "sugestaoTecnica": "texto"
 }`;
 
@@ -76,17 +76,30 @@ export const analisarAvaliacao = createServerFn({ method: "POST" })
       .filter((i): i is Record<string, unknown> => typeof i === "object" && i !== null)
       .map((i) => {
         const p = texto(i["prioridade"]).toLowerCase();
+        const acoesBrutas = Array.isArray(i["acoes"]) ? (i["acoes"] as unknown[]) : [];
+        const acoes = acoesBrutas
+          .map(texto)
+          .filter(Boolean);
+        if (acoes.length === 0) {
+          // Compatibilidade: aceita intervenção em texto único e quebra em itens.
+          acoes.push(
+            ...texto(i["intervencao"])
+              .split(/\n|→|;|\.\s/)
+              .map((t) => t.replace(/^[\s>•\-–*]*→?[\s]*/, "").trim())
+              .filter(Boolean),
+          );
+        }
         return {
           categoria: texto(i["categoria"]) || "Outros",
           prioridade: (prioridades as readonly string[]).includes(p)
             ? (p as (typeof prioridades)[number])
             : ("moderada" as const),
           problema: texto(i["problema"]),
-          intervencao: texto(i["intervencao"]),
+          acoes,
           justificativa: texto(i["justificativa"]),
         };
       })
-      .filter((i) => i.intervencao !== "");
+      .filter((i) => i.acoes.length > 0);
     return {
       sintese: texto(resultado["sintese"]),
       composicaoCorporal: texto(resultado["composicaoCorporal"]),

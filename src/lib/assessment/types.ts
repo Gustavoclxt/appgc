@@ -180,7 +180,7 @@ export interface IntervencaoIA {
   categoria: string;
   prioridade: PrioridadeIntervencao;
   problema: string;
-  intervencao: string;
+  acoes: string[];
   justificativa: string;
 }
 
