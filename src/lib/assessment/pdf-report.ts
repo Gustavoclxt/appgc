@@ -123,8 +123,6 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
   linha("VET", d.vet !== null ? `${fmtInt(d.vet)} kcal/dia` : "—");
 
   titulo("Hidratação");
-  linha("30 mL/kg", d.aguaMin !== null ? `${fmtInt(d.aguaMin)} mL/dia` : "—");
-  linha("35 mL/kg", d.aguaMax !== null ? `${fmtInt(d.aguaMax)} mL/dia` : "—");
   linha(
     "Faixa estimada",
     d.aguaMin !== null
