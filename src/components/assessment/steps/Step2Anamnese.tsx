@@ -231,7 +231,16 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             <Select
               value={a.armstrong}
               onChange={(v) => set("armstrong", v)}
-              options={Array.from({ length: 8 }, (_, i) => ({ value: `A${i + 1}`, label: `A${i + 1}` }))}
+              options={[
+                { value: "A1", label: "A1 - Normal" },
+                { value: "A2", label: "A2 - Normal" },
+                { value: "A3", label: "A3 - Normal" },
+                { value: "A4", label: "A4 - Má hidratação" },
+                { value: "A5", label: "A5 - Má hidratação" },
+                { value: "A6", label: "A6 - Má hidratação" },
+                { value: "A7", label: "A7 - Desidratação severa" },
+                { value: "A8", label: "A8 - Desidratação severa" },
+              ]}
             />
           </Field>
         </div>
