@@ -213,7 +213,15 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             <Select
               value={a.bristol}
               onChange={(v) => set("bristol", v)}
-              options={Array.from({ length: 7 }, (_, i) => ({ value: `B${i + 1}`, label: `B${i + 1}` }))}
+              options={[
+                { value: "B1", label: "B1 - Caroços duros" },
+                { value: "B2", label: "B2 - Salsicha granulosa" },
+                { value: "B3", label: "B3 - Salsicha com fissuras" },
+                { value: "B4", label: "B4 - Salsicha lisa" },
+                { value: "B5", label: "B5 - Bolas macias" },
+                { value: "B6", label: "B6 - Pedaços pastosos" },
+                { value: "B7", label: "B7 - Líquida" },
+              ]}
             />
           </Field>
           <Field label="Consumo de água / ingestão de líquidos">
