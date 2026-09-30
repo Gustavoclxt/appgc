@@ -12,7 +12,8 @@ import { Step5Exames } from "@/components/assessment/steps/Step5Exames";
 import { Step6Energia } from "@/components/assessment/steps/Step6Energia";
 import { Step7Resultado } from "@/components/assessment/steps/Step7Resultado";
 import { Step8Pdf } from "@/components/assessment/steps/Step8Pdf";
-import { analisarAvaliacao } from "@/lib/assessment/analysis.functions";
+import { analisarAvaliacao, calcularComposicaoDiario } from "@/lib/assessment/analysis.functions";
+import { alimentosDoDiario, chaveDiario, somarTotais, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { deriveResults, fmtData } from "@/lib/assessment/calculations";
 import { createEmptyAssessment, ETAPAS } from "@/lib/assessment/initial-state";
 import { buildResumo } from "@/lib/assessment/summary";
@@ -47,6 +48,10 @@ function Index() {
   const [analisando, setAnalisando] = useState(false);
 
   const analisar = useServerFn(analisarAvaliacao);
+  const calcularDiario = useServerFn(calcularComposicaoDiario);
+  const [composicao, setComposicao] = useState<ComposicaoDiario | null>(null);
+  const [calculando, setCalculando] = useState(false);
+  const calculoEmCursoRef = useRef(false);
   const derivados = useMemo(() => deriveResults(dados), [dados]);
 
   const set = useCallback(
@@ -75,6 +80,34 @@ function Index() {
     }
   }, [analisar, dados, derivados]);
 
+  const onCalcularDiario = useCallback(async () => {
+    const itens = alimentosDoDiario(dados.diarioAlimentar);
+    if (!itens.length) {
+      toast.error("Adicione alimentos ao diário alimentar.");
+      return;
+    }
+    if (calculoEmCursoRef.current) return;
+    calculoEmCursoRef.current = true;
+    setCalculando(true);
+    try {
+      const resultado = await calcularDiario({ data: { itens } });
+      setComposicao({ chave: chaveDiario(dados.diarioAlimentar), itens: resultado, totais: somarTotais(resultado) });
+    } catch (erro) {
+      toast.error(erro instanceof Error ? erro.message : "Não foi possível calcular a composição.");
+    } finally {
+      calculoEmCursoRef.current = false;
+      setCalculando(false);
+    }
+  }, [calcularDiario, dados.diarioAlimentar]);
+
+  useEffect(() => {
+    if (etapa !== ETAPAS.length) return;
+    if (!alimentosDoDiario(dados.diarioAlimentar).length) return;
+    if (composicao?.chave === chaveDiario(dados.diarioAlimentar)) return;
+    void onCalcularDiario();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [etapa]);
+
   const disparoAutomaticoRef = useRef(false);
 
   useEffect(() => {
@@ -88,7 +121,7 @@ function Index() {
   async function onGerarPdf() {
     try {
       const { generatePDF } = await import("@/lib/assessment/pdf-report");
-      generatePDF(dados, derivados, analise);
+      generatePDF(dados, derivados, analise, composicao);
     } catch {
       toast.error("Não foi possível gerar o PDF.");
     }
@@ -156,7 +189,7 @@ function Index() {
             <Step2Anamnese {...props} />
           </div>
         )}
-        {etapa === 2 && <Step3Rotina {...props} />}
+        {etapa === 2 && <Step3Rotina {...props} composicao={composicao} calculando={calculando} onCalcular={() => void onCalcularDiario()} />}
         {etapa === 3 && (
           <div className="space-y-6">
             <Step4Antropometria {...props} />
@@ -171,6 +204,7 @@ function Index() {
               analise={analise}
               analisando={analisando}
               onAnalisar={onAnalisar}
+              composicao={composicao}
             />
             <Step8Pdf onGerar={onGerarPdf} temAnalise={analise !== null} />
           </div>

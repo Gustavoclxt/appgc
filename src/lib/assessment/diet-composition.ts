@@ -1,0 +1,66 @@
+import type { Refeicao } from "./types";
+
+export interface ItemComposicao {
+  refeicao: string;
+  alimento: string;
+  quantidade: string;
+  kcal: number;
+  carboidratos: number;
+  proteinas: number;
+  lipidios: number;
+  fonte: string;
+}
+
+export interface ComposicaoDiario {
+  chave: string;
+  itens: ItemComposicao[];
+  totais: { kcal: number; carboidratos: number; proteinas: number; lipidios: number };
+}
+
+/** Lista de alimentos do diário usada no cálculo (e para saber se o cálculo está desatualizado). */
+export function alimentosDoDiario(refeicoes: Refeicao[]) {
+  return refeicoes.flatMap((r) =>
+    r.alimentos
+      .filter((i) => i.alimento.trim())
+      .map((i) => ({ refeicao: r.refeicao || "Refeição", alimento: i.alimento.trim(), quantidade: i.quantidade.trim() })),
+  );
+}
+
+export function chaveDiario(refeicoes: Refeicao[]) {
+  return JSON.stringify(alimentosDoDiario(refeicoes));
+}
+
+export function somarTotais(itens: ItemComposicao[]) {
+  return itens.reduce(
+    (t, i) => ({
+      kcal: t.kcal + i.kcal,
+      carboidratos: t.carboidratos + i.carboidratos,
+      proteinas: t.proteinas + i.proteinas,
+      lipidios: t.lipidios + i.lipidios,
+    }),
+    { kcal: 0, carboidratos: 0, proteinas: 0, lipidios: 0 },
+  );
+}
+
+/** Linhas de texto padronizadas (prévia, PDF e cópia). */
+export function composicaoParaRelatorio(c: ComposicaoDiario | null) {
+  if (!c || !c.itens.length) return null;
+  const t = c.totais;
+  const kcalMacro = t.carboidratos * 4 + t.proteinas * 4 + t.lipidios * 9 || 1;
+  const pct = (g: number, f: number) => Math.round(((g * f) / kcalMacro) * 100);
+  const g = (v: number) => v.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
+  return {
+    totais: [
+      { label: "Calorias totais", valor: `${Math.round(t.kcal).toLocaleString("pt-BR")} kcal` },
+      { label: "Carboidratos", valor: `${g(t.carboidratos)} g (${pct(t.carboidratos, 4)}%)` },
+      { label: "Proteínas", valor: `${g(t.proteinas)} g (${pct(t.proteinas, 4)}%)` },
+      { label: "Lipídios", valor: `${g(t.lipidios)} g (${pct(t.lipidios, 9)}%)` },
+    ],
+    itens: c.itens.map((i) => ({
+      texto: [i.alimento, i.quantidade].filter(Boolean).join(" — "),
+      valores: `${Math.round(i.kcal)} kcal · CHO ${g(i.carboidratos)} g · PTN ${g(i.proteinas)} g · LIP ${g(i.lipidios)} g`,
+      fonte: i.fonte,
+    })),
+    nota: "Valores estimados com base na TACO, na tabela de Sônia Tucunduva Philippi e, na ausência do alimento, em fontes complementares.",
+  };
+}
