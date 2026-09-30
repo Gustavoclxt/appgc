@@ -1,6 +1,6 @@
 import { fmt2 } from "@/lib/assessment/calculations";
 
-import { Field, OptionRow, Panel, Readout, Select, TextInput, UnitInput } from "../fields";
+import { Field, Panel, Readout, Select, TextInput, UnitInput } from "../fields";
 import type { StepProps } from "./types";
 
 export function Step4Antropometria({ a, set, d }: StepProps) {
@@ -11,19 +11,11 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
           <Field label="Altura">
             <UnitInput
               value={a.altura}
-              onChange={(v) => set("altura", v)}
-              unidade={a.alturaUnidade}
-              placeholder={a.alturaUnidade === "cm" ? "178" : "1,78"}
-            />
-          </Field>
-          <Field label="Unidade da altura">
-            <OptionRow
-              value={a.alturaUnidade}
-              onChange={(v) => set("alturaUnidade", (v || "cm") as "cm" | "m")}
-              options={[
-                { value: "cm", label: "cm" },
-                { value: "m", label: "m" },
-              ]}
+              onChange={(v) => {
+                if (/^\d?(?:,\d{0,2})?$/.test(v) && (v.match(/\d/g)?.length ?? 0) <= 3) set("altura", v);
+              }}
+              unidade="m"
+              placeholder="1,75"
             />
           </Field>
           <Field label="Peso atual">
@@ -45,7 +37,6 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
                 "Bioimpedância",
                 "DEXA",
                 "Dobras cutâneas",
-                "Adipômetro",
                 "Estimativa",
                 "Outro",
               ].map((x) => ({ value: x, label: x }))}

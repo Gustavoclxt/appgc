@@ -8,7 +8,7 @@ export function Step8Pdf({
   temAnalise: boolean;
 }) {
   return (
-    <Panel titulo="Gerar PDF" meta="Etapa 6">
+    <Panel titulo="Gerar PDF" meta="Etapa 5">
       <p className="max-w-2xl text-[13px] leading-relaxed text-ink-soft">
         O PDF reúne os dados do paciente, a antropometria, os cálculos energéticos, a necessidade
         hídrica, a conduta energética, os exames laboratoriais identificados e os textos produzidos na

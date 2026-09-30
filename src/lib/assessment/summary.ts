@@ -88,16 +88,16 @@ export function buildResumo(a: Assessment, d: DerivedResults): string {
 
   t += "\n## Preferências alimentares\n";
   t += li("Vegetais/saladas", a.prefVegetais.join(", "));
-  t += li("Frutas", a.prefFrutas);
+  t += li("Frutas", a.prefFrutas.join(", "));
   t += li("Lácteos", a.prefLacteos.join(", "));
-  t += li("Café/chá", a.prefCafeCha);
+  t += li("Café/chá", a.prefCafeCha.join(", "));
   t += li("Açúcar ou adoçante", a.acucarAdocante);
   t += li("Aceita café com leite", a.aceitaCafeComLeite);
   t += li("Proteínas", a.prefProteinas.join(", "));
   t += li("Carboidratos", a.prefCarboidratos.join(", "));
-  t += li("Cereais e grãos", a.prefCereais);
+  t += li("Cereais e grãos", a.prefCereais.join(", "));
   t += li("Gorduras", a.prefGorduras.join(", "));
-  t += li("Doces", a.prefDoces);
+  t += li("Doces", a.prefDoces.join(", "));
   t += li("Aversões", a.aversoes);
 
   const diario = diarioParaRelatorio(a.diarioAlimentar);

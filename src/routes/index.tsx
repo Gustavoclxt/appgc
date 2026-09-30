@@ -157,10 +157,14 @@ function Index() {
           </div>
         )}
         {etapa === 2 && <Step3Rotina {...props} />}
-        {etapa === 3 && <Step4Antropometria {...props} />}
-        {etapa === 4 && <Step5Exames {...props} />}
-        {etapa === 5 && <Step6Energia {...props} />}
-        {etapa === 6 && (
+        {etapa === 3 && (
+          <div className="space-y-6">
+            <Step4Antropometria {...props} />
+            <Step5Exames {...props} />
+          </div>
+        )}
+        {etapa === 4 && <Step6Energia {...props} />}
+        {etapa === 5 && (
           <div className="space-y-6">
             <Step7Resultado
               {...props}
@@ -194,13 +198,6 @@ function Index() {
           )}
         </div>
 
-        <footer className="mt-8 border-t border-line/70 pt-4">
-          <p className="font-mono text-[11px] leading-relaxed text-ink-soft">
-            Os dados inseridos nesta ferramenta não são armazenados permanentemente. Esta ferramenta é
-            destinada ao apoio à avaliação nutricional profissional e não substitui o julgamento
-            clínico do nutricionista.
-          </p>
-        </footer>
       </main>
     </div>
   );
