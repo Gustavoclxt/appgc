@@ -209,9 +209,6 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
       y += 5;
     }
     y += 2;
-    if (a.observacoesExames) {
-      paragrafo(`Observações: ${a.observacoesExames}`);
-    }
   }
 
   if (analise) {
@@ -294,10 +291,6 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7.5);
     doc.setTextColor(120, 130, 140);
-    const aviso =
-      "Documento de apoio à avaliação nutricional profissional. Não substitui o julgamento clínico do nutricionista. Os dados não são armazenados pela ferramenta.";
-    const linhas = doc.splitTextToSize(aviso, CONTEUDO - 20);
-    doc.text(linhas, MARGEM, ALTURA - 14);
     doc.text(`${i}/${paginas}`, LARGURA - MARGEM, ALTURA - 10, { align: "right" });
   }
 

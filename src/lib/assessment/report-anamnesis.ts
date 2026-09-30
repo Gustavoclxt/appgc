@@ -63,6 +63,7 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Restrição alimentar", a.restricaoAlimentar === "nao" ? "Não" : a.restricaoAlimentar),
       campo("Uso de EAAs", a.eaas === "sim" ? `Sim${a.eaasDescricao ? ` · ${a.eaasDescricao}` : ""}` : simNao(a.eaas)),
       campo("Hábitos sociais", lista(a.habitosSociais)),
+      campo("Observações sobre os exames", a.observacoesExames),
     ]),
     secao("Revisão de sistemas", [
       campo("Função estomacal", a.funcaoEstomacal),

@@ -26,9 +26,9 @@ interface Props extends StepProps {
 
 function Dado({ label, valor }: { label: string; valor: string }) {
   return (
-    <div className="flex items-baseline justify-between gap-4 border-b border-line/70 pb-1.5">
-      <span className="text-[13px] text-ink-soft">{label}</span>
-      <span className="font-mono text-[13px] tabular-nums">{valor}</span>
+    <div className="flex items-start justify-between gap-4 border-b border-line/70 pb-1.5">
+      <span className="shrink-0 text-[13px] text-ink-soft">{label}</span>
+      <span className="min-w-0 break-words text-right font-mono text-[13px] tabular-nums">{valor}</span>
     </div>
   );
 }
@@ -58,7 +58,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
 
   if (!analise) {
     return (
-      <Panel titulo="Resultado da avaliação" meta="Etapa 6">
+      <Panel titulo="Resultado da avaliação" meta="Etapa 5">
         <p className="max-w-2xl text-[13px] leading-relaxed text-ink-soft">
           Ao analisar a avaliação, os dados preenchidos e os cálculos realizados são reunidos em um
           relatório técnico objetivo. A sugestão produzida é um apoio à decisão e não constitui
