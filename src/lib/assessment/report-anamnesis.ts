@@ -28,12 +28,22 @@ const historicoPreenchido = (value: string) => {
   return semMarcadores ? value : "";
 };
 
+const bristol: Record<string, string> = {
+  B1: "B1 - Caroços duros", B2: "B2 - Salsicha granulosa", B3: "B3 - Salsicha com fissuras",
+  B4: "B4 - Salsicha lisa", B5: "B5 - Bolas macias", B6: "B6 - Pedaços pastosos", B7: "B7 - Líquida",
+};
+const armstrong: Record<string, string> = {
+  A1: "A1 - Normal", A2: "A2 - Normal", A3: "A3 - Normal", A4: "A4 - Má hidratação",
+  A5: "A5 - Má hidratação", A6: "A6 - Má hidratação", A7: "A7 - Desidratação severa",
+  A8: "A8 - Desidratação severa",
+};
+
 export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportSection[] {
   const medicamentos = a.medicamentos
     .filter((item) => item.nome.trim() || item.dose.trim() || item.acao.trim())
     .map((item) => [item.nome, item.dose && `Dose: ${item.dose}`, item.acao && `Ação: ${item.acao}`].filter(Boolean).join(" · "));
   const modalidades = a.modalidades
-    .filter((item) => Object.values(item).some((value) => value.trim()))
+    .filter((item) => item.modalidade.trim() || item.tempoPratica.trim() || item.horario.trim() || item.duracao.trim() || item.frequenciaSemanal.trim() || item.diasSemana.trim() || item.diasDescanso.trim())
     .map((item) => [item.modalidade, item.tempoPratica, item.horario, item.duracao, item.frequenciaSemanal, item.diasSemana, item.diasDescanso && `Descanso: ${item.diasDescanso}`].filter(Boolean).join(" · "));
   const suplementos = a.suplementos
     .filter((item) => item.nome.trim() || item.dose.trim() || item.horario.trim() || item.frequencia.trim())
@@ -68,9 +78,9 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
     secao("Revisão de sistemas", [
       campo("Função estomacal", a.funcaoEstomacal),
       campo("Frequência de evacuação", a.frequenciaEvacuacao),
-      campo("Escala de Bristol", a.bristol),
+      campo("Escala de Bristol", bristol[a.bristol] ?? a.bristol),
       campo("Consumo de água / líquidos", a.consumoAgua),
-      campo("Escala Armstrong", a.armstrong),
+      campo("Escala Armstrong", armstrong[a.armstrong] ?? a.armstrong),
     ]),
     secao("Sono", [
       campo("Horário que dorme", a.horaDormir),
