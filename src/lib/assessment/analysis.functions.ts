@@ -144,3 +144,44 @@ export const extrairExames = createServerFn({ method: "POST" })
       })
       .filter((e) => e.exame !== "");
   });
+
+const composicaoInput = z.object({
+  itens: z
+    .array(z.object({ refeicao: z.string().max(200), alimento: z.string().max(300), quantidade: z.string().max(200) }))
+    .min(1)
+    .max(150),
+});
+
+const SISTEMA_COMPOSICAO = `Você é assistente técnico de nutricionistas no Brasil.
+Para cada alimento de um diário alimentar, estime calorias (kcal), carboidratos (g), proteínas (g) e lipídios (g) da quantidade informada.
+Use prioritariamente a Tabela Brasileira de Composição de Alimentos (TACO/NEPA-UNICAMP) e a Tabela de Composição Química dos Alimentos de Sônia Tucunduva Philippi, bem como as medidas caseiras usuais dessas referências.
+Se o alimento não existir nessas tabelas, use outra fonte confiável (ex.: IBGE POF, USDA, rótulo típico) e indique-a em "fonte".
+Se a quantidade não for informada, considere uma porção usual e informe isso na fonte (ex.: "TACO — porção usual").
+Mantenha a mesma ordem e a mesma quantidade de itens recebidos.
+Responda APENAS JSON: { "itens": [ { "kcal": 0, "carboidratos": 0, "proteinas": 0, "lipidios": 0, "fonte": "TACO" } ] }`;
+
+export const calcularComposicaoDiario = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => composicaoInput.parse(data))
+  .handler(async ({ data }) => {
+    const { chatJSON } = await import("./ai.server");
+    const lista = data.itens
+      .map((i, n) => `${n + 1}. ${i.alimento} | quantidade: ${i.quantidade || "não informada"} | refeição: ${i.refeicao}`)
+      .join("\n");
+    const resultado = (await chatJSON(SISTEMA_COMPOSICAO, `Alimentos:\n${lista}`)) as { itens?: unknown };
+    const brutos = Array.isArray(resultado["itens"]) ? (resultado["itens"] as Record<string, unknown>[]) : [];
+    const num = (v: unknown) => {
+      const n = typeof v === "number" ? v : parseFloat(String(v ?? "").replace(",", "."));
+      return Number.isFinite(n) && n >= 0 ? n : 0;
+    };
+    return data.itens.map((i, n) => {
+      const r = brutos[n] ?? {};
+      return {
+        ...i,
+        kcal: num(r["kcal"]),
+        carboidratos: num(r["carboidratos"]),
+        proteinas: num(r["proteinas"]),
+        lipidios: num(r["lipidios"]),
+        fonte: typeof r["fonte"] === "string" ? r["fonte"].trim() : "",
+      };
+    });
+  });

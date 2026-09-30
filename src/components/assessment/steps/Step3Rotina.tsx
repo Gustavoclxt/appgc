@@ -11,6 +11,14 @@ import {
   TextInput,
 } from "../fields";
 import type { StepProps } from "./types";
+import { cafeCha, carboidratos, cereais, doces, frutas, gorduras, lacteos, proteinas, vegetais } from "@/lib/assessment/food-preferences";
+import { chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
+
+interface Props extends StepProps {
+  composicao: ComposicaoDiario | null;
+  calculando: boolean;
+  onCalcular: () => void;
+}
 
 const simNao = [
   { value: "sim", label: "Sim" },
@@ -26,25 +34,9 @@ const selecionarPreferencia = (atuais: string[], valor: string, opcoes: string[]
     : [...semGlobais, valor].filter((item) => opcoes.includes(item));
 };
 
-const vegetais = [
-  "Alface", "Rúcula", "Agrião", "Couve", "Espinafre", "Acelga", "Repolho", "Couve-flor",
-  "Brócolis", "Abobrinha", "Berinjela", "Pepino", "Tomate", "Cenoura", "Beterraba", "Chuchu",
-  "Vagem", "Quiabo", "Pimentão", "Rabanete", "Nabo", "Abóbora", "Nenhum", "Todos",
-];
-
-const proteinas = ["Bovina", "Frango", "Peixe", "Suína", "Ovos", "Vísceras", "Nenhuma", "Todas"];
-const carboidratos = ["Arroz", "Macarrão", "Batata", "Batata-doce", "Mandioca", "Pão", "Tapioca", "Cuscuz", "Nenhum", "Todos"];
-const frutas = [
-  "Mamão", "Melão", "Morango", "Melancia", "Pêssego", "Laranja", "Mexerica", "Abacaxi",
-  "Uva", "Kiwi", "Manga", "Pera", "Ameixa", "Goiaba", "Maçã", "Maracujá", "Banana", "Caqui",
-  "Nenhuma", "Todas",
-];
-const lacteos = ["Leite", "Iogurte", "Queijo", "Requeijão", "Nenhum", "Todos"];
-const cereais = ["Aveia", "Quinoa", "Amaranto", "Linhaça", "Chia", "Gergelim", "Nenhum", "Todos"];
-const gorduras = ["Margarina", "Manteiga", "Banha", "Oleaginosas", "Nenhum"];
-const doces = ["Doce de Leite", "Geleia", "Pasta de Amendoim", "Sucrilhos", "Biscoitos", "Chocolate", "Bala", "Nenhum", "Todos"];
-
-export function Step3Rotina({ a, set, d }: StepProps) {
+export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: Props) {
+  const comp = composicaoParaRelatorio(composicao);
+  const desatualizada = composicao !== null && composicao.chave !== chaveDiario(a.diarioAlimentar);
   return (
     <div className="space-y-6">
       <Panel titulo="Rotina de trabalho" meta="Etapa 2">
@@ -355,7 +347,7 @@ export function Step3Rotina({ a, set, d }: StepProps) {
             <MultiOptionRow
               values={a.prefCafeCha}
               onChange={(v) => set("prefCafeCha", v.includes("Nenhum") ? ["Nenhum"] : v)}
-              options={["Café", "Chá", "Nenhum"].map((item) => ({ value: item, label: item }))}
+              options={cafeCha.map((item) => ({ value: item, label: item }))}
             />
           </Field>
           <Field label="Utiliza açúcar ou adoçante?">
@@ -582,6 +574,52 @@ export function Step3Rotina({ a, set, d }: StepProps) {
           >
             + Adicionar refeição
           </RowButton>
+        </div>
+
+        <div className="mt-6 rounded-[14px] bg-ink p-5 text-white">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/70">
+              Composição estimada da dieta
+            </p>
+            <button
+              type="button"
+              onClick={onCalcular}
+              disabled={calculando}
+              className="rounded-[10px] bg-white px-4 py-2 text-[12px] font-semibold text-ink disabled:opacity-60"
+            >
+              {calculando ? "Calculando…" : comp ? "Recalcular" : "Calcular calorias e macronutrientes"}
+            </button>
+          </div>
+          {comp ? (
+            <>
+              {desatualizada && (
+                <p className="mt-2 text-[12px] text-white/70">O diário foi alterado. Recalcule para atualizar.</p>
+              )}
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {comp.totais.map((t) => (
+                  <div key={t.label}>
+                    <p className="text-[11px] text-white/60">{t.label}</p>
+                    <p className="mt-1 font-mono text-sm tabular-nums">{t.valor}</p>
+                  </div>
+                ))}
+              </div>
+              <ul className="mt-4 space-y-1.5 border-t border-white/15 pt-3">
+                {comp.itens.map((i, n) => (
+                  <li key={n} className="text-[12px] leading-snug">
+                    <span className="text-white">{i.texto}</span>
+                    <span className="block font-mono text-[11px] text-white/60">
+                      {i.valores}{i.fonte ? ` · ${i.fonte}` : ""}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-3 text-[11px] text-white/50">{comp.nota}</p>
+            </>
+          ) : (
+            <p className="mt-2 text-[12px] text-white/60">
+              Calcula calorias, carboidratos, proteínas e lipídios dos alimentos informados (TACO / Sônia Tucunduva).
+            </p>
+          )}
         </div>
       </Panel>
 
