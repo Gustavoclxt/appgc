@@ -8,6 +8,7 @@ import {
 } from "@/lib/assessment/calculations";
 import { useRef } from "react";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import type { AnaliseIA } from "@/lib/assessment/types";
 import { anamneseParaRelatorio } from "@/lib/assessment/report-anamnesis";
 import { examesParaRelatorio } from "@/lib/assessment/report-exams";
@@ -298,13 +299,14 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
           <p className="whitespace-pre-line">{analise.sugestaoTecnica}</p>
         </Bloco>
       </div>
-      <button
+      <Button
         type="button"
+        variant="outline"
         onClick={() => void copiarRelatorio()}
         className="mt-4 w-full rounded-[10px] bg-white px-5 py-3 text-sm font-semibold text-ink ring-1 ring-line transition-colors hover:bg-white/70 no-print"
       >
         COPIAR
-      </button>
+      </Button>
     </section>
   );
 }
