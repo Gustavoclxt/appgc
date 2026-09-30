@@ -34,8 +34,15 @@ const vegetais = [
 
 const proteinas = ["Bovina", "Frango", "Peixe", "Suína", "Ovos", "Vísceras", "Nenhuma", "Todas"];
 const carboidratos = ["Arroz", "Macarrão", "Batata", "Batata-doce", "Mandioca", "Pão", "Tapioca", "Cuscuz", "Nenhum", "Todos"];
-const lacteos = ["Leite", "Iogurte", "Queijo", "Requeijão", "Nenhum"];
+const frutas = [
+  "Mamão", "Melão", "Morango", "Melancia", "Pêssego", "Laranja", "Mexerica", "Abacaxi",
+  "Uva", "Kiwi", "Manga", "Pera", "Ameixa", "Goiaba", "Maçã", "Maracujá", "Banana", "Caqui",
+  "Nenhuma", "Todas",
+];
+const lacteos = ["Leite", "Iogurte", "Queijo", "Requeijão", "Nenhum", "Todos"];
+const cereais = ["Aveia", "Quinoa", "Amaranto", "Linhaça", "Chia", "Gergelim", "Nenhum", "Todos"];
 const gorduras = ["Margarina", "Manteiga", "Banha", "Oleaginosas", "Nenhum"];
+const doces = ["Doce de Leite", "Geleia", "Pasta de Amendoim", "Sucrilhos", "Biscoitos", "Chocolate", "Bala", "Nenhum", "Todos"];
 
 export function Step3Rotina({ a, set, d }: StepProps) {
   return (
@@ -321,15 +328,33 @@ export function Step3Rotina({ a, set, d }: StepProps) {
             />
           </Field>
           <Field label="Frutas">
-            <LongText value={a.prefFrutas} onChange={(v) => set("prefFrutas", v)} rows={2} />
+            <MultiOptionRow
+              values={a.prefFrutas}
+              onChange={(v) => {
+                const alterado = v.find((item) => !a.prefFrutas.includes(item)) ?? a.prefFrutas.find((item) => !v.includes(item));
+                const normalizadas = frutas.map((item) => item === "Nenhuma" ? "Nenhum" : item === "Todas" ? "Todos" : item);
+                const atuais = a.prefFrutas.map((item) => item === "Nenhuma" ? "Nenhum" : item === "Todas" ? "Todos" : item);
+                const valor = alterado === "Nenhuma" ? "Nenhum" : alterado === "Todas" ? "Todos" : alterado;
+                const selecionadas = valor ? selecionarPreferencia(atuais, valor, normalizadas) : atuais;
+                set("prefFrutas", selecionadas.map((item) => item === "Nenhum" ? "Nenhuma" : item === "Todos" ? "Todas" : item));
+              }}
+              options={frutas.map((item) => ({ value: item, label: item }))}
+            />
           </Field>
           <Field label="Lácteos">
-            <MultiOptionRow values={a.prefLacteos} onChange={(v) => set("prefLacteos", v)} options={lacteos.map((item) => ({ value: item, label: item }))} />
+            <MultiOptionRow
+              values={a.prefLacteos}
+              onChange={(v) => {
+                const alterado = v.find((item) => !a.prefLacteos.includes(item)) ?? a.prefLacteos.find((item) => !v.includes(item));
+                set("prefLacteos", alterado ? selecionarPreferencia(a.prefLacteos, alterado, lacteos) : v);
+              }}
+              options={lacteos.map((item) => ({ value: item, label: item }))}
+            />
           </Field>
           <Field label="Café/chá">
-            <OptionRow
-              value={a.prefCafeCha}
-              onChange={(v) => set("prefCafeCha", v)}
+            <MultiOptionRow
+              values={a.prefCafeCha}
+              onChange={(v) => set("prefCafeCha", v.includes("Nenhum") ? ["Nenhum"] : v)}
               options={["Café", "Chá", "Nenhum"].map((item) => ({ value: item, label: item }))}
             />
           </Field>
@@ -375,17 +400,28 @@ export function Step3Rotina({ a, set, d }: StepProps) {
               options={carboidratos.map((item) => ({ value: item, label: item }))}
             />
           </Field>
-          <Field label="Cereais e grãos" hint="Aveia, granola, chia, linhaça etc.">
-            <LongText value={a.prefCereais} onChange={(v) => set("prefCereais", v)} rows={2} />
+          <Field label="Cereais e grãos">
+            <MultiOptionRow
+              values={a.prefCereais}
+              onChange={(v) => {
+                const alterado = v.find((item) => !a.prefCereais.includes(item)) ?? a.prefCereais.find((item) => !v.includes(item));
+                set("prefCereais", alterado ? selecionarPreferencia(a.prefCereais, alterado, cereais) : v);
+              }}
+              options={cereais.map((item) => ({ value: item, label: item }))}
+            />
           </Field>
           <Field label="Gorduras">
             <MultiOptionRow values={a.prefGorduras} onChange={(v) => set("prefGorduras", v)} options={gorduras.map((item) => ({ value: item, label: item }))} />
           </Field>
-          <Field
-            label="Doces"
-            hint="Doce de leite, geleia, pasta de amendoim, sucrilhos, biscoitos, chocolate etc."
-          >
-            <LongText value={a.prefDoces} onChange={(v) => set("prefDoces", v)} rows={2} />
+          <Field label="Doces">
+            <MultiOptionRow
+              values={a.prefDoces}
+              onChange={(v) => {
+                const alterado = v.find((item) => !a.prefDoces.includes(item)) ?? a.prefDoces.find((item) => !v.includes(item));
+                set("prefDoces", alterado ? selecionarPreferencia(a.prefDoces, alterado, doces) : v);
+              }}
+              options={doces.map((item) => ({ value: item, label: item }))}
+            />
           </Field>
           <Field label="Aversões alimentares">
             <LongText value={a.aversoes} onChange={(v) => set("aversoes", v)} rows={2} />

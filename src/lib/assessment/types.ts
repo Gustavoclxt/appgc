@@ -134,16 +134,16 @@ export interface Assessment {
 
   // Preferências e aversões
   prefVegetais: string[];
-  prefFrutas: string;
+  prefFrutas: string[];
   prefLacteos: string[];
-  prefCafeCha: string;
+  prefCafeCha: string[];
   acucarAdocante: string;
   aceitaCafeComLeite: "sim" | "nao" | "";
   prefProteinas: string[];
   prefCarboidratos: string[];
-  prefCereais: string;
+  prefCereais: string[];
   prefGorduras: string[];
-  prefDoces: string;
+  prefDoces: string[];
   aversoes: string;
 
   diarioAlimentar: Refeicao[];

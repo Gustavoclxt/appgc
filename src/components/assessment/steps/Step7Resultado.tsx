@@ -6,7 +6,11 @@ import {
   labelEstrategia,
   labelMetodo,
 } from "@/lib/assessment/calculations";
+import { useRef } from "react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import type { AnaliseIA } from "@/lib/assessment/types";
+import { anamneseParaRelatorio } from "@/lib/assessment/report-anamnesis";
 import { examesParaRelatorio } from "@/lib/assessment/report-exams";
 import { diarioParaRelatorio } from "@/lib/assessment/food-diary";
 import { intervencoesParaRelatorio } from "@/lib/assessment/interventions";
@@ -23,9 +27,9 @@ interface Props extends StepProps {
 
 function Dado({ label, valor }: { label: string; valor: string }) {
   return (
-    <div className="flex items-baseline justify-between gap-4 border-b border-line/70 pb-1.5">
-      <span className="text-[13px] text-ink-soft">{label}</span>
-      <span className="font-mono text-[13px] tabular-nums">{valor}</span>
+    <div className="flex items-start justify-between gap-4 border-b border-line/70 pb-1.5">
+      <span className="shrink-0 text-[13px] text-ink-soft">{label}</span>
+      <span className="min-w-0 break-words text-right font-mono text-[13px] tabular-nums">{valor}</span>
     </div>
   );
 }
@@ -40,9 +44,22 @@ function Bloco({ titulo, children }: { titulo: string; children: React.ReactNode
 }
 
 export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props) {
+  const relatorioRef = useRef<HTMLDivElement>(null);
+
+  async function copiarRelatorio() {
+    const texto = relatorioRef.current?.innerText.trim();
+    if (!texto) return;
+    try {
+      await navigator.clipboard.writeText(texto);
+      toast.success("Relatório copiado.");
+    } catch {
+      toast.error("Não foi possível copiar o relatório.");
+    }
+  }
+
   if (!analise) {
     return (
-      <Panel titulo="Resultado da avaliação" meta="Etapa 6">
+      <Panel titulo="Resultado da avaliação" meta="Etapa 5">
         <p className="max-w-2xl text-[13px] leading-relaxed text-ink-soft">
           Ao analisar a avaliação, os dados preenchidos e os cálculos realizados são reunidos em um
           relatório técnico objetivo. A sugestão produzida é um apoio à decisão e não constitui
@@ -62,6 +79,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
 
   const examesDoRelatorio = examesParaRelatorio(a.exames);
   const diarioDoRelatorio = diarioParaRelatorio(a.diarioAlimentar);
+  const anamneseDoRelatorio = anamneseParaRelatorio(a, d);
 
   return (
     <section>
@@ -77,7 +95,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
         </button>
       </div>
 
-      <div className="rounded-[18px] bg-white p-8 ring-1 ring-black/5 shadow-[0_24px_60px_-30px_oklch(0.24_0.026_250/0.35)]">
+      <div ref={relatorioRef} className="rounded-[18px] bg-white p-8 ring-1 ring-black/5 shadow-[0_24px_60px_-30px_oklch(0.24_0.026_250/0.35)]">
         <div className="flex flex-wrap items-start justify-between gap-4 border-b border-line pb-4">
           <div>
             <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft">
@@ -133,14 +151,15 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
           />
         </div>
 
-        {examesDoRelatorio.length > 0 && (
-          <Bloco titulo="Exames laboratoriais">
-            <ExamesTable exames={examesDoRelatorio} />
-            {a.observacoesExames && (
-              <p className="mt-3 text-[13px] text-ink-soft">{a.observacoesExames}</p>
-            )}
+        {anamneseDoRelatorio.map((section) => (
+          <Bloco key={section.title} titulo={section.title}>
+            <div className="grid grid-cols-1 gap-x-10 gap-y-2 sm:grid-cols-2">
+              {section.fields.map((field) => (
+                <Dado key={`${section.title}-${field.label}`} label={field.label} valor={field.value} />
+              ))}
+            </div>
           </Bloco>
-        )}
+        ))}
 
         {diarioDoRelatorio.length > 0 && (
           <Bloco titulo="Diário alimentar">
@@ -163,6 +182,15 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
                 </div>
               ))}
             </div>
+          </Bloco>
+        )}
+
+        {examesDoRelatorio.length > 0 && (
+          <Bloco titulo="Exames laboratoriais">
+            <ExamesTable exames={examesDoRelatorio} />
+            {a.observacoesExames && (
+              <p className="mt-3 text-[13px] text-ink-soft">{a.observacoesExames}</p>
+            )}
           </Bloco>
         )}
 
@@ -271,6 +299,14 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
           <p className="whitespace-pre-line">{analise.sugestaoTecnica}</p>
         </Bloco>
       </div>
+      <Button
+        type="button"
+        variant="outline"
+        onClick={() => void copiarRelatorio()}
+        className="mt-4 w-full rounded-[10px] bg-white px-5 py-3 text-sm font-semibold text-ink ring-1 ring-line transition-colors hover:bg-white/70 no-print"
+      >
+        COPIAR
+      </Button>
     </section>
   );
 }

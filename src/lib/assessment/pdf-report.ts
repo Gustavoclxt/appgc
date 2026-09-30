@@ -13,6 +13,7 @@ import type { AnaliseIA, Assessment } from "./types";
 import { examesParaRelatorio } from "./report-exams";
 import { diarioParaRelatorio } from "./food-diary";
 import { intervencoesParaRelatorio } from "./interventions";
+import { anamneseParaRelatorio } from "./report-anamnesis";
 
 const MARGEM = 16;
 const LARGURA = 210;
@@ -30,6 +31,7 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const examesDoRelatorio = examesParaRelatorio(a.exames);
   const diarioDoRelatorio = diarioParaRelatorio(a.diarioAlimentar);
+  const anamneseDoRelatorio = anamneseParaRelatorio(a, d);
   let y = MARGEM;
 
   const quebra = (altura: number) => {
@@ -99,8 +101,18 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
   linha("Profissão", a.profissao || "—");
   linha("Data", fmtData(a.dataAvaliacao));
 
-  titulo("Objetivo");
-  linha("Objetivos", a.objetivos.length ? a.objetivos.join(", ") : "—");
+  for (const section of anamneseDoRelatorio) {
+    titulo(section.title);
+    for (const field of section.fields) {
+      quebra(6);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9);
+      doc.setTextColor(91, 102, 114);
+      doc.text(`${field.label}:`, MARGEM, y);
+      y += 4.2;
+      paragrafo(field.value);
+    }
+  }
 
   titulo("Antropometria");
   linha("Peso", d.pesoKg !== null ? `${fmt2(d.pesoKg)} kg` : "—");
@@ -148,6 +160,29 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
     d.caloriasSugeridas !== null ? `${fmtInt(d.caloriasSugeridas)} kcal/dia` : "—",
   );
 
+  if (diarioDoRelatorio.length) {
+    titulo("Diário alimentar");
+    for (const refeicao of diarioDoRelatorio) {
+      quebra(7);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9.5);
+      doc.setTextColor(22, 32, 43);
+      doc.text(refeicao.refeicao, MARGEM, y);
+      const detalhes = [refeicao.horario, refeicao.local].filter(Boolean).join(" · ");
+      if (detalhes) {
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8.5);
+        doc.setTextColor(91, 102, 114);
+        doc.text(detalhes, MARGEM + 58, y);
+      }
+      y += 4.8;
+      for (const alimento of refeicao.alimentos) {
+        paragrafo(`• ${alimento}`);
+      }
+      y += 1;
+    }
+  }
+
   if (examesDoRelatorio.length) {
     titulo("Exames laboratoriais");
     quebra(8);
@@ -174,32 +209,6 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
       y += 5;
     }
     y += 2;
-    if (a.observacoesExames) {
-      paragrafo(`Observações: ${a.observacoesExames}`);
-    }
-  }
-
-  if (diarioDoRelatorio.length) {
-    titulo("Diário alimentar");
-    for (const refeicao of diarioDoRelatorio) {
-      quebra(7);
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(9.5);
-      doc.setTextColor(22, 32, 43);
-      doc.text(refeicao.refeicao, MARGEM, y);
-      const detalhes = [refeicao.horario, refeicao.local].filter(Boolean).join(" · ");
-      if (detalhes) {
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(8.5);
-        doc.setTextColor(91, 102, 114);
-        doc.text(detalhes, MARGEM + 58, y);
-      }
-      y += 4.8;
-      for (const alimento of refeicao.alimentos) {
-        paragrafo(`• ${alimento}`);
-      }
-      y += 1;
-    }
   }
 
   if (analise) {
@@ -282,10 +291,6 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7.5);
     doc.setTextColor(120, 130, 140);
-    const aviso =
-      "Documento de apoio à avaliação nutricional profissional. Não substitui o julgamento clínico do nutricionista. Os dados não são armazenados pela ferramenta.";
-    const linhas = doc.splitTextToSize(aviso, CONTEUDO - 20);
-    doc.text(linhas, MARGEM, ALTURA - 14);
     doc.text(`${i}/${paginas}`, LARGURA - MARGEM, ALTURA - 10, { align: "right" });
   }
 

@@ -38,10 +38,10 @@ export function Step5Exames({ a, set }: StepProps) {
 
   return (
     <div className="space-y-6">
-      <Panel titulo="Anexar exames laboratoriais" meta="Etapa 4 · PDF">
+      <Panel titulo="Anexar exames laboratoriais" meta="Etapa 3 · PDF">
         <div className="rounded-[10px] border border-dashed border-line bg-white/50 px-5 py-8 text-center">
           <p className="text-[13px] text-ink">
-            Selecione um laudo em PDF. O arquivo é lido apenas nesta sessão e não é armazenado.
+            Selecione um laudo em PDF.
           </p>
           <label className="mt-4 inline-flex cursor-pointer items-center rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90">
             {lendo ? "Lendo exames…" : "Escolher arquivo PDF"}
@@ -57,9 +57,6 @@ export function Step5Exames({ a, set }: StepProps) {
               }}
             />
           </label>
-          <p className="mt-3 font-mono text-[10px] text-ink-soft">
-            Utilizamos prioritariamente o intervalo de referência apresentado no próprio laudo.
-          </p>
         </div>
       </Panel>
 
@@ -73,7 +70,7 @@ export function Step5Exames({ a, set }: StepProps) {
       )}
 
       <Panel titulo="Observações sobre os exames">
-        <Field label="Texto livre">
+        <Field label="Observações">
           <LongText
             value={a.observacoesExames}
             onChange={(v) => set("observacoesExames", v)}
@@ -81,9 +78,6 @@ export function Step5Exames({ a, set }: StepProps) {
             placeholder="Anotações do nutricionista sobre os achados laboratoriais."
           />
         </Field>
-        <p className="mt-3 font-mono text-[10px] text-ink-soft">
-          Alterações laboratoriais não são convertidas automaticamente em diagnóstico.
-        </p>
       </Panel>
     </div>
   );

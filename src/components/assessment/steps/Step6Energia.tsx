@@ -29,7 +29,7 @@ export function Step6Energia({ a, set, d }: StepProps) {
 
   return (
     <div className="space-y-6">
-      <Panel titulo="Gasto energético" meta="Etapa 5">
+      <Panel titulo="Gasto energético" meta="Etapa 4">
         <Field label="Equação para a TMB">
           <OptionRow
             value={a.metodoTMB}

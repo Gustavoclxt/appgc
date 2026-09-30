@@ -89,16 +89,16 @@ export function createEmptyAssessment(): Assessment {
     aceitaWhey: "",
 
     prefVegetais: [],
-    prefFrutas: "",
+    prefFrutas: [],
     prefLacteos: [],
-    prefCafeCha: "",
+    prefCafeCha: [],
     acucarAdocante: "",
     aceitaCafeComLeite: "",
     prefProteinas: [],
     prefCarboidratos: [],
-    prefCereais: "",
+    prefCereais: [],
     prefGorduras: [],
-    prefDoces: "",
+    prefDoces: [],
     aversoes: "",
 
     diarioAlimentar: refeicoesIniciais,
@@ -108,7 +108,7 @@ export function createEmptyAssessment(): Assessment {
     observacoesEvolucao: "",
 
     altura: "",
-    alturaUnidade: "cm",
+    alturaUnidade: "m",
     peso: "",
     percentualGordura: "",
     metodoGordura: "",
@@ -129,8 +129,7 @@ export function createEmptyAssessment(): Assessment {
 export const ETAPAS = [
   { id: 1, titulo: "Dados", nomeCompleto: "Dados básicos e anamnese" },
   { id: 2, titulo: "Rotina", nomeCompleto: "Rotina, treino e alimentação" },
-  { id: 3, titulo: "Antropometria", nomeCompleto: "Antropometria & resultados calculados" },
-  { id: 4, titulo: "Exames", nomeCompleto: "Exames laboratoriais" },
-  { id: 5, titulo: "Energia", nomeCompleto: "Cálculos energéticos" },
-  { id: 6, titulo: "Relatório", nomeCompleto: "Relatório da avaliação e PDF" },
+  { id: 3, titulo: "Avaliação", nomeCompleto: "Antropometria e exames laboratoriais" },
+  { id: 4, titulo: "Energia", nomeCompleto: "Cálculos energéticos" },
+  { id: 5, titulo: "Relatório", nomeCompleto: "Relatório da avaliação e PDF" },
 ] as const;
