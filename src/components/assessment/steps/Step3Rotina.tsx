@@ -17,6 +17,26 @@ const simNao = [
   { value: "nao", label: "Não" },
 ];
 
+const selecionarPreferencia = (atuais: string[], valor: string, opcoes: string[]) => {
+  if (valor === "Nenhum") return atuais.includes(valor) ? [] : [valor];
+  if (valor === "Todos") return atuais.includes(valor) ? [] : ["Todos"];
+  const semGlobais = atuais.filter((item) => item !== "Nenhum" && item !== "Todos");
+  return semGlobais.includes(valor)
+    ? semGlobais.filter((item) => item !== valor)
+    : [...semGlobais, valor].filter((item) => opcoes.includes(item));
+};
+
+const vegetais = [
+  "Alface", "Rúcula", "Agrião", "Couve", "Espinafre", "Acelga", "Repolho", "Couve-flor",
+  "Brócolis", "Abobrinha", "Berinjela", "Pepino", "Tomate", "Cenoura", "Beterraba", "Chuchu",
+  "Vagem", "Quiabo", "Pimentão", "Rabanete", "Nabo", "Abóbora", "Nenhum", "Todos",
+];
+
+const proteinas = ["Bovina", "Frango", "Peixe", "Suína", "Ovos", "Vísceras", "Nenhuma", "Todas"];
+const carboidratos = ["Arroz", "Macarrão", "Batata", "Batata-doce", "Mandioca", "Pão", "Tapioca", "Cuscuz", "Nenhum", "Todos"];
+const lacteos = ["Leite", "Iogurte", "Queijo", "Requeijão", "Nenhum"];
+const gorduras = ["Margarina", "Manteiga", "Banha", "Oleaginosas", "Nenhum"];
+
 export function Step3Rotina({ a, set, d }: StepProps) {
   return (
     <div className="space-y-6">
@@ -291,16 +311,27 @@ export function Step3Rotina({ a, set, d }: StepProps) {
       <Panel titulo="Preferências e aversões alimentares">
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           <Field label="Vegetais/saladas">
-            <LongText value={a.prefVegetais} onChange={(v) => set("prefVegetais", v)} rows={2} />
+            <MultiOptionRow
+              values={a.prefVegetais}
+              onChange={(v) => {
+                const alterado = v.find((item) => !a.prefVegetais.includes(item)) ?? a.prefVegetais.find((item) => !v.includes(item));
+                set("prefVegetais", alterado ? selecionarPreferencia(a.prefVegetais, alterado, vegetais) : v);
+              }}
+              options={vegetais.map((item) => ({ value: item, label: item }))}
+            />
           </Field>
           <Field label="Frutas">
             <LongText value={a.prefFrutas} onChange={(v) => set("prefFrutas", v)} rows={2} />
           </Field>
           <Field label="Lácteos">
-            <LongText value={a.prefLacteos} onChange={(v) => set("prefLacteos", v)} rows={2} />
+            <MultiOptionRow values={a.prefLacteos} onChange={(v) => set("prefLacteos", v)} options={lacteos.map((item) => ({ value: item, label: item }))} />
           </Field>
           <Field label="Café/chá">
-            <LongText value={a.prefCafeCha} onChange={(v) => set("prefCafeCha", v)} rows={2} />
+            <OptionRow
+              value={a.prefCafeCha}
+              onChange={(v) => set("prefCafeCha", v)}
+              options={["Café", "Chá", "Nenhum"].map((item) => ({ value: item, label: item }))}
+            />
           </Field>
           <Field label="Utiliza açúcar ou adoçante?">
             <OptionRow
@@ -320,20 +351,35 @@ export function Step3Rotina({ a, set, d }: StepProps) {
               options={simNao}
             />
           </Field>
-          <Field label="Proteínas" hint="Carnes, ovos, frios e embutidos.">
-            <LongText value={a.prefProteinas} onChange={(v) => set("prefProteinas", v)} rows={2} />
+          <Field label="Proteínas">
+            <MultiOptionRow
+              values={a.prefProteinas}
+              onChange={(v) => {
+                const alterado = v.find((item) => !a.prefProteinas.includes(item)) ?? a.prefProteinas.find((item) => !v.includes(item));
+                const normalizadas = proteinas.map((item) => item === "Nenhuma" ? "Nenhum" : item === "Todas" ? "Todos" : item);
+                const atuais = a.prefProteinas.map((item) => item === "Nenhuma" ? "Nenhum" : item === "Todas" ? "Todos" : item);
+                const valor = alterado === "Nenhuma" ? "Nenhum" : alterado === "Todas" ? "Todos" : alterado;
+                const selecionadas = valor ? selecionarPreferencia(atuais, valor, normalizadas) : atuais;
+                set("prefProteinas", selecionadas.map((item) => item === "Nenhum" ? "Nenhuma" : item === "Todos" ? "Todas" : item));
+              }}
+              options={proteinas.map((item) => ({ value: item, label: item }))}
+            />
           </Field>
-          <Field
-            label="Carboidratos"
-            hint="Pão, Rap10, tapioca, crepioca, arroz, feijão, batatas."
-          >
-            <LongText value={a.prefCarboidratos} onChange={(v) => set("prefCarboidratos", v)} rows={2} />
+          <Field label="Carboidratos">
+            <MultiOptionRow
+              values={a.prefCarboidratos}
+              onChange={(v) => {
+                const alterado = v.find((item) => !a.prefCarboidratos.includes(item)) ?? a.prefCarboidratos.find((item) => !v.includes(item));
+                set("prefCarboidratos", alterado ? selecionarPreferencia(a.prefCarboidratos, alterado, carboidratos) : v);
+              }}
+              options={carboidratos.map((item) => ({ value: item, label: item }))}
+            />
           </Field>
           <Field label="Cereais e grãos" hint="Aveia, granola, chia, linhaça etc.">
             <LongText value={a.prefCereais} onChange={(v) => set("prefCereais", v)} rows={2} />
           </Field>
-          <Field label="Gorduras" hint="Margarina, manteiga, oleaginosas.">
-            <LongText value={a.prefGorduras} onChange={(v) => set("prefGorduras", v)} rows={2} />
+          <Field label="Gorduras">
+            <MultiOptionRow values={a.prefGorduras} onChange={(v) => set("prefGorduras", v)} options={gorduras.map((item) => ({ value: item, label: item }))} />
           </Field>
           <Field
             label="Doces"

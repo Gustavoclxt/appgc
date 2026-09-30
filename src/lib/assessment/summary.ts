@@ -87,16 +87,16 @@ export function buildResumo(a: Assessment, d: DerivedResults): string {
   t += li("Aceita whey protein", a.aceitaWhey);
 
   t += "\n## Preferências alimentares\n";
-  t += li("Vegetais/saladas", a.prefVegetais);
+  t += li("Vegetais/saladas", a.prefVegetais.join(", "));
   t += li("Frutas", a.prefFrutas);
-  t += li("Lácteos", a.prefLacteos);
+  t += li("Lácteos", a.prefLacteos.join(", "));
   t += li("Café/chá", a.prefCafeCha);
   t += li("Açúcar ou adoçante", a.acucarAdocante);
   t += li("Aceita café com leite", a.aceitaCafeComLeite);
-  t += li("Proteínas", a.prefProteinas);
-  t += li("Carboidratos", a.prefCarboidratos);
+  t += li("Proteínas", a.prefProteinas.join(", "));
+  t += li("Carboidratos", a.prefCarboidratos.join(", "));
   t += li("Cereais e grãos", a.prefCereais);
-  t += li("Gorduras", a.prefGorduras);
+  t += li("Gorduras", a.prefGorduras.join(", "));
   t += li("Doces", a.prefDoces);
   t += li("Aversões", a.aversoes);
 
