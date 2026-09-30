@@ -14,6 +14,9 @@ import { anamneseParaRelatorio } from "@/lib/assessment/report-anamnesis";
 import { examesParaRelatorio } from "@/lib/assessment/report-exams";
 import { diarioParaRelatorio } from "@/lib/assessment/food-diary";
 import { intervencoesParaRelatorio } from "@/lib/assessment/interventions";
+import { composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
+import { fraseAlimentosRetirar } from "@/lib/assessment/food-preferences";
+import { relatorioParaCopia } from "@/lib/assessment/report-text";
 
 import { ExamesTable } from "../ExamesTable";
 import { Panel } from "../fields";
@@ -23,6 +26,7 @@ interface Props extends StepProps {
   analise: AnaliseIA | null;
   analisando: boolean;
   onAnalisar: () => void;
+  composicao: ComposicaoDiario | null;
 }
 
 function Dado({ label, valor }: { label: string; valor: string }) {
@@ -43,14 +47,23 @@ function Bloco({ titulo, children }: { titulo: string; children: React.ReactNode
   );
 }
 
-export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props) {
+export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composicao }: Props) {
   const relatorioRef = useRef<HTMLDivElement>(null);
 
   async function copiarRelatorio() {
-    const texto = relatorioRef.current?.innerText.trim();
-    if (!texto) return;
+    if (!analise) return;
+    const { texto, html } = relatorioParaCopia(a, d, analise, composicao);
     try {
-      await navigator.clipboard.writeText(texto);
+      if (typeof ClipboardItem !== "undefined" && navigator.clipboard.write) {
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            "text/plain": new Blob([texto], { type: "text/plain" }),
+            "text/html": new Blob([html], { type: "text/html" }),
+          }),
+        ]);
+      } else {
+        await navigator.clipboard.writeText(texto);
+      }
       toast.success("Relatório copiado.");
     } catch {
       toast.error("Não foi possível copiar o relatório.");
@@ -80,6 +93,8 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
   const examesDoRelatorio = examesParaRelatorio(a.exames);
   const diarioDoRelatorio = diarioParaRelatorio(a.diarioAlimentar);
   const anamneseDoRelatorio = anamneseParaRelatorio(a, d);
+  const retirar = fraseAlimentosRetirar(a);
+  const comp = composicaoParaRelatorio(composicao);
 
   return (
     <section>
@@ -161,6 +176,12 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
           </Bloco>
         ))}
 
+        {retirar && (
+          <Bloco titulo="Alimentos não consumidos">
+            <p>{retirar}</p>
+          </Bloco>
+        )}
+
         {diarioDoRelatorio.length > 0 && (
           <Bloco titulo="Diário alimentar">
             <div className="divide-y divide-line/70 border-y border-line/70">
@@ -182,6 +203,24 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
                 </div>
               ))}
             </div>
+          </Bloco>
+        )}
+
+        {comp && (
+          <Bloco titulo="Composição estimada do diário alimentar">
+            <div className="grid grid-cols-1 gap-x-10 gap-y-2 sm:grid-cols-2">
+              {comp.totais.map((t) => (
+                <Dado key={t.label} label={t.label} valor={t.valor} />
+              ))}
+            </div>
+            <ul className="mt-3 space-y-1">
+              {comp.itens.map((i, n) => (
+                <li key={n} className="text-[12px]">
+                  {i.texto} <span className="font-mono text-[11px] text-ink-soft">— {i.valores}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-2 text-[11px] text-ink-soft">{comp.nota}</p>
           </Bloco>
         )}
 

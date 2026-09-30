@@ -14,6 +14,8 @@ import { examesParaRelatorio } from "./report-exams";
 import { diarioParaRelatorio } from "./food-diary";
 import { intervencoesParaRelatorio } from "./interventions";
 import { anamneseParaRelatorio } from "./report-anamnesis";
+import { composicaoParaRelatorio, type ComposicaoDiario } from "./diet-composition";
+import { fraseAlimentosRetirar } from "./food-preferences";
 
 const MARGEM = 16;
 const LARGURA = 210;
@@ -27,7 +29,12 @@ const statusLabel: Record<string, string> = {
   indeterminado: "Indeterminado",
 };
 
-export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA | null) {
+export function generatePDF(
+  a: Assessment,
+  d: DerivedResults,
+  analise: AnaliseIA | null,
+  composicao: ComposicaoDiario | null = null,
+) {
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const examesDoRelatorio = examesParaRelatorio(a.exames);
   const diarioDoRelatorio = diarioParaRelatorio(a.diarioAlimentar);
@@ -160,6 +167,12 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
     d.caloriasSugeridas !== null ? `${fmtInt(d.caloriasSugeridas)} kcal/dia` : "—",
   );
 
+  const retirar = fraseAlimentosRetirar(a);
+  if (retirar) {
+    titulo("Alimentos não consumidos");
+    paragrafo(retirar);
+  }
+
   if (diarioDoRelatorio.length) {
     titulo("Diário alimentar");
     for (const refeicao of diarioDoRelatorio) {
@@ -181,6 +194,16 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
       }
       y += 1;
     }
+  }
+
+  const comp = composicaoParaRelatorio(composicao);
+  if (comp) {
+    titulo("Composição estimada do diário alimentar");
+    for (const t of comp.totais) linha(t.label, t.valor);
+    y += 1;
+    for (const i of comp.itens) paragrafo(`• ${i.texto}: ${i.valores.replace(/·/g, "|")}`);
+    doc.setFontSize(8);
+    paragrafo(comp.nota);
   }
 
   if (examesDoRelatorio.length) {

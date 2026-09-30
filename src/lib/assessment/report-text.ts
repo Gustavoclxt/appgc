@@ -136,7 +136,6 @@ export function relatorioParaCopia(a: Assessment, d: DerivedResults, analise: An
       )
       .join("\r\n")
       .trim() + "\r\n";
-  const estilo = 'style="font-family:Calibri,Arial,sans-serif;font-size:11pt;margin:0 0 4pt 0"';
   const html =
     `<div style="font-family:Calibri,Arial,sans-serif;font-size:11pt"><h1 style="font-size:16pt">${cab}</h1>` +
     blocos
@@ -147,7 +146,7 @@ export function relatorioParaCopia(a: Assessment, d: DerivedResults, analise: An
             .map((l) => {
               const conteudo = l.negrito ? `<b>${esc(l.texto)}</b>` : esc(l.texto);
               const margem = (l.nivel ?? 0) * 18;
-              return `<p ${estilo.replace('margin:0', `margin-left:${margem}pt;margin-top:0`)}>${(l.nivel ?? 0) === 1 ? "• " : ""}${conteudo}</p>`;
+              return `<p style="font-family:Calibri,Arial,sans-serif;font-size:11pt;margin:0 0 4pt ${margem}pt">${(l.nivel ?? 0) === 1 ? "• " : ""}${conteudo}</p>`;
             })
             .join(""),
       )
