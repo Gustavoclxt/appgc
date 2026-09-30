@@ -40,6 +40,7 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
   };
 
   const titulo = (texto: string) => {
+    if (y > MARGEM) y += 4;
     quebra(14);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(11);
@@ -95,6 +96,7 @@ export function generatePDF(a: Assessment, d: DerivedResults, analise: AnaliseIA
   linha("Nome", a.nome || "—");
   linha("Idade", d.idade !== null ? `${d.idade} anos` : "—");
   linha("Sexo", a.sexo ? (a.sexo === "masculino" ? "Masculino" : "Feminino") : "—");
+  linha("Profissão", a.profissao || "—");
   linha("Data", fmtData(a.dataAvaliacao));
 
   titulo("Objetivo");

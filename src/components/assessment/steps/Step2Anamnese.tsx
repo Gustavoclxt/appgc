@@ -35,27 +35,41 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             <OptionRow value={a.jaFezDieta} onChange={(v) => set("jaFezDieta", v as typeof a.jaFezDieta)} options={simNao} />
           </Field>
           <Field label="Qual seu objetivo (motivo da consulta)?" className="sm:col-span-2">
-            <MultiOptionRow values={a.objetivos} onChange={(v) => set("objetivos", v)} options={objetivos} />
+            <MultiOptionRow
+              values={a.objetivos}
+              onChange={(v) => {
+                set("objetivos", v);
+                if (!v.includes("Emagrecimento")) set("pesoDesejado", "");
+              }}
+              options={objetivos}
+            />
           </Field>
           <Field label="No seu físico, o que mais lhe incomoda atualmente?">
             <TextInput value={a.incomodoFisico} onChange={(v) => set("incomodoFisico", v)} />
           </Field>
-          <Field label="Peso desejado (Opcional - em caso de emagrecimento)">
-            <UnitInput value={a.pesoDesejado} onChange={(v) => set("pesoDesejado", v)} unidade="kg" />
-          </Field>
+          {a.objetivos.includes("Emagrecimento") && (
+            <Field label="Peso desejado (Opcional - em caso de emagrecimento)">
+              <UnitInput value={a.pesoDesejado} onChange={(v) => set("pesoDesejado", v)} unidade="kg" />
+            </Field>
+          )}
           <Field label="Qual sua maior dificuldade relacionada ao seu objetivo?">
             <TextInput value={a.maiorDificuldade} onChange={(v) => set("maiorDificuldade", v)} />
           </Field>
           <Field label="De 0 a 10, como está sua motivação?">
             <Select
               value={a.motivacao}
-              onChange={(v) => set("motivacao", v)}
+              onChange={(v) => {
+                set("motivacao", v);
+                if (v === "" || v === "10") set("faltaParaDez", "");
+              }}
               options={Array.from({ length: 11 }, (_, i) => ({ value: String(i), label: String(i) }))}
             />
           </Field>
-          <Field label="O que falta para chegar em 10?" className="sm:col-span-2">
-            <TextInput value={a.faltaParaDez} onChange={(v) => set("faltaParaDez", v)} />
-          </Field>
+          {a.motivacao !== "" && Number(a.motivacao) < 10 && (
+            <Field label="O que falta para chegar em 10?" className="sm:col-span-2">
+              <TextInput value={a.faltaParaDez} onChange={(v) => set("faltaParaDez", v)} />
+            </Field>
+          )}
         </div>
       </Panel>
 
@@ -168,7 +182,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               values={a.habitosSociais}
               onChange={(v) => set("habitosSociais", v)}
               options={[
-                { value: "Não", label: "Não" },
+                { value: "Nenhum", label: "Nenhum" },
                 { value: "Etilista", label: "Etilista" },
                 { value: "Tabagista", label: "Tabagista" },
               ]}

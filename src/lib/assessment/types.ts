@@ -133,16 +133,16 @@ export interface Assessment {
   aceitaWhey: "sim" | "nao" | "";
 
   // Preferências e aversões
-  prefVegetais: string;
+  prefVegetais: string[];
   prefFrutas: string;
-  prefLacteos: string;
+  prefLacteos: string[];
   prefCafeCha: string;
   acucarAdocante: string;
   aceitaCafeComLeite: "sim" | "nao" | "";
-  prefProteinas: string;
-  prefCarboidratos: string;
+  prefProteinas: string[];
+  prefCarboidratos: string[];
   prefCereais: string;
-  prefGorduras: string;
+  prefGorduras: string[];
   prefDoces: string;
   aversoes: string;
 

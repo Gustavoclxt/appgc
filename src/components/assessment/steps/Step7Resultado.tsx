@@ -99,6 +99,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar }: Props)
         </div>
 
         <div className="mt-5 grid grid-cols-1 gap-x-10 gap-y-2 sm:grid-cols-2">
+          <Dado label="Profissão" valor={a.profissao || "—"} />
           <Dado label="Objetivos" valor={a.objetivos.join(", ") || "—"} />
           <Dado label="IMC" valor={d.imc !== null ? `${fmt2(d.imc)} — ${d.classificacaoIMC}` : "—"} />
           <Dado
