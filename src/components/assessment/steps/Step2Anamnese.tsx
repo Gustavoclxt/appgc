@@ -21,8 +21,8 @@ const simNao = [
 const objetivos = [
   { value: "Emagrecimento", label: "Emagrecimento" },
   { value: "Recomposição corporal", label: "Recomposição corporal" },
-  { value: "Hipertrofia", label: "Hipertrofia" },
-  { value: "Longevidade", label: "Longevidade" },
+  { value: "Hipertrofia", label: "Hipertrofia", className: "order-3 sm:order-none" },
+  { value: "Longevidade", label: "Longevidade", className: "order-2 sm:order-none", breakAfter: true },
 ];
 
 export function Step2Anamnese({ a, set, d }: StepProps) {
