@@ -63,7 +63,16 @@ export function TextInput({
   mono?: boolean;
 }) {
   return (
+    <input
+      type={type}
+      value={value}
+      placeholder={placeholder}
+      onChange={(e) => onChange(e.target.value)}
+      className={cn(inputBase, mono && "font-mono")}
+    />
+  );
 }
+
 
 export function DoseInput({
   value,
