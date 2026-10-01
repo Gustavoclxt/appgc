@@ -38,7 +38,7 @@ export function Step5Exames({ a, set }: StepProps) {
 
   return (
     <div className="space-y-6">
-      <Panel titulo="Anexar exames laboratoriais">
+      <Panel titulo="Anexar Exames Laboratoriais">
         <div className="rounded-[10px] border border-dashed border-line bg-white/50 px-5 py-8 text-center">
           <p className="text-[13px] text-ink">
             Selecione um exame laboratorial em PDF:
@@ -69,7 +69,7 @@ export function Step5Exames({ a, set }: StepProps) {
         </Panel>
       )}
 
-      <Panel titulo="Observações sobre os exames">
+      <Panel titulo="Observações sobre os Exames Laboratoriais">
         <LongText
           value={a.observacoesExames}
           onChange={(v) => set("observacoesExames", v)}
