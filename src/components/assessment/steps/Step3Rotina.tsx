@@ -599,7 +599,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
           </RowButton>
         </div>
 
-        <div className="mt-6 rounded-[14px] bg-ink p-5 text-white">
+        <div className="mt-6 rounded-[14px] bg-accent p-5 text-white">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/70">
               Composição estimada da dieta
