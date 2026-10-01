@@ -218,7 +218,7 @@ function Index() {
           >
             Voltar
           </button>
-          {etapa < ETAPAS.length ? (
+          {etapa < ETAPAS.length && (
             <button
               type="button"
               onClick={avancar}
@@ -226,8 +226,6 @@ function Index() {
             >
               Avançar
             </button>
-          ) : (
-            <span className="font-mono text-[11px] text-ink-soft">Fim do fluxo</span>
           )}
         </div>
 
