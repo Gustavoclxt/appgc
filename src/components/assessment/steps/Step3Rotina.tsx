@@ -640,6 +640,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                     grupos.push({ nome: i.refeicao || "Refeição", horario: horarios.get(chave) ?? "", itens: [i] });
                   }
                 }
+                const fmt1 = (v: number) => v.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
                 return grupos.map((g, n) => (
                   <div key={n} className="mt-3 first:mt-0">
                     <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/70">
