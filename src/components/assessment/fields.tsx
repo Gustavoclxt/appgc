@@ -187,7 +187,7 @@ export function MultiOptionRow({
 }: {
   values: string[];
   onChange: (v: string[]) => void;
-  options: { value: string; label: string }[];
+  options: { value: string; label: string; className?: string }[];
 }) {
   const toggle = (v: string) =>
     onChange(values.includes(v) ? values.filter((x) => x !== v) : [...values, v]);
@@ -202,6 +202,7 @@ export function MultiOptionRow({
             onClick={() => toggle(o.value)}
             className={cn(
               "rounded-[10px] px-3 py-2 text-[13px] transition-colors",
+              o.className,
               ativo
                 ? "bg-accent text-white ring-1 ring-accent/40"
                 : "bg-white/70 text-ink ring-1 ring-line hover:bg-white",
