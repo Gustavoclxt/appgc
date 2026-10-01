@@ -84,7 +84,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
             Tempo de trabalho: {d.jornada.horas} horas e {d.jornada.restoMinutos} minutos.
           </p>
         )}
-        <SubTitle>Treino e rotina</SubTitle>
+        <h2 className="mb-3 mt-2 font-display text-base font-semibold tracking-tight">Treino e rotina</h2>
         <div className="space-y-4">
           {a.modalidades.map((m, i) => (
             <div key={m.id} className="rounded-[10px] bg-white/70 p-4 ring-1 ring-line">
