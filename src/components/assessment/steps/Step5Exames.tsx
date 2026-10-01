@@ -70,14 +70,12 @@ export function Step5Exames({ a, set }: StepProps) {
       )}
 
       <Panel titulo="Observações sobre os exames">
-        <Field label="\n">
-          <LongText
-            value={a.observacoesExames}
-            onChange={(v) => set("observacoesExames", v)}
-            rows={4}
-            placeholder="Anotações do nutricionista sobre os achados laboratoriais."
-          />
-        </Field>
+        <LongText
+          value={a.observacoesExames}
+          onChange={(v) => set("observacoesExames", v)}
+          rows={4}
+          placeholder="Anotações do nutricionista sobre os achados laboratoriais."
+        />
       </Panel>
     </div>
   );
