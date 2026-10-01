@@ -213,13 +213,6 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
                 <Dado key={t.label} label={t.label} valor={t.valor} />
               ))}
             </div>
-            <ul className="mt-3 space-y-1">
-              {comp.itens.map((i, n) => (
-                <li key={n} className="text-[12px]">
-                  {i.texto} <span className="font-mono text-[11px] text-ink-soft">— {i.valores}</span>
-                </li>
-              ))}
-            </ul>
           </Bloco>
         )}
 

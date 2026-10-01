@@ -180,7 +180,6 @@ function Index() {
               {etapaAtual.nomeCompleto}
             </h1>
           </div>
-          <p className="font-mono text-[11px] text-ink-soft">Valores atualizados em tempo real</p>
         </div>
 
         {etapa === 1 && (

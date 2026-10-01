@@ -626,16 +626,43 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                   </div>
                 ))}
               </div>
-              <ul className="mt-4 space-y-1.5 border-t border-white/15 pt-3">
-                {comp.itens.map((i, n) => (
-                  <li key={n} className="text-[12px] leading-snug">
-                    <span className="text-white">{i.texto}</span>
-                    <span className="block font-mono text-[11px] text-white/60">
-                      {i.valores}{i.fonte ? ` · ${i.fonte}` : ""}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              {(() => {
+                const horarios = new Map(
+                  a.diarioAlimentar.map((r) => [r.refeicao.trim().toLocaleLowerCase("pt-BR") || "refeição", r.horario]),
+                );
+                const grupos: { nome: string; horario: string; itens: NonNullable<typeof composicao>["itens"] }[] = [];
+                for (const i of composicao?.itens ?? []) {
+                  const chave = i.refeicao.trim().toLocaleLowerCase("pt-BR") || "refeição";
+                  const atual = grupos[grupos.length - 1];
+                  if (atual && atual.nome.toLocaleLowerCase("pt-BR") === chave) {
+                    atual.itens.push(i);
+                  } else {
+                    grupos.push({ nome: i.refeicao || "Refeição", horario: horarios.get(chave) ?? "", itens: [i] });
+                  }
+                }
+                const fmt1 = (v: number) => v.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
+                return grupos.map((g, n) => (
+                  <div key={n} className="mt-3 first:mt-0">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/70">
+                      {g.nome}
+                      {g.horario ? ` · ${g.horario}` : ""}
+                    </p>
+                    <ul className="mt-1.5 space-y-1.5">
+                      {g.itens.map((i, m) => (
+                        <li key={m} className="text-[12px] leading-snug">
+                          <span className="text-white">
+                            {[i.alimento, i.quantidade].filter(Boolean).join(" — ")}
+                          </span>
+                          <span className="block font-mono text-[11px] text-white/60">
+                            {`${Math.round(i.kcal)} kcal · CHO ${fmt1(i.carboidratos)} g · PTN ${fmt1(i.proteinas)} g · LIP ${fmt1(i.lipidios)} g`}
+                            {i.fonte ? ` · ${i.fonte}` : ""}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ));
+              })()}
               <p className="mt-3 text-[11px] text-white/50">{comp.nota}</p>
             </>
           ) : null}
