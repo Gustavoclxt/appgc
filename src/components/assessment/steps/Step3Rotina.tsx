@@ -630,8 +630,8 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                 const horarios = new Map(
                   a.diarioAlimentar.map((r) => [r.refeicao.trim().toLocaleLowerCase("pt-BR") || "refeição", r.horario]),
                 );
-                const grupos: { nome: string; horario: string; itens: typeof comp.itens }[] = [];
-                for (const i of comp.itens) {
+                const grupos: { nome: string; horario: string; itens: typeof composicao.itens }[] = [];
+                for (const i of composicao.itens) {
                   const chave = i.refeicao.trim().toLocaleLowerCase("pt-BR") || "refeição";
                   const atual = grupos[grupos.length - 1];
                   if (atual && atual.nome.toLocaleLowerCase("pt-BR") === chave) {
@@ -649,9 +649,11 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                     <ul className="mt-1.5 space-y-1.5">
                       {g.itens.map((i, m) => (
                         <li key={m} className="text-[12px] leading-snug">
-                          <span className="text-white">{i.texto}</span>
+                          <span className="text-white">
+                            {[i.alimento, i.quantidade].filter(Boolean).join(" — ")}
+                          </span>
                           <span className="block font-mono text-[11px] text-white/60">
-                            {i.valores}
+                            {`${Math.round(i.kcal)} kcal · CHO ${fmt1(i.carboidratos)} g · PTN ${fmt1(i.proteinas)} g · LIP ${fmt1(i.lipidios)} g`}
                             {i.fonte ? ` · ${i.fonte}` : ""}
                           </span>
                         </li>
