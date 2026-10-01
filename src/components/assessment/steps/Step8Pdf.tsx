@@ -9,7 +9,7 @@ export function Step8Pdf({
 }) {
   return (
     <Panel titulo="Gerar PDF">
-      <p className="max-w-2xl text-[13px] leading-relaxed text-ink-soft">
+      <p className="text-[13px] leading-relaxed text-ink-soft">
         O PDF reúne os dados do paciente, a antropometria, os cálculos energéticos, a necessidade
         hídrica, a conduta energética, os exames laboratoriais identificados e os textos produzidos na
         análise. Nada além do que foi informado ou calculado é incluído.
