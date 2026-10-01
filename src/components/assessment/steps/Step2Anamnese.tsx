@@ -9,6 +9,7 @@ import {
   RowButton,
   Select,
   TextInput,
+  DoseInput,
   UnitInput,
 } from "../fields";
 import type { StepProps } from "./types";
