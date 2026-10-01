@@ -128,7 +128,7 @@ export function createEmptyAssessment(): Assessment {
 
 export const ETAPAS = [
   { id: 1, titulo: "Dados", nomeCompleto: "Dados básicos e anamnese" },
-  { id: 2, titulo: "Rotina", nomeCompleto: "Rotina, treino e alimentação" },
+  { id: 2, titulo: "Rotina", nomeCompleto: "Rotina, Treino e Alimentação" },
   { id: 3, titulo: "Avaliação", nomeCompleto: "Antropometria e exames laboratoriais" },
   { id: 4, titulo: "Energia", nomeCompleto: "Cálculos energéticos" },
   { id: 5, titulo: "Relatório", nomeCompleto: "Relatório da avaliação e PDF" },
