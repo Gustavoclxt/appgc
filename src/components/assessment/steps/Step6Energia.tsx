@@ -29,7 +29,7 @@ export function Step6Energia({ a, set, d }: StepProps) {
 
   return (
     <div className="space-y-6">
-      <Panel titulo="Gasto energético" meta="Etapa 4">
+      <Panel titulo="Gasto energético">
         <Field label="Equação para a TMB">
           <OptionRow
             value={a.metodoTMB}
@@ -91,7 +91,7 @@ export function Step6Energia({ a, set, d }: StepProps) {
         )}
       </Panel>
 
-      <Panel titulo="Estratégia energética" meta="conduta">
+      <Panel titulo="Estratégia energética">
         <OptionRow
           value={a.estrategia}
           onChange={(v) => v && set("estrategia", v as typeof a.estrategia)}
