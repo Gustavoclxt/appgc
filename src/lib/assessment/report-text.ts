@@ -72,7 +72,6 @@ function montar(a: Assessment, d: DerivedResults, analise: AnaliseIA, composicao
       linhas: [
         ...comp.totais.map((t) => kv(t.label, t.valor)),
         ...comp.itens.map((i) => ({ texto: `${i.texto}: ${i.valores}`, nivel: 1 as const })),
-        { texto: comp.nota },
       ],
     });
   }

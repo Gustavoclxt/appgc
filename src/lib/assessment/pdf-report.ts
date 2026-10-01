@@ -202,8 +202,6 @@ export function generatePDF(
     for (const t of comp.totais) linha(t.label, t.valor);
     y += 1;
     for (const i of comp.itens) paragrafo(`• ${i.texto}: ${i.valores.replace(/·/g, "|")}`);
-    doc.setFontSize(8);
-    paragrafo(comp.nota);
   }
 
   if (examesDoRelatorio.length) {
