@@ -38,10 +38,10 @@ export function Step5Exames({ a, set }: StepProps) {
 
   return (
     <div className="space-y-6">
-      <Panel titulo="Anexar exames laboratoriais" meta="Etapa 3 · PDF">
+      <Panel titulo="Anexar exames laboratoriais" meta="\n">
         <div className="rounded-[10px] border border-dashed border-line bg-white/50 px-5 py-8 text-center">
           <p className="text-[13px] text-ink">
-            Selecione um laudo em PDF.
+            Selecione um exame laboratorial em PDF:
           </p>
           <label className="mt-4 inline-flex cursor-pointer items-center rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90">
             {lendo ? "Lendo exames…" : "Escolher arquivo PDF"}
@@ -70,7 +70,7 @@ export function Step5Exames({ a, set }: StepProps) {
       )}
 
       <Panel titulo="Observações sobre os exames">
-        <Field label="Observações">
+        <Field label="\n">
           <LongText
             value={a.observacoesExames}
             onChange={(v) => set("observacoesExames", v)}
