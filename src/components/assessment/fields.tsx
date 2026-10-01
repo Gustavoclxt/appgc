@@ -229,13 +229,13 @@ export function Readout({
   return (
     <div className="settle">
       <div className="flex items-baseline justify-between gap-3">
-        <span className="text-[13px] text-white/60">{label}</span>
-        <span className="font-mono text-3xl font-medium tracking-tight tabular-nums">{valor}</span>
+        <span className="text-[13px] text-white">{label}</span>
+        <span className="font-mono text-3xl font-medium tracking-tight tabular-nums text-white">{valor}</span>
       </div>
       <div className="mt-1 flex items-center justify-between gap-3">
-        <span className="text-[11px] text-white/45">{sub}</span>
+        <span className="text-[11px] text-white">{sub}</span>
         {destaque && (
-          <span className="rounded-full bg-white/10 px-2 py-0.5 font-mono text-[10px] text-white/80">
+          <span className="rounded-full bg-white/15 px-2 py-0.5 font-mono text-[10px] text-white">
             {destaque}
           </span>
         )}
