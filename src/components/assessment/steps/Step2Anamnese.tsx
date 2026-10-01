@@ -142,7 +142,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
         </div>
       </Panel>
 
-      <Panel titulo="Exames bioquímicos, alergias e hábitos">
+      <Panel titulo="Exames bioquímicos, Alergias e Hábitos">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label="Possui exames bioquímicos recentes?">
             <OptionRow value={a.possuiExames} onChange={(v) => set("possuiExames", v as typeof a.possuiExames)} options={simNao} />
