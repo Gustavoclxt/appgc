@@ -389,7 +389,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               options={carboidratos.map((item) => ({ value: item, label: item }))}
             />
           </Field>
-          <Field label="Cereais e grãos">
+          <Field label="Cereais e Grãos">
             <MultiOptionRow
               values={a.prefCereais}
               onChange={(v) => {
