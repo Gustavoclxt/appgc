@@ -9,6 +9,7 @@ import {
 } from "./calculations";
 import type { Assessment } from "./types";
 import { diarioParaRelatorio } from "./food-diary";
+import { fraseAlimentosRetirar } from "./food-preferences";
 
 const li = (label: string, valor: string | number | null | undefined) =>
   valor === null || valor === undefined || valor === "" ? "" : `${label}: ${valor}\n`;
@@ -45,6 +46,10 @@ export function buildResumo(a: Assessment, d: DerivedResults): string {
   t += li("Restrição alimentar", a.restricaoAlimentar);
   t += li("EAAs", a.eaas === "sim" ? a.eaasDescricao || "sim" : a.eaas);
   t += li("Hábitos sociais", a.habitosSociais.join(", "));
+  t += li("Plano de saúde", a.planoSaude === "sim" ? "sim — considerar solicitação médica" : a.planoSaude);
+
+  const retirar = fraseAlimentosRetirar(a);
+  t += li("Alimentos a retirar por preferências, alergias, aversões e restrições", retirar);
 
   t += "\n## Revisão de sistemas\n";
   t += li("Função estomacal", a.funcaoEstomacal);
@@ -53,7 +58,7 @@ export function buildResumo(a: Assessment, d: DerivedResults): string {
   t += li("Ingestão de líquidos", a.consumoAgua);
   t += li("Escala Armstrong", a.armstrong);
 
-  t += "\n## Sono e rotina\n";
+  t += "\n## Sono e rotina de trabalho/faculdade\n";
   t += li("Dorme às", a.horaDormir);
   t += li("Acorda às", a.horaAcordar);
   t += li(

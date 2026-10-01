@@ -47,7 +47,18 @@ export function alimentosNaoConsumidos(a: Assessment): string[] {
       fora.push((nomeProteina[o] ?? o).toLowerCase());
     }
   }
-  return fora;
+
+  if (a.alergia === "sim" && a.alergiaDescricao.trim()) fora.push(a.alergiaDescricao.trim().toLowerCase());
+  if (a.aversoes.trim()) fora.push(a.aversoes.trim().toLowerCase());
+
+  if (a.restricaoAlimentar === "vegetariano" || a.restricaoAlimentar === "vegano") {
+    fora.push("carne bovina", "frango", "peixe", "carne suína", "vísceras");
+  }
+  if (a.restricaoAlimentar === "vegano") {
+    fora.push("ovos", "leite", "iogurte", "queijo", "requeijão");
+  }
+
+  return [...new Set(fora.map((item) => item.trim()).filter(Boolean))];
 }
 
 export function fraseAlimentosRetirar(a: Assessment): string {

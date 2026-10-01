@@ -102,11 +102,11 @@ export function generatePDF(
   y = 36;
 
   titulo("Dados do paciente");
+  linha("Data", fmtData(a.dataAvaliacao));
   linha("Nome", a.nome || "—");
   linha("Idade", d.idade !== null ? `${d.idade} anos` : "—");
   linha("Sexo", a.sexo ? (a.sexo === "masculino" ? "Masculino" : "Feminino") : "—");
   linha("Profissão", a.profissao || "—");
-  linha("Data", fmtData(a.dataAvaliacao));
 
   for (const section of anamneseDoRelatorio) {
     titulo(section.title);
