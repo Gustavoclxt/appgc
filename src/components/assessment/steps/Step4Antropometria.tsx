@@ -91,7 +91,7 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
         </div>
         {d.percentualGordura === null && (
           <div className="mt-5 rounded-[10px] bg-white/5 p-3">
-            <p className="font-mono text-[10px] leading-relaxed text-white/50">
+            <p className="font-mono text-[10px] leading-relaxed text-white">
               Percentual de gordura não informado.
             </p>
           </div>
