@@ -63,15 +63,36 @@ export function TextInput({
   mono?: boolean;
 }) {
   return (
-    <input
-      type={type}
-      value={value}
-      placeholder={placeholder}
-      onChange={(e) => onChange(e.target.value)}
-      className={cn(inputBase, mono && "font-mono")}
-    />
+}
+
+export function DoseInput({
+  value,
+  onChange,
+  unit = "mg",
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  unit?: string;
+}) {
+  const isNumeric = /^\d+(?:[.,]\d*)?$/.test(value.trim());
+  return (
+    <div className="relative">
+      <input
+        type="text"
+        value={value}
+        placeholder="Dose"
+        onChange={(e) => onChange(e.target.value)}
+        className={cn(inputBase, isNumeric && "pr-12")}
+      />
+      {isNumeric && (
+        <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-ink-soft">
+          {unit}
+        </span>
+      )}
+    </div>
   );
 }
+
 
 export function UnitInput({
   value,
