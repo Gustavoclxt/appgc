@@ -6,7 +6,7 @@ import type { StepProps } from "./types";
 export function Step4Antropometria({ a, set, d }: StepProps) {
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-      <Panel titulo="Antropometria" meta="Etapa 3" className="lg:col-span-7">
+      <Panel titulo="Antropometria" className="lg:col-span-7">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label="Altura">
             <UnitInput
