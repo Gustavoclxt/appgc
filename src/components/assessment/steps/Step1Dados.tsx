@@ -17,7 +17,7 @@ export function Step1Dados({ a, set, d }: StepProps) {
               <div className="min-w-0 flex-1">
                 <TextInput type="date" value={a.dataNascimento} onChange={(v) => set("dataNascimento", v)} />
               </div>
-              <p className="shrink-0 font-mono text-[11px] text-ink-soft">
+              <p className="shrink-0 text-[13px] font-medium text-ink">
                 Idade: <span className="text-ink">{d.idade !== null ? `${d.idade} anos` : "—"}</span>
               </p>
             </div>
