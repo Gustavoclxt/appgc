@@ -93,7 +93,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             </Field>
           </div>
         </div>
-        <SubTitle>Medicamentos</SubTitle>
+        <SubTitle className="mt-7">Medicamentos</SubTitle>
         <div className="space-y-3">
           {a.medicamentos.map((m, i) => (
             <div key={m.id} className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_0.8fr_1fr_auto]">
