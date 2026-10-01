@@ -76,7 +76,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
         <div className="grid grid-cols-1 gap-5">
           <Field
             label="Histórico do peso"
-            hint="Infância, adolescência, vida adulta, gestação (opcional) e principais variações de peso."
+            hint="Infância, Adolescência, Vida adulta, Gestação (opcional) e principais variações de peso."
           >
             <LongText value={a.historicoPeso} onChange={(v) => set("historicoPeso", v)} rows={4} />
           </Field>
