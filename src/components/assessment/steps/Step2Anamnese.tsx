@@ -34,7 +34,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           <Field label="Já fez dieta e/ou consultou nutricionista anteriormente?">
             <OptionRow value={a.jaFezDieta} onChange={(v) => set("jaFezDieta", v as typeof a.jaFezDieta)} options={simNao} />
           </Field>
-          <Field label="Qual seu objetivo (motivo da consulta)?" className="sm:col-span-2">
+          <Field label="Qual seu principal objetivo (motivo da consulta)?" className="sm:col-span-2">
             <MultiOptionRow
               values={a.objetivos}
               onChange={(v) => {
@@ -44,7 +44,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               options={objetivos}
             />
           </Field>
-          <Field label="No seu físico, o que mais lhe incomoda atualmente?">
+          <Field label="Em seu físico, o que mais lhe incomoda atualmente?">
             <TextInput value={a.incomodoFisico} onChange={(v) => set("incomodoFisico", v)} />
           </Field>
           {a.objetivos.includes("Emagrecimento") && (
@@ -77,7 +77,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
         <div className="grid grid-cols-1 gap-5">
           <Field
             label="Histórico do peso"
-            hint="Infância, adolescência, gestação, vida adulta e principais variações de peso."
+            hint="Infância, adolescência, vida adulta, gestação (opcional) e principais variações de peso."
           >
             <LongText value={a.historicoPeso} onChange={(v) => set("historicoPeso", v)} rows={4} />
           </Field>
@@ -147,7 +147,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           <Field label="Possui exames bioquímicos recentes?">
             <OptionRow value={a.possuiExames} onChange={(v) => set("possuiExames", v as typeof a.possuiExames)} options={simNao} />
           </Field>
-          <Field label="Tem plano de saúde?">
+          <Field label="Possui plano de saúde?">
             <OptionRow value={a.planoSaude} onChange={(v) => set("planoSaude", v as typeof a.planoSaude)} options={simNao} />
           </Field>
           <Field label="Alergia e/ou intolerância alimentar?">
@@ -158,7 +158,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               <TextInput value={a.alergiaDescricao} onChange={(v) => set("alergiaDescricao", v)} />
             </Field>
           )}
-          <Field label="Restrição alimentar">
+          <Field label="Possui alguma restrição alimentar?">
             <OptionRow
               value={a.restricaoAlimentar}
               onChange={(v) => set("restricaoAlimentar", v as typeof a.restricaoAlimentar)}
