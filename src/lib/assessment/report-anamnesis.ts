@@ -68,7 +68,7 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
     ]),
     secao("Exames bioquímicos, alergias e hábitos", [
       campo("Possui exames bioquímicos recentes", simNao(a.possuiExames)),
-      campo("Tem plano de saúde", simNao(a.planoSaude)),
+      campo("Tem plano de saúde", a.planoSaude === "sim" ? "Sim · Fazer solicitação médica." : simNao(a.planoSaude)),
       campo("Alergia ou intolerância", a.alergia === "sim" ? `Sim${a.alergiaDescricao ? ` · ${a.alergiaDescricao}` : ""}` : simNao(a.alergia)),
       campo("Restrição alimentar", a.restricaoAlimentar === "nao" ? "Não" : a.restricaoAlimentar),
       campo("Uso de EAAs", a.eaas === "sim" ? `Sim${a.eaasDescricao ? ` · ${a.eaasDescricao}` : ""}` : simNao(a.eaas)),
@@ -88,7 +88,7 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Duração calculada", d.sono ? `${d.sono.horas}h ${d.sono.restoMinutos}min` : ""),
       campo("Qualidade", a.qualidadeSono),
     ]),
-    secao("Rotina de trabalho e treino", [
+    secao("Rotina de trabalho/faculdade e treino", [
       campo("Entrada no trabalho", a.entradaTrabalho),
       campo("Saída do trabalho", a.saidaTrabalho),
       campo("Jornada calculada", d.jornada ? `${d.jornada.horas}h ${d.jornada.restoMinutos}min` : ""),

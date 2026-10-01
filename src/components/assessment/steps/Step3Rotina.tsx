@@ -26,9 +26,14 @@ const simNao = [
 ];
 
 const selecionarPreferencia = (atuais: string[], valor: string, opcoes: string[]) => {
-  if (valor === "Nenhum") return atuais.includes(valor) ? [] : [valor];
-  if (valor === "Todos") return atuais.includes(valor) ? [] : ["Todos"];
-  const semGlobais = atuais.filter((item) => item !== "Nenhum" && item !== "Todos");
+  const nenhum = valor === "Nenhum" || valor === "Nenhuma";
+  const todos = valor === "Todos" || valor === "Todas";
+  if (nenhum) return atuais.includes(valor) ? [] : [valor];
+  if (todos) {
+    const selecionaveis = opcoes.filter((item) => item !== "Nenhum" && item !== "Nenhuma");
+    return atuais.includes(valor) ? [] : selecionaveis;
+  }
+  const semGlobais = atuais.filter((item) => !["Nenhum", "Nenhuma", "Todos", "Todas"].includes(item));
   return semGlobais.includes(valor)
     ? semGlobais.filter((item) => item !== valor)
     : [...semGlobais, valor].filter((item) => opcoes.includes(item));
@@ -39,7 +44,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
   const desatualizada = composicao !== null && composicao.chave !== chaveDiario(a.diarioAlimentar);
   return (
     <div className="space-y-6">
-      <Panel titulo="Rotina de trabalho" meta="Etapa 2">
+      <Panel titulo="Rotina de trabalho/faculdade" meta="Etapa 2">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label="Entrada">
             <TextInput type="time" value={a.entradaTrabalho} onChange={(v) => set("entradaTrabalho", v)} />
@@ -324,11 +329,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               values={a.prefFrutas}
               onChange={(v) => {
                 const alterado = v.find((item) => !a.prefFrutas.includes(item)) ?? a.prefFrutas.find((item) => !v.includes(item));
-                const normalizadas = frutas.map((item) => item === "Nenhuma" ? "Nenhum" : item === "Todas" ? "Todos" : item);
-                const atuais = a.prefFrutas.map((item) => item === "Nenhuma" ? "Nenhum" : item === "Todas" ? "Todos" : item);
-                const valor = alterado === "Nenhuma" ? "Nenhum" : alterado === "Todas" ? "Todos" : alterado;
-                const selecionadas = valor ? selecionarPreferencia(atuais, valor, normalizadas) : atuais;
-                set("prefFrutas", selecionadas.map((item) => item === "Nenhum" ? "Nenhuma" : item === "Todos" ? "Todas" : item));
+                set("prefFrutas", alterado ? selecionarPreferencia(a.prefFrutas, alterado, frutas) : v);
               }}
               options={frutas.map((item) => ({ value: item, label: item }))}
             />
@@ -373,11 +374,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               values={a.prefProteinas}
               onChange={(v) => {
                 const alterado = v.find((item) => !a.prefProteinas.includes(item)) ?? a.prefProteinas.find((item) => !v.includes(item));
-                const normalizadas = proteinas.map((item) => item === "Nenhuma" ? "Nenhum" : item === "Todas" ? "Todos" : item);
-                const atuais = a.prefProteinas.map((item) => item === "Nenhuma" ? "Nenhum" : item === "Todas" ? "Todos" : item);
-                const valor = alterado === "Nenhuma" ? "Nenhum" : alterado === "Todas" ? "Todos" : alterado;
-                const selecionadas = valor ? selecionarPreferencia(atuais, valor, normalizadas) : atuais;
-                set("prefProteinas", selecionadas.map((item) => item === "Nenhum" ? "Nenhuma" : item === "Todos" ? "Todas" : item));
+                set("prefProteinas", alterado ? selecionarPreferencia(a.prefProteinas, alterado, proteinas) : v);
               }}
               options={proteinas.map((item) => ({ value: item, label: item }))}
             />
@@ -615,11 +612,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               </ul>
               <p className="mt-3 text-[11px] text-white/50">{comp.nota}</p>
             </>
-          ) : (
-            <p className="mt-2 text-[12px] text-white/60">
-              Calcula calorias, carboidratos, proteínas e lipídios dos alimentos informados (TACO / Sônia Tucunduva).
-            </p>
-          )}
+          ) : null}
         </div>
       </Panel>
 

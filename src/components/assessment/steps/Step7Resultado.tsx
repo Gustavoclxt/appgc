@@ -116,6 +116,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
             <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-soft">
               Relatório de avaliação nutricional
             </p>
+            <p className="mt-1 font-mono text-[11px] text-ink-soft">{fmtData(a.dataAvaliacao)}</p>
             <p className="mt-1 font-display text-xl font-semibold tracking-tight">{a.nome || "—"}</p>
             <p className="mt-0.5 font-mono text-[11px] text-ink-soft">
               {[
@@ -128,7 +129,6 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
                 .join(" · ")}
             </p>
           </div>
-          <p className="font-mono text-[11px] text-ink-soft">{fmtData(a.dataAvaliacao)}</p>
         </div>
 
         <div className="mt-5 grid grid-cols-1 gap-x-10 gap-y-2 sm:grid-cols-2">

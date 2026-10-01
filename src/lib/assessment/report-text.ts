@@ -25,8 +25,8 @@ function montar(a: Assessment, d: DerivedResults, analise: AnaliseIA, composicao
   blocos.push({
     titulo: "Dados do paciente",
     linhas: [
-      kv("Nome", a.nome),
       kv("Data da avaliação", fmtData(a.dataAvaliacao)),
+      kv("Nome", a.nome),
       kv("Idade", d.idade !== null ? `${d.idade} anos` : ""),
       kv("Sexo", a.sexo ? (a.sexo === "masculino" ? "Masculino" : "Feminino") : ""),
       kv("Altura", d.alturaCm !== null ? `${fmt2(d.alturaCm)} cm` : ""),

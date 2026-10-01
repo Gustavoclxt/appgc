@@ -29,6 +29,7 @@ REGRA PRINCIPAL — CONTEXTO CLÍNICO INTEGRADO:
 - Trate a anamnese como um contexto clínico único e integrado, não como grupos independentes.
 - TODAS as seções devem considerar TODOS os campos preenchidos relevantes: objetivo, motivação, histórico ponderal, HMA, HMP, HMF, medicamentos, exames, composição corporal, rotina profissional, sono, treinamento, função gastrointestinal, hidratação, comportamento alimentar, diário alimentar, horários de fome, preferências, aversões, restrições, suplementação, hábitos sociais e evolução recente do peso.
 - Cruze as informações entre si e considere suas possíveis relações (ex.: sono curto + treino noturno + trabalho até tarde + fome noturna + poucas refeições no trabalho + baixa ingestão hídrica). Não apenas liste cada informação separadamente.
+- Trate a linha "Alimentos a retirar por preferências, alergias, aversões e restrições" como uma restrição obrigatória nas intervenções. Para vegetarianos, não sugira carnes; ovos e lácteos são permitidos. Para veganos, não sugira carnes, ovos nem lácteos.
 
 SEÇÕES:
 - "sintese": visão global da anamnese; não repita campos, identifique o que é clinicamente relevante para a estratégia nutricional e as relações entre os achados.

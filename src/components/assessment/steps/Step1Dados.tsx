@@ -6,6 +6,9 @@ export function Step1Dados({ a, set, d }: StepProps) {
     <div>
       <Panel titulo="Dados básicos" meta="Etapa 1">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <Field label="Data da avaliação" className="sm:col-span-2">
+            <TextInput type="date" value={a.dataAvaliacao} onChange={(v) => set("dataAvaliacao", v)} />
+          </Field>
           <Field label="Nome do paciente" className="sm:col-span-2">
             <TextInput value={a.nome} onChange={(v) => set("nome", v)} placeholder="Nome completo" />
           </Field>
@@ -18,9 +21,6 @@ export function Step1Dados({ a, set, d }: StepProps) {
                 Idade: <span className="text-ink">{d.idade !== null ? `${d.idade} anos` : "—"}</span>
               </p>
             </div>
-          </Field>
-          <Field label="Data da avaliação">
-            <TextInput type="date" value={a.dataAvaliacao} onChange={(v) => set("dataAvaliacao", v)} />
           </Field>
           <Field label="Sexo" className="sm:col-span-2">
             <OptionRow
