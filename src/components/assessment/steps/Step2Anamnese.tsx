@@ -258,7 +258,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           </Field>
         </div>
 
-        <SubTitle>Sono</SubTitle>
+        <SubTitle className="mt-7">Sono</SubTitle>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
           <Field label="Horário que dorme">
             <TextInput type="time" value={a.horaDormir} onChange={(v) => set("horaDormir", v)} />
