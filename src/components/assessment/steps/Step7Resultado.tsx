@@ -263,7 +263,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
         )}
 
         {intervencoesParaRelatorio(analise.intervencoes).length > 0 && (
-          <div className="mt-8 rounded-[14px] bg-ink p-6 text-white">
+          <div className="mt-8 rounded-[14px] bg-accent p-6 text-white">
             <h3 className="font-display text-sm font-semibold uppercase tracking-[0.14em]">
               Mudanças e intervenções sugeridas
             </h3>
