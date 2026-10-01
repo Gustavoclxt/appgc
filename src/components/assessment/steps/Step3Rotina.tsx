@@ -630,8 +630,8 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                 const horarios = new Map(
                   a.diarioAlimentar.map((r) => [r.refeicao.trim().toLocaleLowerCase("pt-BR") || "refeição", r.horario]),
                 );
-                const grupos: { nome: string; horario: string; itens: typeof composicao.itens }[] = [];
-                for (const i of composicao.itens) {
+                const grupos: { nome: string; horario: string; itens: NonNullable<typeof composicao>["itens"] }[] = [];
+                for (const i of composicao?.itens ?? []) {
                   const chave = i.refeicao.trim().toLocaleLowerCase("pt-BR") || "refeição";
                   const atual = grupos[grupos.length - 1];
                   if (atual && atual.nome.toLocaleLowerCase("pt-BR") === chave) {
