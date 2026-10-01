@@ -214,7 +214,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
           )}
         </div>
 
-        <div className="grid grid-cols-1 gap-5">
+        <div className="mt-7 grid grid-cols-1 gap-5">
           <Field label="Em quais horários sente mais fome ou vontade de comer?">
             <MultiOptionRow
               values={a.horariosFome}
