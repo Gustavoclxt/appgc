@@ -275,7 +275,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
                       g.id === "alta"
                         ? "bg-destructive text-white"
                         : g.id === "moderada"
-                          ? "bg-accent/25 text-white"
+                          ? "bg-yellow-400 text-white"
                           : "bg-white/15 text-white"
                     }`}
                   >
