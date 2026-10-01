@@ -610,7 +610,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               type="button"
               onClick={onCalcular}
               disabled={calculando}
-              className="rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90 disabled:opacity-60"
+              className="rounded-[10px] bg-accent px-4 py-2 text-[13px] font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90 disabled:opacity-60"
             >
               {calculando ? "Calculando…" : comp ? "Recalcular" : "Calcular calorias e macronutrientes"}
             </button>
