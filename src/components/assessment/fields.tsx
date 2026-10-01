@@ -187,7 +187,7 @@ export function MultiOptionRow({
 }: {
   values: string[];
   onChange: (v: string[]) => void;
-  options: { value: string; label: string; className?: string }[];
+  options: { value: string; label: string; className?: string; breakAfter?: boolean }[];
 }) {
   const toggle = (v: string) =>
     onChange(values.includes(v) ? values.filter((x) => x !== v) : [...values, v]);
@@ -196,20 +196,22 @@ export function MultiOptionRow({
       {options.map((o) => {
         const ativo = values.includes(o.value);
         return (
-          <button
-            key={o.value}
-            type="button"
-            onClick={() => toggle(o.value)}
-            className={cn(
-              "rounded-[10px] px-3 py-2 text-[13px] transition-colors",
-              o.className,
-              ativo
-                ? "bg-accent text-white ring-1 ring-accent/40"
-                : "bg-white/70 text-ink ring-1 ring-line hover:bg-white",
-            )}
-          >
-            {o.label}
-          </button>
+          <Fragment key={o.value}>
+            <button
+              type="button"
+              onClick={() => toggle(o.value)}
+              className={cn(
+                "rounded-[10px] px-3 py-2 text-[13px] transition-colors",
+                o.className,
+                ativo
+                  ? "bg-accent text-white ring-1 ring-accent/40"
+                  : "bg-white/70 text-ink ring-1 ring-line hover:bg-white",
+              )}
+            >
+              {o.label}
+            </button>
+            {o.breakAfter && <div aria-hidden className="hidden h-0 w-full sm:hidden" />}
+          </Fragment>
         );
       })}
     </div>
