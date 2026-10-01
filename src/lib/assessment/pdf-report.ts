@@ -200,8 +200,6 @@ export function generatePDF(
   if (comp) {
     titulo("Composição estimada do diário alimentar");
     for (const t of comp.totais) linha(t.label, t.valor);
-    y += 1;
-    for (const i of comp.itens) paragrafo(`• ${i.texto}: ${i.valores.replace(/·/g, "|")}`);
   }
 
   if (examesDoRelatorio.length) {
