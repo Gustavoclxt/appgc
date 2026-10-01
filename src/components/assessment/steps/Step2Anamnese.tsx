@@ -8,7 +8,6 @@ import {
   Panel,
   RowButton,
   Select,
-  SubTitle,
   TextInput,
   UnitInput,
 } from "../fields";
@@ -258,7 +257,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           </Field>
         </div>
 
-        <SubTitle className="mt-7">Sono</SubTitle>
+        <h2 className="mb-3 mt-7 font-display text-base font-semibold tracking-tight">Sono</h2>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
           <Field label="Horário que dorme">
             <TextInput type="time" value={a.horaDormir} onChange={(v) => set("horaDormir", v)} />
