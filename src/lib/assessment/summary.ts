@@ -9,7 +9,8 @@ import {
 } from "./calculations";
 import type { Assessment } from "./types";
 import { diarioParaRelatorio } from "./food-diary";
-import { doseComUnidade, fraseAlimentosRetirar } from "./food-preferences";
+import { fraseAlimentosRetirar } from "./food-preferences";
+import { doseComUnidade } from "./report-anamnesis";
 
 const li = (label: string, valor: string | number | null | undefined) =>
   valor === null || valor === undefined || valor === "" ? "" : `${label}: ${valor}\n`;
