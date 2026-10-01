@@ -284,7 +284,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
                   <div className="mt-3 space-y-4">
                     {g.categorias.map((c) => (
                       <div key={c.categoria}>
-                        <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/60">
+                        <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-white">
                           {c.categoria}
                         </p>
                         <ul className="mt-2 space-y-3">
@@ -299,9 +299,9 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
                                 {i.acoes.map((acao, j) => (
                                   <li
                                     key={j}
-                                    className="flex gap-1.5 text-[13px] leading-relaxed text-white/90"
+                                    className="flex gap-1.5 text-[13px] leading-relaxed text-white"
                                   >
-                                    <span aria-hidden className="shrink-0 text-white/45">
+                                    <span aria-hidden className="shrink-0 text-white">
                                       →
                                     </span>
                                     <span>{acao}</span>
