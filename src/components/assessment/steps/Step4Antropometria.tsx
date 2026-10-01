@@ -55,7 +55,6 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
       <section className="panel-ink lg:col-span-5">
         <div className="mb-5 flex items-center justify-between">
           <h2 className="font-display text-base font-semibold tracking-tight">Resultados calculados</h2>
-          <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/40">auto</span>
         </div>
         <div className="space-y-4">
           <Readout
