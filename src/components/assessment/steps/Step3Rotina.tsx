@@ -214,7 +214,6 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
           )}
         </div>
 
-        <SubTitle>Fome e apetite</SubTitle>
         <div className="grid grid-cols-1 gap-5">
           <Field label="Em quais horários sente mais fome ou vontade de comer?">
             <MultiOptionRow
