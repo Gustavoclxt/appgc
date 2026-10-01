@@ -52,7 +52,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
           <Field label="Saída">
             <TextInput type="time" value={a.saidaTrabalho} onChange={(v) => set("saidaTrabalho", v)} />
           </Field>
-          <Field label="Intervalo para refeições">
+          <Field label="Intervalo para refeições?">
             <OptionRow
               value={a.intervaloRefeicoes}
               onChange={(v) => {
@@ -253,7 +253,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               options={simNao}
             />
           </Field>
-          <Field label="Aceita Whey Protein?">
+          <Field label="Aceita utilizar Whey Protein?">
             <OptionRow
               value={a.aceitaWhey}
               onChange={(v) => set("aceitaWhey", v as typeof a.aceitaWhey)}
@@ -314,7 +314,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
 
       <Panel titulo="Preferências e aversões alimentares">
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-          <Field label="Vegetais/saladas">
+          <Field label="Vegetais/Saladas">
             <MultiOptionRow
               values={a.prefVegetais}
               onChange={(v) => {
@@ -344,7 +344,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               options={lacteos.map((item) => ({ value: item, label: item }))}
             />
           </Field>
-          <Field label="Café/chá">
+          <Field label="Café/Chá">
             <MultiOptionRow
               values={a.prefCafeCha}
               onChange={(v) => set("prefCafeCha", v.includes("Nenhum") ? ["Nenhum"] : v)}
