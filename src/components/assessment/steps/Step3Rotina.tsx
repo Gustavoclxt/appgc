@@ -44,7 +44,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
   const desatualizada = composicao !== null && composicao.chave !== chaveDiario(a.diarioAlimentar);
   return (
     <div className="space-y-6">
-      <Panel titulo="Rotina de trabalho/faculdade" meta="Etapa 2">
+      <Panel titulo="Rotina de trabalho/faculdade">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label="Entrada">
             <TextInput type="time" value={a.entradaTrabalho} onChange={(v) => set("entradaTrabalho", v)} />
