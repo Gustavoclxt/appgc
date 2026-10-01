@@ -5,7 +5,7 @@ import { diarioParaRelatorio } from "./food-diary";
 import { examesParaRelatorio } from "./report-exams";
 import { intervencoesParaRelatorio } from "./interventions";
 import { composicaoParaRelatorio, type ComposicaoDiario } from "./diet-composition";
-import { fraseAlimentosRetirar } from "./food-preferences";
+import { linhasAlimentosRetirar } from "./food-preferences";
 
 interface Bloco {
   titulo: string;
@@ -53,8 +53,8 @@ function montar(a: Assessment, d: DerivedResults, analise: AnaliseIA, composicao
   });
   for (const s of anamneseParaRelatorio(a, d))
     blocos.push({ titulo: s.title, linhas: s.fields.map((f) => kv(f.label, f.value)) });
-  const retirar = fraseAlimentosRetirar(a);
-  if (retirar) blocos.push({ titulo: "Alimentos não consumidos", linhas: [{ texto: retirar }] });
+  const retirar = linhasAlimentosRetirar(a);
+  if (retirar.length) blocos.push({ titulo: "Alimentos não consumidos", linhas: retirar.map((texto) => ({ texto })) });
 
   const diario = diarioParaRelatorio(a.diarioAlimentar);
   if (diario.length) {
