@@ -73,7 +73,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
   if (!analise) {
     return (
       <Panel titulo="Resultado da avaliação" meta="Etapa 5">
-        <p className="max-w-2xl text-[13px] leading-relaxed text-ink-soft">
+        <p className="text-[13px] leading-relaxed text-ink-soft">
           Ao analisar a avaliação, os dados preenchidos e os cálculos realizados são reunidos em um
           relatório técnico objetivo.
         </p>
