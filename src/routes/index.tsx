@@ -149,7 +149,7 @@ function Index() {
             </div>
             <div className="max-w-[230px] leading-tight sm:max-w-none">
               <p className="font-display text-sm font-semibold tracking-tight">
-                Aplicativo para Avaliação Clínica Nutricional
+                Avaliação Clínica Nutricional
               </p>
               <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-soft">
                 GC - Excelência em Nutrição
