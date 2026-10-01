@@ -475,6 +475,32 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                 </div>
               )}
 
+              {r.refeicao.trim().toLocaleLowerCase("pt-BR") === "lanche da tarde" && (
+                <div className="mt-3">
+                  <RowButton
+                    onClick={() => {
+                      const desjejum = a.diarioAlimentar.find(
+                        (refeicao) => refeicao.refeicao.trim().toLocaleLowerCase("pt-BR") === "desjejum",
+                      );
+                      if (!desjejum) return;
+                      set(
+                        "diarioAlimentar",
+                        a.diarioAlimentar.map((refeicao, refeicaoIndex) =>
+                          refeicaoIndex === i
+                            ? {
+                                ...refeicao,
+                                alimentos: desjejum.alimentos.map((item) => ({ ...item, id: novoId() })),
+                              }
+                            : refeicao,
+                        ),
+                      );
+                    }}
+                  >
+                    Copiar Desjejum
+                  </RowButton>
+                </div>
+              )}
+
               <div className="mt-4 space-y-2 border-t border-line/70 pt-4">
                 {r.alimentos.map((item, itemIndex) => (
                   <div key={item.id} className="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_1fr_auto]">
