@@ -15,7 +15,7 @@ import { diarioParaRelatorio } from "./food-diary";
 import { intervencoesParaRelatorio } from "./interventions";
 import { anamneseParaRelatorio } from "./report-anamnesis";
 import { composicaoParaRelatorio, type ComposicaoDiario } from "./diet-composition";
-import { fraseAlimentosRetirar } from "./food-preferences";
+import { linhasAlimentosRetirar } from "./food-preferences";
 
 const MARGEM = 16;
 const LARGURA = 210;
@@ -167,10 +167,10 @@ export function generatePDF(
     d.caloriasSugeridas !== null ? `${fmtInt(d.caloriasSugeridas)} kcal/dia` : "—",
   );
 
-  const retirar = fraseAlimentosRetirar(a);
-  if (retirar) {
+  const retirar = linhasAlimentosRetirar(a);
+  if (retirar.length) {
     titulo("Alimentos não consumidos");
-    paragrafo(retirar);
+    for (const linha of retirar) paragrafo(linha);
   }
 
   if (diarioDoRelatorio.length) {

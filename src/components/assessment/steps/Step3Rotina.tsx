@@ -399,7 +399,13 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
             />
           </Field>
           <Field label="Gorduras">
-            <MultiOptionRow values={a.prefGorduras} onChange={(v) => set("prefGorduras", v)} options={gorduras.map((item) => ({ value: item, label: item }))} />
+            <MultiOptionRow
+              values={a.prefGorduras}
+              onChange={(v) => {
+                const alterado = v.find((item) => !a.prefGorduras.includes(item)) ?? a.prefGorduras.find((item) => !v.includes(item));
+                set("prefGorduras", alterado ? selecionarPreferencia(a.prefGorduras, alterado, gorduras) : v);
+              }}
+              options={gorduras.map((item) => ({ value: item, label: item }))} />
           </Field>
           <Field label="Doces">
             <MultiOptionRow

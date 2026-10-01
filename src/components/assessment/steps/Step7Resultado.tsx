@@ -15,7 +15,7 @@ import { examesParaRelatorio } from "@/lib/assessment/report-exams";
 import { diarioParaRelatorio } from "@/lib/assessment/food-diary";
 import { intervencoesParaRelatorio } from "@/lib/assessment/interventions";
 import { composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
-import { fraseAlimentosRetirar } from "@/lib/assessment/food-preferences";
+import { alimentosRetirarPorGrupo } from "@/lib/assessment/food-preferences";
 import { relatorioParaCopia } from "@/lib/assessment/report-text";
 
 import { ExamesTable } from "../ExamesTable";
@@ -92,7 +92,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
   const examesDoRelatorio = examesParaRelatorio(a.exames);
   const diarioDoRelatorio = diarioParaRelatorio(a.diarioAlimentar);
   const anamneseDoRelatorio = anamneseParaRelatorio(a, d);
-  const retirar = fraseAlimentosRetirar(a);
+  const retirar = alimentosRetirarPorGrupo(a);
   const comp = composicaoParaRelatorio(composicao);
 
   return (
@@ -175,9 +175,11 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
           </Bloco>
         ))}
 
-        {retirar && (
+        {retirar.length > 0 && (
           <Bloco titulo="Alimentos não consumidos">
-            <p>{retirar}</p>
+            {retirar.map((g) => (
+              <p key={g.grupo}><span className="font-semibold">{g.grupo}:</span> {g.itens.join(", ")}</p>
+            ))}
           </Bloco>
         )}
 
