@@ -38,10 +38,15 @@ const armstrong: Record<string, string> = {
   A8: "A8 - Desidratação severa",
 };
 
+export function doseComUnidade(dose: string): string {
+  const v = dose.trim();
+  return /^\d+(?:[.,]\d*)?$/.test(v) ? `${v} mg` : v;
+}
+
 export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportSection[] {
   const medicamentos = a.medicamentos
     .filter((item) => item.nome.trim() || item.dose.trim() || item.acao.trim())
-    .map((item) => [item.nome, item.dose && `Dose: ${item.dose}`, item.acao && `Ação: ${item.acao}`].filter(Boolean).join(" · "));
+    .map((item) => [item.nome, item.dose && `Dose: ${doseComUnidade(item.dose)}`, item.acao && `Ação: ${item.acao}`].filter(Boolean).join(" · "));
   const modalidades = a.modalidades
     .filter((item) => item.modalidade.trim() || item.tempoPratica.trim() || item.horario.trim() || item.duracao.trim() || item.frequenciaSemanal.trim() || item.diasSemana.trim() || item.diasDescanso.trim())
     .map((item) => [item.modalidade, item.tempoPratica, item.horario, item.duracao, item.frequenciaSemanal, item.diasSemana, item.diasDescanso && `Descanso: ${item.diasDescanso}`].filter(Boolean).join(" · "));

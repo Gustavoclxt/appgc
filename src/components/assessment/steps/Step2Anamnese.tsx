@@ -9,6 +9,7 @@ import {
   RowButton,
   Select,
   TextInput,
+  DoseInput,
   UnitInput,
 } from "../fields";
 import type { StepProps } from "./types";
@@ -106,9 +107,8 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
                   )
                 }
               />
-              <TextInput
+              <DoseInput
                 value={m.dose}
-                placeholder="Dose"
                 onChange={(v) =>
                   set(
                     "medicamentos",

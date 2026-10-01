@@ -10,6 +10,7 @@ import {
 import type { Assessment } from "./types";
 import { diarioParaRelatorio } from "./food-diary";
 import { fraseAlimentosRetirar } from "./food-preferences";
+import { doseComUnidade } from "./report-anamnesis";
 
 const li = (label: string, valor: string | number | null | undefined) =>
   valor === null || valor === undefined || valor === "" ? "" : `${label}: ${valor}\n`;
@@ -39,7 +40,7 @@ export function buildResumo(a: Assessment, d: DerivedResults): string {
   t += li("HMP", a.hmp);
   t += li("HMF", a.hmf);
   if (a.medicamentos.length)
-    t += `Medicamentos: ${a.medicamentos.map((m) => `${m.nome} | dose: ${m.dose || "não informada"} | ação: ${m.acao || "não informada"}`).join("; ")}\n`;
+    t += `Medicamentos: ${a.medicamentos.map((m) => `${m.nome} | dose: ${m.dose ? doseComUnidade(m.dose) : "não informada"} | ação: ${m.acao || "não informada"}`).join("; ")}\n`;
 
   t += "\n## Hábitos e restrições\n";
   t += li("Alergia/intolerância", a.alergia === "sim" ? a.alergiaDescricao || "sim" : a.alergia);
