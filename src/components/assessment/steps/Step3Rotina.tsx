@@ -417,7 +417,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
         </div>
       </Panel>
 
-      <Panel titulo="Diário alimentar">
+      <Panel titulo="Recordatório 24 horas">
         <div className="space-y-4">
           {a.diarioAlimentar.map((r, i) => (
             <div key={r.id} className="rounded-[10px] bg-white/50 p-4 ring-1 ring-line">
