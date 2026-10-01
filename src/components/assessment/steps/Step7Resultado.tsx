@@ -220,7 +220,6 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
                 </li>
               ))}
             </ul>
-            <p className="mt-2 text-[11px] text-ink-soft">{comp.nota}</p>
           </Bloco>
         )}
 
