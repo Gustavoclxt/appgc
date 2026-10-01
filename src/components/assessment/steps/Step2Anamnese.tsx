@@ -192,7 +192,6 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
       </Panel>
 
       <Panel titulo="Revisão de sistemas">
-        <SubTitle>Função estomacal e intestinal</SubTitle>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label="Função estomacal" className="sm:col-span-2">
             <OptionRow
