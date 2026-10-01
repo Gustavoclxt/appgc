@@ -4,7 +4,7 @@ import type { StepProps } from "./types";
 export function Step1Dados({ a, set, d }: StepProps) {
   return (
     <div>
-      <Panel titulo="Dados básicos" meta="Etapa 1">
+      <Panel titulo="Dados básicos">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label="Data da avaliação" className="sm:col-span-2">
             <TextInput type="date" value={a.dataAvaliacao} onChange={(v) => set("dataAvaliacao", v)} />
