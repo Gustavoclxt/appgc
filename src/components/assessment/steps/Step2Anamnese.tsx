@@ -107,9 +107,8 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
                   )
                 }
               />
-              <TextInput
+              <DoseInput
                 value={m.dose}
-                placeholder="Dose"
                 onChange={(v) =>
                   set(
                     "medicamentos",
