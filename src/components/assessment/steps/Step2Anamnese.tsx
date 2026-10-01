@@ -29,7 +29,7 @@ const objetivos = [
 export function Step2Anamnese({ a, set, d }: StepProps) {
   return (
     <div className="space-y-6">
-      <Panel titulo="Informações gerais" meta="Anamnese de 1ª consulta">
+      <Panel titulo="Informações gerais">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label="Já fez dieta e/ou consultou nutricionista anteriormente?">
             <OptionRow value={a.jaFezDieta} onChange={(v) => set("jaFezDieta", v as typeof a.jaFezDieta)} options={simNao} />
