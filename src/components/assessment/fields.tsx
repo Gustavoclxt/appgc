@@ -272,9 +272,15 @@ export function RowButton({
   );
 }
 
-export function SubTitle({ children }: { children: ReactNode }) {
+export function SubTitle({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return (
-    <h3 className="mb-3 mt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-accent">
+    <h3 className={cn("mb-3 mt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-accent", className)}>
       {children}
     </h3>
   );
