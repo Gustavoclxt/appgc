@@ -21,7 +21,7 @@ const simNao = [
 const objetivos = [
   { value: "Emagrecimento", label: "Emagrecimento" },
   { value: "Recomposição corporal", label: "Recomposição corporal" },
-  { value: "Longevidade", label: "Longevidade", className: "order-2 sm:order-none" },
+  { value: "Longevidade", label: "Longevidade", className: "order-2 sm:order-none", breakAfter: true },
   { value: "Hipertrofia", label: "Hipertrofia", className: "order-3 sm:order-none" },
 ];
 
