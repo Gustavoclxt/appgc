@@ -210,7 +210,7 @@ export function MultiOptionRow({
             >
               {o.label}
             </button>
-            {o.breakAfter && <div aria-hidden className="hidden h-0 w-full sm:hidden" />}
+            {o.breakAfter && <div aria-hidden className="h-0 w-full sm:hidden" />}
           </Fragment>
         );
       })}
