@@ -41,7 +41,7 @@ export function Step6Energia({ a, set, d }: StepProps) {
           />
         </Field>
 
-        <h2 className="mb-3 mt-7 text-[13px] font-medium text-ink">Nível de atividade física diária</h2>
+        <h2 className="mb-3 mt-7 font-sans text-[13px] font-medium text-ink">Nível de atividade física diária</h2>
         <OptionRow
           value={fatorPersonalizado ? "" : a.fatorAtividade}
           onChange={(v) => set("fatorAtividade", v)}
