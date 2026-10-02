@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 import { novoId } from "@/lib/assessment/initial-state";
 
@@ -45,14 +45,25 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
   const comp = composicaoParaRelatorio(composicao);
   const desatualizada = composicao !== null && composicao.chave !== chaveDiario(a.diarioAlimentar);
   const [focoId, setFocoId] = useState<string | null>(null);
-  useEffect(() => {
+  const alimentoRefs = useRef(new Map<string, HTMLInputElement>());
+  useLayoutEffect(() => {
     if (!focoId) return;
-    const el = document.querySelector<HTMLInputElement>(`[data-alimento-id="${focoId}"]`);
+    const el = alimentoRefs.current.get(focoId);
     if (el) {
       el.focus();
       setFocoId(null);
     }
   }, [focoId, a.diarioAlimentar]);
+  const adicionarAlimento = (refeicaoIdx: number) => {
+    const novo = { id: novoId(), alimento: "", quantidade: "" };
+    set(
+      "diarioAlimentar",
+      a.diarioAlimentar.map((refeicao, refeicaoIndex) =>
+        refeicaoIndex === refeicaoIdx ? { ...refeicao, alimentos: [...refeicao.alimentos, novo] } : refeicao,
+      ),
+    );
+    return novo.id;
+  };
   return (
     <div className="space-y-6">
       <Panel titulo="Rotina de trabalho/faculdade">
@@ -524,6 +535,10 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                       value={item.alimento}
                       placeholder="Alimento"
                       dataAlimentoId={item.id}
+                      inputRef={(el) => {
+                        if (el) alimentoRefs.current.set(item.id, el);
+                        else alimentoRefs.current.delete(item.id);
+                      }}
                       onChange={(v) =>
                         set(
                           "diarioAlimentar",
@@ -544,23 +559,9 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                       value={item.quantidade}
                       placeholder="Quantidade"
                       onKeyDown={(e) => {
-                        if (
-                          e.key === "Tab" &&
-                          !e.shiftKey &&
-                          item.quantidade.trim() !== "" &&
-                          itemIndex === r.alimentos.length - 1
-                        ) {
+                        if (e.key === "Tab" && !e.shiftKey && itemIndex === r.alimentos.length - 1) {
                           e.preventDefault();
-                          const novo = { id: novoId(), alimento: "", quantidade: "" };
-                          set(
-                            "diarioAlimentar",
-                            a.diarioAlimentar.map((refeicao, refeicaoIndex) =>
-                              refeicaoIndex === i
-                                ? { ...refeicao, alimentos: [...refeicao.alimentos, novo] }
-                                : refeicao,
-                            ),
-                          );
-                          setFocoId(novo.id);
+                          setFocoId(adicionarAlimento(i));
                         }
                       }}
                       onChange={(v) =>
@@ -595,24 +596,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                     </RowButton>
                   </div>
                 ))}
-                <RowButton
-                  onClick={() =>
-                    set(
-                      "diarioAlimentar",
-                      a.diarioAlimentar.map((refeicao, refeicaoIndex) =>
-                        refeicaoIndex === i
-                          ? {
-                              ...refeicao,
-                              alimentos: [
-                                ...refeicao.alimentos,
-                                { id: novoId(), alimento: "", quantidade: "" },
-                              ],
-                            }
-                          : refeicao,
-                      ),
-                    )
-                  }
-                >
+                <RowButton onClick={() => adicionarAlimento(i)}>
                   + Adicionar alimento
                 </RowButton>
               </div>
