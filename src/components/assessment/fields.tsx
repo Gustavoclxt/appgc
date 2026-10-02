@@ -1,4 +1,4 @@
-import { Fragment, type ReactNode } from "react";
+import { Fragment, type KeyboardEvent, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -55,19 +55,25 @@ export function TextInput({
   type = "text",
   placeholder,
   mono,
+  onKeyDown,
+  dataAlimentoId,
 }: {
   value: string;
   onChange: (v: string) => void;
   type?: string;
   placeholder?: string;
   mono?: boolean;
+  onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
+  dataAlimentoId?: string;
 }) {
   return (
     <input
       type={type}
       value={value}
       placeholder={placeholder}
+      data-alimento-id={dataAlimentoId}
       onChange={(e) => onChange(e.target.value)}
+      onKeyDown={onKeyDown}
       className={cn(inputBase, mono && "font-mono")}
     />
   );
