@@ -44,6 +44,15 @@ const selecionarPreferencia = (atuais: string[], valor: string, opcoes: string[]
 export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: Props) {
   const comp = composicaoParaRelatorio(composicao);
   const desatualizada = composicao !== null && composicao.chave !== chaveDiario(a.diarioAlimentar);
+  const [focoId, setFocoId] = useState<string | null>(null);
+  useEffect(() => {
+    if (!focoId) return;
+    const el = document.querySelector<HTMLInputElement>(`[data-alimento-id="${focoId}"]`);
+    if (el) {
+      el.focus();
+      setFocoId(null);
+    }
+  }, [focoId, a.diarioAlimentar]);
   return (
     <div className="space-y-6">
       <Panel titulo="Rotina de trabalho/faculdade">
