@@ -68,7 +68,7 @@ function montar(a: Assessment, d: DerivedResults, analise: AnaliseIA, composicao
   const comp = composicaoParaRelatorio(composicao);
   if (comp) {
     blocos.push({
-      titulo: "Composição estimada do diário alimentar",
+      titulo: "Composição estimada do Recordatório 24h",
       linhas: comp.totais.map((t) => kv(t.label, t.valor)),
     });
   }

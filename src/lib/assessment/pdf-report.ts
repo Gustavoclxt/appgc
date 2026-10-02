@@ -174,7 +174,7 @@ export function generatePDF(
   }
 
   if (diarioDoRelatorio.length) {
-    titulo("Diário alimentar");
+    titulo("Recordatório 24h");
     for (const refeicao of diarioDoRelatorio) {
       quebra(7);
       doc.setFont("helvetica", "bold");
@@ -198,7 +198,7 @@ export function generatePDF(
 
   const comp = composicaoParaRelatorio(composicao);
   if (comp) {
-    titulo("Composição estimada do diário alimentar");
+    titulo("Composição estimada do Recordatório 24h");
     for (const t of comp.totais) linha(t.label, t.valor);
   }
 
