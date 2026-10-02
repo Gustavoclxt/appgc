@@ -10,6 +10,17 @@ import {
 import type { Assessment } from "./types";
 import { diarioParaRelatorio } from "./food-diary";
 import { fraseAlimentosRetirar } from "./food-preferences";
+import {
+  carboidratos,
+  cereais,
+  doces,
+  formatarPreferencia,
+  frutas,
+  gorduras,
+  lacteos,
+  proteinas,
+  vegetais,
+} from "./food-preferences";
 import { doseComUnidade } from "./report-anamnesis";
 
 const li = (label: string, valor: string | number | null | undefined) =>
@@ -93,17 +104,17 @@ export function buildResumo(a: Assessment, d: DerivedResults): string {
   t += li("Aceita whey protein", a.aceitaWhey);
 
   t += "\n## Preferências alimentares\n";
-  t += li("Vegetais/saladas", a.prefVegetais.join(", "));
-  t += li("Frutas", a.prefFrutas.join(", "));
-  t += li("Lácteos", a.prefLacteos.join(", "));
+  t += li("Vegetais/saladas", formatarPreferencia(a.prefVegetais, vegetais, "Todos"));
+  t += li("Frutas", formatarPreferencia(a.prefFrutas, frutas, "Todas"));
+  t += li("Lácteos", formatarPreferencia(a.prefLacteos, lacteos, "Todos"));
   t += li("Café/chá", a.prefCafeCha.join(", "));
   t += li("Açúcar ou adoçante", a.acucarAdocante);
   t += li("Aceita café com leite", a.aceitaCafeComLeite);
-  t += li("Proteínas", a.prefProteinas.join(", "));
-  t += li("Carboidratos", a.prefCarboidratos.join(", "));
-  t += li("Cereais e grãos", a.prefCereais.join(", "));
-  t += li("Gorduras", a.prefGorduras.join(", "));
-  t += li("Doces", a.prefDoces.join(", "));
+  t += li("Proteínas", formatarPreferencia(a.prefProteinas, proteinas, "Todas"));
+  t += li("Carboidratos", formatarPreferencia(a.prefCarboidratos, carboidratos, "Todos"));
+  t += li("Cereais e grãos", formatarPreferencia(a.prefCereais, cereais, "Todos"));
+  t += li("Gorduras", formatarPreferencia(a.prefGorduras, gorduras, "Todas"));
+  t += li("Doces", formatarPreferencia(a.prefDoces, doces, "Todos"));
   t += li("Aversões", a.aversoes);
 
   const diario = diarioParaRelatorio(a.diarioAlimentar);

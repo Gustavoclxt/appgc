@@ -1,5 +1,16 @@
 import type { DerivedResults } from "./calculations";
 import type { Assessment } from "./types";
+import {
+  carboidratos,
+  cereais,
+  doces,
+  formatarPreferencia,
+  frutas,
+  gorduras,
+  lacteos,
+  proteinas,
+  vegetais,
+} from "./food-preferences";
 
 export interface ReportField {
   label: string;
@@ -12,10 +23,7 @@ export interface ReportSection {
 }
 
 const simNao = (value: string) => value === "sim" ? "Sim" : value === "nao" ? "Não" : value;
-const lista = (value: string[], global?: "Todos" | "Todas") => {
-  if (global && value.includes(global)) return global;
-  return value.join(", ");
-};
+const lista = (value: string[]) => value.join(", ");
 const campo = (label: string, value: string | undefined): ReportField | null => {
   const normalized = value?.trim();
   return normalized ? { label, value: normalized } : null;
@@ -114,17 +122,17 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Aceita Whey Protein", simNao(a.aceitaWhey)),
     ]),
     secao("Preferências e aversões alimentares", [
-      campo("Vegetais/saladas", lista(a.prefVegetais, "Todos")),
-      campo("Frutas", lista(a.prefFrutas, "Todas")),
-      campo("Lácteos", lista(a.prefLacteos, "Todos")),
+      campo("Vegetais/saladas", formatarPreferencia(a.prefVegetais, vegetais, "Todos")),
+      campo("Frutas", formatarPreferencia(a.prefFrutas, frutas, "Todas")),
+      campo("Lácteos", formatarPreferencia(a.prefLacteos, lacteos, "Todos")),
       campo("Café/chá", lista(a.prefCafeCha)),
       campo("Açúcar ou adoçante", a.acucarAdocante),
       campo("Aceita café com leite", simNao(a.aceitaCafeComLeite)),
-      campo("Proteínas", lista(a.prefProteinas, "Todas")),
-      campo("Carboidratos", lista(a.prefCarboidratos, "Todos")),
-      campo("Cereais e grãos", lista(a.prefCereais, "Todos")),
-      campo("Gorduras", lista(a.prefGorduras, "Todas")),
-      campo("Doces", lista(a.prefDoces, "Todos")),
+      campo("Proteínas", formatarPreferencia(a.prefProteinas, proteinas, "Todas")),
+      campo("Carboidratos", formatarPreferencia(a.prefCarboidratos, carboidratos, "Todos")),
+      campo("Cereais e grãos", formatarPreferencia(a.prefCereais, cereais, "Todos")),
+      campo("Gorduras", formatarPreferencia(a.prefGorduras, gorduras, "Todas")),
+      campo("Doces", formatarPreferencia(a.prefDoces, doces, "Todos")),
       campo("Aversões alimentares", a.aversoes),
     ]),
     secao("Evolução do peso", [
