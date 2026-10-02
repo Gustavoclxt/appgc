@@ -195,7 +195,7 @@ function Index() {
             <Step5Exames {...props} />
           </div>
         )}
-        {etapa === 4 && <Step6Energia {...props} />}
+        {etapa === 4 && <Step6Energia {...props} composicao={composicao} />}
         {etapa === 5 && (
           <div className="space-y-6">
             <Step7Resultado

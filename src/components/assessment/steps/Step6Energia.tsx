@@ -1,4 +1,5 @@
-import { fmt2, fmtInt, fmtLitros, labelMetodo } from "@/lib/assessment/calculations";
+import { fmt2, fmtInt, labelMetodo } from "@/lib/assessment/calculations";
+import type { ComposicaoDiario } from "@/lib/assessment/diet-composition";
 
 import { Field, MetricCard, OptionRow, Panel, TextInput, UnitInput } from "../fields";
 import type { StepProps } from "./types";
@@ -21,7 +22,12 @@ const kcalPresets = ["250", "500", "750", "1000"].map((k) => ({
   label: `${k} kcal`,
 }));
 
-export function Step6Energia({ a, set, d }: StepProps) {
+export function Step6Energia({
+  a,
+  set,
+  d,
+  composicao,
+}: StepProps & { composicao: ComposicaoDiario | null }) {
   const fatorPersonalizado =
     a.fatorAtividade !== "" && !fatores.some((f) => f.value === a.fatorAtividade);
   const kcalPersonalizado =
@@ -73,15 +79,9 @@ export function Step6Energia({ a, set, d }: StepProps) {
             sub={`kcal/dia · FA ${d.fatorAtividade !== null ? fmt2(d.fatorAtividade) : "—"}`}
           />
           <MetricCard
-            label="Água"
-            valor={
-              d.aguaMin !== null ? `${fmtLitros(d.aguaMin)}–${fmtLitros(d.aguaMax)}` : "—"
-            }
-            sub={
-              d.aguaMin !== null
-                ? `L/dia · ${fmtInt(d.aguaMin)}–${fmtInt(d.aguaMax)} mL/dia`
-                : "30–35 mL/kg"
-            }
+            label="Consumindo"
+            valor={composicao ? fmtInt(composicao.totais.kcal) : "—"}
+            sub={composicao ? "kcal · Recordatório 24 horas" : "Calcule o Recordatório 24 horas"}
           />
         </div>
         {d.tmb === null && (
