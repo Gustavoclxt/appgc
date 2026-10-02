@@ -620,8 +620,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
           </RowButton>
         </div>
 
-        <div className="mt-6 rounded-[14px] bg-accent p-5 text-white">
-          <div className="flex justify-center">
+        <div className="mt-6 flex justify-center">
             <button
               type="button"
               onClick={onCalcular}
