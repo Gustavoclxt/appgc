@@ -9,12 +9,12 @@ import {
 } from "./calculations";
 import type { Assessment } from "./types";
 import { diarioParaRelatorio } from "./food-diary";
-import { fraseAlimentosRetirar } from "./food-preferences";
 import {
   carboidratos,
   cereais,
   doces,
   formatarPreferencia,
+  fraseAlimentosRetirar,
   frutas,
   gorduras,
   lacteos,
