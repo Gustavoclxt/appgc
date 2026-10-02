@@ -13,7 +13,7 @@ export interface ReportSection {
 
 const simNao = (value: string) => value === "sim" ? "Sim" : value === "nao" ? "Não" : value;
 const lista = (value: string[], global?: "Todos" | "Todas") => {
-  if (global && value.length > 1) return global;
+  if (global && value.includes(global)) return global;
   return value.join(", ");
 };
 const campo = (label: string, value: string | undefined): ReportField | null => {
