@@ -1,6 +1,6 @@
 import { fmt2, fmtInt, fmtLitros, labelMetodo } from "@/lib/assessment/calculations";
 
-import { Field, MetricCard, OptionRow, Panel, SubTitle, TextInput, UnitInput } from "../fields";
+import { Field, MetricCard, OptionRow, Panel, TextInput, UnitInput } from "../fields";
 import type { StepProps } from "./types";
 
 const fatores = [
