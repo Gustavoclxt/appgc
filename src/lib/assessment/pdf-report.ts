@@ -74,6 +74,19 @@ export function generatePDF(
     y += 5.5;
   };
 
+  const linhaPaciente = (label: string, valor: string) => {
+    quebra(6);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9.5);
+    doc.setTextColor(91, 102, 114);
+    const pergunta = `${label}:`;
+    doc.text(pergunta, MARGEM, y);
+    doc.setTextColor(22, 32, 43);
+    doc.setFont("helvetica", "bold");
+    doc.text(valor, MARGEM + doc.getTextWidth(pergunta) + 2.5, y);
+    y += 5.5;
+  };
+
   const paragrafo = (texto: string) => {
     if (!texto) return;
     doc.setFont("helvetica", "normal");
