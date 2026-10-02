@@ -28,6 +28,8 @@ const simNao = [
   { value: "nao", label: "Não" },
 ];
 
+const DIAS_SEMANA = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"];
+
 const selecionarPreferencia = (atuais: string[], valor: string, opcoes: string[]) => {
   const nenhum = valor === "Nenhum" || valor === "Nenhuma";
   const todos = valor === "Todos" || valor === "Todas";
