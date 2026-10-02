@@ -162,20 +162,65 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                   />
                 </Field>
                 <Field label="Dias da semana">
-                  <TextInput
-                    value={m.diasSemana}
-                    placeholder="segunda a sexta"
-                    onChange={(v) =>
-                      set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, diasSemana: v } : x)))
+                  <MultiOptionRow
+                    values={
+                      m.diasSemana === "Todos"
+                        ? ["Todos"]
+                        : DIAS_SEMANA.filter((d) => m.diasSemana.split(", ").includes(d))
                     }
+                    onChange={(vals) => {
+                      if (m.diasSemana === "Todos") {
+                        if (!vals.includes("Todos")) {
+                          set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, diasSemana: "" } : x)));
+                        }
+                        return;
+                      }
+                      if (vals.includes("Todos")) {
+                        set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, diasSemana: "Todos" } : x)));
+                        return;
+                      }
+                      set(
+                        "modalidades",
+                        a.modalidades.map((x, j) =>
+                          j === i ? { ...x, diasSemana: DIAS_SEMANA.filter((d) => vals.includes(d)).join(", ") } : x,
+                        ),
+                      );
+                    }}
+                    options={[
+                      ...DIAS_SEMANA.map((d) => ({ value: d, label: d })),
+                      { value: "Todos", label: "Todos" },
+                    ]}
                   />
                 </Field>
                 <Field label="Dias de descanso">
-                  <TextInput
-                    value={m.diasDescanso}
-                    onChange={(v) =>
-                      set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, diasDescanso: v } : x)))
+                  <MultiOptionRow
+                    values={
+                      m.diasDescanso === "Nenhum"
+                        ? ["Nenhum"]
+                        : DIAS_SEMANA.filter((d) => m.diasDescanso.split(", ").includes(d))
                     }
+                    onChange={(vals) => {
+                      if (m.diasDescanso === "Nenhum") {
+                        if (!vals.includes("Nenhum")) {
+                          set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, diasDescanso: "" } : x)));
+                        }
+                        return;
+                      }
+                      if (vals.includes("Nenhum")) {
+                        set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, diasDescanso: "Nenhum" } : x)));
+                        return;
+                      }
+                      set(
+                        "modalidades",
+                        a.modalidades.map((x, j) =>
+                          j === i ? { ...x, diasDescanso: DIAS_SEMANA.filter((d) => vals.includes(d)).join(", ") } : x,
+                        ),
+                      );
+                    }}
+                    options={[
+                      ...DIAS_SEMANA.map((d) => ({ value: d, label: d })),
+                      { value: "Nenhum", label: "Nenhum" },
+                    ]}
                   />
                 </Field>
               </div>
