@@ -88,6 +88,35 @@ export function generatePDF(
     y += 2;
   };
 
+  const campoAnamnese = (label: string, valor: string) => {
+    const pergunta = /[:?]$/.test(label.trim()) ? label.trim() : `${label.trim()}:`;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(9);
+    const larguraPergunta = doc.getTextWidth(pergunta);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(9.5);
+    const larguraResposta = doc.getTextWidth(valor);
+    const respostaCurta = !valor.includes("\n") && larguraPergunta + 2.5 + larguraResposta <= CONTEUDO;
+
+    quebra(respostaCurta ? 6 : 10);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(9);
+    doc.setTextColor(91, 102, 114);
+    doc.text(pergunta, MARGEM, y);
+
+    if (respostaCurta) {
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9.5);
+      doc.setTextColor(40, 50, 60);
+      doc.text(valor, MARGEM + larguraPergunta + 2.5, y);
+      y += 5.5;
+      return;
+    }
+
+    y += 4.2;
+    paragrafo(valor);
+  };
+
   // Cabeçalho
   doc.setFillColor(22, 32, 43);
   doc.rect(0, 0, LARGURA, 26, "F");
@@ -111,13 +140,7 @@ export function generatePDF(
   for (const section of anamneseDoRelatorio) {
     titulo(section.title);
     for (const field of section.fields) {
-      quebra(6);
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(9);
-      doc.setTextColor(91, 102, 114);
-      doc.text(`${field.label}:`, MARGEM, y);
-      y += 4.2;
-      paragrafo(field.value);
+      campoAnamnese(field.label, field.value);
     }
   }
 
