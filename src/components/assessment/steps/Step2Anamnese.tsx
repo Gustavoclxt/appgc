@@ -73,7 +73,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
         </div>
       </Panel>
 
-      <Panel titulo="Histórico clínico">
+      <Panel titulo="História clínica">
         <div className="grid grid-cols-1 gap-5">
           <Field
             label="Histórico do peso"
