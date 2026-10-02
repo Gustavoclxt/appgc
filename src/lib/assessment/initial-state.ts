@@ -2,14 +2,14 @@ import type { Assessment, Refeicao } from "./types";
 
 const uid = () => Math.random().toString(36).slice(2, 10);
 
-const refeicoesIniciais: Refeicao[] = [
+const refeicoesIniciais: Refeicao[] = ([
   ["Desjejum", "07:00"],
   ["Lanche da manhã", "10:00"],
   ["Almoço", "12:00"],
   ["Lanche da tarde", "15:00"],
   ["Jantar", "20:00"],
   ["Ceia", "22:00"],
-].map(([refeicao, horario]) => ({
+] as const).map(([refeicao, horario]) => ({
   id: uid(),
   refeicao,
   horario,
@@ -56,7 +56,7 @@ export function createEmptyAssessment(): Assessment {
 
     habitosSociais: [],
 
-    funcaoEstomacal: "",
+    funcaoEstomacal: [],
     frequenciaEvacuacao: "",
     bristol: "",
     consumoAgua: "",
