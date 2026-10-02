@@ -63,7 +63,7 @@ export function TextInput({
   type?: string;
   placeholder?: string;
   mono?: boolean;
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
   dataAlimentoId?: string;
 }) {
   return (
