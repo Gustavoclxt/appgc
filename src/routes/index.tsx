@@ -83,7 +83,7 @@ function Index() {
   const onCalcularDiario = useCallback(async () => {
     const itens = alimentosDoDiario(dados.diarioAlimentar);
     if (!itens.length) {
-      toast.error("Adicione alimentos ao diário alimentar.");
+      toast.error("Adicione alimentos ao Recordatório 24h.");
       return;
     }
     if (calculoEmCursoRef.current) return;

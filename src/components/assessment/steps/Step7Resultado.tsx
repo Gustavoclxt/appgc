@@ -184,7 +184,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
         )}
 
         {diarioDoRelatorio.length > 0 && (
-          <Bloco titulo="Diário alimentar">
+          <Bloco titulo="Recordatório 24h">
             <div className="divide-y divide-line/70 border-y border-line/70">
               {diarioDoRelatorio.map((refeicao) => (
                 <div key={refeicao.id} className="grid gap-1 py-3 sm:grid-cols-[150px_1fr] sm:gap-5">

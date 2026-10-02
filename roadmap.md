@@ -17,3 +17,7 @@
 - [x] Fazer “Todos/Todas” selecionar todas as preferências do grupo.
 - [x] Integrar plano de saúde, alergias, aversões e restrições às condutas.
 - [x] Renomear a rotina de trabalho/faculdade e simplificar o painel de composição.
+- [x] Ajustar seleções exclusivas de hábitos sociais e função estomacal.
+- [x] Adicionar horários padrão ao Recordatório 24h e frequência semanal em menu.
+- [x] Permitir inclusão manual padronizada de exames após a identificação.
+- [x] Resumir seleções completas de preferências e padronizar “Recordatório 24h” no relatório.

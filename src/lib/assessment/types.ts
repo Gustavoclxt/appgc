@@ -95,7 +95,7 @@ export interface Assessment {
   habitosSociais: string[];
 
   // Revisão de sistemas
-  funcaoEstomacal: string;
+  funcaoEstomacal: string[];
   frequenciaEvacuacao: string;
   bristol: string;
   consumoAgua: string;

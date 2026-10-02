@@ -12,7 +12,10 @@ export interface ReportSection {
 }
 
 const simNao = (value: string) => value === "sim" ? "Sim" : value === "nao" ? "Não" : value;
-const lista = (value: string[]) => value.join(", ");
+const lista = (value: string[], global?: "Todos" | "Todas") => {
+  if (global && value.length > 1) return global;
+  return value.join(", ");
+};
 const campo = (label: string, value: string | undefined): ReportField | null => {
   const normalized = value?.trim();
   return normalized ? { label, value: normalized } : null;
@@ -81,7 +84,7 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Observações sobre os exames", a.observacoesExames),
     ]),
     secao("Revisão de sistemas", [
-      campo("Função estomacal", a.funcaoEstomacal),
+      campo("Função estomacal", lista(a.funcaoEstomacal)),
       campo("Frequência de evacuação", a.frequenciaEvacuacao),
       campo("Escala de Bristol", bristol[a.bristol] ?? a.bristol),
       campo("Consumo de água / líquidos", a.consumoAgua),
@@ -111,17 +114,17 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Aceita Whey Protein", simNao(a.aceitaWhey)),
     ]),
     secao("Preferências e aversões alimentares", [
-      campo("Vegetais/saladas", lista(a.prefVegetais)),
-      campo("Frutas", lista(a.prefFrutas)),
-      campo("Lácteos", lista(a.prefLacteos)),
+      campo("Vegetais/saladas", lista(a.prefVegetais, "Todos")),
+      campo("Frutas", lista(a.prefFrutas, "Todas")),
+      campo("Lácteos", lista(a.prefLacteos, "Todos")),
       campo("Café/chá", lista(a.prefCafeCha)),
       campo("Açúcar ou adoçante", a.acucarAdocante),
       campo("Aceita café com leite", simNao(a.aceitaCafeComLeite)),
-      campo("Proteínas", lista(a.prefProteinas)),
-      campo("Carboidratos", lista(a.prefCarboidratos)),
-      campo("Cereais e grãos", lista(a.prefCereais)),
-      campo("Gorduras", lista(a.prefGorduras)),
-      campo("Doces", lista(a.prefDoces)),
+      campo("Proteínas", lista(a.prefProteinas, "Todas")),
+      campo("Carboidratos", lista(a.prefCarboidratos, "Todos")),
+      campo("Cereais e grãos", lista(a.prefCereais, "Todos")),
+      campo("Gorduras", lista(a.prefGorduras, "Todas")),
+      campo("Doces", lista(a.prefDoces, "Todos")),
       campo("Aversões alimentares", a.aversoes),
     ]),
     secao("Evolução do peso", [

@@ -53,7 +53,7 @@ export function buildResumo(a: Assessment, d: DerivedResults): string {
   t += li("Alimentos a retirar por preferências, alergias, aversões e restrições", retirar);
 
   t += "\n## Revisão de sistemas\n";
-  t += li("Função estomacal", a.funcaoEstomacal);
+  t += li("Função estomacal", a.funcaoEstomacal.join(", "));
   t += li("Frequência de evacuação", a.frequenciaEvacuacao);
   t += li("Escala de Bristol", a.bristol);
   t += li("Ingestão de líquidos", a.consumoAgua);
@@ -108,7 +108,7 @@ export function buildResumo(a: Assessment, d: DerivedResults): string {
 
   const diario = diarioParaRelatorio(a.diarioAlimentar);
   if (diario.length) {
-    t += "\n## Diário alimentar\n";
+    t += "\n## Recordatório 24h\n";
     for (const r of diario) {
       t += `- ${r.refeicao} | ${r.horario} | ${r.local} | ${r.alimentos.join("; ")}\n`;
     }

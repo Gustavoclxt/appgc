@@ -3,16 +3,16 @@ import type { Assessment, Refeicao } from "./types";
 const uid = () => Math.random().toString(36).slice(2, 10);
 
 const refeicoesIniciais: Refeicao[] = [
-  "Desjejum",
-  "Lanche da manhã",
-  "Almoço",
-  "Lanche da tarde",
-  "Jantar",
-  "Ceia",
-].map((refeicao) => ({
+  ["Desjejum", "07:00"],
+  ["Lanche da manhã", "10:00"],
+  ["Almoço", "12:00"],
+  ["Lanche da tarde", "15:00"],
+  ["Jantar", "20:00"],
+  ["Ceia", "22:00"],
+].map(([refeicao, horario]) => ({
   id: uid(),
   refeicao,
-  horario: "",
+  horario,
   local: "",
   alimentos: [{ id: uid(), alimento: "", quantidade: "" }],
 }));
