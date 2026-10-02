@@ -683,8 +683,8 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               })()}
               <p className="mt-3 text-[11px] text-white/50">{comp.nota}</p>
             </>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
       </Panel>
 
       <Panel titulo="Evolução do peso">
