@@ -57,6 +57,7 @@ export function TextInput({
   mono,
   onKeyDown,
   dataAlimentoId,
+  inputRef,
 }: {
   value: string;
   onChange: (v: string) => void;
@@ -65,9 +66,11 @@ export function TextInput({
   mono?: boolean;
   onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
   dataAlimentoId?: string;
+  inputRef?: (el: HTMLInputElement | null) => void;
 }) {
   return (
     <input
+      ref={inputRef}
       type={type}
       value={value}
       placeholder={placeholder}
