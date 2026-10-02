@@ -39,6 +39,15 @@ export function generatePDF(
   const examesDoRelatorio = examesParaRelatorio(a.exames);
   const diarioDoRelatorio = diarioParaRelatorio(a.diarioAlimentar);
   const anamneseDoRelatorio = anamneseParaRelatorio(a, d);
+  const indiceEvolucaoPeso = anamneseDoRelatorio.findIndex(
+    (section) => section.title === "Evolução do peso",
+  );
+  const anamneseAntesEvolucao =
+    indiceEvolucaoPeso >= 0
+      ? anamneseDoRelatorio.slice(0, indiceEvolucaoPeso)
+      : anamneseDoRelatorio;
+  const anamneseAPartirDaEvolucao =
+    indiceEvolucaoPeso >= 0 ? anamneseDoRelatorio.slice(indiceEvolucaoPeso) : [];
   let y = MARGEM;
 
   const quebra = (altura: number) => {
@@ -150,7 +159,37 @@ export function generatePDF(
   linhaPaciente("Sexo", a.sexo ? (a.sexo === "masculino" ? "Masculino" : "Feminino") : "—");
   linhaPaciente("Profissão", a.profissao || "—");
 
-  for (const section of anamneseDoRelatorio) {
+  for (const section of anamneseAntesEvolucao) {
+    titulo(section.title);
+    for (const field of section.fields) {
+      campoAnamnese(field.label, field.value);
+    }
+  }
+
+  if (diarioDoRelatorio.length) {
+    titulo("Recordatório 24h");
+    for (const refeicao of diarioDoRelatorio) {
+      quebra(7);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(9.5);
+      doc.setTextColor(22, 32, 43);
+      doc.text(refeicao.refeicao, MARGEM, y);
+      const detalhes = [refeicao.horario, refeicao.local].filter(Boolean).join(" · ");
+      if (detalhes) {
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8.5);
+        doc.setTextColor(91, 102, 114);
+        doc.text(detalhes, MARGEM + 58, y);
+      }
+      y += 4.8;
+      for (const alimento of refeicao.alimentos) {
+        paragrafo(`• ${alimento}`);
+      }
+      y += 1;
+    }
+  }
+
+  for (const section of anamneseAPartirDaEvolucao) {
     titulo(section.title);
     for (const field of section.fields) {
       campoAnamnese(field.label, field.value);
@@ -207,29 +246,6 @@ export function generatePDF(
   if (retirar.length) {
     titulo("Alimentos não consumidos");
     for (const linha of retirar) paragrafo(linha);
-  }
-
-  if (diarioDoRelatorio.length) {
-    titulo("Recordatório 24h");
-    for (const refeicao of diarioDoRelatorio) {
-      quebra(7);
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(9.5);
-      doc.setTextColor(22, 32, 43);
-      doc.text(refeicao.refeicao, MARGEM, y);
-      const detalhes = [refeicao.horario, refeicao.local].filter(Boolean).join(" · ");
-      if (detalhes) {
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(8.5);
-        doc.setTextColor(91, 102, 114);
-        doc.text(detalhes, MARGEM + 58, y);
-      }
-      y += 4.8;
-      for (const alimento of refeicao.alimentos) {
-        paragrafo(`• ${alimento}`);
-      }
-      y += 1;
-    }
   }
 
   const comp = composicaoParaRelatorio(composicao);

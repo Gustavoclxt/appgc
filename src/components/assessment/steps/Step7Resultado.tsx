@@ -92,6 +92,15 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
   const examesDoRelatorio = examesParaRelatorio(a.exames);
   const diarioDoRelatorio = diarioParaRelatorio(a.diarioAlimentar);
   const anamneseDoRelatorio = anamneseParaRelatorio(a, d);
+  const indiceEvolucaoPeso = anamneseDoRelatorio.findIndex(
+    (section) => section.title === "Evolução do peso",
+  );
+  const anamneseAntesEvolucao =
+    indiceEvolucaoPeso >= 0
+      ? anamneseDoRelatorio.slice(0, indiceEvolucaoPeso)
+      : anamneseDoRelatorio;
+  const anamneseAPartirDaEvolucao =
+    indiceEvolucaoPeso >= 0 ? anamneseDoRelatorio.slice(indiceEvolucaoPeso) : [];
   const retirar = alimentosRetirarPorGrupo(a);
   const comp = composicaoParaRelatorio(composicao);
 
@@ -165,7 +174,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
           />
         </div>
 
-        {anamneseDoRelatorio.map((section) => (
+        {anamneseAntesEvolucao.map((section) => (
           <Bloco key={section.title} titulo={section.title}>
             <div className="grid grid-cols-1 gap-x-10 gap-y-2 sm:grid-cols-2">
               {section.fields.map((field) => (
@@ -174,14 +183,6 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
             </div>
           </Bloco>
         ))}
-
-        {retirar.length > 0 && (
-          <Bloco titulo="Alimentos não consumidos">
-            {retirar.map((g) => (
-              <p key={g.grupo}><span className="font-semibold">{g.grupo}:</span> {g.itens.join(", ")}</p>
-            ))}
-          </Bloco>
-        )}
 
         {diarioDoRelatorio.length > 0 && (
           <Bloco titulo="Recordatório 24h">
@@ -204,6 +205,24 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
                 </div>
               ))}
             </div>
+          </Bloco>
+        )}
+
+        {anamneseAPartirDaEvolucao.map((section) => (
+          <Bloco key={section.title} titulo={section.title}>
+            <div className="grid grid-cols-1 gap-x-10 gap-y-2 sm:grid-cols-2">
+              {section.fields.map((field) => (
+                <Dado key={`${section.title}-${field.label}`} label={field.label} valor={field.value} />
+              ))}
+            </div>
+          </Bloco>
+        ))}
+
+        {retirar.length > 0 && (
+          <Bloco titulo="Alimentos não consumidos">
+            {retirar.map((g) => (
+              <p key={g.grupo}><span className="font-semibold">{g.grupo}:</span> {g.itens.join(", ")}</p>
+            ))}
           </Bloco>
         )}
 
