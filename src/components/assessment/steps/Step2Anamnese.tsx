@@ -179,7 +179,10 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           <Field label="Hábitos sociais" className="sm:col-span-2">
             <MultiOptionRow
               values={a.habitosSociais}
-              onChange={(v) => set("habitosSociais", v)}
+              onChange={(v) => {
+                const adicionouNenhum = v.includes("Nenhum") && !a.habitosSociais.includes("Nenhum");
+                set("habitosSociais", adicionouNenhum ? ["Nenhum"] : v.filter((item) => item !== "Nenhum"));
+              }}
               options={[
                 { value: "Nenhum", label: "Nenhum" },
                 { value: "Etilista", label: "Etilista" },
@@ -193,9 +196,12 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
       <Panel titulo="Revisão de Sistemas">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label="Função estomacal" className="sm:col-span-2">
-            <OptionRow
-              value={a.funcaoEstomacal}
-              onChange={(v) => set("funcaoEstomacal", v)}
+            <MultiOptionRow
+              values={a.funcaoEstomacal}
+              onChange={(v) => {
+                const adicionouNormal = v.includes("Normal") && !a.funcaoEstomacal.includes("Normal");
+                set("funcaoEstomacal", adicionouNormal ? ["Normal"] : v.filter((item) => item !== "Normal"));
+              }}
               options={[
                 { value: "Normal", label: "Normal" },
                 { value: "Azia", label: "Azia" },

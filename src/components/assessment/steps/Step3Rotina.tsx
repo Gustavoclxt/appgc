@@ -9,6 +9,7 @@ import {
   OptionRow,
   Panel,
   RowButton,
+  Select,
   SubTitle,
   TextInput,
 } from "../fields";
@@ -146,15 +147,18 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                   />
                 </Field>
                 <Field label="Frequência semanal">
-                  <TextInput
+                  <Select
                     value={m.frequenciaSemanal}
-                    placeholder="5x/semana"
                     onChange={(v) =>
                       set(
                         "modalidades",
                         a.modalidades.map((x, j) => (j === i ? { ...x, frequenciaSemanal: v } : x)),
                       )
                     }
+                    options={Array.from({ length: 7 }, (_, index) => ({
+                      value: `${index + 1} ${index === 0 ? "vez" : "vezes"}`,
+                      label: `${index + 1} ${index === 0 ? "vez" : "vezes"}`,
+                    }))}
                   />
                 </Field>
                 <Field label="Dias da semana">

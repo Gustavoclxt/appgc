@@ -26,6 +26,18 @@ const nomeProteina: Record<string, string> = {
   Peixe: "peixe",
 };
 
+/** Resume uma seleção completa como “Todos” ou “Todas” nos relatórios. */
+export function formatarPreferencia(
+  selecionados: string[],
+  opcoes: string[],
+  global: "Todos" | "Todas",
+) {
+  const itens = opcoes.filter((item) => !GLOBAIS.includes(item));
+  return itens.length > 0 && itens.every((item) => selecionados.includes(item))
+    ? global
+    : selecionados.join(", ");
+}
+
 /** Alimentos das listas de preferência que o paciente não marcou. Grupos sem resposta são ignorados. */
 export function alimentosNaoConsumidos(a: Assessment): string[] {
   const grupos: [string[], string[]][] = [

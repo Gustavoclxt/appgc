@@ -27,7 +27,7 @@ Produza uma análise técnica objetiva, organizada e profissional, em português
 REGRA PRINCIPAL — CONTEXTO CLÍNICO INTEGRADO:
 - Antes de escrever QUALQUER seção, analise o objeto completo da anamnese preenchida.
 - Trate a anamnese como um contexto clínico único e integrado, não como grupos independentes.
-- TODAS as seções devem considerar TODOS os campos preenchidos relevantes: objetivo, motivação, histórico ponderal, HMA, HMP, HMF, medicamentos, exames, composição corporal, rotina profissional, sono, treinamento, função gastrointestinal, hidratação, comportamento alimentar, diário alimentar, horários de fome, preferências, aversões, restrições, suplementação, hábitos sociais e evolução recente do peso.
+- TODAS as seções devem considerar TODOS os campos preenchidos relevantes: objetivo, motivação, histórico ponderal, HMA, HMP, HMF, medicamentos, exames, composição corporal, rotina profissional, sono, treinamento, função gastrointestinal, hidratação, comportamento alimentar, Recordatório 24h, horários de fome, preferências, aversões, restrições, suplementação, hábitos sociais e evolução recente do peso.
 - Cruze as informações entre si e considere suas possíveis relações (ex.: sono curto + treino noturno + trabalho até tarde + fome noturna + poucas refeições no trabalho + baixa ingestão hídrica). Não apenas liste cada informação separadamente.
 - Trate a linha "Alimentos a retirar por preferências, alergias, aversões e restrições" como uma restrição obrigatória nas intervenções. Para vegetarianos, não sugira carnes; ovos e lácteos são permitidos. Para veganos, não sugira carnes, ovos nem lácteos.
 
@@ -35,7 +35,7 @@ SEÇÕES:
 - "sintese": visão global da anamnese; não repita campos, identifique o que é clinicamente relevante para a estratégia nutricional e as relações entre os achados.
 - "pontosAtencao": derivados de toda a anamnese, não de um subconjunto predefinido.
 - "intervencoes": MUDANÇAS E INTERVENÇÕES SUGERIDAS — um checklist de condutas, curto e escaneável, para o nutricionista considerar. Cada item: categoria (uma de: ${CATEGORIAS.join("; ")}), prioridade ("alta" = maior impacto sobre o objetivo; "moderada" = ajuste relevante; "baixa" = otimização/adesão/praticidade), "problema" (o que observar: constatação curta e objetiva, máx. 8 palavras, citando o dado relevante quando útil — ex.: "Superávit atual: 500 kcal"), "acoes" (2 a 4 ações curtas e diretas, cada uma com no máximo ~10 palavras, iniciadas por verbo no infinitivo, cada uma em um item separado do array; sem justificar dentro da ação) e "justificativa" (opcional, uma frase muito curta citando o dado do paciente que sustenta a conduta; omitir quando o problema já for autoexplicativo). Use apenas categorias justificadas pelos dados; não preencha todas obrigatoriamente. Evite sugestões genéricas como "comer melhor", "beber mais água", "dormir melhor". Frases longas e parágrafos corridos são proibidos neste bloco.
-- "sugestaoTecnica": coerência entre objetivo, composição corporal, gasto energético, histórico ponderal, rotina, treino, sono, comportamento alimentar, preferências/aversões, sintomas gastrointestinais, hidratação, medicamentos, suplementos, exames e diário alimentar.
+- "sugestaoTecnica": coerência entre objetivo, composição corporal, gasto energético, histórico ponderal, rotina, treino, sono, comportamento alimentar, preferências/aversões, sintomas gastrointestinais, hidratação, medicamentos, suplementos, exames e Recordatório 24h.
 
 REGRAS OBRIGATÓRIAS:
 - Nunca apresente diagnóstico médico nem prescrição. Use linguagem como "Considerar...", "Uma estratégia inicial possível é...", "Os dados sugerem...", "A decisão final deve considerar...".
@@ -154,7 +154,7 @@ const composicaoInput = z.object({
 });
 
 const SISTEMA_COMPOSICAO = `Você é assistente técnico de nutricionistas no Brasil.
-Para cada alimento de um diário alimentar, estime calorias (kcal), carboidratos (g), proteínas (g) e lipídios (g) da quantidade informada.
+Para cada alimento de um Recordatório 24h, estime calorias (kcal), carboidratos (g), proteínas (g) e lipídios (g) da quantidade informada.
 Use prioritariamente a Tabela Brasileira de Composição de Alimentos (TACO/NEPA-UNICAMP) e a Tabela de Composição Química dos Alimentos de Sônia Tucunduva Philippi, bem como as medidas caseiras usuais dessas referências.
 Se o alimento não existir nessas tabelas, use outra fonte confiável (ex.: IBGE POF, USDA, rótulo típico) e indique-a em "fonte".
 Se a quantidade não for informada, considere uma porção usual e informe isso na fonte (ex.: "TACO — porção usual").

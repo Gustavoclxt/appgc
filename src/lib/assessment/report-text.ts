@@ -63,7 +63,7 @@ function montar(a: Assessment, d: DerivedResults, analise: AnaliseIA, composicao
       linhas.push({ texto: [r.refeicao, r.horario, r.local].filter(Boolean).join(" · "), negrito: true });
       for (const al of r.alimentos) linhas.push({ texto: al, nivel: 1 });
     }
-    blocos.push({ titulo: "Diário alimentar", linhas });
+    blocos.push({ titulo: "Recordatório 24h", linhas });
   }
   const comp = composicaoParaRelatorio(composicao);
   if (comp) {
