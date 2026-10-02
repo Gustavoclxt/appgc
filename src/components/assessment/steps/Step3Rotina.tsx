@@ -629,8 +629,9 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
             >
               {calculando ? "Calculando…" : comp ? "Recalcular" : "Calcular calorias e macronutrientes"}
             </button>
-          </div>
-          {comp ? (
+        </div>
+        {comp ? (
+          <div className="mt-4 rounded-[14px] bg-accent p-5 text-white">
             <>
               {desatualizada && (
                 <p className="mt-2 text-[12px] text-white/70">O diário foi alterado. Recalcule para atualizar.</p>
