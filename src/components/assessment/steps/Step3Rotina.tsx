@@ -620,8 +620,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
           </RowButton>
         </div>
 
-        <div className="mt-6 rounded-[14px] bg-accent p-5 text-white">
-          <div className="flex justify-center">
+        <div className="mt-6 flex justify-center">
             <button
               type="button"
               onClick={onCalcular}
@@ -630,8 +629,9 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
             >
               {calculando ? "Calculando…" : comp ? "Recalcular" : "Calcular calorias e macronutrientes"}
             </button>
-          </div>
-          {comp ? (
+        </div>
+        {comp ? (
+          <div className="mt-4 rounded-[14px] bg-accent p-5 text-white">
             <>
               {desatualizada && (
                 <p className="mt-2 text-[12px] text-white/70">O diário foi alterado. Recalcule para atualizar.</p>
@@ -683,8 +683,8 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               })()}
               <p className="mt-3 text-[11px] text-white/50">{comp.nota}</p>
             </>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
       </Panel>
 
       <Panel titulo="Evolução do peso">
