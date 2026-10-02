@@ -523,6 +523,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                     <TextInput
                       value={item.alimento}
                       placeholder="Alimento"
+                      dataAlimentoId={item.id}
                       onChange={(v) =>
                         set(
                           "diarioAlimentar",
@@ -542,6 +543,26 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                     <TextInput
                       value={item.quantidade}
                       placeholder="Quantidade"
+                      onKeyDown={(e) => {
+                        if (
+                          e.key === "Tab" &&
+                          !e.shiftKey &&
+                          item.quantidade.trim() !== "" &&
+                          itemIndex === r.alimentos.length - 1
+                        ) {
+                          e.preventDefault();
+                          const novo = { id: novoId(), alimento: "", quantidade: "" };
+                          set(
+                            "diarioAlimentar",
+                            a.diarioAlimentar.map((refeicao, refeicaoIndex) =>
+                              refeicaoIndex === i
+                                ? { ...refeicao, alimentos: [...refeicao.alimentos, novo] }
+                                : refeicao,
+                            ),
+                          );
+                          setFocoId(novo.id);
+                        }
+                      }}
                       onChange={(v) =>
                         set(
                           "diarioAlimentar",
