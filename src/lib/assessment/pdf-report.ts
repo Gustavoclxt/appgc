@@ -189,6 +189,12 @@ export function generatePDF(
     }
   }
 
+  const comp = composicaoParaRelatorio(composicao);
+  if (comp) {
+    titulo("Composição estimada do Recordatório 24h");
+    for (const t of comp.totais) linha(t.label, t.valor);
+  }
+
   for (const section of anamneseAPartirDaEvolucao) {
     titulo(section.title);
     for (const field of section.fields) {
