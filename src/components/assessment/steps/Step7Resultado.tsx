@@ -208,6 +208,16 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
           </Bloco>
         )}
 
+        {comp && (
+          <Bloco titulo="Composição estimada do Recordatório 24h">
+            <div className="grid grid-cols-1 gap-x-10 gap-y-2 sm:grid-cols-2">
+              {comp.totais.map((t) => (
+                <Dado key={t.label} label={t.label} valor={t.valor} />
+              ))}
+            </div>
+          </Bloco>
+        )}
+
         {anamneseAPartirDaEvolucao.map((section) => (
           <Bloco key={section.title} titulo={section.title}>
             <div className="grid grid-cols-1 gap-x-10 gap-y-2 sm:grid-cols-2">
@@ -223,16 +233,6 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
             {retirar.map((g) => (
               <p key={g.grupo}><span className="font-semibold">{g.grupo}:</span> {g.itens.join(", ")}</p>
             ))}
-          </Bloco>
-        )}
-
-        {comp && (
-          <Bloco titulo="Composição estimada do Recordatório 24h">
-            <div className="grid grid-cols-1 gap-x-10 gap-y-2 sm:grid-cols-2">
-              {comp.totais.map((t) => (
-                <Dado key={t.label} label={t.label} valor={t.valor} />
-              ))}
-            </div>
           </Bloco>
         )}
 
