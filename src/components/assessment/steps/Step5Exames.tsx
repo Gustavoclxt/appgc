@@ -98,7 +98,7 @@ export function Step5Exames({ a, set }: StepProps) {
 
           <Panel titulo="Adicionar resultado manualmente">
             {!mostrarManual ? (
-              <RowButton onClick={() => setMostrarManual(true)}>Adicionar</RowButton>
+              <RowButton onClick={() => setMostrarManual(true)}>Adicionar resultado</RowButton>
             ) : (
             <>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
