@@ -137,6 +137,7 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Gorduras", comObs(formatarPreferencia(a.prefGorduras, gorduras, "Todas"), a.observacoesPreferencias["gorduras"])),
       campo("Doces", comObs(formatarPreferencia(a.prefDoces, doces, "Todos"), a.observacoesPreferencias["doces"])),
       campo("Aversões alimentares", a.aversoes),
+      campo("Observações do recordatório 24h", a.observacoesRecordatorio),
     ]),
     secao("Evolução do peso", [
       campo("Tempo da alimentação atual", a.tempoAlimentacaoAtual),

@@ -22,6 +22,7 @@ const exameVazio = (): ExameLaboratorial => ({
 
 export function Step5Exames({ a, set }: StepProps) {
   const [lendo, setLendo] = useState(false);
+  const [mostrarManual, setMostrarManual] = useState(false);
   const [exameManual, setExameManual] = useState<ExameLaboratorial>(() => exameVazio());
   const extrair = useServerFn(extrairExames);
 
@@ -96,6 +97,10 @@ export function Step5Exames({ a, set }: StepProps) {
           </Panel>
 
           <Panel titulo="Adicionar resultado manualmente">
+            {!mostrarManual ? (
+              <RowButton onClick={() => setMostrarManual(true)}>Adicionar</RowButton>
+            ) : (
+            <>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
               <Field label="Exame">
                 <TextInput
@@ -139,6 +144,8 @@ export function Step5Exames({ a, set }: StepProps) {
             <div className="mt-4">
               <RowButton onClick={adicionarExameManual}>+ Adicionar resultado</RowButton>
             </div>
+            </>
+            )}
           </Panel>
         </>
       )}
