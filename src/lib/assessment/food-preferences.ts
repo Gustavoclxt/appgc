@@ -123,3 +123,9 @@ export function alimentosRetirarPorGrupo(a: Assessment): GrupoRetirar[] {
 export function linhasAlimentosRetirar(a: Assessment): string[] {
   return alimentosRetirarPorGrupo(a).map((g) => `${g.grupo}: ${g.itens.join(", ")}`);
 }
+
+export function comObs(valor: string, obs?: string): string {
+  const o = obs?.trim();
+  if (!o) return valor;
+  return valor ? `${valor} · Obs.: ${o}` : `Obs.: ${o}`;
+}

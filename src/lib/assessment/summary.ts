@@ -1,3 +1,4 @@
+import { comObs } from "./food-preferences";
 import {
   fmt2,
   fmtData,
@@ -58,6 +59,8 @@ export function buildResumo(a: Assessment, d: DerivedResults): string {
   t += li("Restrição alimentar", a.restricaoAlimentar);
   t += li("EAAs", a.eaas === "sim" ? a.eaasDescricao || "sim" : a.eaas);
   t += li("Hábitos sociais", a.habitosSociais.join(", "));
+  if (a.habitosSociais.includes("Etilista")) t += li("Álcool (quantidade/frequência)", [a.etilismoQuantidade, a.etilismoFrequencia].filter(Boolean).join(" / "));
+  if (a.habitosSociais.includes("Tabagista")) t += li("Tabaco (quantidade/frequência)", [a.tabagismoQuantidade, a.tabagismoFrequencia].filter(Boolean).join(" / "));
   t += li("Plano de saúde", a.planoSaude === "sim" ? "sim — considerar solicitação médica" : a.planoSaude);
 
   const retirar = fraseAlimentosRetirar(a);
@@ -104,18 +107,19 @@ export function buildResumo(a: Assessment, d: DerivedResults): string {
   t += li("Aceita whey protein", a.aceitaWhey);
 
   t += "\n## Preferências alimentares\n";
-  t += li("Vegetais/saladas", formatarPreferencia(a.prefVegetais, vegetais, "Todos"));
-  t += li("Frutas", formatarPreferencia(a.prefFrutas, frutas, "Todas"));
-  t += li("Lácteos", formatarPreferencia(a.prefLacteos, lacteos, "Todos"));
-  t += li("Café/chá", a.prefCafeCha.join(", "));
-  t += li("Açúcar ou adoçante", a.acucarAdocante);
-  t += li("Aceita café com leite", a.aceitaCafeComLeite);
-  t += li("Proteínas", formatarPreferencia(a.prefProteinas, proteinas, "Todas"));
-  t += li("Carboidratos", formatarPreferencia(a.prefCarboidratos, carboidratos, "Todos"));
-  t += li("Cereais e grãos", formatarPreferencia(a.prefCereais, cereais, "Todos"));
-  t += li("Gorduras", formatarPreferencia(a.prefGorduras, gorduras, "Todas"));
-  t += li("Doces", formatarPreferencia(a.prefDoces, doces, "Todos"));
+  t += li("Vegetais/saladas", comObs(formatarPreferencia(a.prefVegetais, vegetais, "Todos"), a.observacoesPreferencias["vegetais"]));
+  t += li("Frutas", comObs(formatarPreferencia(a.prefFrutas, frutas, "Todas"), a.observacoesPreferencias["frutas"]));
+  t += li("Lácteos", comObs(formatarPreferencia(a.prefLacteos, lacteos, "Todos"), a.observacoesPreferencias["lacteos"]));
+  t += li("Café/chá", comObs(a.prefCafeCha.join(", "), a.observacoesPreferencias["cafeCha"]));
+  t += li("Açúcar ou adoçante", comObs(a.acucarAdocante, a.observacoesPreferencias["acucar"]));
+  t += li("Aceita café com leite", comObs(a.aceitaCafeComLeite, a.observacoesPreferencias["cafeComLeite"]));
+  t += li("Proteínas", comObs(formatarPreferencia(a.prefProteinas, proteinas, "Todas"), a.observacoesPreferencias["proteinas"]));
+  t += li("Carboidratos", comObs(formatarPreferencia(a.prefCarboidratos, carboidratos, "Todos"), a.observacoesPreferencias["carboidratos"]));
+  t += li("Cereais e grãos", comObs(formatarPreferencia(a.prefCereais, cereais, "Todos"), a.observacoesPreferencias["cereais"]));
+  t += li("Gorduras", comObs(formatarPreferencia(a.prefGorduras, gorduras, "Todas"), a.observacoesPreferencias["gorduras"]));
+  t += li("Doces", comObs(formatarPreferencia(a.prefDoces, doces, "Todos"), a.observacoesPreferencias["doces"]));
   t += li("Aversões", a.aversoes);
+  t += li("Observações do recordatório 24h", a.observacoesRecordatorio);
 
   const diario = diarioParaRelatorio(a.diarioAlimentar);
   if (diario.length) {

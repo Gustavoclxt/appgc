@@ -93,6 +93,10 @@ export interface Assessment {
   eaasDescricao: string;
 
   habitosSociais: string[];
+  etilismoQuantidade: string;
+  etilismoFrequencia: string;
+  tabagismoQuantidade: string;
+  tabagismoFrequencia: string;
 
   // Revisão de sistemas
   funcaoEstomacal: string[];
@@ -145,6 +149,8 @@ export interface Assessment {
   prefGorduras: string[];
   prefDoces: string[];
   aversoes: string;
+  observacoesPreferencias: Record<string, string>;
+  observacoesRecordatorio: string;
 
   diarioAlimentar: Refeicao[];
 
