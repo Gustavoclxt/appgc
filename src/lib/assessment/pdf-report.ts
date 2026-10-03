@@ -254,12 +254,6 @@ export function generatePDF(
     for (const linha of retirar) paragrafo(linha);
   }
 
-  const comp = composicaoParaRelatorio(composicao);
-  if (comp) {
-    titulo("Composição estimada do Recordatório 24h");
-    for (const t of comp.totais) linha(t.label, t.valor);
-  }
-
   if (examesDoRelatorio.length) {
     titulo("Exames laboratoriais");
     quebra(8);
