@@ -42,7 +42,7 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
               ].map((x) => ({ value: x, label: x }))}
             />
           </Field>
-          <Field label="Data da avaliação">
+          <Field label="Data da avaliação antropométrica">
             <TextInput
               type="date"
               value={a.dataAvaliacaoAntropometrica}
