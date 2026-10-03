@@ -1,3 +1,4 @@
+import { comObs } from "./food-preferences";
 import type { DerivedResults } from "./calculations";
 import type { Assessment } from "./types";
 import {
@@ -89,6 +90,8 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Restrição alimentar", a.restricaoAlimentar === "nao" ? "Não" : a.restricaoAlimentar),
       campo("Uso de EAAs", a.eaas === "sim" ? `Sim${a.eaasDescricao ? ` · ${a.eaasDescricao}` : ""}` : simNao(a.eaas)),
       campo("Hábitos sociais", lista(a.habitosSociais)),
+      campo("Etilismo", a.habitosSociais.includes("Etilista") ? [a.etilismoQuantidade && `Quantidade: ${a.etilismoQuantidade}`, a.etilismoFrequencia && `Frequência: ${a.etilismoFrequencia}`].filter(Boolean).join(" · ") : ""),
+      campo("Tabagismo", a.habitosSociais.includes("Tabagista") ? [a.tabagismoQuantidade && `Quantidade: ${a.tabagismoQuantidade}`, a.tabagismoFrequencia && `Frequência: ${a.tabagismoFrequencia}`].filter(Boolean).join(" · ") : ""),
       campo("Observações sobre os exames", a.observacoesExames),
     ]),
     secao("Revisão de sistemas", [
@@ -122,17 +125,17 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Aceita Whey Protein", simNao(a.aceitaWhey)),
     ]),
     secao("Preferências e aversões alimentares", [
-      campo("Vegetais/saladas", formatarPreferencia(a.prefVegetais, vegetais, "Todos")),
-      campo("Frutas", formatarPreferencia(a.prefFrutas, frutas, "Todas")),
-      campo("Lácteos", formatarPreferencia(a.prefLacteos, lacteos, "Todos")),
-      campo("Café/chá", lista(a.prefCafeCha)),
-      campo("Açúcar ou adoçante", a.acucarAdocante),
-      campo("Aceita café com leite", simNao(a.aceitaCafeComLeite)),
-      campo("Proteínas", formatarPreferencia(a.prefProteinas, proteinas, "Todas")),
-      campo("Carboidratos", formatarPreferencia(a.prefCarboidratos, carboidratos, "Todos")),
-      campo("Cereais e grãos", formatarPreferencia(a.prefCereais, cereais, "Todos")),
-      campo("Gorduras", formatarPreferencia(a.prefGorduras, gorduras, "Todas")),
-      campo("Doces", formatarPreferencia(a.prefDoces, doces, "Todos")),
+      campo("Vegetais/saladas", comObs(formatarPreferencia(a.prefVegetais, vegetais, "Todos"), a.observacoesPreferencias["vegetais"])),
+      campo("Frutas", comObs(formatarPreferencia(a.prefFrutas, frutas, "Todas"), a.observacoesPreferencias["frutas"])),
+      campo("Lácteos", comObs(formatarPreferencia(a.prefLacteos, lacteos, "Todos"), a.observacoesPreferencias["lacteos"])),
+      campo("Café/chá", comObs(lista(a.prefCafeCha), a.observacoesPreferencias["cafeCha"])),
+      campo("Açúcar ou adoçante", comObs(a.acucarAdocante, a.observacoesPreferencias["acucar"])),
+      campo("Aceita café com leite", comObs(simNao(a.aceitaCafeComLeite), a.observacoesPreferencias["cafeComLeite"])),
+      campo("Proteínas", comObs(formatarPreferencia(a.prefProteinas, proteinas, "Todas"), a.observacoesPreferencias["proteinas"])),
+      campo("Carboidratos", comObs(formatarPreferencia(a.prefCarboidratos, carboidratos, "Todos"), a.observacoesPreferencias["carboidratos"])),
+      campo("Cereais e grãos", comObs(formatarPreferencia(a.prefCereais, cereais, "Todos"), a.observacoesPreferencias["cereais"])),
+      campo("Gorduras", comObs(formatarPreferencia(a.prefGorduras, gorduras, "Todas"), a.observacoesPreferencias["gorduras"])),
+      campo("Doces", comObs(formatarPreferencia(a.prefDoces, doces, "Todos"), a.observacoesPreferencias["doces"])),
       campo("Aversões alimentares", a.aversoes),
     ]),
     secao("Evolução do peso", [

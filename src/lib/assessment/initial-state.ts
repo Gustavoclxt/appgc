@@ -55,6 +55,10 @@ export function createEmptyAssessment(): Assessment {
     eaasDescricao: "",
 
     habitosSociais: [],
+    etilismoQuantidade: "",
+    etilismoFrequencia: "",
+    tabagismoQuantidade: "",
+    tabagismoFrequencia: "",
 
     funcaoEstomacal: [],
     frequenciaEvacuacao: "",
@@ -100,6 +104,8 @@ export function createEmptyAssessment(): Assessment {
     prefGorduras: [],
     prefDoces: [],
     aversoes: "",
+    observacoesPreferencias: {},
+    observacoesRecordatorio: "",
 
     diarioAlimentar: refeicoesIniciais,
 

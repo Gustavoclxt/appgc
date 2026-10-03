@@ -297,6 +297,8 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                 "Meio da manhã",
                 "Almoço",
                 "Meio da tarde",
+                "Tarde",
+                "Final da tarde",
                 "Jantar",
                 "Noite",
                 "Madrugada",
@@ -395,6 +397,13 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               }}
               options={vegetais.map((item) => ({ value: item, label: item }))}
             />
+            <div className="mt-2">
+              <TextInput
+                value={a.observacoesPreferencias["vegetais"] ?? ""}
+                placeholder="Observações"
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "vegetais": v })}
+              />
+            </div>
           </Field>
           <Field label="Frutas">
             <MultiOptionRow
@@ -405,6 +414,13 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               }}
               options={frutas.map((item) => ({ value: item, label: item }))}
             />
+            <div className="mt-2">
+              <TextInput
+                value={a.observacoesPreferencias["frutas"] ?? ""}
+                placeholder="Observações"
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "frutas": v })}
+              />
+            </div>
           </Field>
           <Field label="Lácteos">
             <MultiOptionRow
@@ -415,6 +431,13 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               }}
               options={lacteos.map((item) => ({ value: item, label: item }))}
             />
+            <div className="mt-2">
+              <TextInput
+                value={a.observacoesPreferencias["lacteos"] ?? ""}
+                placeholder="Observações"
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "lacteos": v })}
+              />
+            </div>
           </Field>
           <Field label="Café/Chá">
             <MultiOptionRow
@@ -422,6 +445,13 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               onChange={(v) => set("prefCafeCha", v.includes("Nenhum") ? ["Nenhum"] : v)}
               options={cafeCha.map((item) => ({ value: item, label: item }))}
             />
+            <div className="mt-2">
+              <TextInput
+                value={a.observacoesPreferencias["cafeCha"] ?? ""}
+                placeholder="Observações"
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "cafeCha": v })}
+              />
+            </div>
           </Field>
           <Field label="Utiliza açúcar ou adoçante?">
             <OptionRow
@@ -433,6 +463,13 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                 { value: "Não adoça", label: "Não adoça" },
               ]}
             />
+            <div className="mt-2">
+              <TextInput
+                value={a.observacoesPreferencias["acucar"] ?? ""}
+                placeholder="Observações"
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "acucar": v })}
+              />
+            </div>
           </Field>
           <Field label="Aceita café com leite?">
             <OptionRow
@@ -440,6 +477,13 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               onChange={(v) => set("aceitaCafeComLeite", v as typeof a.aceitaCafeComLeite)}
               options={simNao}
             />
+            <div className="mt-2">
+              <TextInput
+                value={a.observacoesPreferencias["cafeComLeite"] ?? ""}
+                placeholder="Observações"
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "cafeComLeite": v })}
+              />
+            </div>
           </Field>
           <Field label="Proteínas">
             <MultiOptionRow
@@ -450,6 +494,13 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               }}
               options={proteinas.map((item) => ({ value: item, label: item }))}
             />
+            <div className="mt-2">
+              <TextInput
+                value={a.observacoesPreferencias["proteinas"] ?? ""}
+                placeholder="Observações"
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "proteinas": v })}
+              />
+            </div>
           </Field>
           <Field label="Carboidratos">
             <MultiOptionRow
@@ -460,6 +511,13 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               }}
               options={carboidratos.map((item) => ({ value: item, label: item }))}
             />
+            <div className="mt-2">
+              <TextInput
+                value={a.observacoesPreferencias["carboidratos"] ?? ""}
+                placeholder="Observações"
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "carboidratos": v })}
+              />
+            </div>
           </Field>
           <Field label="Cereais e Grãos">
             <MultiOptionRow
@@ -470,6 +528,13 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               }}
               options={cereais.map((item) => ({ value: item, label: item }))}
             />
+            <div className="mt-2">
+              <TextInput
+                value={a.observacoesPreferencias["cereais"] ?? ""}
+                placeholder="Observações"
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "cereais": v })}
+              />
+            </div>
           </Field>
           <Field label="Gorduras">
             <MultiOptionRow
@@ -479,6 +544,13 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                 set("prefGorduras", alterado ? selecionarPreferencia(a.prefGorduras, alterado, gorduras) : v);
               }}
               options={gorduras.map((item) => ({ value: item, label: item }))} />
+            <div className="mt-2">
+              <TextInput
+                value={a.observacoesPreferencias["gorduras"] ?? ""}
+                placeholder="Observações"
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "gorduras": v })}
+              />
+            </div>
           </Field>
           <Field label="Doces">
             <MultiOptionRow
@@ -489,6 +561,13 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               }}
               options={doces.map((item) => ({ value: item, label: item }))}
             />
+            <div className="mt-2">
+              <TextInput
+                value={a.observacoesPreferencias["doces"] ?? ""}
+                placeholder="Observações"
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "doces": v })}
+              />
+            </div>
           </Field>
           <Field label="Aversões alimentares">
             <LongText value={a.aversoes} onChange={(v) => set("aversoes", v)} rows={2} />
@@ -671,6 +750,11 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
           </RowButton>
         </div>
 
+        <div className="mt-6">
+          <Field label="Observações">
+            <LongText value={a.observacoesRecordatorio} onChange={(v) => set("observacoesRecordatorio", v)} rows={3} />
+          </Field>
+        </div>
         <div className="mt-6 flex justify-center">
             <button
               type="button"
