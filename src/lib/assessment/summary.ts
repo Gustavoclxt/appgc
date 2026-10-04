@@ -23,12 +23,13 @@ import {
   vegetais,
 } from "./food-preferences";
 import { doseComUnidade } from "./report-anamnesis";
+import type { ComposicaoDiario } from "./diet-composition";
 
 const li = (label: string, valor: string | number | null | undefined) =>
   valor === null || valor === undefined || valor === "" ? "" : `${label}: ${valor}\n`;
 
 /** Texto compacto enviado à análise técnica. Só dados informados/calculados. */
-export function buildResumo(a: Assessment, d: DerivedResults): string {
+export function buildResumo(a: Assessment, d: DerivedResults, composicao: ComposicaoDiario | null = null): string {
   let t = "AVALIAÇÃO NUTRICIONAL — DADOS INFORMADOS E CALCULADOS\n\n";
 
   t += "## Paciente\n";
@@ -168,6 +169,7 @@ export function buildResumo(a: Assessment, d: DerivedResults): string {
         : "",
   );
   t += li("Calorias sugeridas (kcal/dia)", d.caloriasSugeridas !== null ? fmtInt(d.caloriasSugeridas) : "");
+  t += li("Calorias calculadas do Recordatório 24h (kcal)", composicao ? fmtInt(composicao.totais.kcal) : "");
 
   if (a.exames.length) {
     t += "\n## Exames laboratoriais\n";

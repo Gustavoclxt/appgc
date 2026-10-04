@@ -22,3 +22,4 @@
 - [x] Permitir inclusão manual padronizada de exames após a identificação.
 - [x] Resumir seleções completas de preferências e padronizar “Recordatório 24h” no relatório.
 - [x] Posicionar o Recordatório 24h entre Preferências e aversões alimentares e Evolução do peso na visualização e no PDF.
+- [x] Reformular exclusivamente a seção final como painel clínico na tela, cópia e PDF.

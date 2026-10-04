@@ -12,10 +12,10 @@ import {
 import type { AnaliseIA, Assessment } from "./types";
 import { examesParaRelatorio } from "./report-exams";
 import { diarioParaRelatorio } from "./food-diary";
-import { intervencoesParaRelatorio } from "./interventions";
 import { anamneseParaRelatorio } from "./report-anamnesis";
 import { composicaoParaRelatorio, type ComposicaoDiario } from "./diet-composition";
 import { linhasAlimentosRetirar } from "./food-preferences";
+import { painelClinicoParaRelatorio } from "./clinical-dashboard";
 
 const MARGEM = 16;
 const LARGURA = 210;
@@ -283,76 +283,49 @@ export function generatePDF(
   }
 
   if (analise) {
-    titulo("Síntese da avaliação");
-    paragrafo(analise.sintese);
-    if (analise.composicaoCorporal) {
-      titulo("Composição corporal");
-      paragrafo(analise.composicaoCorporal);
+    const painel = painelClinicoParaRelatorio(analise, a, d, composicao);
+    if (painel.resumo.length) {
+      titulo("Resumo clínico");
+      for (const item of painel.resumo) linhaPaciente(item.label, item.valor);
     }
-    if (analise.pontosAtencao.length) {
-      titulo("Pontos de atenção");
-      for (const p of analise.pontosAtencao) paragrafo(`• ${p}`);
-    }
-    const grupos = intervencoesParaRelatorio(analise.intervencoes);
-    if (grupos.length) {
-      titulo("Mudanças e intervenções sugeridas");
+    if (painel.achados.length) {
+      titulo("Principais achados");
       const cores: Record<string, [number, number, number]> = {
-        alta: [185, 50, 50],
-        moderada: [15, 111, 106],
-        baixa: [120, 130, 140],
+        prioridade: [185, 50, 50], monitorar: [184, 133, 20], favoravel: [15, 111, 106],
       };
-      for (const g of grupos) {
-        quebra(10);
-        const [r, gg, b] = cores[g.id] ?? [120, 130, 140];
-        doc.setFillColor(r, gg, b);
-        doc.roundedRect(MARGEM, y - 4, 70, 6, 1.5, 1.5, "F");
+      for (const grupo of painel.achados) {
+        quebra(9);
+        const [r, g, b] = cores[grupo.tom ?? "favoravel"] ?? [15, 111, 106];
+        doc.setFillColor(r, g, b);
+        doc.rect(MARGEM, y - 3.5, 3, 5, "F");
         doc.setFont("helvetica", "bold");
-        doc.setFontSize(8.5);
-        doc.setTextColor(255, 255, 255);
-        doc.text(g.label.toUpperCase(), MARGEM + 2.5, y);
-        y += 7;
-        for (const c of g.categorias) {
-          quebra(6);
-          doc.setFont("helvetica", "bold");
-          doc.setFontSize(9);
-          doc.setTextColor(91, 102, 114);
-          doc.text(c.categoria.toUpperCase(), MARGEM, y);
-          y += 5;
-          for (const i of c.itens) {
-            if (i.problema) {
-              quebra(5);
-              doc.setFont("helvetica", "bold");
-              doc.setFontSize(9.5);
-              doc.setTextColor(22, 32, 43);
-              doc.text(doc.splitTextToSize(i.problema, CONTEUDO - 3)[0] ?? "", MARGEM, y);
-              y += 4.8;
-            }
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(9);
-            doc.setTextColor(40, 50, 60);
-            for (const acao of i.acoes) {
-              quebra(4.6);
-              doc.text(doc.splitTextToSize(`> ${acao}`, CONTEUDO - 3)[0] ?? "", MARGEM + 2.5, y);
-              y += 4.4;
-            }
-            if (i.justificativa) {
-              quebra(4);
-              doc.setFontSize(8);
-              doc.setTextColor(120, 130, 140);
-              doc.text(
-                doc.splitTextToSize(i.justificativa, CONTEUDO - 3)[0] ?? "",
-                MARGEM + 2.5,
-                y,
-              );
-              y += 4;
-            }
-          }
-        }
-        y += 2;
+        doc.setFontSize(9);
+        doc.setTextColor(22, 32, 43);
+        doc.text(grupo.titulo.toUpperCase(), MARGEM + 6, y);
+        y += 5;
+        for (const item of grupo.itens) paragrafo(`• ${item}`);
       }
     }
-    titulo("Sugestão técnica");
-    paragrafo(analise.sugestaoTecnica);
+    if (painel.estrategia.length) {
+      titulo("Estratégia inicial");
+      for (const grupo of painel.estrategia) {
+        quebra(7);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(9);
+        doc.setTextColor(15, 111, 106);
+        doc.text(grupo.categoria, MARGEM, y);
+        y += 4.5;
+        for (const acao of grupo.acoes) paragrafo(`> ${acao}`);
+      }
+    }
+    if (painel.foco.length) {
+      titulo("Foco até o próximo retorno");
+      painel.foco.forEach((item, index) => paragrafo(`${index + 1}. ${item}`));
+    }
+    if (painel.reavaliar.length) {
+      titulo("Reavaliar no retorno");
+      for (const item of painel.reavaliar) paragrafo(`[ ] ${item}`);
+    }
   }
 
   // Rodapé em todas as páginas

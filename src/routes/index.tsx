@@ -69,7 +69,7 @@ function Index() {
     analiseEmCursoRef.current = true;
     setAnalisando(true);
     try {
-      const resumo = buildResumo(dados, derivados);
+      const resumo = buildResumo(dados, derivados, composicao);
       const resultado = await analisar({ data: { resumo } });
       setAnalise(resultado);
     } catch (erro) {
@@ -78,7 +78,7 @@ function Index() {
       analiseEmCursoRef.current = false;
       setAnalisando(false);
     }
-  }, [analisar, dados, derivados]);
+  }, [analisar, composicao, dados, derivados]);
 
   const onCalcularDiario = useCallback(async () => {
     const itens = alimentosDoDiario(dados.diarioAlimentar);
@@ -112,11 +112,13 @@ function Index() {
 
   useEffect(() => {
     if (etapa !== ETAPAS.length) return;
+    const temAlimentos = alimentosDoDiario(dados.diarioAlimentar).length > 0;
+    if (temAlimentos && composicao?.chave !== chaveDiario(dados.diarioAlimentar)) return;
     if (disparoAutomaticoRef.current) return;
     if (analise !== null || analisando) return;
     disparoAutomaticoRef.current = true;
     void onAnalisar();
-  }, [etapa, analise, analisando, onAnalisar]);
+  }, [etapa, analise, analisando, composicao, dados.diarioAlimentar, onAnalisar]);
 
   async function onGerarPdf() {
     try {

@@ -190,13 +190,24 @@ export interface IntervencaoIA {
   justificativa: string;
 }
 
+export interface ItemResumoClinico {
+  label: string;
+  valor: string;
+}
+
+export interface GrupoEstrategiaClinica {
+  categoria: string;
+  acoes: string[];
+}
+
 export interface AnaliseIA {
-  sintese: string;
-  composicaoCorporal: string;
-  gastoEnergetico: string;
-  hidratacao: string;
-  estrategiaEnergetica: string;
-  pontosAtencao: string[];
-  intervencoes: IntervencaoIA[];
-  sugestaoTecnica: string;
+  resumoClinico: ItemResumoClinico[];
+  achados: {
+    prioridade: string[];
+    monitorar: string[];
+    favoraveis: string[];
+  };
+  estrategiaInicial: GrupoEstrategiaClinica[];
+  focoProximoRetorno: string[];
+  reavaliarRetorno: string[];
 }
