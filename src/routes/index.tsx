@@ -112,11 +112,13 @@ function Index() {
 
   useEffect(() => {
     if (etapa !== ETAPAS.length) return;
+    const temAlimentos = alimentosDoDiario(dados.diarioAlimentar).length > 0;
+    if (temAlimentos && composicao?.chave !== chaveDiario(dados.diarioAlimentar)) return;
     if (disparoAutomaticoRef.current) return;
     if (analise !== null || analisando) return;
     disparoAutomaticoRef.current = true;
     void onAnalisar();
-  }, [etapa, analise, analisando, onAnalisar]);
+  }, [etapa, analise, analisando, composicao, dados.diarioAlimentar, onAnalisar]);
 
   async function onGerarPdf() {
     try {
