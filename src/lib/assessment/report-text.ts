@@ -85,7 +85,7 @@ function montar(a: Assessment, d: DerivedResults, analise: AnaliseIA, composicao
       ],
     });
   }
-  const painel = painelClinicoParaRelatorio(analise);
+  const painel = painelClinicoParaRelatorio(analise, a, d, composicao);
   if (painel.resumo.length) {
     blocos.push({ titulo: "Resumo clínico", linhas: painel.resumo.map((item) => kv(item.label, item.valor)) });
   }

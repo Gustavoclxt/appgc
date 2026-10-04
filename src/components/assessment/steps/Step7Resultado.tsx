@@ -104,7 +104,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
     indiceEvolucaoPeso >= 0 ? anamneseDoRelatorio.slice(indiceEvolucaoPeso) : [];
   const retirar = alimentosRetirarPorGrupo(a);
   const comp = composicaoParaRelatorio(composicao);
-  const painel = painelClinicoParaRelatorio(analise);
+  const painel = painelClinicoParaRelatorio(analise, a, d, composicao);
 
   return (
     <section>

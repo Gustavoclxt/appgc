@@ -283,7 +283,7 @@ export function generatePDF(
   }
 
   if (analise) {
-    const painel = painelClinicoParaRelatorio(analise);
+    const painel = painelClinicoParaRelatorio(analise, a, d, composicao);
     if (painel.resumo.length) {
       titulo("Resumo clínico");
       for (const item of painel.resumo) linhaPaciente(item.label, item.valor);
