@@ -69,7 +69,7 @@ function Index() {
     analiseEmCursoRef.current = true;
     setAnalisando(true);
     try {
-      const resumo = buildResumo(dados, derivados);
+      const resumo = buildResumo(dados, derivados, composicao);
       const resultado = await analisar({ data: { resumo } });
       setAnalise(resultado);
     } catch (erro) {
@@ -78,7 +78,7 @@ function Index() {
       analiseEmCursoRef.current = false;
       setAnalisando(false);
     }
-  }, [analisar, dados, derivados]);
+  }, [analisar, composicao, dados, derivados]);
 
   const onCalcularDiario = useCallback(async () => {
     const itens = alimentosDoDiario(dados.diarioAlimentar);

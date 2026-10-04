@@ -4,56 +4,41 @@ import { z } from "zod";
 const analiseInput = z.object({ resumo: z.string().min(10).max(40000) });
 const examesInput = z.object({ textoPdf: z.string().min(10).max(60000) });
 
-const CATEGORIAS = [
-  "Alimentação",
-  "Distribuição das refeições",
-  "Proteínas e composição da dieta",
-  "Carboidratos e energia",
-  "Hidratação",
-  "Treinamento e estratégia nutricional",
-  "Sono e recuperação",
-  "Comportamento alimentar",
-  "Preferências, aversões e adesão",
-  "Trato gastrointestinal",
-  "Suplementação",
-  "Exames e pontos clínicos",
-  "Estratégia energética",
-];
-
 const SISTEMA_ANALISE = `Você é assistente técnico de nutricionistas clínicos e esportivos, no Brasil.
 Receberá os dados de uma avaliação nutricional já calculada pelo sistema.
-Produza uma análise técnica objetiva, organizada e profissional, em português do Brasil.
+Produza um painel clínico de decisão rápida, objetivo e profissional, em português do Brasil.
 
 REGRA PRINCIPAL — CONTEXTO CLÍNICO INTEGRADO:
 - Antes de escrever QUALQUER seção, analise o objeto completo da anamnese preenchida.
 - Trate a anamnese como um contexto clínico único e integrado, não como grupos independentes.
 - TODAS as seções devem considerar TODOS os campos preenchidos relevantes: objetivo, motivação, histórico ponderal, HMA, HMP, HMF, medicamentos, exames, composição corporal, rotina profissional, sono, treinamento, função gastrointestinal, hidratação, comportamento alimentar, Recordatório 24h, horários de fome, preferências, aversões, restrições, suplementação, hábitos sociais e evolução recente do peso.
-- Cruze as informações entre si e considere suas possíveis relações (ex.: sono curto + treino noturno + trabalho até tarde + fome noturna + poucas refeições no trabalho + baixa ingestão hídrica). Não apenas liste cada informação separadamente.
-- Trate a linha "Alimentos a retirar por preferências, alergias, aversões e restrições" como uma restrição obrigatória nas intervenções. Para vegetarianos, não sugira carnes; ovos e lácteos são permitidos. Para veganos, não sugira carnes, ovos nem lácteos.
+- Cruze as informações entre si, sem afirmar causalidade. Trate restrições alimentares como obrigatórias nas condutas.
 
 SEÇÕES:
-- "sintese": visão global da anamnese; não repita campos, identifique o que é clinicamente relevante para a estratégia nutricional e as relações entre os achados.
-- "pontosAtencao": derivados de toda a anamnese, não de um subconjunto predefinido.
-- "intervencoes": MUDANÇAS E INTERVENÇÕES SUGERIDAS — um checklist de condutas, curto e escaneável, para o nutricionista considerar. Cada item: categoria (uma de: ${CATEGORIAS.join("; ")}), prioridade ("alta" = maior impacto sobre o objetivo; "moderada" = ajuste relevante; "baixa" = otimização/adesão/praticidade), "problema" (o que observar: constatação curta e objetiva, máx. 8 palavras, citando o dado relevante quando útil — ex.: "Superávit atual: 500 kcal"), "acoes" (2 a 4 ações curtas e diretas, cada uma com no máximo ~10 palavras, iniciadas por verbo no infinitivo, cada uma em um item separado do array; sem justificar dentro da ação) e "justificativa" (opcional, uma frase muito curta citando o dado do paciente que sustenta a conduta; omitir quando o problema já for autoexplicativo). Use apenas categorias justificadas pelos dados; não preencha todas obrigatoriamente. Evite sugestões genéricas como "comer melhor", "beber mais água", "dormir melhor". Frases longas e parágrafos corridos são proibidos neste bloco.
-- "sugestaoTecnica": coerência entre objetivo, composição corporal, gasto energético, histórico ponderal, rotina, treino, sono, comportamento alimentar, preferências/aversões, sintomas gastrointestinais, hidratação, medicamentos, suplementos, exames e Recordatório 24h.
+- "resumoClinico": pares de rótulo e valor. Use somente rótulos aplicáveis entre OBJETIVO, PRINCIPAL INCÔMODO, ADESÃO, TREINO, SONO, HIDRATAÇÃO, INTESTINO, PESO, COMPOSIÇÃO CORPORAL, VET e CALORIAS R24h. Omita dados ausentes. Valores factuais e compactos, sem recomendações.
+- "achados": separar constatações em prioridade, monitorar e favoraveis. Não preencher artificialmente grupos. Cada item deve ter no máximo 12 palavras e, quando útil, conter o número observado. Achado não contém conduta.
+- "estrategiaInicial": somente categorias relevantes entre ENERGIA, HIDRATAÇÃO, INTESTINO, SONO/RECUPERAÇÃO e ADESÃO. Cada categoria contém 1 a 3 ações com no máximo 12 palavras. Conduta não repete toda a descrição do achado.
+- "focoProximoRetorno": 3 a 5 prioridades específicas, ordenadas por impacto e ligadas aos achados.
+- "reavaliarRetorno": checklist curto e dinâmico, somente com itens relevantes aos problemas encontrados.
 
 REGRAS OBRIGATÓRIAS:
 - Nunca apresente diagnóstico médico nem prescrição. Use linguagem como "Considerar...", "Uma estratégia inicial possível é...", "Os dados sugerem...", "A decisão final deve considerar...".
 - Não invente dados. Nunca infira hábito, sintoma, preferência, diagnóstico ou comportamento não informado. Não invente problemas.
 - Não transforme alterações laboratoriais em diagnóstico.
 - Não extrapole o que o método de avaliação de composição corporal não permite determinar.
-- Seja objetivo; frases curtas; sem floreios.
+- Nunca escreva parágrafos. Use frases curtas, números e palavras-chave.
+- Não repita a mesma informação em vários blocos.
+- Diferencie achado de conduta.
+- Para dados que exigem confirmação, use Confirmar, Investigar, Monitorar, Correlacionar clinicamente ou Conferir no laudo.
+- Alteração laboratorial não é diagnóstico: informe o status e recomende correlação clínica ou avaliação médica quando pertinente.
 
 Responda APENAS um objeto JSON com estas chaves:
 {
-  "sintese": "texto",
-  "composicaoCorporal": "texto",
-  "gastoEnergetico": "leitura do método, TMB, FA e VET",
-  "hidratacao": "leitura da faixa de 30-35 mL/kg frente à ingestão relatada",
-  "estrategiaEnergetica": "leitura da estratégia escolhida, ajuste, VET e calorias sugeridas",
-  "pontosAtencao": ["item", "item"],
-  "intervencoes": [ { "categoria": "", "prioridade": "alta", "problema": "", "acoes": ["", ""], "justificativa": "" } ],
-  "sugestaoTecnica": "texto"
+  "resumoClinico": [{ "label": "OBJETIVO", "valor": "Recomposição corporal" }],
+  "achados": { "prioridade": ["item"], "monitorar": ["item"], "favoraveis": ["item"] },
+  "estrategiaInicial": [{ "categoria": "ENERGIA", "acoes": ["Considerar estratégia normocalórica", "Monitorar peso e performance"] }],
+  "focoProximoRetorno": ["item específico", "item específico", "item específico"],
+  "reavaliarRetorno": ["Peso", "Sono"]
 }`;
 
 const SISTEMA_EXAMES = `Você extrai exames laboratoriais de laudos em texto, em português do Brasil.
@@ -72,46 +57,34 @@ export const analisarAvaliacao = createServerFn({ method: "POST" })
     const { chatJSON } = await import("./ai.server");
     const resultado = (await chatJSON(SISTEMA_ANALISE, data.resumo)) as Record<string, unknown>;
     const texto = (v: unknown) => (typeof v === "string" ? v.trim() : "");
-    const prioridades = ["alta", "moderada", "baixa"] as const;
-    const intervencoes = (Array.isArray(resultado["intervencoes"]) ? resultado["intervencoes"] : [])
-      .filter((i): i is Record<string, unknown> => typeof i === "object" && i !== null)
-      .map((i) => {
-        const p = texto(i["prioridade"]).toLowerCase();
-        const acoesBrutas = Array.isArray(i["acoes"]) ? (i["acoes"] as unknown[]) : [];
-        const acoes = acoesBrutas
-          .map(texto)
-          .filter(Boolean);
-        if (acoes.length === 0) {
-          // Compatibilidade: aceita intervenção em texto único e quebra em itens.
-          acoes.push(
-            ...texto(i["intervencao"])
-              .split(/\n|→|;|\.\s/)
-              .map((t) => t.replace(/^[\s>•\-–*]*→?[\s]*/, "").trim())
-              .filter(Boolean),
-          );
-        }
-        return {
-          categoria: texto(i["categoria"]) || "Outros",
-          prioridade: (prioridades as readonly string[]).includes(p)
-            ? (p as (typeof prioridades)[number])
-            : ("moderada" as const),
-          problema: texto(i["problema"]),
-          acoes,
-          justificativa: texto(i["justificativa"]),
-        };
-      })
-      .filter((i) => i.acoes.length > 0);
+    const listaTextos = (valor: unknown, limite = 12) =>
+      (Array.isArray(valor) ? valor : []).map(texto).filter(Boolean).slice(0, limite);
+    const objetos = (valor: unknown) =>
+      (Array.isArray(valor) ? valor : []).filter(
+        (item): item is Record<string, unknown> => typeof item === "object" && item !== null,
+      );
+    const achados =
+      typeof resultado["achados"] === "object" && resultado["achados"] !== null
+        ? (resultado["achados"] as Record<string, unknown>)
+        : {};
     return {
-      sintese: texto(resultado["sintese"]),
-      composicaoCorporal: texto(resultado["composicaoCorporal"]),
-      gastoEnergetico: texto(resultado["gastoEnergetico"]),
-      hidratacao: texto(resultado["hidratacao"]),
-      estrategiaEnergetica: texto(resultado["estrategiaEnergetica"]),
-      pontosAtencao: Array.isArray(resultado["pontosAtencao"])
-        ? resultado["pontosAtencao"].filter((p): p is string => typeof p === "string")
-        : [],
-      intervencoes,
-      sugestaoTecnica: texto(resultado["sugestaoTecnica"]),
+      resumoClinico: objetos(resultado["resumoClinico"])
+        .map((item) => ({ label: texto(item["label"]).toUpperCase(), valor: texto(item["valor"]) }))
+        .filter((item) => item.label && item.valor)
+        .slice(0, 11),
+      achados: {
+        prioridade: listaTextos(achados["prioridade"]),
+        monitorar: listaTextos(achados["monitorar"]),
+        favoraveis: listaTextos(achados["favoraveis"]),
+      },
+      estrategiaInicial: objetos(resultado["estrategiaInicial"])
+        .map((item) => ({
+          categoria: texto(item["categoria"]).toUpperCase(),
+          acoes: listaTextos(item["acoes"], 3),
+        }))
+        .filter((item) => item.categoria && item.acoes.length > 0),
+      focoProximoRetorno: listaTextos(resultado["focoProximoRetorno"], 5),
+      reavaliarRetorno: listaTextos(resultado["reavaliarRetorno"], 12),
     };
   });
 
