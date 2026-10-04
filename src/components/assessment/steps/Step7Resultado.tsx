@@ -9,14 +9,15 @@ import {
 import { useRef } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { ArrowRight, CircleAlert, CircleCheck, Eye, RotateCcw, Target } from "lucide-react";
 import type { AnaliseIA } from "@/lib/assessment/types";
 import { anamneseParaRelatorio } from "@/lib/assessment/report-anamnesis";
 import { examesParaRelatorio } from "@/lib/assessment/report-exams";
 import { diarioParaRelatorio } from "@/lib/assessment/food-diary";
-import { intervencoesParaRelatorio } from "@/lib/assessment/interventions";
 import { composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { alimentosRetirarPorGrupo } from "@/lib/assessment/food-preferences";
 import { relatorioParaCopia } from "@/lib/assessment/report-text";
+import { painelClinicoParaRelatorio } from "@/lib/assessment/clinical-dashboard";
 
 import { ExamesTable } from "../ExamesTable";
 import { Panel } from "../fields";
@@ -103,6 +104,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
     indiceEvolucaoPeso >= 0 ? anamneseDoRelatorio.slice(indiceEvolucaoPeso) : [];
   const retirar = alimentosRetirarPorGrupo(a);
   const comp = composicaoParaRelatorio(composicao);
+  const painel = painelClinicoParaRelatorio(analise);
 
   return (
     <section>
@@ -245,110 +247,89 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
           </Bloco>
         )}
 
-        <Bloco titulo="Síntese da avaliação">
-          <p className="whitespace-pre-line">{analise.sintese}</p>
-        </Bloco>
+        <div className="mt-10 border-t-2 border-ink pt-7">
+          <div className="flex items-end justify-between gap-4 border-b border-line pb-3">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-accent">Painel de decisão</p>
+              <h3 className="mt-1 font-display text-xl font-semibold">Resumo clínico</h3>
+            </div>
+          </div>
 
-        {analise.composicaoCorporal && (
-          <Bloco titulo="Composição corporal">
-            <p className="whitespace-pre-line">{analise.composicaoCorporal}</p>
-          </Bloco>
-        )}
-
-        {analise.gastoEnergetico && (
-          <Bloco titulo="Gasto energético">
-            <p className="whitespace-pre-line">{analise.gastoEnergetico}</p>
-          </Bloco>
-        )}
-
-        {analise.hidratacao && (
-          <Bloco titulo="Hidratação">
-            <p className="whitespace-pre-line">{analise.hidratacao}</p>
-          </Bloco>
-        )}
-
-        {analise.estrategiaEnergetica && (
-          <Bloco titulo="Estratégia energética">
-            <p className="whitespace-pre-line">{analise.estrategiaEnergetica}</p>
-          </Bloco>
-        )}
-
-        {analise.pontosAtencao.length > 0 && (
-          <Bloco titulo="Pontos de atenção">
-            <ul className="list-disc space-y-1 pl-5">
-              {analise.pontosAtencao.map((p, i) => (
-                <li key={i}>{p}</li>
-              ))}
-            </ul>
-          </Bloco>
-        )}
-
-        {intervencoesParaRelatorio(analise.intervencoes).length > 0 && (
-          <div className="mt-8 rounded-[14px] bg-accent p-6 text-white">
-            <h3 className="text-center font-display text-sm font-semibold uppercase tracking-[0.14em]">
-              Mudanças e intervenções sugeridas
-            </h3>
-            <div className="mt-4 space-y-6">
-              {intervencoesParaRelatorio(analise.intervencoes).map((g) => (
-                <div key={g.id}>
-                  <p
-                    className={`inline-block rounded-full px-3 py-1 font-mono text-[10px] uppercase tracking-[0.16em] ${
-                      g.id === "alta"
-                        ? "bg-destructive text-white"
-                        : g.id === "moderada"
-                          ? "bg-yellow-400 text-white"
-                          : "bg-white/15 text-white"
-                    }`}
-                  >
-                    {g.label}
-                  </p>
-                  <div className="mt-3 space-y-4">
-                    {g.categorias.map((c) => (
-                      <div key={c.categoria}>
-                        <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-white">
-                          {c.categoria}
-                        </p>
-                        <ul className="mt-2 space-y-3">
-                          {c.itens.map((i, idx) => (
-                            <li key={idx} className="border-l-2 border-white/25 pl-3">
-                              {i.problema && (
-                                <p className="text-[13px] font-semibold leading-snug text-white">
-                                  {i.problema}
-                                </p>
-                              )}
-                              <ul className="mt-1.5 space-y-1">
-                                {i.acoes.map((acao, j) => (
-                                  <li
-                                    key={j}
-                                    className="flex gap-1.5 text-[13px] leading-relaxed text-white"
-                                  >
-                                    <span aria-hidden className="shrink-0 text-white">
-                                      →
-                                    </span>
-                                    <span>{acao}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                              {i.justificativa && (
-                                <p className="mt-1 text-[11px] leading-snug text-white/50">
-                                  {i.justificativa}
-                                </p>
-                              )}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
+          {painel.resumo.length > 0 && (
+            <div className="grid grid-cols-1 gap-x-8 border-b border-line py-4 sm:grid-cols-2">
+              {painel.resumo.map((item) => (
+                <div key={`${item.label}-${item.valor}`} className="grid grid-cols-[minmax(105px,0.42fr)_1fr] gap-3 border-b border-line/60 py-2 last:border-b-0 sm:[&:nth-last-child(-n+2)]:border-b-0">
+                  <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-soft">{item.label}</span>
+                  <span className="text-[13px] font-semibold leading-snug text-ink">{item.valor}</span>
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          )}
 
-        <Bloco titulo="Sugestão técnica">
-          <p className="whitespace-pre-line">{analise.sugestaoTecnica}</p>
-        </Bloco>
+          {painel.achados.length > 0 && (
+            <div className="py-6">
+              <h3 className="font-display text-base font-semibold">Principais achados</h3>
+              <div className="mt-3 grid gap-3 lg:grid-cols-3">
+                {painel.achados.map((grupo) => {
+                  const Icone = grupo.tom === "prioridade" ? CircleAlert : grupo.tom === "monitorar" ? Eye : CircleCheck;
+                  const tom = grupo.tom === "prioridade"
+                    ? "border-destructive/35 bg-destructive-soft"
+                    : grupo.tom === "monitorar"
+                      ? "border-warn/35 bg-warn-soft"
+                      : "border-accent/30 bg-accent-soft";
+                  return (
+                    <section key={grupo.titulo} className={`border-l-4 p-4 ${tom}`}>
+                      <div className="flex items-center gap-2">
+                        <Icone className="size-4 shrink-0" aria-hidden />
+                        <h4 className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em]">{grupo.titulo}</h4>
+                      </div>
+                      <ul className="mt-3 space-y-2">
+                        {grupo.itens.map((item, index) => <li key={index} className="text-[13px] font-medium leading-snug">{item}</li>)}
+                      </ul>
+                    </section>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {painel.estrategia.length > 0 && (
+            <div className="border-y border-line py-6">
+              <h3 className="font-display text-base font-semibold">Estratégia inicial</h3>
+              <div className="mt-3 grid gap-x-8 gap-y-4 sm:grid-cols-2">
+                {painel.estrategia.map((grupo) => (
+                  <section key={grupo.categoria} className="border-l-2 border-accent pl-3">
+                    <h4 className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-accent">{grupo.categoria}</h4>
+                    <ul className="mt-2 space-y-1.5">
+                      {grupo.acoes.map((acao, index) => (
+                        <li key={index} className="flex gap-2 text-[13px] leading-snug"><ArrowRight className="mt-0.5 size-3.5 shrink-0 text-accent" aria-hidden /><span>{acao}</span></li>
+                      ))}
+                    </ul>
+                  </section>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="grid gap-6 pt-6 lg:grid-cols-2">
+            {painel.foco.length > 0 && (
+              <section>
+                <div className="flex items-center gap-2"><Target className="size-4 text-accent" aria-hidden /><h3 className="font-display text-base font-semibold">Foco até o próximo retorno</h3></div>
+                <ol className="mt-3 space-y-2">
+                  {painel.foco.map((item, index) => <li key={index} className="grid grid-cols-[24px_1fr] gap-2 text-[13px] leading-snug"><span className="font-mono font-semibold text-accent">{index + 1}.</span><span>{item}</span></li>)}
+                </ol>
+              </section>
+            )}
+            {painel.reavaliar.length > 0 && (
+              <section>
+                <div className="flex items-center gap-2"><RotateCcw className="size-4 text-accent" aria-hidden /><h3 className="font-display text-base font-semibold">Reavaliar no retorno</h3></div>
+                <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  {painel.reavaliar.map((item, index) => <li key={index} className="flex gap-2 text-[13px] leading-snug"><span aria-hidden className="font-mono text-accent">☐</span><span>{item}</span></li>)}
+                </ul>
+              </section>
+            )}
+          </div>
+        </div>
       </div>
       <Button
         type="button"

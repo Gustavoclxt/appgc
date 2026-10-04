@@ -3,9 +3,9 @@ import type { AnaliseIA, Assessment } from "./types";
 import { anamneseParaRelatorio } from "./report-anamnesis";
 import { diarioParaRelatorio } from "./food-diary";
 import { examesParaRelatorio } from "./report-exams";
-import { intervencoesParaRelatorio } from "./interventions";
 import { composicaoParaRelatorio, type ComposicaoDiario } from "./diet-composition";
 import { linhasAlimentosRetirar } from "./food-preferences";
+import { painelClinicoParaRelatorio } from "./clinical-dashboard";
 
 interface Bloco {
   titulo: string;
@@ -85,31 +85,34 @@ function montar(a: Assessment, d: DerivedResults, analise: AnaliseIA, composicao
       ],
     });
   }
-  const txt = (titulo: string, t: string) => t && blocos.push({ titulo, linhas: t.split(/\n+/).map((x) => ({ texto: x })) });
-  txt("Síntese da avaliação", analise.sintese);
-  txt("Composição corporal", analise.composicaoCorporal);
-  txt("Gasto energético", analise.gastoEnergetico);
-  txt("Hidratação", analise.hidratacao);
-  txt("Estratégia energética", analise.estrategiaEnergetica);
-  if (analise.pontosAtencao.length)
-    blocos.push({ titulo: "Pontos de atenção", linhas: analise.pontosAtencao.map((p) => ({ texto: p, nivel: 1 })) });
-  const grupos = intervencoesParaRelatorio(analise.intervencoes);
-  if (grupos.length) {
-    const linhas: Bloco["linhas"] = [];
-    for (const g of grupos) {
-      linhas.push({ texto: g.label.toUpperCase(), negrito: true });
-      for (const c of g.categorias) {
-        linhas.push({ texto: c.categoria, negrito: true });
-        for (const i of c.itens) {
-          if (i.problema) linhas.push({ texto: i.problema, nivel: 1 });
-          for (const acao of i.acoes) linhas.push({ texto: `→ ${acao}`, nivel: 2 });
-          if (i.justificativa) linhas.push({ texto: `(${i.justificativa})`, nivel: 2 });
-        }
-      }
-    }
-    blocos.push({ titulo: "Mudanças e intervenções sugeridas", linhas });
+  const painel = painelClinicoParaRelatorio(analise);
+  if (painel.resumo.length) {
+    blocos.push({ titulo: "Resumo clínico", linhas: painel.resumo.map((item) => kv(item.label, item.valor)) });
   }
-  txt("Sugestão técnica", analise.sugestaoTecnica);
+  if (painel.achados.length) {
+    blocos.push({
+      titulo: "Principais achados",
+      linhas: painel.achados.flatMap((grupo) => [
+        { texto: grupo.titulo.toUpperCase(), negrito: true },
+        ...grupo.itens.map((texto) => ({ texto, nivel: 1 as const })),
+      ]),
+    });
+  }
+  if (painel.estrategia.length) {
+    blocos.push({
+      titulo: "Estratégia inicial",
+      linhas: painel.estrategia.flatMap((grupo) => [
+        { texto: grupo.categoria, negrito: true },
+        ...grupo.acoes.map((texto) => ({ texto: `→ ${texto}`, nivel: 1 as const })),
+      ]),
+    });
+  }
+  if (painel.foco.length) {
+    blocos.push({ titulo: "Foco até o próximo retorno", linhas: painel.foco.map((texto, index) => ({ texto: `${index + 1}. ${texto}` })) });
+  }
+  if (painel.reavaliar.length) {
+    blocos.push({ titulo: "Reavaliar no retorno", linhas: painel.reavaliar.map((texto) => ({ texto: `☐ ${texto}` })) });
+  }
   return blocos;
 }
 
