@@ -173,14 +173,13 @@ export function generatePDF(
       doc.setFont("helvetica", "bold");
       doc.setFontSize(9.5);
       doc.setTextColor(22, 32, 43);
-      doc.text(refeicao.refeicao, MARGEM, y);
-      const detalhes = [refeicao.horario, refeicao.local].filter(Boolean).join(" · ");
-      if (detalhes) {
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(8.5);
-        doc.setTextColor(91, 102, 114);
-        doc.text(detalhes, MARGEM + 58, y);
-      }
+      const detalhes = [
+        refeicao.horario ? `- ${refeicao.horario}` : "",
+        refeicao.local ? `(${refeicao.local})` : "",
+      ]
+        .filter(Boolean)
+        .join(" ");
+      doc.text(detalhes ? `${refeicao.refeicao} ${detalhes}` : refeicao.refeicao, MARGEM, y);
       y += 4.8;
       for (const alimento of refeicao.alimentos) {
         paragrafo(`• ${alimento}`);
