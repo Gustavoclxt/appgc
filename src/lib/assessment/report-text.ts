@@ -1,4 +1,12 @@
-import { fmt2, fmtData, fmtInt, fmtLitros, labelEstrategia, labelMetodo, type DerivedResults } from "./calculations";
+import {
+  fmt2,
+  fmtData,
+  fmtInt,
+  fmtLitros,
+  labelEstrategia,
+  labelMetodo,
+  type DerivedResults,
+} from "./calculations";
 import type { AnaliseIA, Assessment } from "./types";
 import { anamneseParaRelatorio } from "./report-anamnesis";
 import { diarioParaRelatorio } from "./food-diary";
@@ -28,8 +36,17 @@ const statusLabel: Record<string, string> = {
   indeterminado: "Indeterminado",
 };
 
-function montar(a: Assessment, d: DerivedResults, analise: AnaliseIA, composicao: ComposicaoDiario | null): Bloco[] {
-  const kv = (l: string, v: string): Linha => ({ texto: `${l}: ${v || "—"}`, rotulo: l, valor: v || "—" });
+function montar(
+  a: Assessment,
+  d: DerivedResults,
+  analise: AnaliseIA,
+  composicao: ComposicaoDiario | null,
+): Bloco[] {
+  const kv = (l: string, v: string): Linha => ({
+    texto: `${l}: ${v || "—"}`,
+    rotulo: l,
+    valor: v || "—",
+  });
   const blocos: Bloco[] = [];
   blocos.push({
     titulo: "Dados do paciente",
@@ -43,9 +60,15 @@ function montar(a: Assessment, d: DerivedResults, analise: AnaliseIA, composicao
       kv("Profissão", a.profissao),
       kv("Objetivos", a.objetivos.join(", ")),
       kv("IMC", d.imc !== null ? `${fmt2(d.imc)} — ${d.classificacaoIMC}` : ""),
-      kv("% de gordura", d.percentualGordura !== null ? `${fmt2(d.percentualGordura)}%` : "não informado"),
+      kv(
+        "% de gordura",
+        d.percentualGordura !== null ? `${fmt2(d.percentualGordura)}%` : "não informado",
+      ),
       kv("Massa gorda", d.massaGorda !== null ? `${fmt2(d.massaGorda)} kg` : ""),
-      kv("Massa livre de gordura", d.massaLivreGordura !== null ? `${fmt2(d.massaLivreGordura)} kg` : ""),
+      kv(
+        "Massa livre de gordura",
+        d.massaLivreGordura !== null ? `${fmt2(d.massaLivreGordura)} kg` : "",
+      ),
       kv("Método de TMB", labelMetodo[a.metodoTMB] ?? ""),
       kv("TMB", d.tmb !== null ? `${fmtInt(d.tmb)} kcal/dia` : ""),
       kv("Fator de atividade", d.fatorAtividade !== null ? fmt2(d.fatorAtividade) : ""),
@@ -57,12 +80,19 @@ function montar(a: Assessment, d: DerivedResults, analise: AnaliseIA, composicao
           : "",
       ),
       kv("Estratégia", labelEstrategia[a.estrategia] ?? ""),
-      kv("Calorias sugeridas", d.caloriasSugeridas !== null ? `${fmtInt(d.caloriasSugeridas)} kcal/dia` : ""),
+      kv(
+        "Calorias sugeridas",
+        d.caloriasSugeridas !== null ? `${fmtInt(d.caloriasSugeridas)} kcal/dia` : "",
+      ),
     ],
     formato: "tabela",
   });
   for (const s of anamneseParaRelatorio(a, d))
-    blocos.push({ titulo: s.title, linhas: s.fields.map((f) => kv(f.label, f.value)), formato: "tabela" });
+    blocos.push({
+      titulo: s.title,
+      linhas: s.fields.map((f) => kv(f.label, f.value)),
+      formato: "tabela",
+    });
   const retirar = linhasAlimentosRetirar(a);
   if (retirar.length)
     blocos.push({
@@ -75,7 +105,10 @@ function montar(a: Assessment, d: DerivedResults, analise: AnaliseIA, composicao
   if (diario.length) {
     const linhas: Bloco["linhas"] = [];
     for (const r of diario) {
-      linhas.push({ texto: [r.refeicao, r.horario, r.local].filter(Boolean).join(" · "), negrito: true });
+      linhas.push({
+        texto: [r.refeicao, r.horario, r.local].filter(Boolean).join(" · "),
+        negrito: true,
+      });
       for (const al of r.alimentos) linhas.push({ texto: al, nivel: 1 });
     }
     blocos.push({ titulo: "Recordatório 24h", linhas, formato: "grupos" });
@@ -104,7 +137,11 @@ function montar(a: Assessment, d: DerivedResults, analise: AnaliseIA, composicao
   }
   const painel = painelClinicoParaRelatorio(analise, a, d, composicao);
   if (painel.resumo.length) {
-    blocos.push({ titulo: "Resumo clínico", linhas: painel.resumo.map((item) => kv(item.label, item.valor)), formato: "tabela" });
+    blocos.push({
+      titulo: "Resumo clínico",
+      linhas: painel.resumo.map((item) => kv(item.label, item.valor)),
+      formato: "tabela",
+    });
   }
   if (painel.achados.length) {
     blocos.push({
@@ -127,10 +164,21 @@ function montar(a: Assessment, d: DerivedResults, analise: AnaliseIA, composicao
     });
   }
   if (painel.foco.length) {
-    blocos.push({ titulo: "Foco até o próximo retorno", linhas: painel.foco.map((texto, index) => ({ texto: `${index + 1}. ${texto}`, valor: texto })), formato: "lista-ordenada" });
+    blocos.push({
+      titulo: "Foco até o próximo retorno",
+      linhas: painel.foco.map((texto, index) => ({
+        texto: `${index + 1}. ${texto}`,
+        valor: texto,
+      })),
+      formato: "lista-ordenada",
+    });
   }
   if (painel.reavaliar.length) {
-    blocos.push({ titulo: "Reavaliar no retorno", linhas: painel.reavaliar.map((texto) => ({ texto: `☐ ${texto}`, valor: texto })), formato: "checklist" });
+    blocos.push({
+      titulo: "Reavaliar no retorno",
+      linhas: painel.reavaliar.map((texto) => ({ texto: `☐ ${texto}`, valor: texto })),
+      formato: "checklist",
+    });
   }
   return blocos;
 }
@@ -141,7 +189,10 @@ const fonte = "font-family:Calibri,Arial,sans-serif;font-size:11pt;line-height:1
 
 function tabelaHtml(linhas: Linha[]) {
   return `<table role="presentation" style="width:100%;border-collapse:collapse;margin:0 0 10pt 0"><tbody>${linhas
-    .map((linha) => `<tr><th scope="row" style="${fonte};width:34%;padding:3pt 10pt 3pt 0;text-align:left;vertical-align:top;font-weight:700">${esc(linha.rotulo ?? "")}</th><td style="${fonte};padding:3pt 0;vertical-align:top">${esc(linha.valor ?? "—")}</td></tr>`)
+    .map(
+      (linha) =>
+        `<tr><th scope="row" style="${fonte};width:34%;padding:3pt 10pt 3pt 0;text-align:left;vertical-align:top;font-weight:700">${esc(linha.rotulo ?? "")}</th><td style="${fonte};padding:3pt 0;vertical-align:top">${esc(linha.valor ?? "—")}</td></tr>`,
+    )
     .join("")}</tbody></table>`;
 }
 
@@ -184,16 +235,30 @@ function blocoHtml(bloco: Bloco) {
     );
   }
   if (bloco.formato === "lista-ordenada") {
-    return titulo + `<ol style="margin:0 0 10pt 20pt;padding:0">${bloco.linhas.map((linha) => `<li style="${fonte};margin:0 0 4pt 0;padding-left:2pt">${esc(linha.valor ?? linha.texto)}</li>`).join("")}</ol>`;
+    return (
+      titulo +
+      `<ol style="margin:0 0 10pt 20pt;padding:0">${bloco.linhas.map((linha) => `<li style="${fonte};margin:0 0 4pt 0;padding-left:2pt">${esc(linha.valor ?? linha.texto)}</li>`).join("")}</ol>`
+    );
   }
   if (bloco.formato === "checklist") {
-    return titulo + `<ul style="margin:0 0 10pt 0;padding:0;list-style:none">${bloco.linhas.map((linha) => `<li style="${fonte};margin:0 0 4pt 0">☐ ${esc(linha.valor ?? linha.texto)}</li>`).join("")}</ul>`;
+    return (
+      titulo +
+      `<ul style="margin:0 0 10pt 0;padding:0;list-style:none">${bloco.linhas.map((linha) => `<li style="${fonte};margin:0 0 4pt 0">☐ ${esc(linha.valor ?? linha.texto)}</li>`).join("")}</ul>`
+    );
   }
-  return titulo + `<div>${bloco.linhas.map((linha) => `<p style="${fonte};margin:0 0 4pt ${(linha.nivel ?? 0) * 18}pt">${linha.negrito ? `<strong>${esc(linha.texto)}</strong>` : esc(linha.texto)}</p>`).join("")}</div>`;
+  return (
+    titulo +
+    `<div>${bloco.linhas.map((linha) => `<p style="${fonte};margin:0 0 4pt ${(linha.nivel ?? 0) * 18}pt">${linha.negrito ? `<strong>${esc(linha.texto)}</strong>` : esc(linha.texto)}</p>`).join("")}</div>`
+  );
 }
 
 /** Texto puro e HTML rico e semântico para colar em editores de texto. */
-export function relatorioParaCopia(a: Assessment, d: DerivedResults, analise: AnaliseIA, composicao: ComposicaoDiario | null) {
+export function relatorioParaCopia(
+  a: Assessment,
+  d: DerivedResults,
+  analise: AnaliseIA,
+  composicao: ComposicaoDiario | null,
+) {
   const blocos = montar(a, d, analise, composicao);
   const cab = "RELATÓRIO DE AVALIAÇÃO NUTRICIONAL";
   const recuo = ["", "  - ", "      "];
