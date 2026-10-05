@@ -207,7 +207,7 @@ function gruposHtml(linhas: Linha[]) {
   for (const linha of linhas) {
     if (linha.negrito) {
       html += fecharLista();
-      html += `<h3 style="${fonte};font-weight:700;margin:8pt 0 3pt 0">${esc(linha.texto)}</h3>`;
+      html += `<h3 style="${fonte};font-weight:700;margin:8pt 0 3pt 0"><strong>${esc(linha.texto)}</strong></h3>`;
       continue;
     }
     if ((linha.nivel ?? 0) > 0) {
