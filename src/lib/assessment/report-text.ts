@@ -18,7 +18,7 @@ interface Linha {
 interface Bloco {
   titulo: string;
   linhas: Linha[];
-  formato?: "tabela" | "grupos" | "lista-ordenada" | "checklist";
+  formato?: "tabela" | "grupos" | "lista" | "lista-ordenada" | "checklist";
 }
 
 const statusLabel: Record<string, string> = {
@@ -64,7 +64,12 @@ function montar(a: Assessment, d: DerivedResults, analise: AnaliseIA, composicao
   for (const s of anamneseParaRelatorio(a, d))
     blocos.push({ titulo: s.title, linhas: s.fields.map((f) => kv(f.label, f.value)), formato: "tabela" });
   const retirar = linhasAlimentosRetirar(a);
-  if (retirar.length) blocos.push({ titulo: "Alimentos não consumidos", linhas: retirar.map((texto) => ({ texto })) });
+  if (retirar.length)
+    blocos.push({
+      titulo: "Alimentos não consumidos",
+      linhas: retirar.map((texto) => ({ texto })),
+      formato: "lista",
+    });
 
   const diario = diarioParaRelatorio(a.diarioAlimentar);
   if (diario.length) {
@@ -94,6 +99,7 @@ function montar(a: Assessment, d: DerivedResults, analise: AnaliseIA, composicao
         })),
         ...(a.observacoesExames ? [{ texto: `Observações: ${a.observacoesExames}` }] : []),
       ],
+      formato: "lista",
     });
   }
   const painel = painelClinicoParaRelatorio(analise, a, d, composicao);
@@ -171,6 +177,12 @@ function blocoHtml(bloco: Bloco) {
   const titulo = `<h2 style="${fonte};font-size:13pt;font-weight:700;margin:16pt 0 7pt 0;padding-bottom:3pt;border-bottom:1px solid #cfd6dc">${esc(bloco.titulo)}</h2>`;
   if (bloco.formato === "tabela") return titulo + tabelaHtml(bloco.linhas);
   if (bloco.formato === "grupos") return titulo + gruposHtml(bloco.linhas);
+  if (bloco.formato === "lista") {
+    return (
+      titulo +
+      `<ul style="margin:0 0 10pt 18pt;padding:0">${bloco.linhas.map((linha) => `<li style="${fonte};margin:0 0 4pt 0;padding-left:2pt">${linha.negrito ? `<strong>${esc(linha.texto)}</strong>` : esc(linha.texto)}</li>`).join("")}</ul>`
+    );
+  }
   if (bloco.formato === "lista-ordenada") {
     return titulo + `<ol style="margin:0 0 10pt 20pt;padding:0">${bloco.linhas.map((linha) => `<li style="${fonte};margin:0 0 4pt 0;padding-left:2pt">${esc(linha.valor ?? linha.texto)}</li>`).join("")}</ol>`;
   }
