@@ -6,7 +6,7 @@ export const vegetais = [
   "Vagem", "Quiabo", "Pimentão", "Rabanete", "Nabo", "Abóbora", "Nenhum", "Todos",
 ];
 export const proteinas = ["Bovina", "Frango", "Peixe", "Suína", "Ovos", "Vísceras", "Nenhuma", "Todas"];
-export const carboidratos = ["Arroz", "Macarrão", "Batata", "Batata-doce", "Mandioca", "Pão", "Tapioca", "Cuscuz", "Nenhum", "Todos"];
+export const carboidratos = ["Arroz", "Macarrão", "Batata", "Batata-doce", "Mandioca", "Pão", "Torrada", "Tapioca", "Cuscuz", "Rap10", "Nenhum", "Todos"];
 export const frutas = [
   "Mamão", "Melão", "Morango", "Melancia", "Pêssego", "Laranja", "Mexerica", "Abacaxi",
   "Uva", "Kiwi", "Manga", "Pera", "Ameixa", "Goiaba", "Maçã", "Maracujá", "Banana", "Caqui",
