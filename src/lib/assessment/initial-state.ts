@@ -110,6 +110,8 @@ export function createEmptyAssessment(): Assessment {
     diarioAlimentar: refeicoesIniciais,
 
     tempoAlimentacaoAtual: "",
+    alturaReferida: "",
+    pesoReferido: "",
     evolucaoPeso: "",
     observacoesEvolucao: "",
 

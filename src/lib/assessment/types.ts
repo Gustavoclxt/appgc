@@ -156,6 +156,8 @@ export interface Assessment {
 
   // Evolução do peso
   tempoAlimentacaoAtual: string;
+  alturaReferida: string;
+  pesoReferido: string;
   evolucaoPeso: string;
   observacoesEvolucao: string;
 
