@@ -824,6 +824,12 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
 
       <Panel titulo="Evolução do peso">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <Field label="Altura referida">
+            <TextInput value={a.alturaReferida} onChange={(v) => set("alturaReferida", v)} />
+          </Field>
+          <Field label="Peso referido">
+            <TextInput value={a.pesoReferido} onChange={(v) => set("pesoReferido", v)} />
+          </Field>
           <Field label="Se alimenta dessa forma há quanto tempo?">
             <TextInput value={a.tempoAlimentacaoAtual} onChange={(v) => set("tempoAlimentacaoAtual", v)} />
           </Field>

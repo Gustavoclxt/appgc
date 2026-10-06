@@ -132,6 +132,8 @@ export function buildResumo(a: Assessment, d: DerivedResults, composicao: Compos
 
   t += "\n## Evolução do peso\n";
   t += li("Alimenta-se assim há", a.tempoAlimentacaoAtual);
+  t += li("Altura referida", a.alturaReferida);
+  t += li("Peso referido", a.pesoReferido);
   t += li("Atualmente", a.evolucaoPeso);
   t += li("Observações", a.observacoesEvolucao);
 

@@ -141,6 +141,8 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
     ]),
     secao("Evolução do peso", [
       campo("Tempo da alimentação atual", a.tempoAlimentacaoAtual),
+      campo("Altura referida", a.alturaReferida),
+      campo("Peso referido", a.pesoReferido),
       campo("Evolução atual", a.evolucaoPeso),
       campo("Observações", a.observacoesEvolucao),
     ]),
