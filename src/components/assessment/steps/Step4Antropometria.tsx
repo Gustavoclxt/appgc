@@ -57,10 +57,7 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
           <h2 className="font-display text-base font-semibold tracking-tight">Resultados calculados</h2>
         </div>
         <div className="space-y-4">
-          <Readout
-            label="Peso"
-            valor={d.pesoKg !== null ? `${fmt2(d.pesoKg)} kg` : "—"}
-          />
+          <Readout label="Peso" valor={d.pesoKg !== null ? `${fmt2(d.pesoKg)} kg` : "—"} />
           <div className="h-px bg-white/10" />
           <Readout
             label="IMC"
