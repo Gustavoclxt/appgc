@@ -29,3 +29,5 @@
 - [x] Posicionar o Recordatório 24h entre Preferências e aversões alimentares e Evolução do peso na visualização e no PDF.
 - [x] Reformular exclusivamente a seção final como painel clínico na tela, cópia e PDF.
 - [x] Gerar a cópia do relatório em HTML rico e semântico para editores de texto.
+- [x] Mover a Observação da suplementação para abaixo dos campos do suplemento.
+- [x] Exibir unidade após Peso, IMC e PIO no card Resultados calculados.
