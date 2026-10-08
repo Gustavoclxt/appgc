@@ -59,20 +59,18 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
         <div className="space-y-4">
           <Readout
             label="Peso"
-            valor={d.pesoKg !== null ? fmt2(d.pesoKg) : "—"}
-            sub="kg"
+            valor={d.pesoKg !== null ? `${fmt2(d.pesoKg)} kg` : "—"}
           />
           <div className="h-px bg-white/10" />
           <Readout
             label="IMC"
-            valor={d.imc !== null ? fmt2(d.imc) : "—"}
-            sub="kg/m²"
+            valor={d.imc !== null ? `${fmt2(d.imc)} kg/m²` : "—"}
             destaque={d.classificacaoIMC ?? undefined}
           />
           {d.pio !== null && (
             <>
               <div className="h-px bg-white/10" />
-              <Readout label="PIO" valor={fmt2(d.pio)} sub="kg" />
+              <Readout label="PIO" valor={`${fmt2(d.pio)} kg`} />
             </>
           )}
           <div className="h-px bg-white/10" />
