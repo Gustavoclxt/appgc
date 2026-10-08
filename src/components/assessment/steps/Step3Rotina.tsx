@@ -320,6 +320,9 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               onChange={(v) => set("usaSuplemento", v as typeof a.usaSuplemento)}
               options={simNao}
             />
+            <div className="mt-2">
+              <TextInput value={a.observacaoSuplemento} placeholder="Observação" onChange={(v) => set("observacaoSuplemento", v)} />
+            </div>
           </Field>
           <Field label="Aceita utilizar Whey Protein?">
             <OptionRow
@@ -376,13 +379,6 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
             >
               + Adicionar suplemento
             </RowButton>
-            <Field label="Observação">
-              <TextInput
-                value={a.observacaoSuplemento}
-                placeholder="Observação"
-                onChange={(v) => set("observacaoSuplemento", v)}
-              />
-            </Field>
           </div>
         )}
       </Panel>
