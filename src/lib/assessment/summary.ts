@@ -103,6 +103,10 @@ export function buildResumo(a: Assessment, d: DerivedResults, composicao: Compos
   t += li("Come fora", a.comeFora === "sim" ? `${a.comeForaFrequencia} ${a.comeForaDias}` : a.comeFora);
   t += li("Horários de mais fome", [...a.horariosFome, a.horariosFomePersonalizado].filter(Boolean).join(", "));
   t += li("Observações fome/apetite", a.observacoesFome);
+  t += li("Hábito de beliscar ao longo do dia", a.habitoBeliscar);
+  if (a.habitoBeliscar === "sim") t += li("O que belisca", a.beliscarDescricao);
+  t += li("Utiliza suplemento", a.usaSuplemento);
+  t += li("Observação sobre suplementação", a.observacaoSuplemento);
   if (a.suplementos.length)
     t += `Suplementos: ${a.suplementos.map((s) => `${s.nome} ${s.dose} ${s.horario} ${s.frequencia}`).join("; ")}\n`;
   t += li("Aceita whey protein", a.aceitaWhey);
@@ -132,15 +136,16 @@ export function buildResumo(a: Assessment, d: DerivedResults, composicao: Compos
 
   t += "\n## Evolução do peso\n";
   t += li("Alimenta-se assim há", a.tempoAlimentacaoAtual);
+  t += li("Atualmente", a.evolucaoPeso);
   t += li("Altura referida", a.alturaReferida);
   t += li("Peso referido", a.pesoReferido);
-  t += li("Atualmente", a.evolucaoPeso);
   t += li("Observações", a.observacoesEvolucao);
 
   t += "\n## Antropometria\n";
   t += li("Peso (kg)", d.pesoKg !== null ? fmt2(d.pesoKg) : "");
   t += li("Altura (cm)", d.alturaCm !== null ? fmt2(d.alturaCm) : "");
   t += li("IMC", d.imc !== null ? `${fmt2(d.imc)} (${d.classificacaoIMC})` : "");
+  t += li("PIO (kg)", d.pio !== null ? fmt2(d.pio) : "");
   t +=
     d.percentualGordura !== null
       ? li("% de gordura", `${fmt2(d.percentualGordura)}% (método: ${a.metodoGordura || "não informado"})`)

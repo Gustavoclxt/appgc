@@ -87,8 +87,11 @@ export function createEmptyAssessment(): Assessment {
     horariosFome: [],
     horariosFomePersonalizado: "",
     observacoesFome: "",
+    habitoBeliscar: "",
+    beliscarDescricao: "",
 
     usaSuplemento: "",
+    observacaoSuplemento: "",
     suplementos: [],
     aceitaWhey: "",
 

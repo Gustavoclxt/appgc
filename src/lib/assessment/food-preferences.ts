@@ -3,7 +3,7 @@ import type { Assessment } from "./types";
 export const vegetais = [
   "Alface", "Rúcula", "Agrião", "Couve", "Espinafre", "Acelga", "Repolho", "Couve-flor",
   "Brócolis", "Abobrinha", "Berinjela", "Pepino", "Tomate", "Cenoura", "Beterraba", "Chuchu",
-  "Vagem", "Quiabo", "Pimentão", "Rabanete", "Nabo", "Abóbora", "Nenhum", "Todos",
+  "Vagem", "Abóbora", "Nenhum", "Todos",
 ];
 export const proteinas = ["Bovina", "Frango", "Peixe", "Suína", "Ovos", "Vísceras", "Nenhuma", "Todas"];
 export const carboidratos = ["Arroz", "Macarrão", "Batata", "Batata-doce", "Mandioca", "Pão", "Torrada", "Tapioca", "Cuscuz", "Rap10", "Nenhum", "Todos"];
@@ -13,7 +13,7 @@ export const frutas = [
   "Nenhuma", "Todas",
 ];
 export const lacteos = ["Leite", "Iogurte", "Queijo", "Requeijão", "Nenhum", "Todos"];
-export const cereais = ["Aveia", "Quinoa", "Amaranto", "Linhaça", "Chia", "Gergelim", "Nenhum", "Todos"];
+export const cereais = ["Aveia", "Quinoa", "Linhaça", "Chia", "Nenhum", "Todos"];
 export const gorduras = ["Margarina", "Manteiga", "Banha", "Oleaginosas", "Nenhum", "Todas"];
 export const doces = ["Doce de Leite", "Geleia", "Pasta de Amendoim", "Sucrilhos", "Biscoitos", "Chocolate", "Bala", "Chicletes", "Guloseimas", "Nenhum", "Todos"];
 export const cafeCha = ["Café", "Chá", "Nenhum"];

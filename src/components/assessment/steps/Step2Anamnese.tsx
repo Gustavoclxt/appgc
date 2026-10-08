@@ -173,7 +173,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           </Field>
           {a.eaas === "sim" && (
             <Field label="Especifique" className="sm:col-span-2">
-              <LongText value={a.eaasDescricao} onChange={(v) => set("eaasDescricao", v)} rows={2} />
+              <TextInput value={a.eaasDescricao} onChange={(v) => set("eaasDescricao", v)} />
             </Field>
           )}
           <Field label="Hábitos sociais" className="sm:col-span-2">
@@ -235,6 +235,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               onChange={(v) => set("frequenciaEvacuacao", v)}
               options={[
                 "1 vez por dia",
+                "1 a 2 vezes por dia",
                 "2 vezes por dia",
                 "3 vezes por dia",
                 "1 vez por semana",

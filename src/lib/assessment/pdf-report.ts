@@ -16,6 +16,7 @@ import { anamneseParaRelatorio } from "./report-anamnesis";
 import { composicaoParaRelatorio, type ComposicaoDiario } from "./diet-composition";
 import { linhasAlimentosRetirar } from "./food-preferences";
 import { painelClinicoParaRelatorio } from "./clinical-dashboard";
+import { REPORT_HEADER_COLOR } from "./report-theme";
 
 const MARGEM = 16;
 const LARGURA = 210;
@@ -140,16 +141,15 @@ export function generatePDF(
   };
 
   // Cabeçalho
-  doc.setFillColor(22, 32, 43);
+  doc.setFillColor(...REPORT_HEADER_COLOR);
   doc.rect(0, 0, LARGURA, 26, "F");
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
-  doc.text("RELATÓRIO DE AVALIAÇÃO NUTRICIONAL", MARGEM, 13);
+  doc.text("RELATÓRIO DE AVALIAÇÃO NUTRICIONAL", LARGURA / 2, 13, { align: "center" });
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
-  doc.text("Avaliação nutricional clínica e esportiva", MARGEM, 19.5);
-  doc.text(fmtData(a.dataAvaliacao), LARGURA - MARGEM, 19.5, { align: "right" });
+  doc.text("GC - Excelência em Nutrição", LARGURA / 2, 19.5, { align: "center" });
   y = 36;
 
   titulo("Dados do paciente");
@@ -205,6 +205,7 @@ export function generatePDF(
   linha("Peso", d.pesoKg !== null ? `${fmt2(d.pesoKg)} kg` : "—");
   linha("Altura", d.alturaCm !== null ? `${fmt2(d.alturaCm)} cm` : "—");
   linha("IMC", d.imc !== null ? `${fmt2(d.imc)} — ${d.classificacaoIMC}` : "—");
+  if (d.pio !== null) linha("PIO", `${fmt2(d.pio)} kg`);
   if (d.percentualGordura !== null) {
     linha("% de gordura", `${fmt2(d.percentualGordura)}%`);
     linha("Método", a.metodoGordura || "—");

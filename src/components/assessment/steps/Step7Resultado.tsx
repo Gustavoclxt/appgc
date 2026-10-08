@@ -145,6 +145,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
           <Dado label="Profissão" valor={a.profissao || "—"} />
           <Dado label="Objetivos" valor={a.objetivos.join(", ") || "—"} />
           <Dado label="IMC" valor={d.imc !== null ? `${fmt2(d.imc)} — ${d.classificacaoIMC}` : "—"} />
+          {d.pio !== null && <Dado label="PIO" valor={`${fmt2(d.pio)} kg`} />}
           <Dado
             label="% de gordura"
             valor={d.percentualGordura !== null ? `${fmt2(d.percentualGordura)}%` : "não informado"}

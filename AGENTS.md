@@ -17,3 +17,6 @@
 - Mantenha o fluxo principal em seis etapas, com Dados/Anamnese juntos e Relatório/PDF juntos, para reduzir a navegação.
 - Centralize a estrutura do painel clínico final para manter tela, cópia e PDF com os mesmos blocos e ordem.
 - Preserve a cópia do relatório em formatos HTML semântico e texto puro para compatibilidade com editores ricos e simples.
+- Keep adjusted-weight and hydration decisions in deriveResults so all displays and exports consume the same unrounded result.
+- Keep training-day global selection transitions in training-days.ts so training and rest controls remain consistent and testable.
+- Keep PDF branding colors in report-theme.ts so print presentation uses centralized tokens.
