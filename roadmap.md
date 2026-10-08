@@ -1,5 +1,10 @@
 # Roadmap
 
+- [ ] Ajustar campos da anamnese, suplementação, beliscos e evolução do peso.
+- [ ] Corrigir seleções globais dos dias e remover alimentos solicitados.
+- [ ] Calcular PIO e usar PIO na hidratação em sobrepeso/obesidade, com testes.
+- [ ] Ajustar cabeçalho do PDF e verificar visualmente.
+
 - [x] Mover Profissão para Dados básicos.
 - [x] Incorporar Medicamentos ao Histórico clínico.
 - [x] Incorporar Treino e rotina à Rotina de trabalho.
