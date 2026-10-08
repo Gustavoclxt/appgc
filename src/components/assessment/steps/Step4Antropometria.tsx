@@ -69,6 +69,12 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
             sub="kg/m²"
             destaque={d.classificacaoIMC ?? undefined}
           />
+          {d.pio !== null && (
+            <>
+              <div className="h-px bg-white/10" />
+              <Readout label="PIO" valor={fmt2(d.pio)} sub="kg" />
+            </>
+          )}
           <div className="h-px bg-white/10" />
           <Readout
             label="Gordura corporal"

@@ -130,9 +130,12 @@ export interface Assessment {
   horariosFome: string[];
   horariosFomePersonalizado: string;
   observacoesFome: string;
+  habitoBeliscar: "sim" | "nao" | "";
+  beliscarDescricao: string;
 
   // Suplementação
   usaSuplemento: "sim" | "nao" | "";
+  observacaoSuplemento: string;
   suplementos: Suplemento[];
   aceitaWhey: "sim" | "nao" | "";
 

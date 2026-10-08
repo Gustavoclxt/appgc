@@ -120,7 +120,10 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Come fora", a.comeFora === "sim" ? ["Sim", a.comeForaFrequencia, a.comeForaDias].filter(Boolean).join(" · ") : simNao(a.comeFora)),
       campo("Horários de maior fome", [...a.horariosFome, a.horariosFomePersonalizado].filter(Boolean).join(", ")),
       campo("Observações sobre fome/apetite", a.observacoesFome),
+      campo("Hábito de beliscar ao longo do dia?", simNao(a.habitoBeliscar)),
+      campo("O que?", a.habitoBeliscar === "sim" ? a.beliscarDescricao : ""),
       campo("Utiliza suplemento", simNao(a.usaSuplemento)),
+      campo("Observação sobre suplementação", a.observacaoSuplemento),
       campo("Suplementos", suplementos.join("; ")),
       campo("Aceita Whey Protein", simNao(a.aceitaWhey)),
     ]),
@@ -141,9 +144,9 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
     ]),
     secao("Evolução do peso", [
       campo("Tempo da alimentação atual", a.tempoAlimentacaoAtual),
+      campo("Evolução atual", a.evolucaoPeso),
       campo("Altura referida", a.alturaReferida),
       campo("Peso referido", a.pesoReferido),
-      campo("Evolução atual", a.evolucaoPeso),
       campo("Observações", a.observacoesEvolucao),
     ]),
   ].filter((section): section is ReportSection => section !== null);

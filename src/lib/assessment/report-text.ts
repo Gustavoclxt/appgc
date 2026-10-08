@@ -60,6 +60,7 @@ function montar(
       kv("Profissão", a.profissao),
       kv("Objetivos", a.objetivos.join(", ")),
       kv("IMC", d.imc !== null ? `${fmt2(d.imc)} — ${d.classificacaoIMC}` : ""),
+      ...(d.pio !== null ? [kv("PIO", `${fmt2(d.pio)} kg`)] : []),
       kv(
         "% de gordura",
         d.percentualGordura !== null ? `${fmt2(d.percentualGordura)}%` : "não informado",

@@ -92,6 +92,14 @@ export function calculateWaterRequirement(pesoKg: number) {
   return { min: pesoKg * 30, max: pesoKg * 35 };
 }
 
+/** PIO applies only to overweight/obesity; retain full precision for hydration. */
+export function calculateAdjustedWeight(pesoKg: number, alturaCm: number): number | null {
+  const imc = calculateBMI(pesoKg, alturaCm);
+  if (imc === null || imc < 25) return null;
+  const pesoIdeal = 24.9 * (alturaCm / 100) ** 2;
+  return (pesoKg - pesoIdeal) * 0.25 + pesoIdeal;
+}
+
 export function calculateCalorieDeficit(vet: number, percentual: number): number {
   return vet * (1 - percentual / 100);
 }
@@ -138,6 +146,7 @@ export interface DerivedResults {
   pesoKg: number | null;
   imc: number | null;
   classificacaoIMC: string | null;
+  pio: number | null;
   percentualGordura: number | null;
   massaGorda: number | null;
   massaLivreGordura: number | null;
@@ -161,6 +170,7 @@ export function deriveResults(a: Assessment): DerivedResults {
   const percentualGordura = parseNumero(a.percentualGordura);
 
   const imc = pesoKg !== null && alturaCm !== null ? calculateBMI(pesoKg, alturaCm) : null;
+  const pio = pesoKg !== null && alturaCm !== null ? calculateAdjustedWeight(pesoKg, alturaCm) : null;
   const massaGorda =
     pesoKg !== null && percentualGordura !== null
       ? calculateBodyFatMass(pesoKg, percentualGordura)
@@ -176,7 +186,7 @@ export function deriveResults(a: Assessment): DerivedResults {
   const fatorAtividade = parseNumero(a.fatorAtividade);
   const vet = tmb !== null && fatorAtividade !== null ? calculateVET(tmb, fatorAtividade) : null;
 
-  const agua = pesoKg !== null ? calculateWaterRequirement(pesoKg) : null;
+  const agua = pesoKg !== null ? calculateWaterRequirement(pio ?? pesoKg) : null;
 
   const percentualAjuste = parseNumero(a.percentualAjuste);
   const kcalAjuste = parseNumero(a.kcalAjuste);
@@ -202,6 +212,7 @@ export function deriveResults(a: Assessment): DerivedResults {
     pesoKg,
     imc,
     classificacaoIMC: imc !== null ? classificarIMC(imc) : null,
+    pio,
     percentualGordura,
     massaGorda,
     massaLivreGordura,

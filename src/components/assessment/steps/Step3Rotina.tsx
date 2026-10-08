@@ -16,6 +16,7 @@ import {
 import type { StepProps } from "./types";
 import { cafeCha, carboidratos, cereais, doces, frutas, gorduras, lacteos, proteinas, vegetais } from "@/lib/assessment/food-preferences";
 import { chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
+import { DIAS_SEMANA, selecionarDias } from "@/lib/assessment/training-days";
 
 interface Props extends StepProps {
   composicao: ComposicaoDiario | null;
@@ -27,8 +28,6 @@ const simNao = [
   { value: "sim", label: "Sim" },
   { value: "nao", label: "Não" },
 ];
-
-const DIAS_SEMANA = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"];
 
 const selecionarPreferencia = (atuais: string[], valor: string, opcoes: string[]) => {
   const nenhum = valor === "Nenhum" || valor === "Nenhuma";
@@ -171,20 +170,10 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                         : DIAS_SEMANA.filter((d) => m.diasSemana.split(", ").includes(d))
                     }
                     onChange={(vals) => {
-                      if (m.diasSemana === "Todos") {
-                        if (!vals.includes("Todos")) {
-                          set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, diasSemana: "" } : x)));
-                        }
-                        return;
-                      }
-                      if (vals.includes("Todos")) {
-                        set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, diasSemana: "Todos" } : x)));
-                        return;
-                      }
                       set(
                         "modalidades",
                         a.modalidades.map((x, j) =>
-                          j === i ? { ...x, diasSemana: DIAS_SEMANA.filter((d) => vals.includes(d)).join(", ") } : x,
+                          j === i ? { ...x, diasSemana: selecionarDias(m.diasSemana, vals, "Todos") } : x,
                         ),
                       );
                     }}
@@ -202,20 +191,10 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                         : DIAS_SEMANA.filter((d) => m.diasDescanso.split(", ").includes(d))
                     }
                     onChange={(vals) => {
-                      if (m.diasDescanso === "Nenhum") {
-                        if (!vals.includes("Nenhum")) {
-                          set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, diasDescanso: "" } : x)));
-                        }
-                        return;
-                      }
-                      if (vals.includes("Nenhum")) {
-                        set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, diasDescanso: "Nenhum" } : x)));
-                        return;
-                      }
                       set(
                         "modalidades",
                         a.modalidades.map((x, j) =>
-                          j === i ? { ...x, diasDescanso: DIAS_SEMANA.filter((d) => vals.includes(d)).join(", ") } : x,
+                          j === i ? { ...x, diasDescanso: selecionarDias(m.diasDescanso, vals, "Nenhum") } : x,
                         ),
                       );
                     }}
@@ -315,6 +294,21 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
           <Field label="Observações sobre fome/apetite">
             <LongText value={a.observacoesFome} onChange={(v) => set("observacoesFome", v)} rows={2} />
           </Field>
+          <Field label="Hábito de beliscar ao longo do dia?">
+            <OptionRow
+              value={a.habitoBeliscar}
+              onChange={(v) => {
+                set("habitoBeliscar", v as typeof a.habitoBeliscar);
+                if (v !== "sim") set("beliscarDescricao", "");
+              }}
+              options={simNao}
+            />
+          </Field>
+          {a.habitoBeliscar === "sim" && (
+            <Field label="O que?">
+              <TextInput value={a.beliscarDescricao} onChange={(v) => set("beliscarDescricao", v)} />
+            </Field>
+          )}
         </div>
       </Panel>
 
@@ -326,6 +320,9 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               onChange={(v) => set("usaSuplemento", v as typeof a.usaSuplemento)}
               options={simNao}
             />
+            <div className="mt-2">
+              <TextInput value={a.observacaoSuplemento} placeholder="Observação" onChange={(v) => set("observacaoSuplemento", v)} />
+            </div>
           </Field>
           <Field label="Aceita utilizar Whey Protein?">
             <OptionRow
@@ -824,12 +821,6 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
 
       <Panel titulo="Evolução do peso">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <Field label="Altura referida">
-            <TextInput value={a.alturaReferida} onChange={(v) => set("alturaReferida", v)} />
-          </Field>
-          <Field label="Peso referido">
-            <TextInput value={a.pesoReferido} onChange={(v) => set("pesoReferido", v)} />
-          </Field>
           <Field label="Se alimenta dessa forma há quanto tempo?">
             <TextInput value={a.tempoAlimentacaoAtual} onChange={(v) => set("tempoAlimentacaoAtual", v)} />
           </Field>
@@ -843,6 +834,12 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                 { value: "Ganhando peso", label: "Ganhando peso" },
               ]}
             />
+          </Field>
+          <Field label="Altura referida">
+            <TextInput value={a.alturaReferida} onChange={(v) => set("alturaReferida", v)} />
+          </Field>
+          <Field label="Peso referido">
+            <TextInput value={a.pesoReferido} onChange={(v) => set("pesoReferido", v)} />
           </Field>
           <Field label="Observações" className="sm:col-span-2">
             <LongText value={a.observacoesEvolucao} onChange={(v) => set("observacoesEvolucao", v)} rows={3} />
