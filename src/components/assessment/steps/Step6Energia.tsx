@@ -55,7 +55,7 @@ export function Step6Energia({
         />
         <div className="mt-4 max-w-xs">
           <Field
-            label="Fator personalizado"
+            label="Fator Atividade personalizado"
             hint="Para 2,0 ou superior, informe o valor manualmente."
           >
             <UnitInput
