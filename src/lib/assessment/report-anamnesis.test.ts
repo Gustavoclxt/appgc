@@ -56,3 +56,25 @@ describe("granola e azeite de oliva nas preferências", () => {
     expect(fora).not.toContain("azeite de oliva");
   });
 });
+
+describe("grupo Bebidas", () => {
+  it("aparece como Bebidas no relatório, com as opções marcadas", () => {
+    const a = createEmptyAssessment();
+    a.prefCafeCha = ["Café", "Suco Natural"];
+    const secoes = anamneseParaRelatorio(a, deriveResults(a));
+    const campo = secoes.flatMap((s) => s.fields).find((f) => f.label === "Bebidas");
+    expect(campo?.value).toBe("Café, Suco Natural");
+    expect(secoes.flatMap((s) => s.fields).some((f) => f.label === "Café/chá")).toBe(false);
+  });
+
+  it("lista os refrigerantes e sucos a retirar quando não marcados", () => {
+    const a = createEmptyAssessment();
+    a.prefCafeCha = ["Café"];
+    const fora = alimentosNaoConsumidos(a);
+    expect(fora).toContain("refri normal");
+    expect(fora).toContain("refri zero");
+    expect(fora).toContain("suco natural");
+    expect(fora).toContain("suco artificial");
+    expect(fora).not.toContain("café");
+  });
+});
