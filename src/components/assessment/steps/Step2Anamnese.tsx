@@ -215,7 +215,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
 
       <Panel titulo="Revisão de Sistemas">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <Field label="Função estomacal" className="sm:col-span-2">
+          <Field label="Função estomacal/intestinal" className="sm:col-span-2">
             <MultiOptionRow
               values={a.funcaoEstomacal}
               onChange={(v) => {
@@ -226,6 +226,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
                 { value: "Normal", label: "Normal" },
                 { value: "Azia", label: "Azia" },
                 { value: "Eructação excessiva", label: "Eructação excessiva" },
+                { value: "Flatulência excessiva", label: "Flatulência excessiva" },
               ]}
             />
           </Field>

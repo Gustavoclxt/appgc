@@ -68,7 +68,7 @@ export function buildResumo(a: Assessment, d: DerivedResults, composicao: Compos
   t += li("Alimentos a retirar por preferências, alergias, aversões e restrições", retirar);
 
   t += "\n## Revisão de sistemas\n";
-  t += li("Função estomacal", a.funcaoEstomacal.join(", "));
+  t += li("Função estomacal/intestinal", a.funcaoEstomacal.join(", "));
   t += li("Frequência de evacuação", a.frequenciaEvacuacao);
   t += li("Escala de Bristol", a.bristol);
   t += li("Ingestão de líquidos", a.consumoAgua);

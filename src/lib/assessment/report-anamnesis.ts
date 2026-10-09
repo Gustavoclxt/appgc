@@ -95,7 +95,7 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Observações sobre os exames", a.observacoesExames),
     ]),
     secao("Revisão de sistemas", [
-      campo("Função estomacal", lista(a.funcaoEstomacal)),
+      campo("Função estomacal/intestinal", lista(a.funcaoEstomacal)),
       campo("Frequência de evacuação", a.frequenciaEvacuacao),
       campo("Escala de Bristol", bristol[a.bristol] ?? a.bristol),
       campo("Consumo de água / líquidos", a.consumoAgua),
