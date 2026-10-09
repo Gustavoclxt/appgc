@@ -118,6 +118,7 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
     secao("Rotina alimentar e suplementação", [
       campo("Quem prepara os alimentos", a.quemPrepara === "propria" ? "Própria pessoa" : a.quemPrepara === "outra" ? a.quemPreparaOutra || "Outra pessoa" : ""),
       campo("Come fora", a.comeFora === "sim" ? ["Sim", a.comeForaFrequencia, a.comeForaDias].filter(Boolean).join(" · ") : simNao(a.comeFora)),
+      campo("Consome fritos", a.consomeFritos ? [{ sim: "Sim", "as-vezes": "Às vezes", nao: "Não" }[a.consomeFritos], a.consomeFritos !== "nao" ? a.fritosFrequencia : ""].filter(Boolean).join(" · ") : ""),
       campo("Horários de maior fome", [...a.horariosFome, a.horariosFomePersonalizado].filter(Boolean).join(", ")),
       campo("Observações sobre fome/apetite", a.observacoesFome),
       campo("Hábito de beliscar ao longo do dia?", simNao(a.habitoBeliscar)),

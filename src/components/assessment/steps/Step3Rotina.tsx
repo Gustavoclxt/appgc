@@ -264,6 +264,35 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               </Field>
             </>
           )}
+          <Field label="Costuma consumir alimentos fritos?">
+            <OptionRow
+              value={a.consomeFritos}
+              onChange={(v) => {
+                set("consomeFritos", v as typeof a.consomeFritos);
+                if (v !== "sim" && v !== "as-vezes") set("fritosFrequencia", "");
+              }}
+              options={[
+                { value: "sim", label: "Sim" },
+                { value: "as-vezes", label: "Às vezes" },
+                { value: "nao", label: "Não" },
+              ]}
+            />
+          </Field>
+          {(a.consomeFritos === "sim" || a.consomeFritos === "as-vezes") && (
+            <Field label="Com qual frequência">
+              <Select
+                value={a.fritosFrequencia}
+                onChange={(v) => set("fritosFrequencia", v)}
+                options={[
+                  "Raramente (menos de 1x/sem.)",
+                  "1-2x/semana",
+                  "3-4x/semana",
+                  "5 ou mais vezes/sem.",
+                  "Diariamente",
+                ].map((o) => ({ value: o, label: o }))}
+              />
+            </Field>
+          )}
         </div>
 
         <div className="mt-7 grid grid-cols-1 gap-5">

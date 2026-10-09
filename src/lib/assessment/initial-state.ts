@@ -83,6 +83,8 @@ export function createEmptyAssessment(): Assessment {
     comeFora: "",
     comeForaFrequencia: "",
     comeForaDias: "",
+    consomeFritos: "",
+    fritosFrequencia: "",
 
     horariosFome: [],
     horariosFomePersonalizado: "",
