@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { createEmptyAssessment } from "./initial-state";
 import { deriveResults } from "./calculations";
+import { buildResumo } from "./summary";
 import { anamneseParaRelatorio } from "./report-anamnesis";
 
 function suplementosDoRelatorio(observacoes: string) {
