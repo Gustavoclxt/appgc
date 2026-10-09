@@ -39,3 +39,4 @@
 - [x] Excluir o campo "Aceita café com leite?" e trocar o botão "Café" por "Café puro", adicionando "Café com leite" em Bebidas.
 - [x] Limitar "Altura referida" a duas casas decimais com unidade "m" e exibir "kg" em "Peso referido".
 - [x] Adicionar o grupo Leguminosas (Feijão, Lentilha, Ervilha, Soja, Grão de bico, Nenhum, Todas) e reordenar Preferências e aversões alimentares (Carboidratos, Proteínas, Gorduras, Vegetais, Frutas, Leguminosas, Cereais e grãos, Laticínios, Doces, Aversões).
+- [x] Adicionar os botões 25% e 30% ao ajuste percentual de Déficit/Superávit, com teste do cálculo.
