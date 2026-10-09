@@ -245,7 +245,16 @@ describe("grupo Leguminosas e ordem das preferências", () => {
       "Leguminosas", "Cereais e grãos", "Lácteos", "Doces", "Bebidas",
       "Açúcar ou adoçante", "Aversões alimentares",
     ];
-    const secao = anamneseParaRelatorio(createEmptyAssessment(), deriveResults(a := createEmptyAssessment()));
+    const a = createEmptyAssessment();
+    a.prefCarboidratos = ["Arroz"];
+    a.prefLeguminosas = ["Feijão"];
+    a.acucarAdocante = "Açúcar";
+    const secao = anamneseParaRelatorio(a, deriveResults(a)).find((s) => s.title === "Preferências e aversões alimentares");
+    const rotulos = secao?.fields.map((f) => f.label) ?? [];
+    const indices = ordem.map((r) => rotulos.indexOf(r));
+    expect(indices).toEqual(indices.map((_, i) => i));
+    expect(indices.every((i) => i >= 0)).toBe(true);
   });
 });
+
 
