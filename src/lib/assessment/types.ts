@@ -24,6 +24,7 @@ export interface Suplemento {
   dose: string;
   horario: string;
   frequencia: string;
+  observacoes: string;
 }
 
 export interface AlimentoDiario {
