@@ -13,8 +13,8 @@ export const frutas = [
   "Nenhuma", "Todas",
 ];
 export const lacteos = ["Leite", "Iogurte", "Queijo", "Requeijão", "Nenhum", "Todos"];
-export const cereais = ["Aveia", "Quinoa", "Linhaça", "Chia", "Nenhum", "Todos"];
-export const gorduras = ["Margarina", "Manteiga", "Banha", "Oleaginosas", "Nenhum", "Todas"];
+export const cereais = ["Aveia", "Quinoa", "Linhaça", "Chia", "Granola", "Nenhum", "Todos"];
+export const gorduras = ["Margarina", "Manteiga", "Banha", "Oleaginosas", "Azeite de Oliva", "Nenhum", "Todas"];
 export const doces = ["Doce de Leite", "Geleia", "Pasta de Amendoim", "Sucrilhos", "Biscoitos", "Chocolate", "Bala", "Chicletes", "Guloseimas", "Nenhum", "Todos"];
 export const cafeCha = ["Café", "Chá", "Nenhum"];
 
