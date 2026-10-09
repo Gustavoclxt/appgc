@@ -30,4 +30,4 @@
 - [x] Reformular exclusivamente a seção final como painel clínico na tela, cópia e PDF.
 - [x] Gerar a cópia do relatório em HTML rico e semântico para editores de texto.
 - [x] Adicionar Granola a Cereais e Grãos e Azeite de Oliva a Gorduras.
-- [x] Renomear Café/Chá como Bebidas e incluir refrigerantes e sucos.
+- [x] Renomear Café/Chá como Bebidas e incluir refrigerantes, sucos, H2OH, água com gás e chimarrão.
