@@ -120,16 +120,17 @@ export function buildResumo(a: Assessment, d: DerivedResults, composicao: Compos
   t += li("Aceita whey protein", a.aceitaWhey);
 
   t += "\n## Preferências alimentares\n";
+  t += li("Carboidratos", comObs(formatarPreferencia(a.prefCarboidratos, carboidratos, "Todos"), a.observacoesPreferencias["carboidratos"]));
+  t += li("Proteínas", comObs(formatarPreferencia(a.prefProteinas, proteinas, "Todas"), a.observacoesPreferencias["proteinas"]));
+  t += li("Gorduras", comObs(formatarPreferencia(a.prefGorduras, gorduras, "Todas"), a.observacoesPreferencias["gorduras"]));
   t += li("Vegetais/saladas", comObs(formatarPreferencia(a.prefVegetais, vegetais, "Todos"), a.observacoesPreferencias["vegetais"]));
   t += li("Frutas", comObs(formatarPreferencia(a.prefFrutas, frutas, "Todas"), a.observacoesPreferencias["frutas"]));
+  t += li("Leguminosas", comObs(formatarPreferencia(a.prefLeguminosas, leguminosas, "Todas"), a.observacoesPreferencias["leguminosas"]));
+  t += li("Cereais e grãos", comObs(formatarPreferencia(a.prefCereais, cereais, "Todos"), a.observacoesPreferencias["cereais"]));
   t += li("Lácteos", comObs(formatarPreferencia(a.prefLacteos, lacteos, "Todos"), a.observacoesPreferencias["lacteos"]));
+  t += li("Doces", comObs(formatarPreferencia(a.prefDoces, doces, "Todos"), a.observacoesPreferencias["doces"]));
   t += li("Bebidas", comObs(formatarPreferencia(a.prefCafeCha, cafeCha, "Todas"), a.observacoesPreferencias["cafeCha"]));
   t += li("Açúcar ou adoçante", comObs(a.acucarAdocante, a.observacoesPreferencias["acucar"]));
-  t += li("Proteínas", comObs(formatarPreferencia(a.prefProteinas, proteinas, "Todas"), a.observacoesPreferencias["proteinas"]));
-  t += li("Carboidratos", comObs(formatarPreferencia(a.prefCarboidratos, carboidratos, "Todos"), a.observacoesPreferencias["carboidratos"]));
-  t += li("Cereais e grãos", comObs(formatarPreferencia(a.prefCereais, cereais, "Todos"), a.observacoesPreferencias["cereais"]));
-  t += li("Gorduras", comObs(formatarPreferencia(a.prefGorduras, gorduras, "Todas"), a.observacoesPreferencias["gorduras"]));
-  t += li("Doces", comObs(formatarPreferencia(a.prefDoces, doces, "Todos"), a.observacoesPreferencias["doces"]));
   t += li("Aversões", a.aversoes);
   t += li("Observações do recordatório 24h", a.observacoesRecordatorio);
 
