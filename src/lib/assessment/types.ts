@@ -158,7 +158,6 @@ export interface Assessment {
   prefLacteos: string[];
   prefCafeCha: string[];
   acucarAdocante: string;
-  aceitaCafeComLeite: "sim" | "nao" | "";
   prefProteinas: string[];
   prefCarboidratos: string[];
   prefCereais: string[];

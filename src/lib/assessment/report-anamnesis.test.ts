@@ -60,16 +60,16 @@ describe("granola e azeite de oliva nas preferências", () => {
 describe("grupo Bebidas", () => {
   it("aparece como Bebidas no relatório, com as opções marcadas", () => {
     const a = createEmptyAssessment();
-    a.prefCafeCha = ["Café", "Suco Natural"];
+    a.prefCafeCha = ["Café puro", "Café com leite", "Suco Natural"];
     const secoes = anamneseParaRelatorio(a, deriveResults(a));
     const campo = secoes.flatMap((s) => s.fields).find((f) => f.label === "Bebidas");
-    expect(campo?.value).toBe("Café, Suco Natural");
+    expect(campo?.value).toBe("Café puro, Café com leite, Suco Natural");
     expect(secoes.flatMap((s) => s.fields).some((f) => f.label === "Café/chá")).toBe(false);
   });
 
   it("lista as bebidas não marcadas entre os itens a retirar", () => {
     const a = createEmptyAssessment();
-    a.prefCafeCha = ["Café"];
+    a.prefCafeCha = ["Café puro", "Café com leite"];
     const fora = alimentosNaoConsumidos(a);
     expect(fora).toContain("refri normal");
     expect(fora).toContain("refri zero");
@@ -78,7 +78,15 @@ describe("grupo Bebidas", () => {
     expect(fora).toContain("h2oh");
     expect(fora).toContain("água c/gás");
     expect(fora).toContain("chimarrão");
-    expect(fora).not.toContain("café");
+    expect(fora).not.toContain("café puro");
+    expect(fora).not.toContain("café com leite");
+  });
+
+  it("não traz mais a pergunta 'Aceita café com leite' no relatório nem no resumo", () => {
+    const a = createEmptyAssessment();
+    const campos = anamneseParaRelatorio(a, deriveResults(a)).flatMap((s) => s.fields);
+    expect(campos.some((f) => f.label === "Aceita café com leite")).toBe(false);
+    expect(buildResumo(a, deriveResults(a))).not.toContain("Aceita café com leite");
   });
 });
 
@@ -120,7 +128,7 @@ describe("seleção Todas em Bebidas", () => {
 
   it("exibe apenas Todas no relatório quando o grupo inteiro é marcado", () => {
     expect(campoBebidas(todas)?.value).toBe("Todas");
-    expect(campoBebidas(["Café", "Chá"])?.value).toBe("Café, Chá");
+    expect(campoBebidas(["Café puro", "Café com leite", "Chá"])?.value).toBe("Café puro, Café com leite, Chá");
   });
 
   it("não mantém nenhuma bebida entre os alimentos a retirar quando Todas é marcado", () => {

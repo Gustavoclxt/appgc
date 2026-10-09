@@ -528,20 +528,6 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               />
             </div>
           </Field>
-          <Field label="Aceita café com leite?">
-            <OptionRow
-              value={a.aceitaCafeComLeite}
-              onChange={(v) => set("aceitaCafeComLeite", v as typeof a.aceitaCafeComLeite)}
-              options={simNao}
-            />
-            <div className="mt-2">
-              <TextInput
-                value={a.observacoesPreferencias["cafeComLeite"] ?? ""}
-                placeholder="Observações"
-                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "cafeComLeite": v })}
-              />
-            </div>
-          </Field>
           <Field label="Proteínas">
             <MultiOptionRow
               values={a.prefProteinas}
