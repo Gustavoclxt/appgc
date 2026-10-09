@@ -120,6 +120,14 @@ function Index() {
     }
   }, [calcularDiario, diaAtipico]);
 
+  const onRemoverDiaAtipico = useCallback(() => {
+    setDiaAtipico(null);
+    setComposicaoAtipica(null);
+    calculoAtipicoEmCursoRef.current = false;
+    setCalculandoAtipico(false);
+  }, []);
+
+
   useEffect(() => {
     if (etapa !== ETAPAS.length) return;
     if (!alimentosDoDiario(dados.diarioAlimentar).length) return;
