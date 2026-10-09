@@ -29,3 +29,4 @@
 - [x] Posicionar o Recordatório 24h entre Preferências e aversões alimentares e Evolução do peso na visualização e no PDF.
 - [x] Reformular exclusivamente a seção final como painel clínico na tela, cópia e PDF.
 - [x] Gerar a cópia do relatório em HTML rico e semântico para editores de texto.
+- [x] Adicionar Granola a Cereais e Grãos e Azeite de Oliva a Gorduras.
