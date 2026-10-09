@@ -67,7 +67,7 @@ export function Step5Exames({ a, set }: StepProps) {
     <div className="space-y-6">
       <Panel titulo="Anexar Exames Laboratoriais">
         <div className="rounded-[10px] border border-dashed border-line bg-white/50 px-5 py-8 text-center">
-          <p className="text-[13px] text-ink">
+          <p className="text-[13px] font-semibold text-ink">
             Selecione um exame laboratorial em PDF:
           </p>
           <label className="mt-4 inline-flex cursor-pointer items-center rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90">
