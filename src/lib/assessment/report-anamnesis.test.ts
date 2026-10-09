@@ -81,6 +81,13 @@ describe("grupo Bebidas", () => {
     expect(fora).not.toContain("café puro");
     expect(fora).not.toContain("café com leite");
   });
+
+  it("não traz mais a pergunta 'Aceita café com leite' no relatório nem no resumo", () => {
+    const a = createEmptyAssessment();
+    const campos = anamneseParaRelatorio(a, deriveResults(a)).flatMap((s) => s.fields);
+    expect(campos.some((f) => f.label === "Aceita café com leite")).toBe(false);
+    expect(buildResumo(a, deriveResults(a))).not.toContain("Aceita café com leite");
+  });
 });
 
 describe("função estomacal/intestinal", () => {
