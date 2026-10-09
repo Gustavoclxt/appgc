@@ -564,7 +564,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               />
             </div>
           </Field>
-          <Field label="Lácteos">
+          <Field label="Laticínios">
             <MultiOptionRow
               values={a.prefLacteos}
               onChange={(v) => {
