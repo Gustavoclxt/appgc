@@ -116,7 +116,7 @@ export function buildResumo(a: Assessment, d: DerivedResults, composicao: Compos
   t += li("Vegetais/saladas", comObs(formatarPreferencia(a.prefVegetais, vegetais, "Todos"), a.observacoesPreferencias["vegetais"]));
   t += li("Frutas", comObs(formatarPreferencia(a.prefFrutas, frutas, "Todas"), a.observacoesPreferencias["frutas"]));
   t += li("Lácteos", comObs(formatarPreferencia(a.prefLacteos, lacteos, "Todos"), a.observacoesPreferencias["lacteos"]));
-  t += li("Café/chá", comObs(a.prefCafeCha.join(", "), a.observacoesPreferencias["cafeCha"]));
+  t += li("Bebidas", comObs(a.prefCafeCha.join(", "), a.observacoesPreferencias["cafeCha"]));
   t += li("Açúcar ou adoçante", comObs(a.acucarAdocante, a.observacoesPreferencias["acucar"]));
   t += li("Aceita café com leite", comObs(a.aceitaCafeComLeite, a.observacoesPreferencias["cafeComLeite"]));
   t += li("Proteínas", comObs(formatarPreferencia(a.prefProteinas, proteinas, "Todas"), a.observacoesPreferencias["proteinas"]));
