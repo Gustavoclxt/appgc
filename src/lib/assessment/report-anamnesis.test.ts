@@ -4,7 +4,7 @@ import { createEmptyAssessment } from "./initial-state";
 import { deriveResults } from "./calculations";
 import { buildResumo } from "./summary";
 import { anamneseParaRelatorio } from "./report-anamnesis";
-import { alimentosNaoConsumidos } from "./food-preferences";
+import { alimentosNaoConsumidos, cafeCha } from "./food-preferences";
 
 function suplementosDoRelatorio(observacoes: string) {
   const a = createEmptyAssessment();
@@ -106,5 +106,37 @@ describe("função estomacal/intestinal", () => {
     const a = createEmptyAssessment();
     a.funcaoEstomacal = ["Flatulência excessiva"];
     expect(buildResumo(a, deriveResults(a))).toContain("Função estomacal/intestinal: Flatulência excessiva");
+  });
+});
+
+describe("seleção Todas em Bebidas", () => {
+  const todas = cafeCha.filter((o) => o !== "Nenhum");
+
+  function campoBebidas(prefCafeCha: string[]) {
+    const a = createEmptyAssessment();
+    a.prefCafeCha = prefCafeCha;
+    return anamneseParaRelatorio(a, deriveResults(a)).flatMap((s) => s.fields).find((f) => f.label === "Bebidas");
+  }
+
+  it("exibe apenas Todas no relatório quando o grupo inteiro é marcado", () => {
+    expect(campoBebidas(todas)?.value).toBe("Todas");
+    expect(campoBebidas(["Café", "Chá"])?.value).toBe("Café, Chá");
+  });
+
+  it("não mantém nenhuma bebida entre os alimentos a retirar quando Todas é marcado", () => {
+    const a = createEmptyAssessment();
+    a.prefCafeCha = todas;
+    a.prefVegetais = ["Alface"];
+    const fora = alimentosNaoConsumidos(a);
+    expect(fora).toContain("rúcula");
+    expect(fora).not.toContain("café");
+    expect(fora).not.toContain("refri normal");
+    expect(fora).not.toContain("chimarrão");
+  });
+
+  it("leva Todas ao resumo enviado para a análise", () => {
+    const a = createEmptyAssessment();
+    a.prefCafeCha = todas;
+    expect(buildResumo(a, deriveResults(a))).toContain("Bebidas: Todas");
   });
 });
