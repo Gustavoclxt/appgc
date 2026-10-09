@@ -28,6 +28,7 @@ interface Props extends StepProps {
   onCalcular: () => void;
   diaAtipico: Refeicao[] | null;
   onAdicionarDiaAtipico: () => void;
+  onRemoverDiaAtipico: () => void;
   onAlterarDiaAtipico: (refeicoes: Refeicao[]) => void;
   composicaoAtipica: ComposicaoDiario | null;
   calculandoAtipico: boolean;
@@ -53,7 +54,7 @@ const selecionarPreferencia = (atuais: string[], valor: string, opcoes: string[]
     : [...semGlobais, valor].filter((item) => opcoes.includes(item));
 };
 
-export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, diaAtipico, onAdicionarDiaAtipico, onAlterarDiaAtipico, composicaoAtipica, calculandoAtipico, onCalcularAtipico }: Props) {
+export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, diaAtipico, onAdicionarDiaAtipico, onRemoverDiaAtipico, onAlterarDiaAtipico, composicaoAtipica, calculandoAtipico, onCalcularAtipico }: Props) {
   const comp = composicaoParaRelatorio(composicao);
   const desatualizada = composicao !== null && composicao.chave !== chaveDiario(a.diarioAlimentar);
   const [focoId, setFocoId] = useState<string | null>(null);
@@ -827,6 +828,11 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           <Button variant="outline" className="ml-0 sm:ml-3" onClick={onAdicionarDiaAtipico} disabled={diaAtipico !== null}>
             + Adicionar dia atípico
           </Button>
+          {diaAtipico !== null && (
+            <Button variant="outline" className="ml-0 sm:ml-3" onClick={onRemoverDiaAtipico}>
+              - Remover dia atípico
+            </Button>
+          )}
         </div>
 
         <div className="mt-6">
