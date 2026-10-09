@@ -25,4 +25,13 @@ describe("observações de suplemento no relatório", () => {
   it("mantém o item sem observação quando o campo fica vazio", () => {
     expect(suplementosDoRelatorio("   ")).toBe("Creatina · 5 · 07:00 · Diária");
   });
+
+  it("leva a observação ao resumo enviado para a análise", () => {
+    const a = createEmptyAssessment();
+    a.usaSuplemento = "sim";
+    a.suplementos = [
+      { id: "1", nome: "Creatina", dose: "5", horario: "07:00", frequencia: "Diária", observacoes: "Uso com água" },
+    ];
+    expect(buildResumo(a, deriveResults(a))).toContain("Suplementos: Creatina 5 07:00 Diária Obs: Uso com água");
+  });
 });
