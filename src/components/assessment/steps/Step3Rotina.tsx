@@ -30,6 +30,7 @@ interface Props extends StepProps {
   onAdicionarDiaAtipico: () => void;
   onRemoverDiaAtipico: () => void;
   onAlterarDiaAtipico: (refeicoes: Refeicao[]) => void;
+  onCopiarR24h: () => void;
   composicaoAtipica: ComposicaoDiario | null;
   calculandoAtipico: boolean;
   onCalcularAtipico: () => void;
