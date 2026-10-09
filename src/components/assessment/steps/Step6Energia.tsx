@@ -15,7 +15,7 @@ const fatores = [
   { value: "2.0", label: "Atividade intensa — 2,0 ou superior" },
 ];
 
-const percentuais = ["5", "10", "15", "20"].map((p) => ({ value: p, label: `${p}%` }));
+const percentuais = ["5", "10", "15", "20", "25", "30"].map((p) => ({ value: p, label: `${p}%` }));
 
 const kcalPresets = ["250", "500", "750", "1000"].map((k) => ({
   value: k,
