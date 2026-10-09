@@ -292,7 +292,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
             />
           </Field>
           <Field label="Observações sobre fome/apetite">
-            <LongText value={a.observacoesFome} onChange={(v) => set("observacoesFome", v)} rows={2} />
+            <TextInput value={a.observacoesFome} onChange={(v) => set("observacoesFome", v)} />
           </Field>
           <Field label="Hábito de beliscar ao longo do dia?">
             <OptionRow
