@@ -35,3 +35,4 @@
 - [x] Renomear Função estomacal como estomacal/intestinal e incluir flatulência excessiva.
 - [x] Adicionar Nota (0 a 10) e Justificativa a cada modalidade de treino, no espaço à direita de Dias de descanso, com propagação ao relatório, cópia e análise.
 - [x] Excluir o campo "Aceita café com leite?" e trocar o botão "Café" por "Café puro", adicionando "Café com leite" em Bebidas.
+- [x] Limitar "Altura referida" a duas casas decimais com unidade "m" e exibir "kg" em "Peso referido".

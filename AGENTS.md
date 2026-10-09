@@ -20,3 +20,4 @@
 - Keep adjusted-weight and hydration decisions in deriveResults so all displays and exports consume the same unrounded result.
 - Keep training-day global selection transitions in training-days.ts so training and rest controls remain consistent and testable.
 - Keep PDF branding colors in report-theme.ts so print presentation uses centralized tokens.
+- Keep decimal-place limiting of numeric inputs in numeric.ts so every decimal field enforces the same precision.

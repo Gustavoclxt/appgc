@@ -1,6 +1,7 @@
 import { Fragment, type KeyboardEvent, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
+import { limitarCasasDecimais } from "@/lib/assessment/numeric";
 
 export function Panel({
   titulo,
@@ -117,11 +118,13 @@ export function UnitInput({
   onChange,
   unidade,
   placeholder,
+  casas,
 }: {
   value: string;
   onChange: (v: string) => void;
   unidade: string;
   placeholder?: string;
+  casas?: number;
 }) {
   return (
     <div className="flex items-center rounded-[10px] bg-white/70 ring-1 ring-line focus-within:ring-2 focus-within:ring-accent/40">
@@ -129,7 +132,7 @@ export function UnitInput({
         value={value}
         placeholder={placeholder}
         inputMode="decimal"
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange(casas == null ? e.target.value : limitarCasasDecimais(e.target.value, casas))}
         className="w-full bg-transparent px-3 py-2.5 font-mono text-sm text-ink outline-none placeholder:text-ink-soft/60"
       />
       <span className="pr-3 font-mono text-[11px] text-ink-soft">{unidade}</span>
