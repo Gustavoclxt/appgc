@@ -13,11 +13,12 @@ import { Step6Energia } from "@/components/assessment/steps/Step6Energia";
 import { Step7Resultado } from "@/components/assessment/steps/Step7Resultado";
 import { Step8Pdf } from "@/components/assessment/steps/Step8Pdf";
 import { analisarAvaliacao, calcularComposicaoDiario } from "@/lib/assessment/analysis.functions";
-import { alimentosDoDiario, chaveDiario, somarTotais, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
+import { alimentosDoDiario, calcularComposicaoDasRefeicoes, chaveDiario, somarTotais, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
+import { novaRefeicaoAtipica } from "@/components/assessment/AtypicalDay";
 import { deriveResults, fmtData } from "@/lib/assessment/calculations";
 import { createEmptyAssessment, ETAPAS } from "@/lib/assessment/initial-state";
 import { buildResumo } from "@/lib/assessment/summary";
-import type { AnaliseIA, Assessment } from "@/lib/assessment/types";
+import type { AnaliseIA, Assessment, Refeicao } from "@/lib/assessment/types";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -52,6 +53,10 @@ function Index() {
   const [composicao, setComposicao] = useState<ComposicaoDiario | null>(null);
   const [calculando, setCalculando] = useState(false);
   const calculoEmCursoRef = useRef(false);
+  const [diaAtipico, setDiaAtipico] = useState<Refeicao[] | null>(null);
+  const [composicaoAtipica, setComposicaoAtipica] = useState<ComposicaoDiario | null>(null);
+  const [calculandoAtipico, setCalculandoAtipico] = useState(false);
+  const calculoAtipicoEmCursoRef = useRef(false);
   const derivados = useMemo(() => deriveResults(dados), [dados]);
 
   const set = useCallback(
@@ -99,6 +104,21 @@ function Index() {
       setCalculando(false);
     }
   }, [calcularDiario, dados.diarioAlimentar]);
+
+  const onCalcularAtipico = useCallback(async () => {
+    if (!diaAtipico || calculoAtipicoEmCursoRef.current) return;
+    calculoAtipicoEmCursoRef.current = true;
+    setCalculandoAtipico(true);
+    try {
+      const resultado = await calcularComposicaoDasRefeicoes(diaAtipico, itens => calcularDiario({ data: { itens } }));
+      setComposicaoAtipica(resultado);
+    } catch (erro) {
+      toast.error(erro instanceof Error ? erro.message : "Não foi possível calcular o dia atípico.");
+    } finally {
+      calculoAtipicoEmCursoRef.current = false;
+      setCalculandoAtipico(false);
+    }
+  }, [calcularDiario, diaAtipico]);
 
   useEffect(() => {
     if (etapa !== ETAPAS.length) return;
@@ -190,7 +210,7 @@ function Index() {
             <Step2Anamnese {...props} />
           </div>
         )}
-        {etapa === 2 && <Step3Rotina {...props} composicao={composicao} calculando={calculando} onCalcular={() => void onCalcularDiario()} />}
+        {etapa === 2 && <Step3Rotina {...props} composicao={composicao} calculando={calculando} onCalcular={() => void onCalcularDiario()} diaAtipico={diaAtipico} onAdicionarDiaAtipico={() => setDiaAtipico(atual => atual ?? [novaRefeicaoAtipica()])} onAlterarDiaAtipico={setDiaAtipico} composicaoAtipica={composicaoAtipica} calculandoAtipico={calculandoAtipico} onCalcularAtipico={() => void onCalcularAtipico()} />}
         {etapa === 3 && (
           <div className="space-y-6">
             <Step4Antropometria {...props} />
