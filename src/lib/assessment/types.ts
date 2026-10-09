@@ -51,6 +51,14 @@ export interface ExameLaboratorial {
   status: "dentro" | "abaixo" | "acima" | "indeterminado";
 }
 
+export interface IndicadorAntropometrico {
+  id: string;
+  nome: string;
+  valor: string;
+  unidade: string;
+  data: string;
+}
+
 export type MetodoTMB = "harris-benedict" | "mifflin";
 export type EstrategiaEnergetica = "deficit" | "normocalorica" | "superavit";
 
@@ -172,6 +180,7 @@ export interface Assessment {
   percentualGordura: string;
   metodoGordura: string;
   dataAvaliacaoAntropometrica: string;
+  indicadoresAntropometricos: IndicadorAntropometrico[];
 
   // 5. Exames laboratoriais
   exames: ExameLaboratorial[];

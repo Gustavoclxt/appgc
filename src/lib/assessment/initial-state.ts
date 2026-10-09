@@ -125,6 +125,7 @@ export function createEmptyAssessment(): Assessment {
     metodoGordura: "",
     dataAvaliacaoAntropometrica: hoje,
 
+    indicadoresAntropometricos: [],
     exames: [],
 
     metodoTMB: "harris-benedict",

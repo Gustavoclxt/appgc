@@ -119,6 +119,48 @@ export const extrairExames = createServerFn({ method: "POST" })
       .filter((e) => e.exame !== "");
   });
 
+const SISTEMA_ANTROPOMETRIA = `Você extrai dados antropométricos de relatórios em texto (bioimpedância, DEXA, dobras cutâneas, avaliações físicas), em português do Brasil.
+Extraia apenas o que está explicitamente no texto. Nunca invente nem calcule valores.
+Preserve nomes dos indicadores, valores, unidades e datas como aparecem no documento.
+Campos principais (deixe "" se não identificar com segurança):
+- altura: em metros com vírgula (ex.: "1,75"); converta de cm se necessário.
+- peso: em kg com vírgula (ex.: "78,4").
+- percentualGordura: número com vírgula, sem "%".
+- metodo: um de "Bioimpedância", "DEXA", "Dobras cutâneas", "Estimativa", "Outro" ou "".
+- data: data da avaliação no formato AAAA-MM-DD ou "".
+Responda APENAS um objeto JSON:
+{ "altura": "", "peso": "", "percentualGordura": "", "metodo": "", "data": "", "indicadores": [ { "nome": "", "valor": "", "unidade": "", "data": "" } ] }`;
+
+export const extrairAntropometria = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => examesInput.parse(data))
+  .handler(async ({ data }) => {
+    const { chatJSON } = await import("./ai.server");
+    const r = (await chatJSON(
+      SISTEMA_ANTROPOMETRIA,
+      `Texto do relatório:\n\n${data.textoPdf}`,
+      "google/gemini-3.1-flash-lite",
+    )) as Record<string, unknown>;
+    const t = (v: unknown) => (typeof v === "string" || typeof v === "number" ? String(v).trim() : "");
+    const num = (v: unknown) => {
+      const x = t(v).replace(/[^\d.,]/g, "").replace(".", ",");
+      return /^\d+(,\d+)?$/.test(x) ? x : "";
+    };
+    const metodos = ["Bioimpedância", "DEXA", "Dobras cutâneas", "Estimativa", "Outro"];
+    const dataIso = t(r["data"]);
+    return {
+      altura: num(r["altura"]),
+      peso: num(r["peso"]),
+      percentualGordura: num(r["percentualGordura"]),
+      metodo: metodos.includes(t(r["metodo"])) ? t(r["metodo"]) : "",
+      data: /^\d{4}-\d{2}-\d{2}$/.test(dataIso) ? dataIso : "",
+      indicadores: (Array.isArray(r["indicadores"]) ? r["indicadores"] : [])
+        .filter((i): i is Record<string, unknown> => typeof i === "object" && i !== null)
+        .map((i) => ({ nome: t(i["nome"]), valor: t(i["valor"]), unidade: t(i["unidade"]), data: t(i["data"]) }))
+        .filter((i) => i.nome && i.valor)
+        .slice(0, 80),
+    };
+  });
+
 const composicaoInput = z.object({
   itens: z
     .array(z.object({ refeicao: z.string().max(200), alimento: z.string().max(300), quantidade: z.string().max(200) }))
