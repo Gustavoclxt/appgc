@@ -18,7 +18,7 @@ describe("Cálculo separado por dia", () => {
     expect(calcular).toHaveBeenCalledWith([{ refeicao: "Almoço", alimento: "Pizza", quantidade: "100 g" }]);
     expect(resultado.totais).toEqual({ kcal: 280.25, carboidratos: 30.1, proteinas: 12.2, lipidios: 12.3 });
     expect(resultado.chave).toBe(chaveDiario(atipico));
-    expect(habitual[0].alimentos[0].alimento).toBe("Arroz");
+    expect(habitual[0]?.alimentos[0]?.alimento).toBe("Arroz");
   });
 
   it("não envia um dia sem alimentos para cálculo", async () => {
