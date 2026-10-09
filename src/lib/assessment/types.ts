@@ -134,6 +134,8 @@ export interface Assessment {
   comeFora: "sim" | "nao" | "";
   comeForaFrequencia: string;
   comeForaDias: string;
+  consomeFritos: "sim" | "as-vezes" | "nao" | "";
+  fritosFrequencia: string;
 
   // Fome e apetite
   horariosFome: string[];
