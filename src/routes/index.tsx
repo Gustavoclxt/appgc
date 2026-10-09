@@ -16,7 +16,7 @@ import { analisarAvaliacao, calcularComposicaoDiario } from "@/lib/assessment/an
 import { alimentosDoDiario, calcularComposicaoDasRefeicoes, chaveDiario, somarTotais, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { novaRefeicaoAtipica } from "@/components/assessment/AtypicalDay";
 import { deriveResults, fmtData } from "@/lib/assessment/calculations";
-import { createEmptyAssessment, ETAPAS } from "@/lib/assessment/initial-state";
+import { createEmptyAssessment, ETAPAS, novoId } from "@/lib/assessment/initial-state";
 import { buildResumo } from "@/lib/assessment/summary";
 import type { AnaliseIA, Assessment, Refeicao } from "@/lib/assessment/types";
 import logoGc from "@/assets/logo-gc.png.asset.json";
@@ -128,6 +128,20 @@ function Index() {
     setCalculandoAtipico(false);
   }, []);
 
+  const onCopiarR24h = useCallback(() => {
+    const copia = dados.diarioAlimentar.map((r) => ({
+      id: novoId(),
+      refeicao: r.refeicao,
+      horario: r.horario,
+      local: r.local,
+      alimentos: r.alimentos.map((al) => ({ id: novoId(), alimento: al.alimento, quantidade: al.quantidade })),
+    }));
+    setDiaAtipico(copia);
+    setComposicaoAtipica(null);
+    calculoAtipicoEmCursoRef.current = false;
+    setCalculandoAtipico(false);
+  }, [dados.diarioAlimentar]);
+
 
   useEffect(() => {
     if (etapa !== ETAPAS.length) return;
@@ -223,7 +237,7 @@ function Index() {
             <Step2Anamnese {...props} />
           </div>
         )}
-        {etapa === 2 && <Step3Rotina {...props} composicao={composicao} calculando={calculando} onCalcular={() => void onCalcularDiario()} diaAtipico={diaAtipico} onAdicionarDiaAtipico={() => setDiaAtipico(atual => atual ?? [novaRefeicaoAtipica()])} onRemoverDiaAtipico={onRemoverDiaAtipico} onAlterarDiaAtipico={setDiaAtipico} composicaoAtipica={composicaoAtipica} calculandoAtipico={calculandoAtipico} onCalcularAtipico={() => void onCalcularAtipico()} />}
+        {etapa === 2 && <Step3Rotina {...props} composicao={composicao} calculando={calculando} onCalcular={() => void onCalcularDiario()} diaAtipico={diaAtipico} onAdicionarDiaAtipico={() => setDiaAtipico(atual => atual ?? [novaRefeicaoAtipica()])} onRemoverDiaAtipico={onRemoverDiaAtipico} onAlterarDiaAtipico={setDiaAtipico} onCopiarR24h={onCopiarR24h} composicaoAtipica={composicaoAtipica} calculandoAtipico={calculandoAtipico} onCalcularAtipico={() => void onCalcularAtipico()} />}
         {etapa === 3 && (
           <div className="space-y-6">
             <Step4Antropometria {...props} />

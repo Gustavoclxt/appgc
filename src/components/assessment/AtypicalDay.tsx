@@ -15,9 +15,10 @@ interface Props {
   composicao: ComposicaoDiario | null;
   calculando: boolean;
   onCalcular: () => void;
+  onCopiarR24h: () => void;
 }
 
-export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCalcular }: Props) {
+export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCalcular, onCopiarR24h }: Props) {
   const comp = composicaoParaRelatorio(composicao);
   const [foco, setFoco] = useState<string | null>(null);
   const refs = useRef(new Map<string, HTMLInputElement>());
@@ -56,7 +57,10 @@ export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCal
             </div>
           </div>
         ))}
-        <Button variant="outline" onClick={() => onChange([...refeicoes, novaRefeicaoAtipica()])}>+ Adicionar refeição</Button>
+        <div className="flex flex-wrap gap-3">
+          <Button variant="outline" onClick={() => onChange([...refeicoes, novaRefeicaoAtipica()])}>+ Adicionar refeição</Button>
+          <Button variant="outline" onClick={onCopiarR24h}>Copiar R24h</Button>
+        </div>
       </div>
       <div className="mt-6 flex justify-center">
         <Button disabled={calculando} onClick={onCalcular} className="h-auto whitespace-normal text-center text-[13px]">{calculando ? "Calculando…" : "Calcular calorias e macronutrientes"}</Button>
