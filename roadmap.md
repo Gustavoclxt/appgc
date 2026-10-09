@@ -33,3 +33,4 @@
 - [x] Adicionar Granola a Cereais e Grãos e Azeite de Oliva a Gorduras.
 - [x] Renomear Café/Chá como Bebidas e incluir refrigerantes, sucos, H2OH, água com gás e chimarrão.
 - [x] Renomear Função estomacal como estomacal/intestinal e incluir flatulência excessiva.
+- [x] Adicionar Nota (0 a 10) e Justificativa a cada modalidade de treino, no espaço à direita de Dias de descanso, com propagação ao relatório, cópia e análise.

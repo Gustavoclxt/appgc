@@ -95,7 +95,13 @@ export function buildResumo(a: Assessment, d: DerivedResults, composicao: Compos
   if (a.modalidades.length) {
     t += "\n## Treino\n";
     for (const m of a.modalidades) {
-      t += `- ${m.modalidade} | ${m.tempoPratica} | ${m.horario} | ${m.duracao} | ${m.frequenciaSemanal} | ${m.diasSemana} | descanso: ${m.diasDescanso}\n`;
+      const detalhes = [
+        m.nota.trim() && `nota: ${m.nota.trim()}`,
+        m.justificativa.trim() && `justificativa: ${m.justificativa.trim()}`,
+      ]
+        .filter(Boolean)
+        .join(" | ");
+      t += `- ${m.modalidade} | ${m.tempoPratica} | ${m.horario} | ${m.duracao} | ${m.frequenciaSemanal} | ${m.diasSemana} | descanso: ${m.diasDescanso}${detalhes ? ` | ${detalhes}` : ""}\n`;
     }
   }
 

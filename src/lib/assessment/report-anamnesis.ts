@@ -61,8 +61,8 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
     .filter((item) => item.nome.trim() || item.dose.trim() || item.acao.trim())
     .map((item) => [item.nome, item.dose && `Dose: ${doseComUnidade(item.dose)}`, item.acao && `Ação: ${item.acao}`].filter(Boolean).join(" · "));
   const modalidades = a.modalidades
-    .filter((item) => item.modalidade.trim() || item.tempoPratica.trim() || item.horario.trim() || item.duracao.trim() || item.frequenciaSemanal.trim() || item.diasSemana.trim() || item.diasDescanso.trim())
-    .map((item) => [item.modalidade, item.tempoPratica, item.horario, item.duracao, item.frequenciaSemanal, item.diasSemana, item.diasDescanso && `Descanso: ${item.diasDescanso}`].filter(Boolean).join(" · "));
+    .filter((item) => item.modalidade.trim() || item.tempoPratica.trim() || item.horario.trim() || item.duracao.trim() || item.frequenciaSemanal.trim() || item.diasSemana.trim() || item.diasDescanso.trim() || item.nota.trim() || item.justificativa.trim())
+    .map((item) => [item.modalidade, item.tempoPratica, item.horario, item.duracao, item.frequenciaSemanal, item.diasSemana, item.diasDescanso && `Descanso: ${item.diasDescanso}`, item.nota.trim() && `Nota: ${item.nota.trim()}`, item.justificativa.trim() && `Justificativa: ${item.justificativa.trim()}`].filter(Boolean).join(" · "));
   const suplementos = a.suplementos
     .filter((item) => item.nome.trim() || item.dose.trim() || item.horario.trim() || item.frequencia.trim() || item.observacoes.trim())
     .map((item) => [item.nome, item.dose, item.horario, item.frequencia, item.observacoes.trim() && `Obs: ${item.observacoes.trim()}`].filter(Boolean).join(" · "));

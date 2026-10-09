@@ -204,6 +204,23 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                     ]}
                   />
                 </Field>
+                <Field label="Nota">
+                  <Select
+                    value={m.nota}
+                    onChange={(v) =>
+                      set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, nota: v } : x)))
+                    }
+                    options={Array.from({ length: 11 }, (_, index) => ({ value: String(index), label: String(index) }))}
+                  />
+                </Field>
+                <Field label="Justificativa">
+                  <TextInput
+                    value={m.justificativa}
+                    onChange={(v) =>
+                      set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, justificativa: v } : x)))
+                    }
+                  />
+                </Field>
               </div>
               <div className="mt-3">
                 <RowButton onClick={() => set("modalidades", a.modalidades.filter((_, j) => j !== i))}>
@@ -225,6 +242,8 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                   frequenciaSemanal: "",
                   diasSemana: "",
                   diasDescanso: "",
+                  nota: "",
+                  justificativa: "",
                 },
               ])
             }

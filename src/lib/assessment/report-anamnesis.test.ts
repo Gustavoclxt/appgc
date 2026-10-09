@@ -140,3 +140,63 @@ describe("seleção Todas em Bebidas", () => {
     expect(buildResumo(a, deriveResults(a))).toContain("Bebidas: Todas");
   });
 });
+
+describe("nota e justificativa da modalidade de treino", () => {
+  function treinoDoRelatorio(nota: string, justificativa: string) {
+    const a = createEmptyAssessment();
+    a.modalidades = [
+      {
+        id: "1",
+        modalidade: "Musculação",
+        tempoPratica: "2 anos",
+        horario: "07:00",
+        duracao: "60 minutos",
+        frequenciaSemanal: "4 vezes",
+        diasSemana: "Segunda, Quarta",
+        diasDescanso: "Domingo",
+        nota,
+        justificativa,
+      },
+    ];
+    return anamneseParaRelatorio(a, deriveResults(a));
+  }
+
+  it("anexa nota e justificativa à linha da modalidade no relatório", () => {
+    const campos = treinoDoRelatorio("5", "Intensidade moderada").flatMap((s) => s.fields);
+    const valor = campos.find((f) => f.label === "Treino e rotina")?.value;
+    expect(valor).toContain("Nota: 5");
+    expect(valor).toContain("Justificativa: Intensidade moderada");
+  });
+
+  it("omite os campos quando ficam vazios", () => {
+    const campos = treinoDoRelatorio("  ", "").flatMap((s) => s.fields);
+    const valor = campos.find((f) => f.label === "Treino e rotina")?.value;
+    expect(valor).not.toContain("Nota:");
+    expect(valor).not.toContain("Justificativa:");
+  });
+
+  it("exibe nota zero", () => {
+    const campos = treinoDoRelatorio("0", "Ainda sem treino").flatMap((s) => s.fields);
+    const valor = campos.find((f) => f.label === "Treino e rotina")?.value;
+    expect(valor).toContain("Nota: 0");
+  });
+
+  it("leva nota e justificativa ao resumo enviado para a análise", () => {
+    const a = createEmptyAssessment();
+    a.modalidades = [
+      {
+        id: "1",
+        modalidade: "Musculação",
+        tempoPratica: "",
+        horario: "",
+        duracao: "",
+        frequenciaSemanal: "",
+        diasSemana: "",
+        diasDescanso: "",
+        nota: "5",
+        justificativa: "Intensidade moderada",
+      },
+    ];
+    expect(buildResumo(a, deriveResults(a))).toContain("nota: 5 | justificativa: Intensidade moderada");
+  });
+});
