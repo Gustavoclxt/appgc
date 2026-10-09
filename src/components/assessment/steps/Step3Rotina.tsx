@@ -12,6 +12,7 @@ import {
   Select,
   SubTitle,
   TextInput,
+  UnitInput,
 } from "../fields";
 import type { StepProps } from "./types";
 import { cafeCha, carboidratos, cereais, doces, frutas, gorduras, lacteos, proteinas, vegetais } from "@/lib/assessment/food-preferences";
@@ -882,10 +883,16 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
             />
           </Field>
           <Field label="Altura referida">
-            <TextInput value={a.alturaReferida} onChange={(v) => set("alturaReferida", v)} />
+            <UnitInput
+              value={a.alturaReferida}
+              onChange={(v) => set("alturaReferida", v)}
+              unidade="m"
+              placeholder="1,75"
+              casas={2}
+            />
           </Field>
           <Field label="Peso referido">
-            <TextInput value={a.pesoReferido} onChange={(v) => set("pesoReferido", v)} />
+            <UnitInput value={a.pesoReferido} onChange={(v) => set("pesoReferido", v)} unidade="kg" placeholder="78,4" />
           </Field>
           <Field label="Observações" className="sm:col-span-2">
             <LongText value={a.observacoesEvolucao} onChange={(v) => set("observacoesEvolucao", v)} rows={3} />
