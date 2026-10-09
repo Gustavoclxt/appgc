@@ -18,11 +18,20 @@ import type { StepProps } from "./types";
 import { cafeCha, carboidratos, cereais, doces, frutas, gorduras, lacteos, leguminosas, proteinas, vegetais } from "@/lib/assessment/food-preferences";
 import { chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { DIAS_SEMANA, selecionarDias } from "@/lib/assessment/training-days";
+import { Button } from "@/components/ui/button";
+import { AtypicalDay } from "../AtypicalDay";
+import type { Refeicao } from "@/lib/assessment/types";
 
 interface Props extends StepProps {
   composicao: ComposicaoDiario | null;
   calculando: boolean;
   onCalcular: () => void;
+  diaAtipico: Refeicao[] | null;
+  onAdicionarDiaAtipico: () => void;
+  onAlterarDiaAtipico: (refeicoes: Refeicao[]) => void;
+  composicaoAtipica: ComposicaoDiario | null;
+  calculandoAtipico: boolean;
+  onCalcularAtipico: () => void;
 }
 
 const simNao = [
@@ -44,7 +53,7 @@ const selecionarPreferencia = (atuais: string[], valor: string, opcoes: string[]
     : [...semGlobais, valor].filter((item) => opcoes.includes(item));
 };
 
-export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: Props) {
+export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, diaAtipico, onAdicionarDiaAtipico, onAlterarDiaAtipico, composicaoAtipica, calculandoAtipico, onCalcularAtipico }: Props) {
   const comp = composicaoParaRelatorio(composicao);
   const desatualizada = composicao !== null && composicao.chave !== chaveDiario(a.diarioAlimentar);
   const [focoId, setFocoId] = useState<string | null>(null);
@@ -815,6 +824,9 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
           >
             + Adicionar refeição
           </RowButton>
+          <Button variant="outline" className="ml-0 sm:ml-3" onClick={onAdicionarDiaAtipico} disabled={diaAtipico !== null}>
+            + Adicionar dia atípico
+          </Button>
         </div>
 
         <div className="mt-6">
@@ -887,6 +899,9 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
             </>
           </div>
         ) : null}
+        {diaAtipico !== null && (
+          <AtypicalDay refeicoes={diaAtipico} onChange={onAlterarDiaAtipico} composicao={composicaoAtipica} calculando={calculandoAtipico} onCalcular={onCalcularAtipico} />
+        )}
       </Panel>
 
       <Panel titulo="Evolução do peso">
