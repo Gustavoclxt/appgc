@@ -218,8 +218,9 @@ describe("grupo Leguminosas e ordem das preferências", () => {
 
   it("lista as leguminosas não marcadas entre os itens a retirar", () => {
     const a = createEmptyAssessment();
+    a.prefLeguminosas = ["Feijão"];
     const fora = alimentosNaoConsumidos(a);
-    expect(fora).toContain("feijão");
+    expect(fora).not.toContain("feijão");
     expect(fora).toContain("lentilha");
     expect(fora).toContain("ervilha");
     expect(fora).toContain("soja");
@@ -248,8 +249,17 @@ describe("grupo Leguminosas e ordem das preferências", () => {
     ];
     const a = createEmptyAssessment();
     a.prefCarboidratos = ["Arroz"];
+    a.prefProteinas = ["Nenhuma"];
+    a.prefGorduras = ["Nenhuma"];
+    a.prefVegetais = ["Nenhum"];
+    a.prefFrutas = ["Nenhuma"];
     a.prefLeguminosas = ["Feijão"];
+    a.prefCereais = ["Nenhum"];
+    a.prefLacteos = ["Nenhum"];
+    a.prefDoces = ["Nenhum"];
+    a.prefCafeCha = ["Nenhuma"];
     a.acucarAdocante = "Açúcar";
+    a.aversoes = "Nenhuma aversão";
     const secao = anamneseParaRelatorio(a, deriveResults(a)).find((s) => s.title === "Preferências e aversões alimentares");
     const rotulos = secao?.fields.map((f) => f.label) ?? [];
     const indices = ordem.map((r) => rotulos.indexOf(r));
