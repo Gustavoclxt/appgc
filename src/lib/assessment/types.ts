@@ -16,6 +16,8 @@ export interface Modalidade {
   frequenciaSemanal: string;
   diasSemana: string;
   diasDescanso: string;
+  nota: string;
+  justificativa: string;
 }
 
 export interface Suplemento {
