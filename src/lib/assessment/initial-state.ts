@@ -102,7 +102,6 @@ export function createEmptyAssessment(): Assessment {
     prefLacteos: [],
     prefCafeCha: [],
     acucarAdocante: "",
-    aceitaCafeComLeite: "",
     prefProteinas: [],
     prefCarboidratos: [],
     prefCereais: [],
