@@ -28,6 +28,7 @@
 - [x] Resumir seleções completas de preferências e padronizar “Recordatório 24h” no relatório.
 - [x] Posicionar o Recordatório 24h entre Preferências e aversões alimentares e Evolução do peso na visualização e no PDF.
 - [x] Reformular exclusivamente a seção final como painel clínico na tela, cópia e PDF.
+- [x] Adicionar o botão “Todas” ao grupo Bebidas, com seleção do grupo inteiro e resumo no relatório.
 - [x] Gerar a cópia do relatório em HTML rico e semântico para editores de texto.
 - [x] Adicionar Granola a Cereais e Grãos e Azeite de Oliva a Gorduras.
 - [x] Renomear Café/Chá como Bebidas e incluir refrigerantes, sucos, H2OH, água com gás e chimarrão.

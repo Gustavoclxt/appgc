@@ -477,7 +477,10 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
           <Field label="Bebidas">
             <MultiOptionRow
               values={a.prefCafeCha}
-              onChange={(v) => set("prefCafeCha", v.includes("Nenhum") ? ["Nenhum"] : v)}
+              onChange={(v) => {
+                const alterado = v.find((item) => !a.prefCafeCha.includes(item)) ?? a.prefCafeCha.find((item) => !v.includes(item));
+                set("prefCafeCha", alterado ? selecionarPreferencia(a.prefCafeCha, alterado, cafeCha) : v);
+              }}
               options={cafeCha.map((item) => ({ value: item, label: item }))}
             />
             <div className="mt-2">
