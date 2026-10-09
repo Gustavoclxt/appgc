@@ -15,7 +15,7 @@ import {
   UnitInput,
 } from "../fields";
 import type { StepProps } from "./types";
-import { cafeCha, carboidratos, cereais, doces, frutas, gorduras, lacteos, proteinas, vegetais } from "@/lib/assessment/food-preferences";
+import { cafeCha, carboidratos, cereais, doces, frutas, gorduras, lacteos, leguminosas, proteinas, vegetais } from "@/lib/assessment/food-preferences";
 import { chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { DIAS_SEMANA, selecionarDias } from "@/lib/assessment/training-days";
 

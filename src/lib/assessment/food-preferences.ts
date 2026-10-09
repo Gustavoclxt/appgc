@@ -12,6 +12,7 @@ export const frutas = [
   "Uva", "Kiwi", "Manga", "Pera", "Ameixa", "Goiaba", "Maçã", "Maracujá", "Banana", "Caqui",
   "Nenhuma", "Todas",
 ];
+export const leguminosas = ["Feijão", "Lentilha", "Ervilha", "Soja", "Grão de bico", "Nenhum", "Todas"];
 export const lacteos = ["Leite", "Iogurte", "Queijo", "Requeijão", "Nenhum", "Todos"];
 export const cereais = ["Aveia", "Quinoa", "Linhaça", "Chia", "Granola", "Nenhum", "Todos"];
 export const gorduras = ["Margarina", "Manteiga", "Banha", "Oleaginosas", "Azeite de Oliva", "Nenhum", "Todas"];
@@ -41,14 +42,15 @@ export function formatarPreferencia(
 /** Alimentos das listas de preferência que o paciente não marcou. Grupos sem resposta são ignorados. */
 export function alimentosNaoConsumidos(a: Assessment): string[] {
   const grupos: [string[], string[]][] = [
+    [a.prefCarboidratos, carboidratos],
+    [a.prefProteinas, proteinas],
+    [a.prefGorduras, gorduras],
     [a.prefVegetais, vegetais],
     [a.prefFrutas, frutas],
+    [a.prefLeguminosas, leguminosas],
+    [a.prefCereais, cereais],
     [a.prefLacteos, lacteos],
     [a.prefCafeCha, cafeCha],
-    [a.prefProteinas, proteinas],
-    [a.prefCarboidratos, carboidratos],
-    [a.prefCereais, cereais],
-    [a.prefGorduras, gorduras],
     [a.prefDoces, doces],
   ];
   const fora: string[] = [];
@@ -85,15 +87,16 @@ export interface GrupoRetirar { grupo: string; itens: string[] }
 /** Alimentos a retirar agrupados pelo grupo alimentar de origem. */
 export function alimentosRetirarPorGrupo(a: Assessment): GrupoRetirar[] {
   const grupos: [string, string[], string[]][] = [
+    ["Carboidratos", a.prefCarboidratos, carboidratos],
+    ["Proteínas", a.prefProteinas, proteinas],
+    ["Gorduras", a.prefGorduras, gorduras],
     ["Vegetais/Saladas", a.prefVegetais, vegetais],
     ["Frutas", a.prefFrutas, frutas],
-    ["Lácteos", a.prefLacteos, lacteos],
-    ["Bebidas", a.prefCafeCha, cafeCha],
-    ["Proteínas", a.prefProteinas, proteinas],
-    ["Carboidratos", a.prefCarboidratos, carboidratos],
+    ["Leguminosas", a.prefLeguminosas, leguminosas],
     ["Cereais e Grãos", a.prefCereais, cereais],
-    ["Gorduras", a.prefGorduras, gorduras],
+    ["Lácteos", a.prefLacteos, lacteos],
     ["Doces", a.prefDoces, doces],
+    ["Bebidas", a.prefCafeCha, cafeCha],
   ];
   const mapa = new Map<string, string[]>();
   const add = (g: string, item: string) => {

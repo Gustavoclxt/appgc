@@ -99,6 +99,7 @@ export function createEmptyAssessment(): Assessment {
 
     prefVegetais: [],
     prefFrutas: [],
+    prefLeguminosas: [],
     prefLacteos: [],
     prefCafeCha: [],
     acucarAdocante: "",
