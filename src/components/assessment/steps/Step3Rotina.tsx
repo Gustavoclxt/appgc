@@ -364,6 +364,15 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
                     set("suplementos", a.suplementos.map((x, j) => (j === i ? { ...x, frequencia: v } : x)))
                   }
                 />
+                <div className="sm:col-span-4">
+                  <TextInput
+                    value={s.observacoes}
+                    placeholder="Observações"
+                    onChange={(v) =>
+                      set("suplementos", a.suplementos.map((x, j) => (j === i ? { ...x, observacoes: v } : x)))
+                    }
+                  />
+                </div>
                 <RowButton onClick={() => set("suplementos", a.suplementos.filter((_, j) => j !== i))}>
                   Remover
                 </RowButton>
@@ -373,7 +382,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               onClick={() =>
                 set("suplementos", [
                   ...a.suplementos,
-                  { id: novoId(), nome: "", dose: "", horario: "", frequencia: "" },
+                  { id: novoId(), nome: "", dose: "", horario: "", frequencia: "", observacoes: "" },
                 ])
               }
             >
