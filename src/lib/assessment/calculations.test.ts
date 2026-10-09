@@ -28,3 +28,41 @@ describe("PIO and hydration", () => {
     expect(d.aguaMin).toBeNull();
   });
 });
+
+describe("energy adjustment presets", () => {
+  const base = {
+    ...createEmptyAssessment(),
+    dataNascimento: "1990-05-10",
+    sexo: "feminino" as const,
+    altura: "1,75",
+    peso: "78,4",
+    fatorAtividade: "1.7",
+    metodoTMB: "harris-benedict" as const,
+    tipoAjuste: "percentual" as const,
+  };
+
+  it.each([
+    ["25", 0.75],
+    ["30", 0.7],
+  ])("applies a %s%% deficit to the VET", (percentual, fator) => {
+    const d = deriveResults({
+      ...base,
+      estrategia: "deficit" as const,
+      percentualAjuste: percentual,
+    });
+    expect(d.vet).not.toBeNull();
+    expect(d.caloriasSugeridas).toBeCloseTo((d.vet as number) * fator, 10);
+  });
+
+  it.each([
+    ["25", 1.25],
+    ["30", 1.3],
+  ])("applies a %s%% surplus to the VET", (percentual, fator) => {
+    const d = deriveResults({
+      ...base,
+      estrategia: "superavit" as const,
+      percentualAjuste: percentual,
+    });
+    expect(d.caloriasSugeridas).toBeCloseTo((d.vet as number) * fator, 10);
+  });
+});
