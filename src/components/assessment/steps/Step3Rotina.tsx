@@ -474,7 +474,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               />
             </div>
           </Field>
-          <Field label="Café/Chá">
+          <Field label="Bebidas">
             <MultiOptionRow
               values={a.prefCafeCha}
               onChange={(v) => set("prefCafeCha", v.includes("Nenhum") ? ["Nenhum"] : v)}

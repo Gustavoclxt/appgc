@@ -132,7 +132,7 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Vegetais/saladas", comObs(formatarPreferencia(a.prefVegetais, vegetais, "Todos"), a.observacoesPreferencias["vegetais"])),
       campo("Frutas", comObs(formatarPreferencia(a.prefFrutas, frutas, "Todas"), a.observacoesPreferencias["frutas"])),
       campo("Lácteos", comObs(formatarPreferencia(a.prefLacteos, lacteos, "Todos"), a.observacoesPreferencias["lacteos"])),
-      campo("Café/chá", comObs(lista(a.prefCafeCha), a.observacoesPreferencias["cafeCha"])),
+      campo("Bebidas", comObs(lista(a.prefCafeCha), a.observacoesPreferencias["cafeCha"])),
       campo("Açúcar ou adoçante", comObs(a.acucarAdocante, a.observacoesPreferencias["acucar"])),
       campo("Aceita café com leite", comObs(simNao(a.aceitaCafeComLeite), a.observacoesPreferencias["cafeComLeite"])),
       campo("Proteínas", comObs(formatarPreferencia(a.prefProteinas, proteinas, "Todas"), a.observacoesPreferencias["proteinas"])),

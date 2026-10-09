@@ -16,7 +16,7 @@ export const lacteos = ["Leite", "Iogurte", "Queijo", "Requeijão", "Nenhum", "T
 export const cereais = ["Aveia", "Quinoa", "Linhaça", "Chia", "Granola", "Nenhum", "Todos"];
 export const gorduras = ["Margarina", "Manteiga", "Banha", "Oleaginosas", "Azeite de Oliva", "Nenhum", "Todas"];
 export const doces = ["Doce de Leite", "Geleia", "Pasta de Amendoim", "Sucrilhos", "Biscoitos", "Chocolate", "Bala", "Chicletes", "Guloseimas", "Nenhum", "Todos"];
-export const cafeCha = ["Café", "Chá", "Nenhum"];
+export const cafeCha = ["Café", "Chá", "Refri Normal", "Refri Zero", "Suco Natural", "Suco Artificial", "Nenhum"];
 
 const GLOBAIS = ["Nenhum", "Nenhuma", "Todos", "Todas"];
 const nomeProteina: Record<string, string> = {
@@ -88,7 +88,7 @@ export function alimentosRetirarPorGrupo(a: Assessment): GrupoRetirar[] {
     ["Vegetais/Saladas", a.prefVegetais, vegetais],
     ["Frutas", a.prefFrutas, frutas],
     ["Lácteos", a.prefLacteos, lacteos],
-    ["Café/Chá", a.prefCafeCha, cafeCha],
+    ["Bebidas", a.prefCafeCha, cafeCha],
     ["Proteínas", a.prefProteinas, proteinas],
     ["Carboidratos", a.prefCarboidratos, carboidratos],
     ["Cereais e Grãos", a.prefCereais, cereais],
