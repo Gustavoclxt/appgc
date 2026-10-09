@@ -64,7 +64,7 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
     .map((item) => [item.modalidade, item.tempoPratica, item.horario, item.duracao, item.frequenciaSemanal, item.diasSemana, item.diasDescanso && `Descanso: ${item.diasDescanso}`].filter(Boolean).join(" · "));
   const suplementos = a.suplementos
     .filter((item) => item.nome.trim() || item.dose.trim() || item.horario.trim() || item.frequencia.trim() || item.observacoes.trim())
-    .map((item) => [item.nome, item.dose, item.horario, item.frequencia, item.observacoes && `Obs: ${item.observacoes}`].filter(Boolean).join(" · "));
+    .map((item) => [item.nome, item.dose, item.horario, item.frequencia, item.observacoes.trim() && `Obs: ${item.observacoes.trim()}`].filter(Boolean).join(" · "));
 
   return [
     secao("Objetivo e anamnese", [

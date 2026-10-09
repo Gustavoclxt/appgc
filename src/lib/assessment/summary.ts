@@ -108,7 +108,7 @@ export function buildResumo(a: Assessment, d: DerivedResults, composicao: Compos
   t += li("Utiliza suplemento", a.usaSuplemento);
   t += li("Observação sobre suplementação", a.observacaoSuplemento);
   if (a.suplementos.length)
-    t += `Suplementos: ${a.suplementos.map((s) => [s.nome, s.dose, s.horario, s.frequencia, s.observacoes && `Obs: ${s.observacoes}`].filter(Boolean).join(" ")).join("; ")}\n`;
+    t += `Suplementos: ${a.suplementos.map((s) => [s.nome, s.dose, s.horario, s.frequencia, s.observacoes.trim() && `Obs: ${s.observacoes.trim()}`].filter(Boolean).join(" ")).join("; ")}\n`;
   t += li("Aceita whey protein", a.aceitaWhey);
 
   t += "\n## Preferências alimentares\n";
