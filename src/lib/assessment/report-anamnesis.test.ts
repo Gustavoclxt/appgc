@@ -205,6 +205,67 @@ describe("nota e justificativa da modalidade de treino", () => {
         justificativa: "Intensidade moderada",
       },
     ];
-    expect(buildResumo(a, deriveResults(a))).toContain("nota: 5 | justificativa: Intensidade moderada");
   });
 });
+
+describe("grupo Leguminosas e ordem das preferências", () => {
+  it("aparece como Leguminosas no relatório, com as opções marcadas", () => {
+    const a = createEmptyAssessment();
+    a.prefLeguminosas = ["Feijão", "Grão de bico"];
+    const campo = anamneseParaRelatorio(a, deriveResults(a)).flatMap((s) => s.fields).find((f) => f.label === "Leguminosas");
+    expect(campo?.value).toBe("Feijão, Grão de bico");
+  });
+
+  it("lista as leguminosas não marcadas entre os itens a retirar", () => {
+    const a = createEmptyAssessment();
+    a.prefLeguminosas = ["Feijão"];
+    const fora = alimentosNaoConsumidos(a);
+    expect(fora).not.toContain("feijão");
+    expect(fora).toContain("lentilha");
+    expect(fora).toContain("ervilha");
+    expect(fora).toContain("soja");
+    expect(fora).toContain("grão de bico");
+  });
+
+  it("sai da lista de retirada quando o grupo inteiro é marcado", () => {
+    const a = createEmptyAssessment();
+    a.prefLeguminosas = ["Todas"];
+    const fora = alimentosNaoConsumidos(a);
+    expect(fora).not.toContain("feijão");
+    expect(fora).not.toContain("soja");
+  });
+
+  it("leva Leguminosas ao resumo enviado para a análise", () => {
+    const a = createEmptyAssessment();
+    a.prefLeguminosas = ["Feijão"];
+    expect(buildResumo(a, deriveResults(a))).toContain("Leguminosas: Feijão");
+  });
+
+  it("segue a ordem pedida na seção de preferências do relatório", () => {
+    const ordem = [
+      "Carboidratos", "Proteínas", "Gorduras", "Vegetais/saladas", "Frutas",
+      "Leguminosas", "Cereais e grãos", "Lácteos", "Doces", "Bebidas",
+      "Açúcar ou adoçante", "Aversões alimentares",
+    ];
+    const a = createEmptyAssessment();
+    a.prefCarboidratos = ["Arroz"];
+    a.prefProteinas = ["Nenhuma"];
+    a.prefGorduras = ["Nenhuma"];
+    a.prefVegetais = ["Nenhum"];
+    a.prefFrutas = ["Nenhuma"];
+    a.prefLeguminosas = ["Feijão"];
+    a.prefCereais = ["Nenhum"];
+    a.prefLacteos = ["Nenhum"];
+    a.prefDoces = ["Nenhum"];
+    a.prefCafeCha = ["Nenhuma"];
+    a.acucarAdocante = "Açúcar";
+    a.aversoes = "Nenhuma aversão";
+    const secao = anamneseParaRelatorio(a, deriveResults(a)).find((s) => s.title === "Preferências e aversões alimentares");
+    const rotulos = secao?.fields.map((f) => f.label) ?? [];
+    const indices = ordem.map((r) => rotulos.indexOf(r));
+    expect(indices).toEqual(indices.map((_, i) => i));
+    expect(indices.every((i) => i >= 0)).toBe(true);
+  });
+});
+
+

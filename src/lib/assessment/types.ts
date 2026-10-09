@@ -155,6 +155,7 @@ export interface Assessment {
   // Preferências e aversões
   prefVegetais: string[];
   prefFrutas: string[];
+  prefLeguminosas: string[];
   prefLacteos: string[];
   prefCafeCha: string[];
   acucarAdocante: string;

@@ -15,7 +15,7 @@ import {
   UnitInput,
 } from "../fields";
 import type { StepProps } from "./types";
-import { cafeCha, carboidratos, cereais, doces, frutas, gorduras, lacteos, proteinas, vegetais } from "@/lib/assessment/food-preferences";
+import { cafeCha, carboidratos, cereais, doces, frutas, gorduras, lacteos, leguminosas, proteinas, vegetais } from "@/lib/assessment/food-preferences";
 import { chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { DIAS_SEMANA, selecionarDias } from "@/lib/assessment/training-days";
 
@@ -443,6 +443,59 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
 
       <Panel titulo="Preferências e aversões alimentares">
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+          <Field label="Carboidratos">
+            <MultiOptionRow
+              values={a.prefCarboidratos}
+              onChange={(v) => {
+                const alterado = v.find((item) => !a.prefCarboidratos.includes(item)) ?? a.prefCarboidratos.find((item) => !v.includes(item));
+                set("prefCarboidratos", alterado ? selecionarPreferencia(a.prefCarboidratos, alterado, carboidratos) : v);
+              }}
+              options={carboidratos.map((item) => ({ value: item, label: item }))}
+            />
+            <div className="mt-2">
+              <TextInput
+                value={a.observacoesPreferencias["carboidratos"] ?? ""}
+                placeholder="Observações"
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "carboidratos": v })}
+              />
+            </div>
+          </Field>
+
+          <Field label="Proteínas">
+            <MultiOptionRow
+              values={a.prefProteinas}
+              onChange={(v) => {
+                const alterado = v.find((item) => !a.prefProteinas.includes(item)) ?? a.prefProteinas.find((item) => !v.includes(item));
+                set("prefProteinas", alterado ? selecionarPreferencia(a.prefProteinas, alterado, proteinas) : v);
+              }}
+              options={proteinas.map((item) => ({ value: item, label: item }))}
+            />
+            <div className="mt-2">
+              <TextInput
+                value={a.observacoesPreferencias["proteinas"] ?? ""}
+                placeholder="Observações"
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "proteinas": v })}
+              />
+            </div>
+          </Field>
+
+          <Field label="Gorduras">
+            <MultiOptionRow
+              values={a.prefGorduras}
+              onChange={(v) => {
+                const alterado = v.find((item) => !a.prefGorduras.includes(item)) ?? a.prefGorduras.find((item) => !v.includes(item));
+                set("prefGorduras", alterado ? selecionarPreferencia(a.prefGorduras, alterado, gorduras) : v);
+              }}
+              options={gorduras.map((item) => ({ value: item, label: item }))} />
+            <div className="mt-2">
+              <TextInput
+                value={a.observacoesPreferencias["gorduras"] ?? ""}
+                placeholder="Observações"
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "gorduras": v })}
+              />
+            </div>
+          </Field>
+
           <Field label="Vegetais/Saladas">
             <MultiOptionRow
               values={a.prefVegetais}
@@ -477,89 +530,20 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               />
             </div>
           </Field>
-          <Field label="Lácteos">
+          <Field label="Leguminosas">
             <MultiOptionRow
-              values={a.prefLacteos}
+              values={a.prefLeguminosas}
               onChange={(v) => {
-                const alterado = v.find((item) => !a.prefLacteos.includes(item)) ?? a.prefLacteos.find((item) => !v.includes(item));
-                set("prefLacteos", alterado ? selecionarPreferencia(a.prefLacteos, alterado, lacteos) : v);
+                const alterado = v.find((item) => !a.prefLeguminosas.includes(item)) ?? a.prefLeguminosas.find((item) => !v.includes(item));
+                set("prefLeguminosas", alterado ? selecionarPreferencia(a.prefLeguminosas, alterado, leguminosas) : v);
               }}
-              options={lacteos.map((item) => ({ value: item, label: item }))}
+              options={leguminosas.map((item) => ({ value: item, label: item }))}
             />
             <div className="mt-2">
               <TextInput
-                value={a.observacoesPreferencias["lacteos"] ?? ""}
+                value={a.observacoesPreferencias["leguminosas"] ?? ""}
                 placeholder="Observações"
-                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "lacteos": v })}
-              />
-            </div>
-          </Field>
-          <Field label="Bebidas">
-            <MultiOptionRow
-              values={a.prefCafeCha}
-              onChange={(v) => {
-                const alterado = v.find((item) => !a.prefCafeCha.includes(item)) ?? a.prefCafeCha.find((item) => !v.includes(item));
-                set("prefCafeCha", alterado ? selecionarPreferencia(a.prefCafeCha, alterado, cafeCha) : v);
-              }}
-              options={cafeCha.map((item) => ({ value: item, label: item }))}
-            />
-            <div className="mt-2">
-              <TextInput
-                value={a.observacoesPreferencias["cafeCha"] ?? ""}
-                placeholder="Observações"
-                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "cafeCha": v })}
-              />
-            </div>
-          </Field>
-          <Field label="Utiliza açúcar ou adoçante?">
-            <OptionRow
-              value={a.acucarAdocante}
-              onChange={(v) => set("acucarAdocante", v)}
-              options={[
-                { value: "Açúcar", label: "Açúcar" },
-                { value: "Adoçante", label: "Adoçante" },
-                { value: "Não adoça", label: "Não adoça" },
-              ]}
-            />
-            <div className="mt-2">
-              <TextInput
-                value={a.observacoesPreferencias["acucar"] ?? ""}
-                placeholder="Observações"
-                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "acucar": v })}
-              />
-            </div>
-          </Field>
-          <Field label="Proteínas">
-            <MultiOptionRow
-              values={a.prefProteinas}
-              onChange={(v) => {
-                const alterado = v.find((item) => !a.prefProteinas.includes(item)) ?? a.prefProteinas.find((item) => !v.includes(item));
-                set("prefProteinas", alterado ? selecionarPreferencia(a.prefProteinas, alterado, proteinas) : v);
-              }}
-              options={proteinas.map((item) => ({ value: item, label: item }))}
-            />
-            <div className="mt-2">
-              <TextInput
-                value={a.observacoesPreferencias["proteinas"] ?? ""}
-                placeholder="Observações"
-                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "proteinas": v })}
-              />
-            </div>
-          </Field>
-          <Field label="Carboidratos">
-            <MultiOptionRow
-              values={a.prefCarboidratos}
-              onChange={(v) => {
-                const alterado = v.find((item) => !a.prefCarboidratos.includes(item)) ?? a.prefCarboidratos.find((item) => !v.includes(item));
-                set("prefCarboidratos", alterado ? selecionarPreferencia(a.prefCarboidratos, alterado, carboidratos) : v);
-              }}
-              options={carboidratos.map((item) => ({ value: item, label: item }))}
-            />
-            <div className="mt-2">
-              <TextInput
-                value={a.observacoesPreferencias["carboidratos"] ?? ""}
-                placeholder="Observações"
-                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "carboidratos": v })}
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "leguminosas": v })}
               />
             </div>
           </Field>
@@ -580,22 +564,24 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               />
             </div>
           </Field>
-          <Field label="Gorduras">
+          <Field label="Lácteos">
             <MultiOptionRow
-              values={a.prefGorduras}
+              values={a.prefLacteos}
               onChange={(v) => {
-                const alterado = v.find((item) => !a.prefGorduras.includes(item)) ?? a.prefGorduras.find((item) => !v.includes(item));
-                set("prefGorduras", alterado ? selecionarPreferencia(a.prefGorduras, alterado, gorduras) : v);
+                const alterado = v.find((item) => !a.prefLacteos.includes(item)) ?? a.prefLacteos.find((item) => !v.includes(item));
+                set("prefLacteos", alterado ? selecionarPreferencia(a.prefLacteos, alterado, lacteos) : v);
               }}
-              options={gorduras.map((item) => ({ value: item, label: item }))} />
+              options={lacteos.map((item) => ({ value: item, label: item }))}
+            />
             <div className="mt-2">
               <TextInput
-                value={a.observacoesPreferencias["gorduras"] ?? ""}
+                value={a.observacoesPreferencias["lacteos"] ?? ""}
                 placeholder="Observações"
-                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "gorduras": v })}
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "lacteos": v })}
               />
             </div>
           </Field>
+
           <Field label="Doces">
             <MultiOptionRow
               values={a.prefDoces}
@@ -613,6 +599,43 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular }: P
               />
             </div>
           </Field>
+          <Field label="Bebidas">
+            <MultiOptionRow
+              values={a.prefCafeCha}
+              onChange={(v) => {
+                const alterado = v.find((item) => !a.prefCafeCha.includes(item)) ?? a.prefCafeCha.find((item) => !v.includes(item));
+                set("prefCafeCha", alterado ? selecionarPreferencia(a.prefCafeCha, alterado, cafeCha) : v);
+              }}
+              options={cafeCha.map((item) => ({ value: item, label: item }))}
+            />
+            <div className="mt-2">
+              <TextInput
+                value={a.observacoesPreferencias["cafeCha"] ?? ""}
+                placeholder="Observações"
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "cafeCha": v })}
+              />
+            </div>
+          </Field>
+
+          <Field label="Utiliza açúcar ou adoçante?">
+            <OptionRow
+              value={a.acucarAdocante}
+              onChange={(v) => set("acucarAdocante", v)}
+              options={[
+                { value: "Açúcar", label: "Açúcar" },
+                { value: "Adoçante", label: "Adoçante" },
+                { value: "Não adoça", label: "Não adoça" },
+              ]}
+            />
+            <div className="mt-2">
+              <TextInput
+                value={a.observacoesPreferencias["acucar"] ?? ""}
+                placeholder="Observações"
+                onChange={(v) => set("observacoesPreferencias", { ...a.observacoesPreferencias, "acucar": v })}
+              />
+            </div>
+          </Field>
+
           <Field label="Aversões alimentares">
             <LongText value={a.aversoes} onChange={(v) => set("aversoes", v)} rows={2} />
           </Field>
