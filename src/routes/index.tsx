@@ -19,6 +19,7 @@ import { deriveResults, fmtData } from "@/lib/assessment/calculations";
 import { createEmptyAssessment, ETAPAS } from "@/lib/assessment/initial-state";
 import { buildResumo } from "@/lib/assessment/summary";
 import type { AnaliseIA, Assessment, Refeicao } from "@/lib/assessment/types";
+import logoGc from "@/assets/logo-gc.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -173,10 +174,14 @@ function Index() {
 
       <header className="sticky top-0 z-30 border-b border-line/70 bg-white/55 backdrop-blur-xl no-print">
         <div className="mx-auto flex max-w-6xl items-center gap-4 px-6 py-3.5">
-          <div className="flex items-center gap-2.5">
-            <div className="grid size-8 place-items-center rounded-[10px] bg-ink font-mono text-xs font-medium text-white">
-              {String(etapa).padStart(2, "0")}
-            </div>
+          <div className="flex items-center gap-4">
+            <img
+              src={logoGc.url}
+              alt="Gustavo Calixto — Nutrição, Performance e Longevidade"
+              width={200}
+              height={100}
+              className="h-[100px] w-[200px] shrink-0 object-contain"
+            />
             <div className="max-w-[230px] leading-tight sm:max-w-none">
               <p className="font-display text-sm font-semibold tracking-tight">
                 Avaliação Clínica Nutricional
