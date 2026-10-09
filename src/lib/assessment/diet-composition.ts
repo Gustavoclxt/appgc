@@ -30,6 +30,18 @@ export function chaveDiario(refeicoes: Refeicao[]) {
   return JSON.stringify(alimentosDoDiario(refeicoes));
 }
 
+/** Calculates only the supplied day, capturing its key before the asynchronous request. */
+export async function calcularComposicaoDasRefeicoes(
+  refeicoes: Refeicao[],
+  calcular: (itens: ReturnType<typeof alimentosDoDiario>) => Promise<ItemComposicao[]>,
+): Promise<ComposicaoDiario> {
+  const itens = alimentosDoDiario(refeicoes);
+  if (!itens.length) throw new Error("Adicione alimentos antes de calcular.");
+  const chave = chaveDiario(refeicoes);
+  const resultado = await calcular(itens);
+  return { chave, itens: resultado, totais: somarTotais(resultado) };
+}
+
 export function somarTotais(itens: ItemComposicao[]) {
   return itens.reduce(
     (t, i) => ({

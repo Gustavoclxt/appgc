@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Adicionar Dia atípico com formulário de refeições e cálculo exclusivo, sem alterar o recordatório habitual.
+
 - [x] Ajustar campos da anamnese, suplementação, beliscos e evolução do peso.
 - [x] Corrigir seleções globais dos dias e remover alimentos solicitados.
 - [x] Calcular PIO e usar PIO na hidratação em sobrepeso/obesidade, com testes.
