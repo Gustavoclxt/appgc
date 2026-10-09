@@ -205,6 +205,7 @@ describe("nota e justificativa da modalidade de treino", () => {
         justificativa: "Intensidade moderada",
       },
     ];
+  });
 });
 
 describe("grupo Leguminosas e ordem das preferências", () => {
