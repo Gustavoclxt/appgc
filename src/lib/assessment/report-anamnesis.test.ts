@@ -67,7 +67,7 @@ describe("grupo Bebidas", () => {
     expect(secoes.flatMap((s) => s.fields).some((f) => f.label === "Café/chá")).toBe(false);
   });
 
-  it("lista os refrigerantes e sucos a retirar quando não marcados", () => {
+  it("lista as bebidas não marcadas entre os itens a retirar", () => {
     const a = createEmptyAssessment();
     a.prefCafeCha = ["Café"];
     const fora = alimentosNaoConsumidos(a);
@@ -75,6 +75,9 @@ describe("grupo Bebidas", () => {
     expect(fora).toContain("refri zero");
     expect(fora).toContain("suco natural");
     expect(fora).toContain("suco artificial");
+    expect(fora).toContain("h2oh");
+    expect(fora).toContain("água c/gás");
+    expect(fora).toContain("chimarrão");
     expect(fora).not.toContain("café");
   });
 });
