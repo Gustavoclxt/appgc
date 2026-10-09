@@ -55,7 +55,7 @@ const selecionarPreferencia = (atuais: string[], valor: string, opcoes: string[]
     : [...semGlobais, valor].filter((item) => opcoes.includes(item));
 };
 
-export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, diaAtipico, onAdicionarDiaAtipico, onRemoverDiaAtipico, onAlterarDiaAtipico, composicaoAtipica, calculandoAtipico, onCalcularAtipico }: Props) {
+export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, diaAtipico, onAdicionarDiaAtipico, onRemoverDiaAtipico, onAlterarDiaAtipico, onCopiarR24h, composicaoAtipica, calculandoAtipico, onCalcularAtipico }: Props) {
   const comp = composicaoParaRelatorio(composicao);
   const desatualizada = composicao !== null && composicao.chave !== chaveDiario(a.diarioAlimentar);
   const [focoId, setFocoId] = useState<string | null>(null);
@@ -907,7 +907,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           </div>
         ) : null}
         {diaAtipico !== null && (
-          <AtypicalDay refeicoes={diaAtipico} onChange={onAlterarDiaAtipico} composicao={composicaoAtipica} calculando={calculandoAtipico} onCalcular={onCalcularAtipico} />
+          <AtypicalDay refeicoes={diaAtipico} onChange={onAlterarDiaAtipico} composicao={composicaoAtipica} calculando={calculandoAtipico} onCalcular={onCalcularAtipico} onCopiarR24h={onCopiarR24h} />
         )}
       </Panel>
 
