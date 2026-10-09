@@ -40,3 +40,4 @@
 - [x] Limitar "Altura referida" a duas casas decimais com unidade "m" e exibir "kg" em "Peso referido".
 - [x] Adicionar o grupo Leguminosas (Feijão, Lentilha, Ervilha, Soja, Grão de bico, Nenhum, Todas) e reordenar Preferências e aversões alimentares (Carboidratos, Proteínas, Gorduras, Vegetais, Frutas, Leguminosas, Cereais e grãos, Laticínios, Doces, Aversões).
 - [x] Adicionar os botões 25% e 30% ao ajuste percentual de Déficit/Superávit, com teste do cálculo.
+- [x] Adicionar o botão “- Remover dia atípico” ao lado de “+ Adicionar dia atípico”, apagando o dia e sua composição.
