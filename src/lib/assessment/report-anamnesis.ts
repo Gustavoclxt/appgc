@@ -10,6 +10,7 @@ import {
   frutas,
   gorduras,
   lacteos,
+  leguminosas,
   proteinas,
   vegetais,
 } from "./food-preferences";
