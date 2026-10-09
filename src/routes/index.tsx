@@ -218,7 +218,7 @@ function Index() {
             <Step2Anamnese {...props} />
           </div>
         )}
-        {etapa === 2 && <Step3Rotina {...props} composicao={composicao} calculando={calculando} onCalcular={() => void onCalcularDiario()} diaAtipico={diaAtipico} onAdicionarDiaAtipico={() => setDiaAtipico(atual => atual ?? [novaRefeicaoAtipica()])} onAlterarDiaAtipico={setDiaAtipico} composicaoAtipica={composicaoAtipica} calculandoAtipico={calculandoAtipico} onCalcularAtipico={() => void onCalcularAtipico()} />}
+        {etapa === 2 && <Step3Rotina {...props} composicao={composicao} calculando={calculando} onCalcular={() => void onCalcularDiario()} diaAtipico={diaAtipico} onAdicionarDiaAtipico={() => setDiaAtipico(atual => atual ?? [novaRefeicaoAtipica()])} onRemoverDiaAtipico={onRemoverDiaAtipico} onAlterarDiaAtipico={setDiaAtipico} composicaoAtipica={composicaoAtipica} calculandoAtipico={calculandoAtipico} onCalcularAtipico={() => void onCalcularAtipico()} />}
         {etapa === 3 && (
           <div className="space-y-6">
             <Step4Antropometria {...props} />
