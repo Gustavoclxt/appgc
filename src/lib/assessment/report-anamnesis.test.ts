@@ -81,3 +81,30 @@ describe("grupo Bebidas", () => {
     expect(fora).not.toContain("café");
   });
 });
+
+describe("função estomacal/intestinal", () => {
+  function campoFuncao(funcaoEstomacal: string[]) {
+    const a = createEmptyAssessment();
+    a.funcaoEstomacal = funcaoEstomacal;
+    const secoes = anamneseParaRelatorio(a, deriveResults(a));
+    return secoes.flatMap((s) => s.fields).find((f) => f.label === "Função estomacal/intestinal");
+  }
+
+  it("aparece com o título estomacal/intestinal, incluindo flatulência excessiva", () => {
+    expect(campoFuncao(["Azia", "Flatulência excessiva"])?.value).toBe("Azia, Flatulência excessiva");
+    expect(campoFuncao(["Flatulência excessiva"])?.value).toBe("Flatulência excessiva");
+  });
+
+  it("não mantém o título antigo no relatório", () => {
+    const a = createEmptyAssessment();
+    a.funcaoEstomacal = ["Flatulência excessiva"];
+    const campos = anamneseParaRelatorio(a, deriveResults(a)).flatMap((s) => s.fields);
+    expect(campos.some((f) => f.label === "Função estomacal")).toBe(false);
+  });
+
+  it("leva flatulência excessiva ao resumo enviado para a análise", () => {
+    const a = createEmptyAssessment();
+    a.funcaoEstomacal = ["Flatulência excessiva"];
+    expect(buildResumo(a, deriveResults(a))).toContain("Função estomacal/intestinal: Flatulência excessiva");
+  });
+});
