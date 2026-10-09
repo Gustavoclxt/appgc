@@ -71,7 +71,7 @@ export function Step5Exames({ a, set }: StepProps) {
             Selecione um exame laboratorial em PDF:
           </p>
           <label className="mt-4 inline-flex cursor-pointer items-center rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90">
-            {lendo ? "Lendo exames…" : "Escolher arquivo PDF"}
+            {lendo ? "Lendo exames…" : "Adicionar exames"}
             <input
               type="file"
               accept="application/pdf"
