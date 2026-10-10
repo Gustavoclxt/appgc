@@ -43,3 +43,4 @@
 - [x] Adicionar os botões 25% e 30% ao ajuste percentual de Déficit/Superávit, com teste do cálculo.
 - [x] Adicionar o botão “- Remover dia atípico” ao lado de “+ Adicionar dia atípico”, apagando o dia e sua composição.
 - [x] Escrever o título "Condições de saúde" (mesma fonte de "História clínica") acima de HMA/HMP/HMF.
+- [x] Trocar as opções de "Nível de atividade física diária" por menu suspenso, mantendo o campo de fator personalizado.

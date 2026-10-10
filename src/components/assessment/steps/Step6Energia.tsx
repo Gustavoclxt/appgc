@@ -1,7 +1,7 @@
 import { fmt2, fmtInt, labelMetodo } from "@/lib/assessment/calculations";
 import type { ComposicaoDiario } from "@/lib/assessment/diet-composition";
 
-import { Field, MetricCard, OptionRow, Panel, TextInput, UnitInput } from "../fields";
+import { Field, MetricCard, OptionRow, Panel, Select, TextInput, UnitInput } from "../fields";
 import type { StepProps } from "./types";
 
 const fatores = [
@@ -48,11 +48,14 @@ export function Step6Energia({
         </Field>
 
         <h2 className="mb-3 mt-7 font-sans text-[13px] font-medium text-ink">Nível de atividade física diária</h2>
-        <OptionRow
-          value={fatorPersonalizado ? "" : a.fatorAtividade}
-          onChange={(v) => set("fatorAtividade", v)}
-          options={fatores}
-        />
+        <div className="max-w-sm">
+          <Select
+            value={fatorPersonalizado ? "" : a.fatorAtividade}
+            onChange={(v) => set("fatorAtividade", v)}
+            options={fatores}
+            placeholder="Selecione o nível de atividade"
+          />
+        </div>
         <div className="mt-4 max-w-xs">
           <Field
             label="Fator Atividade personalizado"
