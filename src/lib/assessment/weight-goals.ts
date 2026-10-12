@@ -141,7 +141,7 @@ export function calcularMetasPeso(a: Assessment, d: DerivedResults, m: MetasPeso
     interpretacao.push(
       `Expectativa de ${fmt2(expectativa.percentual)}% em ${fmt2(expectativa.prazoMeses)} meses (${fmt2(expectativa.kgSemana)} kg/sem) frente a referência de até ${fmt2(percentualReferencia)}% — ${txt}.`,
     );
-    if (classificacao !== "compativel" && metas[1])
+    if (classificacao !== "compativel" && metas[0] && metas[1])
       interpretacao.push(`Sugere-se pactuar metas intermediárias: ${fmt2(metas[0].pesoMeta)} kg em 1 mês e ${fmt2(metas[1].pesoMeta)} kg em 3 meses.`);
   }
   if (expectativa && modelo) {

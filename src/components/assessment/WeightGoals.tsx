@@ -36,7 +36,7 @@ export function WeightGoals({ a, d, metas, onChange, onGerarPdf }: Props) {
   const up = <K extends keyof MetasPesoEstado>(k: K, v: MetasPesoEstado[K]) => onChange({ ...metas, [k]: v });
 
   const dadosGrafico = useMemo(() => {
-    const pontos: { dia: number; dinamico?: number; meta?: number }[] = [];
+    const pontos: { dia: number; dinamico?: number | undefined; meta?: number }[] = [];
     const serie = r.modelo?.serie;
     for (let dia = 0; dia <= 365; dia += 7) pontos.push({ dia, dinamico: serie?.[dia]?.peso });
     for (const m of r.metas) pontos.push({ dia: Math.round(m.meses * 30.4375), meta: m.pesoMeta });
@@ -69,7 +69,7 @@ export function WeightGoals({ a, d, metas, onChange, onGerarPdf }: Props) {
           />
         </Field>
         {metas.modo === "peso" ? (
-          <Field label="Peso desejado" hint={a.pesoDesejado && !metas.pesoDesejado ? "Usando o peso desejado da anamnese." : undefined}>
+          <Field label="Peso desejado" hint={a.pesoDesejado && !metas.pesoDesejado ? "Usando o peso desejado da anamnese." : ""}>
             <UnitInput value={metas.pesoDesejado || a.pesoDesejado} onChange={(v) => up("pesoDesejado", v)} unidade="kg" casas={2} />
           </Field>
         ) : (
