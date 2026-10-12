@@ -1,3 +1,5 @@
+import { metasParaRelatorio } from "./weight-goals-report";
+import type { MetasPesoResultado } from "./weight-goals";
 import {
   fmt2,
   fmtData,
@@ -41,6 +43,7 @@ function montar(
   d: DerivedResults,
   analise: AnaliseIA,
   composicao: ComposicaoDiario | null,
+  metas: MetasPesoResultado | null = null,
 ): Bloco[] {
   const kv = (l: string, v: string): Linha => ({
     texto: `${l}: ${v || "—"}`,
@@ -135,6 +138,16 @@ function montar(
       ],
       formato: "lista",
     });
+  }
+  if (metas) {
+    blocos.push({ titulo: "Metas e Projeção de Peso", linhas: [] });
+    for (const secao of metasParaRelatorio(metas)) {
+      if (secao.colunas && secao.linhas) blocos.push({
+        titulo: secao.titulo, formato: "tabela",
+        linhas: secao.linhas.map(l => kv(l[0] ?? "", l.slice(1).map((v, i) => `${secao.colunas?.[i + 1]}: ${v}`).join(" · "))),
+      });
+      if (secao.itens?.length) blocos.push({ titulo: secao.colunas ? `${secao.titulo} — observações` : secao.titulo, formato: "lista", linhas: secao.itens.map(texto => ({ texto })) });
+    }
   }
   const painel = painelClinicoParaRelatorio(analise, a, d, composicao);
   if (painel.resumo.length) {
@@ -259,8 +272,9 @@ export function relatorioParaCopia(
   d: DerivedResults,
   analise: AnaliseIA,
   composicao: ComposicaoDiario | null,
+  metas: MetasPesoResultado | null = null,
 ) {
-  const blocos = montar(a, d, analise, composicao);
+  const blocos = montar(a, d, analise, composicao, metas);
   const cab = "RELATÓRIO DE AVALIAÇÃO NUTRICIONAL";
   const recuo = ["", "  - ", "      "];
   const texto =

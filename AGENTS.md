@@ -22,4 +22,4 @@
 - Keep PDF branding colors in report-theme.ts so print presentation uses centralized tokens.
 - Keep decimal-place limiting of numeric inputs in numeric.ts so every decimal field enforces the same precision.
 - Keep atypical-day meals and composition in separate session-only route state; reuse the dietary calculation helper so habitual totals are never mixed with atypical totals.
-- Keep weight-goal math in weight-projection.ts/weight-goals.ts; the module has its own session state and PDF so existing reports stay unchanged.
+- Keep weight-goal math in weight-projection.ts/weight-goals.ts and session-only state; format its results through weight-goals-report.ts for the final report, rich copy and unified PDF so all outputs stay consistent.

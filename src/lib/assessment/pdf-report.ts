@@ -1,3 +1,5 @@
+import { metasParaRelatorio } from "./weight-goals-report";
+import type { MetasPesoResultado } from "./weight-goals";
 import jsPDF from "jspdf";
 
 import {
@@ -35,6 +37,7 @@ export function generatePDF(
   d: DerivedResults,
   analise: AnaliseIA | null,
   composicao: ComposicaoDiario | null = null,
+  metas: MetasPesoResultado | null = null,
 ) {
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   const examesDoRelatorio = examesParaRelatorio(a.exames);
@@ -280,6 +283,69 @@ export function generatePDF(
       y += 5;
     }
     y += 2;
+  }
+
+  if (metas) {
+    titulo("Metas e Projeção de Peso");
+    for (const secao of metasParaRelatorio(metas)) {
+      titulo(secao.titulo);
+      if (secao.colunas && secao.linhas) {
+        const largura = CONTEUDO / secao.colunas.length;
+        const desenharLinha = (valores: string[], negrito: boolean) => {
+          doc.setFont("helvetica", negrito ? "bold" : "normal").setFontSize(8);
+          const celulas = valores.map(v => doc.splitTextToSize(v, largura - 3) as string[]);
+          const altura = Math.max(...celulas.map(c => c.length)) * 4 + 3;
+          quebra(altura);
+          doc.setTextColor(40, 50, 60);
+          celulas.forEach((c, i) => doc.text(c, MARGEM + i * largura, y));
+          y += altura;
+        };
+        desenharLinha(secao.colunas, true);
+        for (const valores of secao.linhas) desenharLinha(valores, false);
+      }
+      for (const item of secao.itens ?? []) paragrafo(`• ${item}`);
+    }
+  // Gráfico
+  if (metas.pesoInicial !== null) {
+    titulo("GRÁFICO COMPARATIVO");
+    const gh = 60;
+    quebra(gh + 12);
+    const gx = MARGEM + 12;
+    const gw = LARGURA - 2 * MARGEM - 14;
+    const vals = [metas.pesoInicial, ...metas.metas.map((m) => m.pesoMeta)];
+    if (metas.expectativa) vals.push(metas.expectativa.pesoAlvo);
+    if (metas.modelo) vals.push(metas.modelo.serie[365]?.peso ?? metas.pesoInicial);
+    const max = Math.max(...vals) + 1;
+    const min = Math.min(...vals) - 1;
+    const px = (dia: number) => gx + (dia / 365) * gw;
+    const py = (p: number) => y + gh - ((p - min) / (max - min)) * gh;
+    doc.setDrawColor(180).setLineWidth(0.2).rect(gx, y, gw, gh);
+    doc.setFontSize(7).setTextColor(100);
+    for (const t of [0, 30, 90, 180, 365]) doc.text(`${t}d`, px(t), y + gh + 4, { align: "center" });
+    for (let i = 0; i <= 4; i++) {
+      const v = min + ((max - min) * i) / 4;
+      doc.text(fmt2(v), gx - 1, py(v) + 1, { align: "right" });
+    }
+    doc.setLineDashPattern([1, 1], 0).setDrawColor(120);
+    doc.line(gx, py(metas.pesoInicial), gx + gw, py(metas.pesoInicial));
+    if (metas.expectativa) {
+      doc.setDrawColor(200, 140, 0);
+      doc.line(gx, py(metas.expectativa.pesoAlvo), gx + gw, py(metas.expectativa.pesoAlvo));
+    }
+    doc.setLineDashPattern([], 0);
+    if (metas.modelo) {
+      doc.setDrawColor(...REPORT_HEADER_COLOR).setLineWidth(0.6);
+      for (let dia = 5; dia <= 365; dia += 5) { const p0 = metas.modelo.serie[dia - 5]; const p1 = metas.modelo.serie[dia]; if (p0 && p1) doc.line(px(dia - 5), py(p0.peso), px(dia), py(p1.peso)); }
+    }
+    doc.setFillColor(30, 30, 30);
+    for (const m of metas.metas) doc.circle(px(m.meses * 30.4375), py(m.pesoMeta), 0.9, "F");
+    y += gh + 7;
+    doc.setTextColor(80).setFontSize(7.5);
+    doc.text("— Trajetória dinâmica (verde)   - - Peso inicial (cinza)   - - Peso desejado (laranja)   • Metas de referência", MARGEM, y);
+    doc.setTextColor(30, 30, 30);
+    y += 4;
+  }
+
   }
 
   if (analise) {

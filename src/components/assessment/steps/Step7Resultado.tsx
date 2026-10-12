@@ -1,3 +1,5 @@
+import { WeightGoalsReport } from "../WeightGoalsReport";
+import type { MetasPesoResultado } from "@/lib/assessment/weight-goals";
 import {
   fmt2,
   fmtData,
@@ -28,6 +30,7 @@ interface Props extends StepProps {
   analisando: boolean;
   onAnalisar: () => void;
   composicao: ComposicaoDiario | null;
+  metas: MetasPesoResultado | null;
 }
 
 function Dado({ label, valor }: { label: string; valor: string }) {
@@ -48,12 +51,12 @@ function Bloco({ titulo, children }: { titulo: string; children: React.ReactNode
   );
 }
 
-export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composicao }: Props) {
+export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composicao, metas }: Props) {
   const relatorioRef = useRef<HTMLDivElement>(null);
 
   async function copiarRelatorio() {
     if (!analise) return;
-    const { texto, html } = relatorioParaCopia(a, d, analise, composicao);
+    const { texto, html } = relatorioParaCopia(a, d, analise, composicao, metas);
     try {
       if (typeof ClipboardItem !== "undefined" && navigator.clipboard.write) {
         await navigator.clipboard.write([
@@ -247,6 +250,8 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
             )}
           </Bloco>
         )}
+
+        {metas && <WeightGoalsReport resultado={metas} />}
 
         <div className="mt-10 border-t-2 border-ink pt-7">
           <div className="flex items-end justify-between gap-4 border-b border-line pb-3">

@@ -13,7 +13,7 @@ import { Step6Energia } from "@/components/assessment/steps/Step6Energia";
 import { Step7Resultado } from "@/components/assessment/steps/Step7Resultado";
 import { Step8Pdf } from "@/components/assessment/steps/Step8Pdf";
 import { WeightGoals } from "@/components/assessment/WeightGoals";
-import { MODULO_METAS_ATIVO, type MetasPesoResultado } from "@/lib/assessment/weight-goals";
+import { MODULO_METAS_ATIVO, calcularMetasPeso } from "@/lib/assessment/weight-goals";
 import { metasPesoIniciais, type MetasPesoEstado } from "@/lib/assessment/weight-projection";
 import { analisarAvaliacao, calcularComposicaoDiario } from "@/lib/assessment/analysis.functions";
 import { alimentosDoDiario, calcularComposicaoDasRefeicoes, chaveDiario, somarTotais, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
@@ -63,6 +63,7 @@ function Index() {
   const calculoAtipicoEmCursoRef = useRef(false);
   const [metasPeso, setMetasPeso] = useState<MetasPesoEstado>(() => metasPesoIniciais());
   const derivados = useMemo(() => deriveResults(dados), [dados]);
+  const resultadoMetas = useMemo(() => MODULO_METAS_ATIVO(dados) ? calcularMetasPeso(dados, derivados, metasPeso) : null, [dados, derivados, metasPeso]);
 
   const set = useCallback(
     <K extends keyof Assessment>(chave: K, valor: Assessment[K]) =>
@@ -170,18 +171,9 @@ function Index() {
   async function onGerarPdf() {
     try {
       const { generatePDF } = await import("@/lib/assessment/pdf-report");
-      generatePDF(dados, derivados, analise, composicao);
+      generatePDF(dados, derivados, analise, composicao, resultadoMetas);
     } catch {
       toast.error("Não foi possível gerar o PDF.");
-    }
-  }
-
-  async function onGerarPdfMetas(r: MetasPesoResultado) {
-    try {
-      const { generateWeightGoalsPDF } = await import("@/lib/assessment/weight-goals-pdf");
-      generateWeightGoalsPDF(dados, derivados, r);
-    } catch {
-      toast.error("Não foi possível gerar o PDF de metas.");
     }
   }
 
@@ -261,7 +253,7 @@ function Index() {
           <div className="space-y-6">
             <Step6Energia {...props} composicao={composicao} />
             {MODULO_METAS_ATIVO(dados) && (
-              <WeightGoals {...props} metas={metasPeso} onChange={setMetasPeso} onGerarPdf={(r) => void onGerarPdfMetas(r)} />
+              <WeightGoals {...props} metas={metasPeso} onChange={setMetasPeso} />
             )}
           </div>
         )}
@@ -273,6 +265,7 @@ function Index() {
               analisando={analisando}
               onAnalisar={onAnalisar}
               composicao={composicao}
+              metas={resultadoMetas}
             />
             <Step8Pdf onGerar={onGerarPdf} temAnalise={analise !== null} />
           </div>
