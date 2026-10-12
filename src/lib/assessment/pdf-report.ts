@@ -341,9 +341,11 @@ export function generatePDF(
     for (const m of metas.metas) doc.circle(px(m.meses * 30.4375), py(m.pesoMeta), 0.9, "F");
     y += gh + 7;
     doc.setTextColor(80).setFontSize(7.5);
-    doc.text("— Trajetória dinâmica (verde)   - - Peso inicial (cinza)   - - Peso desejado (laranja)   • Metas de referência", MARGEM, y);
+    const legenda = [metas.modelo ? "Trajetória dinâmica (verde)" : "", "Peso inicial (cinza)", metas.expectativa ? "Peso desejado (laranja)" : "", "Metas de referência (pontos)"].filter(Boolean).join(" | ");
+    const linhasLegenda = doc.splitTextToSize(legenda, CONTEUDO) as string[];
+    doc.text(linhasLegenda, MARGEM, y);
     doc.setTextColor(30, 30, 30);
-    y += 4;
+    y += linhasLegenda.length * 4;
   }
 
   }

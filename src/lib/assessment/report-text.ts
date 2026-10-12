@@ -28,6 +28,8 @@ interface Linha {
 interface Bloco {
   titulo: string;
   linhas: Linha[];
+  colunas?: string[];
+  celulas?: string[][];
   formato?: "tabela" | "grupos" | "lista" | "lista-ordenada" | "checklist";
 }
 
@@ -144,7 +146,8 @@ function montar(
     for (const secao of metasParaRelatorio(metas)) {
       if (secao.colunas && secao.linhas) blocos.push({
         titulo: secao.titulo, formato: "tabela",
-        linhas: secao.linhas.map(l => kv(l[0] ?? "", l.slice(1).map((v, i) => `${secao.colunas?.[i + 1]}: ${v}`).join(" · "))),
+        colunas: secao.colunas, celulas: secao.linhas,
+        linhas: secao.linhas.map(l => ({ texto: l.join(" | ") })),
       });
       if (secao.itens?.length) blocos.push({ titulo: secao.colunas ? `${secao.titulo} — observações` : secao.titulo, formato: "lista", linhas: secao.itens.map(texto => ({ texto })) });
     }
@@ -240,6 +243,7 @@ function gruposHtml(linhas: Linha[]) {
 
 function blocoHtml(bloco: Bloco) {
   const titulo = `<h2 style="${fonte};font-size:13pt;font-weight:700;margin:16pt 0 7pt 0;padding-bottom:3pt;border-bottom:1px solid #cfd6dc">${esc(bloco.titulo)}</h2>`;
+  if (bloco.colunas && bloco.celulas) return titulo + `<table style="width:100%;border-collapse:collapse;margin:0 0 10pt 0"><thead><tr>${bloco.colunas.map(c => `<th scope="col" style="${fonte};padding:3pt;text-align:left;font-weight:700">${esc(c)}</th>`).join("")}</tr></thead><tbody>${bloco.celulas.map(l => `<tr>${l.map(c => `<td style="${fonte};padding:3pt;vertical-align:top">${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
   if (bloco.formato === "tabela") return titulo + tabelaHtml(bloco.linhas);
   if (bloco.formato === "grupos") return titulo + gruposHtml(bloco.linhas);
   if (bloco.formato === "lista") {

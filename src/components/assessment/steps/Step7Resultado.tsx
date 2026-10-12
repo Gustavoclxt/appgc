@@ -89,6 +89,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
         >
           {analisando ? "ANALISANDO…" : "ANALISAR AVALIAÇÃO"}
         </button>
+        {metas && <WeightGoalsReport resultado={metas} />}
       </Panel>
     );
   }

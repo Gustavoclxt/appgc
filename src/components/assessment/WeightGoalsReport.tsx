@@ -4,7 +4,7 @@ import type { MetasPesoResultado } from "@/lib/assessment/weight-goals";
 import { metasParaRelatorio } from "@/lib/assessment/weight-goals-report";
 
 export function WeightGoalsReport({ resultado: r }: { resultado: MetasPesoResultado }) {
-  const pontos: { dia: number; dinamico?: number; meta?: number }[] = [];
+  const pontos: { dia: number; dinamico?: number | undefined; meta?: number }[] = [];
   for (let dia = 0; dia <= 365; dia += 7) pontos.push({ dia, dinamico: r.modelo?.serie[dia]?.peso });
   if (r.modelo) pontos.push({ dia: 365, dinamico: r.modelo.serie[365]?.peso });
   for (const m of r.metas) pontos.push({ dia: m.meses * 30.4375, meta: m.pesoMeta });
