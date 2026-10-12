@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Retirar referências e PDF separado de metas; integrar resultados ao relatório final, cópia e PDF único.
 - [x] Adicionar o botão "Copiar R24h" ao lado de "+ Adicionar refeição" no Dia atípico, copiando todas as refeições (horário, local, alimentos e quantidades) do Recordatório 24h com novos IDs.
 
 - [x] Adicionar Dia atípico com formulário de refeições e cálculo exclusivo, sem alterar o recordatório habitual.
