@@ -162,7 +162,7 @@ export function calcularMetasPeso(a: Assessment, d: DerivedResults, m: MetasPeso
   const meds = a.medicamentos.filter((x) => x.nome.trim()).map((x) => x.nome.trim());
   if (meds.length) interpretacao.push(`Medicamentos em uso (${meds.join(", ")}) → Investigar efeito sobre peso e apetite.`);
   if (a.hmp.trim() || a.hma.trim()) interpretacao.push("Condições clínicas registradas → Correlacionar clinicamente com a meta.");
-  if (a.historicoPeso.trim()) interpretacao.push("Histórico de peso registrado → Considerar efeito sanfona e platôs anteriores.");
+  if (a.historicoPeso.replace(/Infância:|Adolescência:|Vida adulta:/g, "").trim()) interpretacao.push("Histórico de peso registrado → Considerar efeito sanfona e platôs anteriores.");
 
   return {
     dataAvaliacao,

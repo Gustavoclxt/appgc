@@ -45,3 +45,4 @@
 - [x] Escrever o título "Condições de saúde" (mesma fonte de "História clínica") acima de HMA/HMP/HMF.
 - [x] Trocar as opções de "Nível de atividade física diária" por menu suspenso, mantendo o campo de fator personalizado.
 - [x] Desenhar a setinha de "abrir lista" dentro de todos os menus suspensos, incluindo os que só aparecem em situações específicas.
+- [x] Adicionar o módulo "Metas e Projeção de Peso" (somente com Emagrecimento), com metas de referência, modelo dinâmico de Hall, gráfico e PDF próprio.
