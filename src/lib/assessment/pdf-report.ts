@@ -303,7 +303,7 @@ export function generatePDF(
         desenharLinha(secao.colunas, true);
         for (const valores of secao.linhas) desenharLinha(valores, false);
       }
-      for (const item of secao.itens ?? []) paragrafo(`• ${item}`);
+      for (const item of secao.itens ?? []) paragrafo(`• ${item.replace(/→/g, ">")}`);
     }
   // Gráfico
   if (metas.pesoInicial !== null) {

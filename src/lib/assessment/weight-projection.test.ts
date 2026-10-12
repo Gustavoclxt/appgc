@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { MODULO_METAS_ATIVO } from "./weight-goals";
+import { createEmptyAssessment } from "./initial-state";
 import {
   classificarExpectativa,
   diasParaMeta,
@@ -9,6 +11,15 @@ import {
 } from "./weight-projection";
 
 const ref = { meta1: 2.5, meta3: 5, meta6Max: 10 };
+
+describe("disponibilidade das metas no relatório final", () => {
+  it("disponibiliza somente quando Emagrecimento está selecionado", () => {
+    const a = createEmptyAssessment();
+    expect(MODULO_METAS_ATIVO({ ...a, objetivos: ["Emagrecimento"] })).toBe(true);
+    expect(MODULO_METAS_ATIVO({ ...a, objetivos: ["Hipertrofia"] })).toBe(false);
+    expect(MODULO_METAS_ATIVO({ ...a, objetivos: [] })).toBe(false);
+  });
+});
 
 describe("metas de referência", () => {
   it("1 mês = 2,5% do peso inicial", () => {
