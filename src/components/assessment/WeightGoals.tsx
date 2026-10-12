@@ -4,6 +4,7 @@ import { calcularMetasPeso } from "@/lib/assessment/weight-goals";
 import { type MetasPesoEstado } from "@/lib/assessment/weight-projection";
 
 import { Field, MetricCard, OptionRow, Panel, SubTitle, UnitInput } from "./fields";
+import { WeightGoalsChart } from "./WeightGoalsChart";
 import type { StepProps } from "./steps/types";
 
 interface Props extends StepProps {
@@ -70,6 +71,8 @@ export function WeightGoals({ a, d, metas, onChange }: Props) {
           />
         </Field>
       </div>
+      <WeightGoalsChart resultado={r} />
+      {r.limitacoes.length > 0 && <ul className="mt-3 list-disc space-y-1 pl-5 text-[12px] text-ink-soft">{r.limitacoes.map(item => <li key={item}>{item}</li>)}</ul>}
     </Panel>
   );
 }
