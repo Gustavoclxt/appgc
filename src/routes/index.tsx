@@ -12,6 +12,9 @@ import { Step5Exames } from "@/components/assessment/steps/Step5Exames";
 import { Step6Energia } from "@/components/assessment/steps/Step6Energia";
 import { Step7Resultado } from "@/components/assessment/steps/Step7Resultado";
 import { Step8Pdf } from "@/components/assessment/steps/Step8Pdf";
+import { WeightGoals } from "@/components/assessment/WeightGoals";
+import { MODULO_METAS_ATIVO, type MetasPesoResultado } from "@/lib/assessment/weight-goals";
+import { metasPesoIniciais, type MetasPesoEstado } from "@/lib/assessment/weight-projection";
 import { analisarAvaliacao, calcularComposicaoDiario } from "@/lib/assessment/analysis.functions";
 import { alimentosDoDiario, calcularComposicaoDasRefeicoes, chaveDiario, somarTotais, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { novaRefeicaoAtipica } from "@/components/assessment/AtypicalDay";
@@ -58,6 +61,7 @@ function Index() {
   const [composicaoAtipica, setComposicaoAtipica] = useState<ComposicaoDiario | null>(null);
   const [calculandoAtipico, setCalculandoAtipico] = useState(false);
   const calculoAtipicoEmCursoRef = useRef(false);
+  const [metasPeso, setMetasPeso] = useState<MetasPesoEstado>(() => metasPesoIniciais());
   const derivados = useMemo(() => deriveResults(dados), [dados]);
 
   const set = useCallback(
@@ -172,6 +176,15 @@ function Index() {
     }
   }
 
+  async function onGerarPdfMetas(r: MetasPesoResultado) {
+    try {
+      const { generateWeightGoalsPDF } = await import("@/lib/assessment/weight-goals-pdf");
+      generateWeightGoalsPDF(dados, derivados, r);
+    } catch {
+      toast.error("Não foi possível gerar o PDF de metas.");
+    }
+  }
+
   function avancar() {
     setEtapa((e) => Math.min(ETAPAS.length, e + 1));
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -244,7 +257,14 @@ function Index() {
             <Step5Exames {...props} />
           </div>
         )}
-        {etapa === 4 && <Step6Energia {...props} composicao={composicao} />}
+        {etapa === 4 && (
+          <div className="space-y-6">
+            <Step6Energia {...props} composicao={composicao} />
+            {MODULO_METAS_ATIVO(dados) && (
+              <WeightGoals {...props} metas={metasPeso} onChange={setMetasPeso} onGerarPdf={(r) => void onGerarPdfMetas(r)} />
+            )}
+          </div>
+        )}
         {etapa === 5 && (
           <div className="space-y-6">
             <Step7Resultado

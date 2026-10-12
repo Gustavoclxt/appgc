@@ -13,7 +13,7 @@ import {
 } from "recharts";
 
 import { fmt2, fmtData, fmtInt, parseNumero } from "@/lib/assessment/calculations";
-import { calcularMetasPeso, type MetasPesoResultado } from "@/lib/assessment/weight-goals";
+import { calcularMetasPeso, REFERENCIAS_METAS, type MetasPesoResultado } from "@/lib/assessment/weight-goals";
 import { labelClassificacao, type MetasPesoEstado } from "@/lib/assessment/weight-projection";
 
 import { Field, MetricCard, OptionRow, Panel, SubTitle, UnitInput } from "./fields";
@@ -192,6 +192,12 @@ export function WeightGoals({ a, d, metas, onChange, onGerarPdf }: Props) {
           </ul>
         </>
       )}
+
+      <SubTitle className="mt-7">Referências científicas</SubTitle>
+      <ul className="space-y-1 text-[11px] text-ink-soft">
+        {REFERENCIAS_METAS.map((t) => <li key={t}>• {t}</li>)}
+        <li>• Modelo de Hall implementado em dois compartimentos (sem glicogênio/água); estimativas podem diferir da calculadora oficial do NIH.</li>
+      </ul>
 
       <div className="mt-7 flex justify-center">
         <button
