@@ -98,7 +98,7 @@ export function generateWeightGoalsPDF(a: Assessment, d: DerivedResults, r: Meta
     const gw = W - 2 * M - 14;
     const vals = [r.pesoInicial, ...r.metas.map((m) => m.pesoMeta)];
     if (r.expectativa) vals.push(r.expectativa.pesoAlvo);
-    if (r.modelo) vals.push(r.modelo.serie[365].peso);
+    if (r.modelo) vals.push(r.modelo.serie[365]?.peso ?? r.pesoInicial);
     const max = Math.max(...vals) + 1;
     const min = Math.min(...vals) - 1;
     const px = (dia: number) => gx + (dia / 365) * gw;
@@ -119,7 +119,7 @@ export function generateWeightGoalsPDF(a: Assessment, d: DerivedResults, r: Meta
     doc.setLineDashPattern([], 0);
     if (r.modelo) {
       doc.setDrawColor(...REPORT_HEADER_COLOR).setLineWidth(0.6);
-      for (let dia = 5; dia <= 365; dia += 5) doc.line(px(dia - 5), py(r.modelo.serie[dia - 5].peso), px(dia), py(r.modelo.serie[dia].peso));
+      for (let dia = 5; dia <= 365; dia += 5) { const p0 = r.modelo.serie[dia - 5]; const p1 = r.modelo.serie[dia]; if (p0 && p1) doc.line(px(dia - 5), py(p0.peso), px(dia), py(p1.peso)); }
     }
     doc.setFillColor(30, 30, 30);
     for (const m of r.metas) doc.circle(px(m.meses * 30.4375), py(m.pesoMeta), 0.9, "F");
