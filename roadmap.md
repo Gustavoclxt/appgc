@@ -50,3 +50,4 @@
 - [x] Trocar as opções de "Nível de atividade física diária" por menu suspenso, mantendo o campo de fator personalizado.
 - [x] Desenhar a setinha de "abrir lista" dentro de todos os menus suspensos, incluindo os que só aparecem em situações específicas.
 - [x] Adicionar o módulo "Metas e Projeção de Peso" (somente com Emagrecimento), com metas de referência, modelo dinâmico de Hall, gráfico e PDF próprio.
+- [x] Inverter o intervalo de peso após a perda nos cards de referência, exibindo da menor para a maior perda (ex.: "95,00 a 90,00 kg").

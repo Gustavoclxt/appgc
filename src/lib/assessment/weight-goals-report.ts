@@ -17,11 +17,13 @@ export function cardsMetasReferencia(r: MetasPesoResultado) {
     const ultima = metas[metas.length - 1];
     if (!primeira || !ultima) return [];
     const intervalo = (a: number, b: number, unidade: string) => a === b ? `${fmt2(a)}${unidade}` : `${fmt2(Math.min(a, b))} a ${fmt2(Math.max(a, b))}${unidade}`;
+    // Mantém a ordem da menor para a maior perda: 5% primeiro, 10% depois.
+    const intervaloMeta = (a: number, b: number, unidade: string) => a === b ? `${fmt2(a)}${unidade}` : `${fmt2(a)} a ${fmt2(b)}${unidade}`;
     return [{
       prazo: meses === 1 ? "1 mês" : `${meses} meses`,
       percentual: intervalo(primeira.percentual, ultima.percentual, "%"),
       perda: intervalo(primeira.kg, ultima.kg, " kg"),
-      peso: intervalo(primeira.pesoMeta, ultima.pesoMeta, " kg"),
+      peso: intervaloMeta(primeira.pesoMeta, ultima.pesoMeta, " kg"),
       velocidades: `${intervalo(primeira.kgSemana, ultima.kgSemana, " kg/semana")} · ${intervalo(primeira.pctSemana, ultima.pctSemana, "%/semana")} · ${intervalo(primeira.kgMes, ultima.kgMes, " kg/mês")}`,
     }];
   });
