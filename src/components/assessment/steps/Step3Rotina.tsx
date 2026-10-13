@@ -126,11 +126,13 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
             <div key={m.id} className="rounded-[10px] bg-white/70 p-4 ring-1 ring-line">
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                 <Field label="Modalidade">
-                  <TextInput
+                  <Select
                     value={m.modalidade}
                     onChange={(v) =>
                       set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, modalidade: v } : x)))
                     }
+                    options={MODALIDADES.map((nome) => ({ value: nome, label: nome }))}
+                    placeholder="Selecione a modalidade"
                   />
                 </Field>
                 <Field label="Há quanto tempo pratica?">
