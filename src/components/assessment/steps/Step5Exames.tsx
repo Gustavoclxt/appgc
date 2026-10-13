@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { extrairExames } from "@/lib/assessment/analysis.functions";
 import { extractPdfText } from "@/lib/assessment/extract-pdf-text";
 import { novoId } from "@/lib/assessment/initial-state";
+import { podeAnexarExames } from "@/lib/assessment/anthropometry-groups";
 
 import { ExamesTable } from "../ExamesTable";
 import { Field, LongText, Panel, RowButton, Select, TextInput } from "../fields";
@@ -65,7 +66,7 @@ export function Step5Exames({ a, set }: StepProps) {
 
   return (
     <div className="space-y-6">
-      <Panel titulo="Anexar Exames Laboratoriais">
+      {podeAnexarExames(a) && <Panel titulo="Anexar Exames Laboratoriais">
         <div className="rounded-[10px] border border-dashed border-line bg-white/50 px-5 py-8 text-center">
           <p className="text-[13px] font-semibold text-ink">
             Selecione um exame laboratorial em PDF:
@@ -85,7 +86,7 @@ export function Step5Exames({ a, set }: StepProps) {
             />
           </label>
         </div>
-      </Panel>
+      </Panel>}
 
       {a.exames.length > 0 && (
         <>

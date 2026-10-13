@@ -9,6 +9,23 @@ export interface SecaoMetasRelatorio {
   itens?: string[];
 }
 
+/** Display existing unrounded reference results without recalculating the goals. */
+export function cardsMetasReferencia(r: MetasPesoResultado) {
+  return [1, 3, 6].flatMap(meses => {
+    const metas = r.metas.filter(m => m.meses === meses);
+    const primeira = metas[0];
+    const ultima = metas[metas.length - 1];
+    if (!primeira || !ultima) return [];
+    const intervalo = (a: number, b: number, unidade: string) => a === b ? `${fmt2(a)}${unidade}` : `${fmt2(Math.min(a, b))} a ${fmt2(Math.max(a, b))}${unidade}`;
+    return [{
+      prazo: meses === 1 ? "1 mês" : `${meses} meses`,
+      percentual: intervalo(primeira.percentual, ultima.percentual, "%"),
+      perda: intervalo(primeira.kg, ultima.kg, " kg"),
+      peso: intervalo(primeira.pesoMeta, ultima.pesoMeta, " kg"),
+    }];
+  });
+}
+
 /** A mesma apresentação dos resultados para tela, cópia e PDF final. */
 export function metasParaRelatorio(r: MetasPesoResultado): SecaoMetasRelatorio[] {
   const secoes: SecaoMetasRelatorio[] = [{
