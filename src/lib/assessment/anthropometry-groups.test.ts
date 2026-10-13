@@ -30,3 +30,14 @@ it("permite anexar exames somente com Sim", () => {
   expect(podeAnexarExames({ possuiExames: "nao" })).toBe(false);
   expect(podeAnexarExames({ possuiExames: "" })).toBe(false);
 });
+
+describe("valor com unidade", () => {
+  it("apresenta a unidade junto ao valor", () => {
+    expect(valorComUnidade({ valor: "1,60", unidade: "m" })).toBe("1,60 m");
+    expect(valorComUnidade({ valor: "73,10", unidade: "kg" })).toBe("73,10 kg");
+    expect(valorComUnidade({ valor: "18,5", unidade: "%" })).toBe("18,5%");
+    expect(valorComUnidade({ valor: "25,50", unidade: "kg/m²" })).toBe("25,50 kg/m²");
+    expect(valorComUnidade({ valor: "2,00", unidade: "" })).toBe("2,00");
+    expect(valorComUnidade({ valor: "", unidade: "" })).toBe("—");
+  });
+});
