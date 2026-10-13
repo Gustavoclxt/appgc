@@ -88,13 +88,13 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
             <div className="overflow-x-auto">
             <table className="w-full text-left text-[13px]">
               <thead className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-soft">
-                <tr><th scope="col" className="py-2 pr-4">Indicador</th><th scope="col" className="py-2">Valor</th></tr>
+                <tr><th scope="col" className="py-2 pr-4">Indicador</th><th scope="col" className="py-2 text-right">Valor</th></tr>
               </thead>
               <tbody>
                 {grupo.indicadores.map((i) => (
                   <tr key={i.id} className="border-t border-line/70">
                     <td className="py-2 pr-4 text-ink">{i.nome}</td>
-                    <td className="py-2 font-mono">{valorComUnidade(i)}</td>
+                    <td className="py-2 text-right font-mono">{valorComUnidade(i)}</td>
                   </tr>
                 ))}
               </tbody>
