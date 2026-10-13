@@ -75,7 +75,6 @@ export function generateWeightGoalsPDF(a: Assessment, d: DerivedResults, r: Meta
     ["Meta", "% perda", "Kg", "Peso meta", "kg/sem", "%/sem", "kg/mês"],
     r.metas.map((m) => [m.rotulo, `${fmt2(m.percentual)}%`, fmt2(m.kg), fmt2(m.pesoMeta), fmt2(m.kgSemana), fmt2(m.pctSemana), fmt2(m.kgMes)]),
   );
-  linha("Referências ajustáveis — não são metas universais nem garantia de resultado.");
 
   titulo("PROJEÇÃO — MODELO DINÂMICO (HALL/NIH)");
   if (r.modelo) {
