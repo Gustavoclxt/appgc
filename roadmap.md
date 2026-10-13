@@ -1,7 +1,7 @@
 # Roadmap
-- [ ] Categorizar antropometria e mover datas para o cabeçalho das tabelas.
-- [ ] Exibir metas de referência em três cards com perda e peso resultante.
-- [ ] Condicionar anexo de exames à resposta Sim e validar os fluxos.
+- [x] Categorizar antropometria e mover datas para o cabeçalho das tabelas.
+- [x] Exibir metas de referência em três cards com perda e peso resultante.
+- [x] Condicionar anexo de exames à resposta Sim e validar os fluxos.
 - [x] Retirar referências e PDF separado de metas; integrar resultados ao relatório final, cópia e PDF único.
 - [x] Adicionar o botão "Copiar R24h" ao lado de "+ Adicionar refeição" no Dia atípico, copiando todas as refeições (horário, local, alimentos e quantidades) do Recordatório 24h com novos IDs.
 
