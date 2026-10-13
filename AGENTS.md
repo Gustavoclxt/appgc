@@ -26,3 +26,4 @@
 - Reuse WeightGoalsChart for the weight-goal input screen and final report so both display the same trajectory and comparison markers.
 - Group imported anthropometry through anthropometry-groups.ts, retaining original rows and separate evaluation dates to avoid conflating assessments.
 - Reuse WeightReferenceCards and cardsMetasReferencia for module and final-screen reference cards so both consume existing weight-goal results without new calculations.
+- Keep shift-range selection in MultiOptionRow/selection-range.ts and apply preference-group rules (Nenhum/Todos) only through aplicarSelecaoPreferencia, so every button row — training days, habits and food preferences — behaves identically.
