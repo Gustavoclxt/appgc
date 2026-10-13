@@ -1,6 +1,7 @@
 import type { MetasPesoResultado } from "@/lib/assessment/weight-goals";
 import { WeightGoalsChart } from "./WeightGoalsChart";
 import { metasParaRelatorio } from "@/lib/assessment/weight-goals-report";
+import { WeightReferenceCards } from "./WeightReferenceCards";
 
 export function WeightGoalsReport({ resultado: r }: { resultado: MetasPesoResultado }) {
   return (
@@ -9,7 +10,8 @@ export function WeightGoalsReport({ resultado: r }: { resultado: MetasPesoResult
       {metasParaRelatorio(r).map(secao => (
         <section key={secao.titulo} className="mt-5">
           <h4 className="font-display text-sm font-semibold text-accent">{secao.titulo}</h4>
-          {secao.colunas && secao.linhas && (
+          {secao.titulo === "Metas clínicas de referência (ajustáveis)" && <WeightReferenceCards resultado={r} />}
+          {secao.titulo !== "Metas clínicas de referência (ajustáveis)" && secao.colunas && secao.linhas && (
             <div className="mt-2 overflow-x-auto">
               <table className="w-full text-left text-[13px]">
                 <thead><tr>{secao.colunas.map(c => <th key={c} scope="col" className="whitespace-nowrap border-b border-line px-2 py-2 font-semibold">{c}</th>)}</tr></thead>

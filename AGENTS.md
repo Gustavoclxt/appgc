@@ -24,3 +24,5 @@
 - Keep atypical-day meals and composition in separate session-only route state; reuse the dietary calculation helper so habitual totals are never mixed with atypical totals.
 - Keep weight-goal math in weight-projection.ts/weight-goals.ts and session-only state; format its results through weight-goals-report.ts for the final report, rich copy and unified PDF so all outputs stay consistent.
 - Reuse WeightGoalsChart for the weight-goal input screen and final report so both display the same trajectory and comparison markers.
+- Group imported anthropometry through anthropometry-groups.ts, retaining original rows and separate evaluation dates to avoid conflating assessments.
+- Reuse WeightReferenceCards and cardsMetasReferencia for module and final-screen reference cards so both consume existing weight-goal results without new calculations.

@@ -3,7 +3,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { extrairAntropometria } from "@/lib/assessment/analysis.functions";
-import { fmt2 } from "@/lib/assessment/calculations";
+import { fmt2, fmtData } from "@/lib/assessment/calculations";
+import { agruparAntropometria } from "@/lib/assessment/anthropometry-groups";
 import { extractPdfText } from "@/lib/assessment/extract-pdf-text";
 import { novoId } from "@/lib/assessment/initial-state";
 
@@ -77,22 +78,31 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
 
       {a.indicadoresAntropometricos.length > 0 && (
         <Panel titulo="Dados extraídos do PDF" meta={`${a.indicadoresAntropometricos.length} indicador(es)`}>
-          <div className="overflow-x-auto">
+          <div className="space-y-6">
+          {agruparAntropometria(a.indicadoresAntropometricos, a.dataAvaliacaoAntropometrica).map(grupo => (
+          <section key={`${grupo.categoria}-${grupo.data}`}>
+            <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
+              <h3 className="font-display text-sm font-semibold text-accent">{grupo.categoria}</h3>
+              <p className="text-[12px] text-ink-soft">Data da avaliação: {/^\d{4}-\d{2}-\d{2}$/.test(grupo.data) ? fmtData(grupo.data) : grupo.data || "Não informada"}</p>
+            </div>
+            <div className="overflow-x-auto">
             <table className="w-full text-left text-[13px]">
               <thead className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-soft">
-                <tr><th className="py-2 pr-4">Indicador</th><th className="py-2 pr-4">Valor</th><th className="py-2 pr-4">Unidade</th><th className="py-2">Data</th></tr>
+                <tr><th scope="col" className="py-2 pr-4">Indicador</th><th scope="col" className="py-2 pr-4">Valor</th><th scope="col" className="py-2">Unidade</th></tr>
               </thead>
               <tbody>
-                {a.indicadoresAntropometricos.map((i) => (
+                {grupo.indicadores.map((i) => (
                   <tr key={i.id} className="border-t border-line/70">
                     <td className="py-2 pr-4 text-ink">{i.nome}</td>
                     <td className="py-2 pr-4 font-mono">{i.valor}</td>
-                    <td className="py-2 pr-4 text-ink-soft">{i.unidade || "—"}</td>
-                    <td className="py-2 text-ink-soft">{i.data || "—"}</td>
+                    <td className="py-2 text-ink-soft">{i.unidade || "—"}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            </div>
+          </section>
+          ))}
           </div>
         </Panel>
       )}

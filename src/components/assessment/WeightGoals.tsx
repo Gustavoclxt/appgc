@@ -5,6 +5,7 @@ import { type MetasPesoEstado } from "@/lib/assessment/weight-projection";
 
 import { Field, MetricCard, OptionRow, Panel, SubTitle, UnitInput } from "./fields";
 import { WeightGoalsChart } from "./WeightGoalsChart";
+import { WeightReferenceCards } from "./WeightReferenceCards";
 import type { StepProps } from "./steps/types";
 
 interface Props extends StepProps {
@@ -61,6 +62,8 @@ export function WeightGoals({ a, d, metas, onChange }: Props) {
         <Field label="6 meses (mín.)"><UnitInput value={metas.meta6Min} onChange={(v) => up("meta6Min", v)} unidade="%" casas={1} /></Field>
         <Field label="6 meses (máx.)"><UnitInput value={metas.meta6Max} onChange={(v) => up("meta6Max", v)} unidade="%" casas={1} /></Field>
       </div>
+      <WeightReferenceCards resultado={r} />
+      {r.metas.length > 0 && <p className="mt-3 text-[12px] text-ink-soft">Referências ajustáveis — não são metas universais nem garantia de resultado.</p>}
       <SubTitle className="mt-7">Modelo dinâmico de perda de peso (Hall/NIH)</SubTitle>
       <div className="max-w-xs">
         <Field label="Déficit energético da projeção" hint={r.deficitOrigem}>
