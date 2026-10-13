@@ -41,6 +41,21 @@ const simNao = [
   { value: "nao", label: "Não" },
 ];
 
+const MODALIDADES = [
+  "Futebol", "Futsal", "Vôlei", "Vôlei de praia", "Basquete", "Handebol", "Futevôlei", "Beach tennis",
+  "Rugby", "Caminhada", "Caminhada em esteira", "Escada", "Elíptico", "Corrida de rua", "Corrida em esteira",
+  "Corrida em trilha", "Corrida de montanha", "Marcha atlética", "Musculação", "Treinamento funcional",
+  "CrossFit", "Pilates", "Ginástica aeróbica", "Spinning", "Ciclismo indoor", "Calistenia", "HIIT",
+  "Levantamento de peso", "Ciclismo", "Patinação", "Skate", "Natação", "Hidroginástica", "Surf",
+  "Canoagem", "Caiaque", "Remo", "Mergulho", "Windsurf", "Kitesurf", "Wakeboard", "Esqui aquático",
+  "Polo aquático", "Tênis", "Padel", "Badminton", "Tênis de mesa", "Squash", "Golfe", "Boliche",
+  "Bocha", "Jiu-jitsu", "Judô", "Karatê", "Taekwondo", "Boxe", "Muay thai", "Capoeira", "Kickboxing",
+  "MMA", "Aikido", "Kung fu", "Krav maga", "Wrestling", "Dança de salão", "Zumba", "Ballet", "Jazz",
+  "Dança", "Dança do ventre", "FitDance", "Pole dance", "Yoga", "Alongamento", "Tai chi chuan",
+  "Ginástica artística", "Ginástica rítmica", "Slackline", "Parkour", "Trekking", "Montanhismo",
+  "Escalada", "Rapel", "Hipismo", "Tiro com arco", "Tênis de praia",
+];
+
 const selecionarPreferencia = (atuais: string[], valor: string, opcoes: string[]) => {
   const nenhum = valor === "Nenhum" || valor === "Nenhuma";
   const todos = valor === "Todos" || valor === "Todas";
@@ -126,11 +141,13 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
             <div key={m.id} className="rounded-[10px] bg-white/70 p-4 ring-1 ring-line">
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                 <Field label="Modalidade">
-                  <TextInput
+                  <Select
                     value={m.modalidade}
                     onChange={(v) =>
                       set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, modalidade: v } : x)))
                     }
+                    options={MODALIDADES.map((nome) => ({ value: nome, label: nome }))}
+                    placeholder="Selecione a modalidade"
                   />
                 </Field>
                 <Field label="Há quanto tempo pratica?">
