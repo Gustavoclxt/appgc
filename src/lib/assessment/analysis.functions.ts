@@ -122,6 +122,7 @@ export const extrairExames = createServerFn({ method: "POST" })
 const SISTEMA_ANTROPOMETRIA = `Você extrai dados antropométricos de relatórios em texto (bioimpedância, DEXA, dobras cutâneas, avaliações físicas), em português do Brasil.
 Extraia apenas o que está explicitamente no texto. Nunca invente nem calcule valores.
 Preserve nomes dos indicadores, valores, unidades e datas como aparecem no documento.
+Inclua também altura e peso no array indicadores, mesmo quando preencher os campos principais. Leia todas as linhas e colunas do documento, distinguindo medidas, circunferências (incluindo lado esquerdo/direito e braço relaxado/contraído), dobras cutâneas e resultados. Não omita indicadores nem confunda circunferência em cm com dobra em mm. Se houver várias avaliações, use a mais recente nos campos principais e preserve cada indicador com sua própria data.
 Campos principais (deixe "" se não identificar com segurança):
 - altura: em metros com vírgula (ex.: "1,75"); converta de cm se necessário.
 - peso: em kg com vírgula (ex.: "78,4").
