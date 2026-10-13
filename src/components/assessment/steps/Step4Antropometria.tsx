@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 import { extrairAntropometria } from "@/lib/assessment/analysis.functions";
 import { fmt2, fmtData } from "@/lib/assessment/calculations";
-import { agruparAntropometria } from "@/lib/assessment/anthropometry-groups";
+import { agruparAntropometria, valorComUnidade } from "@/lib/assessment/anthropometry-groups";
 import { extractPdfText } from "@/lib/assessment/extract-pdf-text";
 import { novoId } from "@/lib/assessment/initial-state";
 
@@ -88,14 +88,13 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
             <div className="overflow-x-auto">
             <table className="w-full text-left text-[13px]">
               <thead className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-soft">
-                <tr><th scope="col" className="py-2 pr-4">Indicador</th><th scope="col" className="py-2 pr-4">Valor</th><th scope="col" className="py-2">Unidade</th></tr>
+                <tr><th scope="col" className="py-2 pr-4">Indicador</th><th scope="col" className="py-2">Valor</th></tr>
               </thead>
               <tbody>
                 {grupo.indicadores.map((i) => (
                   <tr key={i.id} className="border-t border-line/70">
                     <td className="py-2 pr-4 text-ink">{i.nome}</td>
-                    <td className="py-2 pr-4 font-mono">{i.valor}</td>
-                    <td className="py-2 text-ink-soft">{i.unidade || "—"}</td>
+                    <td className="py-2 font-mono">{valorComUnidade(i)}</td>
                   </tr>
                 ))}
               </tbody>

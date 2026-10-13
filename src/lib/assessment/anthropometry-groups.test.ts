@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { agruparAntropometria, categoriaAntropometrica, podeAnexarExames } from "./anthropometry-groups";
+import { agruparAntropometria, categoriaAntropometrica, podeAnexarExames, valorComUnidade } from "./anthropometry-groups";
 
 describe("categorias da antropometria", () => {
   it("organiza altura e peso em Medidas", () => {
