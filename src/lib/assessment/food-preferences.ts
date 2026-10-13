@@ -39,6 +39,35 @@ export function formatarPreferencia(
     : selecionados.join(", ");
 }
 
+/**
+ * Aplica uma seleção das listas de preferência, vindo de clique simples ou de
+ * intervalo com Shift, preservando as regras de “Nenhum(a)”/“Todos(as)”.
+ * `novos` é a seleção proposta e `alvo` o botão efetivamente clicado.
+ */
+export function aplicarSelecaoPreferencia(
+  atuais: string[],
+  novos: string[],
+  opcoes: string[],
+  alvo?: string,
+): string[] {
+  const ehNenhum = (v: string) => v === "Nenhum" || v === "Nenhuma";
+  const ehTodos = (v: string) => v === "Todos" || v === "Todas";
+  const selecionaveis = opcoes.filter((item) => !ehNenhum(item));
+  const adicionados = novos.filter((item) => !atuais.includes(item));
+  const removidos = atuais.filter((item) => !novos.includes(item));
+  if (!adicionados.length && !removidos.length) return atuais;
+  if (alvo && GLOBAIS.includes(alvo)) {
+    if (adicionados.includes(alvo)) return ehNenhum(alvo) ? [alvo] : selecionaveis;
+    if (removidos.includes(alvo)) return [];
+  }
+  if (adicionados.some((item) => ehTodos(item))) return selecionaveis;
+  const nenhumAdicionado = adicionados.find(ehNenhum);
+  if (nenhumAdicionado) return [nenhumAdicionado];
+  const base = atuais.filter((item) => !GLOBAIS.includes(item));
+  for (const item of adicionados) if (!base.includes(item) && opcoes.includes(item)) base.push(item);
+  return base.filter((item) => !removidos.includes(item));
+}
+
 /** Alimentos das listas de preferência que o paciente não marcou. Grupos sem resposta são ignorados. */
 export function alimentosNaoConsumidos(a: Assessment): string[] {
   const grupos: [string[], string[]][] = [

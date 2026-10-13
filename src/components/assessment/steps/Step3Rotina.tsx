@@ -15,7 +15,19 @@ import {
   UnitInput,
 } from "../fields";
 import type { StepProps } from "./types";
-import { cafeCha, carboidratos, cereais, doces, frutas, gorduras, lacteos, leguminosas, proteinas, vegetais } from "@/lib/assessment/food-preferences";
+import {
+  aplicarSelecaoPreferencia,
+  cafeCha,
+  carboidratos,
+  cereais,
+  doces,
+  frutas,
+  gorduras,
+  lacteos,
+  leguminosas,
+  proteinas,
+  vegetais,
+} from "@/lib/assessment/food-preferences";
 import { chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { DIAS_SEMANA, selecionarDias } from "@/lib/assessment/training-days";
 import { Button } from "@/components/ui/button";
@@ -56,19 +68,6 @@ const MODALIDADES = [
   "Escalada", "Rapel", "Hipismo", "Tiro com arco", "Tênis de praia",
 ];
 
-const selecionarPreferencia = (atuais: string[], valor: string, opcoes: string[]) => {
-  const nenhum = valor === "Nenhum" || valor === "Nenhuma";
-  const todos = valor === "Todos" || valor === "Todas";
-  if (nenhum) return atuais.includes(valor) ? [] : [valor];
-  if (todos) {
-    const selecionaveis = opcoes.filter((item) => item !== "Nenhum" && item !== "Nenhuma");
-    return atuais.includes(valor) ? [] : selecionaveis;
-  }
-  const semGlobais = atuais.filter((item) => !["Nenhum", "Nenhuma", "Todos", "Todas"].includes(item));
-  return semGlobais.includes(valor)
-    ? semGlobais.filter((item) => item !== valor)
-    : [...semGlobais, valor].filter((item) => opcoes.includes(item));
-};
 
 export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, diaAtipico, onAdicionarDiaAtipico, onRemoverDiaAtipico, onAlterarDiaAtipico, onCopiarR24h, composicaoAtipica, calculandoAtipico, onCalcularAtipico }: Props) {
   const comp = composicaoParaRelatorio(composicao);
@@ -474,10 +473,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           <Field label="Carboidratos">
             <MultiOptionRow
               values={a.prefCarboidratos}
-              onChange={(v) => {
-                const alterado = v.find((item) => !a.prefCarboidratos.includes(item)) ?? a.prefCarboidratos.find((item) => !v.includes(item));
-                set("prefCarboidratos", alterado ? selecionarPreferencia(a.prefCarboidratos, alterado, carboidratos) : v);
-              }}
+              onChange={(v, info) => set("prefCarboidratos", aplicarSelecaoPreferencia(a.prefCarboidratos, v, carboidratos, info?.alvo))}
               options={carboidratos.map((item) => ({ value: item, label: item }))}
             />
             <div className="mt-2">
@@ -492,10 +488,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           <Field label="Proteínas">
             <MultiOptionRow
               values={a.prefProteinas}
-              onChange={(v) => {
-                const alterado = v.find((item) => !a.prefProteinas.includes(item)) ?? a.prefProteinas.find((item) => !v.includes(item));
-                set("prefProteinas", alterado ? selecionarPreferencia(a.prefProteinas, alterado, proteinas) : v);
-              }}
+              onChange={(v, info) => set("prefProteinas", aplicarSelecaoPreferencia(a.prefProteinas, v, proteinas, info?.alvo))}
               options={proteinas.map((item) => ({ value: item, label: item }))}
             />
             <div className="mt-2">
@@ -510,10 +503,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           <Field label="Gorduras">
             <MultiOptionRow
               values={a.prefGorduras}
-              onChange={(v) => {
-                const alterado = v.find((item) => !a.prefGorduras.includes(item)) ?? a.prefGorduras.find((item) => !v.includes(item));
-                set("prefGorduras", alterado ? selecionarPreferencia(a.prefGorduras, alterado, gorduras) : v);
-              }}
+              onChange={(v, info) => set("prefGorduras", aplicarSelecaoPreferencia(a.prefGorduras, v, gorduras, info?.alvo))}
               options={gorduras.map((item) => ({ value: item, label: item }))} />
             <div className="mt-2">
               <TextInput
@@ -527,10 +517,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           <Field label="Vegetais/Saladas">
             <MultiOptionRow
               values={a.prefVegetais}
-              onChange={(v) => {
-                const alterado = v.find((item) => !a.prefVegetais.includes(item)) ?? a.prefVegetais.find((item) => !v.includes(item));
-                set("prefVegetais", alterado ? selecionarPreferencia(a.prefVegetais, alterado, vegetais) : v);
-              }}
+              onChange={(v, info) => set("prefVegetais", aplicarSelecaoPreferencia(a.prefVegetais, v, vegetais, info?.alvo))}
               options={vegetais.map((item) => ({ value: item, label: item }))}
             />
             <div className="mt-2">
@@ -544,10 +531,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           <Field label="Frutas">
             <MultiOptionRow
               values={a.prefFrutas}
-              onChange={(v) => {
-                const alterado = v.find((item) => !a.prefFrutas.includes(item)) ?? a.prefFrutas.find((item) => !v.includes(item));
-                set("prefFrutas", alterado ? selecionarPreferencia(a.prefFrutas, alterado, frutas) : v);
-              }}
+              onChange={(v, info) => set("prefFrutas", aplicarSelecaoPreferencia(a.prefFrutas, v, frutas, info?.alvo))}
               options={frutas.map((item) => ({ value: item, label: item }))}
             />
             <div className="mt-2">
@@ -561,10 +545,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           <Field label="Leguminosas">
             <MultiOptionRow
               values={a.prefLeguminosas}
-              onChange={(v) => {
-                const alterado = v.find((item) => !a.prefLeguminosas.includes(item)) ?? a.prefLeguminosas.find((item) => !v.includes(item));
-                set("prefLeguminosas", alterado ? selecionarPreferencia(a.prefLeguminosas, alterado, leguminosas) : v);
-              }}
+              onChange={(v, info) => set("prefLeguminosas", aplicarSelecaoPreferencia(a.prefLeguminosas, v, leguminosas, info?.alvo))}
               options={leguminosas.map((item) => ({ value: item, label: item }))}
             />
             <div className="mt-2">
@@ -578,10 +559,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           <Field label="Cereais e Grãos">
             <MultiOptionRow
               values={a.prefCereais}
-              onChange={(v) => {
-                const alterado = v.find((item) => !a.prefCereais.includes(item)) ?? a.prefCereais.find((item) => !v.includes(item));
-                set("prefCereais", alterado ? selecionarPreferencia(a.prefCereais, alterado, cereais) : v);
-              }}
+              onChange={(v, info) => set("prefCereais", aplicarSelecaoPreferencia(a.prefCereais, v, cereais, info?.alvo))}
               options={cereais.map((item) => ({ value: item, label: item }))}
             />
             <div className="mt-2">
@@ -595,10 +573,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           <Field label="Laticínios">
             <MultiOptionRow
               values={a.prefLacteos}
-              onChange={(v) => {
-                const alterado = v.find((item) => !a.prefLacteos.includes(item)) ?? a.prefLacteos.find((item) => !v.includes(item));
-                set("prefLacteos", alterado ? selecionarPreferencia(a.prefLacteos, alterado, lacteos) : v);
-              }}
+              onChange={(v, info) => set("prefLacteos", aplicarSelecaoPreferencia(a.prefLacteos, v, lacteos, info?.alvo))}
               options={lacteos.map((item) => ({ value: item, label: item }))}
             />
             <div className="mt-2">
@@ -613,10 +588,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           <Field label="Doces">
             <MultiOptionRow
               values={a.prefDoces}
-              onChange={(v) => {
-                const alterado = v.find((item) => !a.prefDoces.includes(item)) ?? a.prefDoces.find((item) => !v.includes(item));
-                set("prefDoces", alterado ? selecionarPreferencia(a.prefDoces, alterado, doces) : v);
-              }}
+              onChange={(v, info) => set("prefDoces", aplicarSelecaoPreferencia(a.prefDoces, v, doces, info?.alvo))}
               options={doces.map((item) => ({ value: item, label: item }))}
             />
             <div className="mt-2">
@@ -630,10 +602,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           <Field label="Bebidas">
             <MultiOptionRow
               values={a.prefCafeCha}
-              onChange={(v) => {
-                const alterado = v.find((item) => !a.prefCafeCha.includes(item)) ?? a.prefCafeCha.find((item) => !v.includes(item));
-                set("prefCafeCha", alterado ? selecionarPreferencia(a.prefCafeCha, alterado, cafeCha) : v);
-              }}
+              onChange={(v, info) => set("prefCafeCha", aplicarSelecaoPreferencia(a.prefCafeCha, v, cafeCha, info?.alvo))}
               options={cafeCha.map((item) => ({ value: item, label: item }))}
             />
             <div className="mt-2">

@@ -238,16 +238,19 @@ export function MultiOptionRow({
   options,
 }: {
   values: string[];
-  onChange: (v: string[]) => void;
+  onChange: (v: string[], info?: { alvo: string; porIntervalo: boolean }) => void;
   options: { value: string; label: string; className?: string; breakAfter?: boolean }[];
 }) {
   const ancoraNova = useRef<string | null>(null);
   const toggle = (v: string) =>
-    onChange(values.includes(v) ? values.filter((x) => x !== v) : [...values, v]);
+    onChange(values.includes(v) ? values.filter((x) => x !== v) : [...values, v], { alvo: v, porIntervalo: false });
   const selecionar = (v: string, shift: boolean) => {
     if (shift && ancoraNova.current) {
       // Shift+click: seleciona todos os botões entre a âncora e o alvo, inclusive os extremos.
-      onChange(comIntervalo(options.map((o) => o.value), ancoraNova.current, v, values));
+      onChange(comIntervalo(options.map((o) => o.value), ancoraNova.current, v, values), {
+        alvo: v,
+        porIntervalo: true,
+      });
       return;
     }
     ancoraNova.current = v;
