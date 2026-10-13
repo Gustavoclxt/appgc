@@ -15,6 +15,15 @@ export function categoriaAntropometrica(i: Pick<IndicadorAntropometrico, "nome" 
   return "Outros indicadores";
 }
 
+/** Exibe o valor já acompanhado da unidade, ex.: "1,60 m" ou "73,10 kg". */
+export function valorComUnidade(i: Pick<IndicadorAntropometrico, "valor" | "unidade">): string {
+  const valor = i.valor.trim();
+  const unidade = i.unidade.trim();
+  if (!valor) return unidade || "—";
+  if (!unidade) return valor;
+  return unidade.startsWith("%") ? `${valor}${unidade}` : `${valor} ${unidade}`;
+}
+
 /** Preserve every original row and date; unknown indicators are never discarded. */
 export function agruparAntropometria(indicadores: IndicadorAntropometrico[], dataAvaliacao: string) {
   return categorias.flatMap(categoria => {
