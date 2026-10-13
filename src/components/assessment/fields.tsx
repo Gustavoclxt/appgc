@@ -1,8 +1,9 @@
-import { Fragment, type KeyboardEvent, type ReactNode } from "react";
+import { Fragment, useRef, type KeyboardEvent, type ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { limitarCasasDecimais } from "@/lib/assessment/numeric";
+import { comIntervalo } from "@/lib/assessment/selection-range";
 
 export function Panel({
   titulo,
@@ -240,8 +241,18 @@ export function MultiOptionRow({
   onChange: (v: string[]) => void;
   options: { value: string; label: string; className?: string; breakAfter?: boolean }[];
 }) {
+  const ancoraNova = useRef<string | null>(null);
   const toggle = (v: string) =>
     onChange(values.includes(v) ? values.filter((x) => x !== v) : [...values, v]);
+  const selecionar = (v: string, shift: boolean) => {
+    if (shift && ancoraNova.current) {
+      // Shift+click: seleciona todos os botões entre a âncora e o alvo, inclusive os extremos.
+      onChange(comIntervalo(options.map((o) => o.value), ancoraNova.current, v, values));
+      return;
+    }
+    ancoraNova.current = v;
+    toggle(v);
+  };
   return (
     <div className="flex flex-wrap gap-2">
       {options.map((o) => {
@@ -250,7 +261,7 @@ export function MultiOptionRow({
           <Fragment key={o.value}>
             <button
               type="button"
-              onClick={() => toggle(o.value)}
+              onClick={(e) => selecionar(o.value, e.shiftKey)}
               className={cn(
                 "rounded-[10px] px-3 py-2 text-[13px] transition-colors",
                 o.className,
