@@ -13,6 +13,7 @@ export function WeightReferenceCards({ resultado }: { resultado: MetasPesoResult
             <div><dt className="text-ink-soft">Perda de peso de referência</dt><dd className="font-mono text-lg font-medium text-ink">{card.perda}</dd></div>
             <div><dt className="text-ink-soft">Peso após a perda</dt><dd className="font-mono text-lg font-medium text-ink">{card.peso}</dd></div>
           </dl>
+          <p className="mt-4 border-t border-accent/15 pt-3 text-[11px] leading-relaxed text-ink-soft">{card.velocidades}</p>
         </article>
       ))}
     </div>

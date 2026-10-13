@@ -22,6 +22,7 @@ export function cardsMetasReferencia(r: MetasPesoResultado) {
       percentual: intervalo(primeira.percentual, ultima.percentual, "%"),
       perda: intervalo(primeira.kg, ultima.kg, " kg"),
       peso: intervalo(primeira.pesoMeta, ultima.pesoMeta, " kg"),
+      velocidades: `${intervalo(primeira.kgSemana, ultima.kgSemana, " kg/semana")} · ${intervalo(primeira.pctSemana, ultima.pctSemana, "%/semana")} · ${intervalo(primeira.kgMes, ultima.kgMes, " kg/mês")}`,
     }];
   });
 }

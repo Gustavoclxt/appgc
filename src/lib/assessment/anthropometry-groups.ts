@@ -9,6 +9,7 @@ export function categoriaAntropometrica(i: Pick<IndicadorAntropometrico, "nome" 
   const n = normalizar(i.nome);
   if (/\b(imc|massa|gordura|soma|somatorio|somatoria|razao|relacao|rcq|amb|agb|area|percentual)\b/.test(n) || n.includes("%")) return "Resultados";
   if (/\b(altura|estatura|peso)\b/.test(n)) return "Medidas";
+  if (/\b(circunferencia|perimetro)\b/.test(n)) return "Circunferências";
   if (/\b(dobra|dobras|biceps|triceps|axilar|torax|medial|abdominal|suprailiaca|subescapular)\b/.test(n) || normalizar(i.unidade) === "mm") return "Dobras cutâneas";
   if (/\b(circunferencia|perimetro|ombro|ombros|cintura|quadril|coxa|panturrilha|braco|peitoral|abdomen)\b/.test(n)) return "Circunferências";
   return "Outros indicadores";
