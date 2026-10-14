@@ -88,6 +88,16 @@ export function calculateVET(tmb: number, fatorAtividade: number): number {
   return tmb * fatorAtividade;
 }
 
+/** FcMax = 220 - Idade. */
+export function calculateMaxHeartRate(idade: number): number {
+  return 220 - idade;
+}
+
+/** Faixa de cardio recomendada: FcMax × 0,6 a FcMax × 0,7. */
+export function calculateCardioRange(fcMax: number) {
+  return { min: fcMax * 0.6, max: fcMax * 0.7 };
+}
+
 export function calculateWaterRequirement(pesoKg: number) {
   return { min: pesoKg * 30, max: pesoKg * 35 };
 }
@@ -158,6 +168,9 @@ export interface DerivedResults {
   caloriasSugeridas: number | null;
   percentualAjuste: number | null;
   ajusteKcal: number | null;
+  fcMax: number | null;
+  cardioMin: number | null;
+  cardioMax: number | null;
   sono: { horas: number; restoMinutos: number } | null;
   jornada: { horas: number; restoMinutos: number } | null;
 }
@@ -224,6 +237,9 @@ export function deriveResults(a: Assessment): DerivedResults {
     caloriasSugeridas,
     percentualAjuste,
     ajusteKcal: modoKcal ? kcalAjuste : null,
+    fcMax: idade !== null ? calculateMaxHeartRate(idade) : null,
+    cardioMin: null,
+    cardioMax: null,
     sono: calculateSleepDuration(a.horaDormir, a.horaAcordar),
     jornada: calculateWorkDuration(a.entradaTrabalho, a.saidaTrabalho),
   };
