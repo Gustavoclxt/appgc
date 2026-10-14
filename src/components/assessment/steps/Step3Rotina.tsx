@@ -658,9 +658,10 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                     set("diarioAlimentar", a.diarioAlimentar.map((x, j) => (j === i ? { ...x, horario: v } : x)))
                   }
                 />
-                <TextInput
+                <Select
                   value={r.local}
                   placeholder="Local"
+                  options={opcoesDeLocal(r.local)}
                   onChange={(v) =>
                     set("diarioAlimentar", a.diarioAlimentar.map((x, j) => (j === i ? { ...x, local: v } : x)))
                   }

@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { novoId } from "@/lib/assessment/initial-state";
 import { chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
+import { opcoesDeLocal } from "@/lib/assessment/food-diary";
 import type { Refeicao } from "@/lib/assessment/types";
-import { TextInput } from "./fields";
+import { Select, TextInput } from "./fields";
 
 export function novaRefeicaoAtipica(): Refeicao {
   return { id: novoId(), refeicao: "", horario: "", local: "", alimentos: [{ id: novoId(), alimento: "", quantidade: "" }] };
