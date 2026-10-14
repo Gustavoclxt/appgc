@@ -137,6 +137,8 @@ export function createEmptyAssessment(): Assessment {
     percentualAjuste: "",
     kcalAjuste: "",
     caloriasManuais: "",
+    refeicoesLivresSemana: "",
+    vetRefeicoesLivres: "",
   };
 }
 

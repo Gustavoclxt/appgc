@@ -1,5 +1,6 @@
 import { fmt2, fmtInt, labelMetodo } from "@/lib/assessment/calculations";
 import type { ComposicaoDiario } from "@/lib/assessment/diet-composition";
+import { calcularVetCorrigido } from "@/lib/assessment/free-meal";
 
 import { Field, MetricCard, OptionRow, Panel, Select, TextInput, UnitInput } from "../fields";
 import type { StepProps } from "./types";
@@ -199,6 +200,31 @@ export function Step6Energia({
             sub="kcal/dia sugeridas"
           />
         </div>
+      </Panel>
+
+      <Panel titulo="Cálculo do VET corrigido">
+        {(() => {
+          const num = (s: string) => Number(s.replace(",", "."));
+          const qtd = a.refeicoesLivresSemana === "" ? NaN : num(a.refeicoesLivresSemana);
+          const kcal = a.vetRefeicoesLivres === "" ? NaN : num(a.vetRefeicoesLivres);
+          const corrigido = calcularVetCorrigido(d.caloriasSugeridas, qtd, kcal);
+          return (
+            <>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Field label="Nº de ref. livres/semana">
+                  <UnitInput value={a.refeicoesLivresSemana} onChange={(v) => set("refeicoesLivresSemana", v.replace(/\D/g, ""))} unidade="ref." placeholder="1" />
+                </Field>
+                <Field label="VET das ref. livres">
+                  <UnitInput value={a.vetRefeicoesLivres} onChange={(v) => set("vetRefeicoesLivres", v)} unidade="kcal" placeholder="1600" />
+                </Field>
+              </div>
+              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <MetricCard label="VET diário semanal (com déficit)" valor={d.caloriasSugeridas !== null ? fmtInt(d.caloriasSugeridas) : "—"} sub="kcal/dia" />
+                <MetricCard label="VET corrigido (com déficit)" valor={corrigido !== null ? fmtInt(corrigido) : "—"} sub="kcal/dia" />
+              </div>
+            </>
+          );
+        })()}
       </Panel>
     </div>
   );
