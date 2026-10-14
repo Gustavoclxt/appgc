@@ -1,0 +1,103 @@
+RELATÓRIO DE AVALIAÇÃO NUTRICIONAL
+==================================
+
+DADOS DO PACIENTE
+-----------------
+Data da avaliação: 14/10/2026
+Nome: —
+Idade: 36 anos
+Sexo: Masculino
+Altura: 175,00 cm
+Peso: 80,00 kg
+Profissão: —
+Objetivos: Emagrecimento
+IMC: 26,12 — Sobrepeso
+PIO: 77,19 kg
+% de gordura: 18,50%
+Massa gorda: 14,80 kg
+Massa livre de gordura: 65,20 kg
+Método de TMB: Harris-Benedict
+TMB: 1.799 kcal/dia
+Fator de atividade: —
+VET: —
+Hidratação: 2.316–2.702 mL/dia (2,3–2,7 L/dia)
+Estratégia: Déficit calórico
+Calorias sugeridas: —
+
+OBJETIVO E ANAMNESE
+-------------------
+Objetivos: Emagrecimento
+
+RECORDATÓRIO 24H
+----------------
+Desjejum · 07:00
+Lanche da manhã · 10:00
+Almoço · 12:00
+Lanche da tarde · 15:00
+Jantar · 20:00
+Ceia · 22:00
+
+METAS E PROJEÇÃO DE PESO
+------------------------
+
+DADOS DA PROJEÇÃO
+-----------------
+Avaliação antropométrica | 10/05/2026
+Peso inicial | 80,00 kg
+Déficit energético da projeção | Não definido
+
+EXPECTATIVA DO PACIENTE
+-----------------------
+Expectativa não informada.
+
+METAS CLÍNICAS DE REFERÊNCIA (AJUSTÁVEIS)
+-----------------------------------------
+1 mês | 2,50% | 2,00 | 78,00 kg | 0,46 | 0,57 | 2,00
+3 meses | 5,00% | 4,00 | 76,00 kg | 0,31 | 0,38 | 1,33
+6 meses (mín.) | 5,00% | 4,00 | 76,00 kg | 0,15 | 0,19 | 0,67
+6 meses (máx.) | 10,00% | 8,00 | 72,00 kg | 0,31 | 0,38 | 1,33
+
+INTERPRETAÇÃO CLÍNICA (SUGESTÃO)
+--------------------------------
+% de gordura 18,50% considerado na massa gorda inicial do modelo.
+
+RESUMO CLÍNICO
+--------------
+OBJETIVO: Emagrecimento
+HIDRATAÇÃO: Referência: 2,3–2,7 L/dia
+PESO: 80,00 kg
+COMPOSIÇÃO CORPORAL: 18,50% de gordura · 14,80 kg de massa gorda · 65,20 kg de massa livre de gordura
+
+PRINCIPAIS ACHADOS
+------------------
+PRIORIDADE
+  - Déficit planejado de 20%, sem gasto energético total informado
+  - Recordatório com horários, sem alimentos ou quantidades
+MONITORAR
+  - IMC na faixa de sobrepeso; interpretação depende do contexto corporal
+  - Histórico clínico, restrições e evolução ponderal não informados
+
+ESTRATÉGIA INICIAL
+------------------
+ENERGIA
+  - → Confirmar atividade física e gasto total antes de definir déficit
+  - → Considerar preservação da massa livre de gordura no planejamento
+  - → Não utilizar TMB isoladamente como gasto energético total
+ADESÃO
+  - → Investigar histórico clínico, medicamentos e restrições antes do planejamento
+  - → Completar recordatório com alimentos, bebidas, porções e preparo
+  - → Investigar rotina, sono, fome e preferências para individualizar estratégias
+
+FOCO ATÉ O PRÓXIMO RETORNO
+--------------------------
+1. Confirmar segurança e adequação da estratégia ao histórico clínico
+2. Reavaliar déficit proposto após estimativa do gasto total
+3. Correlacionar ingestão habitual e rotina com viabilidade do planejamento
+4. Monitorar trajetória ponderal e composição corporal pelo mesmo método
+
+REAVALIAR NO RETORNO
+--------------------
+☐ Anamnese e restrições preenchidas
+☐ Recordatório completo
+☐ Atividade física e gasto total
+☐ Variação do peso desde a avaliação

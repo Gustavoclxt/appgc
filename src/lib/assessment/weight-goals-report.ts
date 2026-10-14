@@ -63,10 +63,6 @@ export function metasParaRelatorio(r: MetasPesoResultado): SecaoMetasRelatorio[]
       `Ingestão basal estimada ${fmtInt(r.modelo.ingestaoBasal)} kcal/dia → ${fmtInt(r.modelo.ingestaoAlvo)} kcal/dia.`,
     ],
   });
-  secoes.push({ titulo: "Limitações da estimativa", itens: [
-    ...r.limitacoes,
-    "Modelo de Hall implementado em dois compartimentos (sem glicogênio/água); estimativas podem diferir da calculadora oficial do NIH.",
-  ] });
   if (r.interpretacao.length) secoes.push({ titulo: "Interpretação clínica (sugestão)", itens: r.interpretacao });
   return secoes;
 }
