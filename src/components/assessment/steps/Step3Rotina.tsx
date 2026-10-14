@@ -29,6 +29,7 @@ import {
   vegetais,
 } from "@/lib/assessment/food-preferences";
 import { chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
+import { opcoesDeLocal } from "@/lib/assessment/food-diary";
 import { DIAS_SEMANA, selecionarDias } from "@/lib/assessment/training-days";
 import { Button } from "@/components/ui/button";
 import { AtypicalDay } from "../AtypicalDay";

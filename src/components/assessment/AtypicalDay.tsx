@@ -43,7 +43,7 @@ export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCal
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_auto_1fr_auto]">
               <TextInput value={r.refeicao} placeholder="Refeição" onChange={v => atualizar(r.id, { refeicao: v })} />
               <TextInput type="time" value={r.horario} onChange={v => atualizar(r.id, { horario: v })} />
-              <TextInput value={r.local} placeholder="Local" onChange={v => atualizar(r.id, { local: v })} />
+              <Select value={r.local} placeholder="Local" options={opcoesDeLocal(r.local)} onChange={v => atualizar(r.id, { local: v })} />
               <Button variant="outline" className="h-auto whitespace-normal" onClick={() => onChange(refeicoes.filter(x => x.id !== r.id))}>Remover refeição</Button>
             </div>
             <div className="mt-4 space-y-2 border-t border-line/70 pt-4">
