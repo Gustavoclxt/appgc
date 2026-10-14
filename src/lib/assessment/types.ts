@@ -197,6 +197,8 @@ export interface Assessment {
   percentualAjuste: string;
   kcalAjuste: string;
   caloriasManuais: string;
+  refeicoesLivresSemana: string;
+  vetRefeicoesLivres: string;
 }
 
 export type PrioridadeIntervencao = "alta" | "moderada" | "baixa";
