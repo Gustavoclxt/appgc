@@ -258,6 +258,6 @@ export function Step6Energia({
         )}
       </Panel>
     </div>
-
   );
+
 }
