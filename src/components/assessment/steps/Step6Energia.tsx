@@ -96,8 +96,8 @@ export function Step6Energia({
       </Panel>
 
       <Panel titulo="Estratégia energética">
-
         <OptionRow
+
           value={a.estrategia}
           onChange={(v) => v && set("estrategia", v as typeof a.estrategia)}
           options={[
