@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { calculateAdjustedWeight, deriveResults } from "./calculations";
+import {
+  calculateAdjustedWeight,
+  calculateCardioRange,
+  calculateMaxHeartRate,
+  deriveResults,
+} from "./calculations";
 import { createEmptyAssessment } from "./initial-state";
 
 describe("PIO and hydration", () => {
