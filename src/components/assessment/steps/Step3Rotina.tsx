@@ -29,6 +29,7 @@ import {
   vegetais,
 } from "@/lib/assessment/food-preferences";
 import { chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
+import { opcoesDeLocal } from "@/lib/assessment/food-diary";
 import { DIAS_SEMANA, selecionarDias } from "@/lib/assessment/training-days";
 import { Button } from "@/components/ui/button";
 import { AtypicalDay } from "../AtypicalDay";
@@ -658,9 +659,10 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                     set("diarioAlimentar", a.diarioAlimentar.map((x, j) => (j === i ? { ...x, horario: v } : x)))
                   }
                 />
-                <TextInput
+                <Select
                   value={r.local}
                   placeholder="Local"
+                  options={opcoesDeLocal(r.local)}
                   onChange={(v) =>
                     set("diarioAlimentar", a.diarioAlimentar.map((x, j) => (j === i ? { ...x, local: v } : x)))
                   }
