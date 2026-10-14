@@ -28,3 +28,4 @@
 - Reuse WeightReferenceCards and cardsMetasReferencia for module and final-screen reference cards so both consume existing weight-goal results without new calculations.
 - Keep shift-range selection in MultiOptionRow/selection-range.ts and apply preference-group rules (Nenhum/Todos) only through aplicarSelecaoPreferencia, so every button row — training days, habits and food preferences — behaves identically.
 - Keep the meal-location choices in food-diary.ts (LOCAIS_REFEICAO + opcoesDeLocal) so the 24h recall, the atypical day and every export share one option list, and so a value outside the list stays visible instead of silently resetting to empty.
+- Keep the cardio heart-rate panel in its own Step6Cardio component rendered after the weight-goals module so it always sits last on the energy step, whether or not the weight-goal module is active.
