@@ -71,3 +71,26 @@ describe("energy adjustment presets", () => {
     expect(d.caloriasSugeridas).toBeCloseTo((d.vet as number) * fator, 10);
   });
 });
+
+describe("cardio heart-rate range", () => {
+  it("computes FcMax as 220 minus the age", () => {
+    expect(calculateMaxHeartRate(40)).toBe(180);
+  });
+  it("bounds the cardio range at FcMax × 0,6 and FcMax × 0,7", () => {
+    const faixa = calculateCardioRange(180);
+    expect(faixa.min).toBeCloseTo(108, 10);
+    expect(faixa.max).toBeCloseTo(126, 10);
+  });
+  it("derives FcMax and the cardio range from the birth date", () => {
+    const d = deriveResults({ ...createEmptyAssessment(), dataNascimento: "1986-01-01" });
+    expect(d.fcMax).toBe(220 - (d.idade as number));
+    expect(d.cardioMin).toBeCloseTo((d.fcMax as number) * 0.6, 10);
+    expect(d.cardioMax).toBeCloseTo((d.fcMax as number) * 0.7, 10);
+  });
+  it("does not derive FcMax without a birth date", () => {
+    const d = deriveResults(createEmptyAssessment());
+    expect(d.fcMax).toBeNull();
+    expect(d.cardioMin).toBeNull();
+    expect(d.cardioMax).toBeNull();
+  });
+});
