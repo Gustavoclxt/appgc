@@ -21,6 +21,7 @@ import { alimentosDoDiario, calcularComposicaoDasRefeicoes, chaveDiario, somarTo
 import { novaRefeicaoAtipica } from "@/components/assessment/AtypicalDay";
 import { deriveResults, fmtData } from "@/lib/assessment/calculations";
 import { createEmptyAssessment, ETAPAS, novoId } from "@/lib/assessment/initial-state";
+import { createExampleAssessment } from "@/lib/assessment/example-patient";
 import { buildResumo } from "@/lib/assessment/summary";
 import type { AnaliseIA, Assessment, Refeicao } from "@/lib/assessment/types";
 import logoGc from "@/assets/logo-gc.png.asset.json";
@@ -235,6 +236,20 @@ function Index() {
               {etapaAtual.nomeCompleto}
             </h1>
           </div>
+          {etapa === 1 && (
+            <button
+              type="button"
+              onClick={() => {
+                setDados(createExampleAssessment());
+                setAnalise(null);
+                setComposicao(null);
+                toast.success("Formulário preenchido com paciente fictício.");
+              }}
+              className="rounded-[10px] bg-white px-5 py-2.5 text-sm font-medium text-ink ring-1 ring-line transition-colors hover:bg-white/70"
+            >
+              Preencher Exemplo
+            </button>
+          )}
         </div>
 
         {etapa === 1 && (
