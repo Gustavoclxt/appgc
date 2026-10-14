@@ -26,6 +26,7 @@ import {
 } from "./food-preferences";
 import { doseComUnidade } from "./report-anamnesis";
 import type { ComposicaoDiario } from "./diet-composition";
+import { resumoVetFinal } from "./free-meal";
 
 const li = (label: string, valor: string | number | null | undefined) =>
   valor === null || valor === undefined || valor === "" ? "" : `${label}: ${valor}\n`;
@@ -185,6 +186,19 @@ export function buildResumo(a: Assessment, d: DerivedResults, composicao: Compos
         : "",
   );
   t += li("Calorias sugeridas (kcal/dia)", d.caloriasSugeridas !== null ? fmtInt(d.caloriasSugeridas) : "");
+  const vetFinalResumo = resumoVetFinal(
+    d.caloriasSugeridas,
+    a.refeicoesLivresSemana,
+    a.vetRefeicoesLivres,
+  );
+  if (vetFinalResumo) {
+    t += li("Refeições livres na semana", vetFinalResumo.quantidade);
+    t += li("VET da refeição livre", vetFinalResumo.vetRefeicao);
+    t += li(
+      "VET final da dieta ajustado (kcal/dia)",
+      vetFinalResumo.vetFinal !== null ? fmtInt(vetFinalResumo.vetFinal) : "",
+    );
+  }
   t += li("Calorias calculadas do Recordatório 24h (kcal)", composicao ? fmtInt(composicao.totais.kcal) : "");
 
   if (a.exames.length) {

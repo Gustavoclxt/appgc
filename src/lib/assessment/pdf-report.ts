@@ -18,6 +18,7 @@ import { anamneseParaRelatorio } from "./report-anamnesis";
 import { composicaoParaRelatorio, type ComposicaoDiario } from "./diet-composition";
 import { linhasAlimentosRetirar } from "./food-preferences";
 import { painelClinicoParaRelatorio } from "./clinical-dashboard";
+import { resumoVetFinal } from "./free-meal";
 import { REPORT_HEADER_COLOR } from "./report-theme";
 
 const MARGEM = 16;
@@ -250,6 +251,19 @@ export function generatePDF(
     "Calorias sugeridas",
     d.caloriasSugeridas !== null ? `${fmtInt(d.caloriasSugeridas)} kcal/dia` : "—",
   );
+  const vetFinalResumo = resumoVetFinal(
+    d.caloriasSugeridas,
+    a.refeicoesLivresSemana,
+    a.vetRefeicoesLivres,
+  );
+  if (vetFinalResumo) {
+    linha("Refeições livres na semana", vetFinalResumo.quantidade);
+    linha("VET da refeição livre", vetFinalResumo.vetRefeicao);
+    linha(
+      "VET final da dieta ajustado",
+      vetFinalResumo.vetFinal !== null ? `${fmtInt(vetFinalResumo.vetFinal)} kcal/dia` : "—",
+    );
+  }
 
   const retirar = linhasAlimentosRetirar(a);
   if (retirar.length) {

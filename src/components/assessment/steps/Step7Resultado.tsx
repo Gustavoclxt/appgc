@@ -20,6 +20,7 @@ import { composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment
 import { alimentosRetirarPorGrupo } from "@/lib/assessment/food-preferences";
 import { relatorioParaCopia } from "@/lib/assessment/report-text";
 import { painelClinicoParaRelatorio } from "@/lib/assessment/clinical-dashboard";
+import { resumoVetFinal } from "@/lib/assessment/free-meal";
 
 import { ExamesTable } from "../ExamesTable";
 import { Panel } from "../fields";
@@ -53,6 +54,11 @@ function Bloco({ titulo, children }: { titulo: string; children: React.ReactNode
 
 export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composicao, metas }: Props) {
   const relatorioRef = useRef<HTMLDivElement>(null);
+  const vetFinalResumo = resumoVetFinal(
+    d.caloriasSugeridas,
+    a.refeicoesLivresSemana,
+    a.vetRefeicoesLivres,
+  );
 
   async function copiarRelatorio() {
     if (!analise) return;
@@ -179,6 +185,18 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
             label="Calorias sugeridas"
             valor={d.caloriasSugeridas !== null ? `${fmtInt(d.caloriasSugeridas)} kcal/dia` : "—"}
           />
+          {vetFinalResumo && (
+            <>
+              <Dado label="Refeições livres na semana" valor={vetFinalResumo.quantidade} />
+              <Dado label="VET da refeição livre" valor={vetFinalResumo.vetRefeicao} />
+              <Dado
+                label="VET final da dieta ajustado"
+                valor={
+                  vetFinalResumo.vetFinal !== null ? `${fmtInt(vetFinalResumo.vetFinal)} kcal/dia` : "—"
+                }
+              />
+            </>
+          )}
         </div>
 
         {anamneseAntesEvolucao.map((section) => (
