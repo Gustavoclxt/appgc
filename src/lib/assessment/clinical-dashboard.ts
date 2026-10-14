@@ -1,4 +1,5 @@
 import { fmt2, fmtInt, fmtLitros, type DerivedResults } from "./calculations";
+import { resumoVetFinal } from "./free-meal";
 import type { ComposicaoDiario } from "./diet-composition";
 import type { AnaliseIA, Assessment } from "./types";
 
@@ -35,6 +36,13 @@ export function painelClinicoParaRelatorio(
     d.massaGorda !== null && `${fmt2(d.massaGorda)} kg de massa gorda`,
     d.massaLivreGordura !== null && `${fmt2(d.massaLivreGordura)} kg de massa livre de gordura`,
   ].filter(Boolean).join(" · ");
+  // VET prescrito = VET final ajustado quando há refeições livres; senão as calorias prescritas.
+  const vetFinalResumo = resumoVetFinal(
+    d.caloriasSugeridas,
+    a.refeicoesLivresSemana,
+    a.vetRefeicoesLivres,
+  );
+  const vetPrescrito = vetFinalResumo?.vetFinal ?? d.caloriasSugeridas;
   const resumo = [
     { label: "OBJETIVO", valor: a.objetivos[0] ?? "" },
     { label: "PRINCIPAL INCÔMODO", valor: a.incomodoFisico },
@@ -46,6 +54,7 @@ export function painelClinicoParaRelatorio(
     { label: "PESO", valor: peso },
     { label: "COMPOSIÇÃO CORPORAL", valor: composicaoCorporal },
     { label: "VET", valor: d.vet !== null ? `${fmtInt(d.vet)} kcal/dia` : "" },
+    { label: "VET PRESCRITO", valor: vetPrescrito !== null ? `${fmtInt(vetPrescrito)} kcal/dia` : "" },
     { label: "CALORIAS R24H", valor: composicao ? `${fmtInt(composicao.totais.kcal)} kcal` : "" },
   ].filter((item): item is { label: string; valor: string } => Boolean(item?.label && item.valor));
 
