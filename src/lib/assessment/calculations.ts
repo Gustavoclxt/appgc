@@ -219,7 +219,8 @@ export function deriveResults(a: Assessment): DerivedResults {
     }
   }
 
-  const fcFaixa = idade !== null ? calculateCardioRange(calculateMaxHeartRate(idade)) : null;
+  const fcMax = idade !== null ? calculateMaxHeartRate(idade) : null;
+  const cardio = fcMax !== null ? calculateCardioRange(fcMax) : null;
 
   return {
     idade,
@@ -239,9 +240,9 @@ export function deriveResults(a: Assessment): DerivedResults {
     caloriasSugeridas,
     percentualAjuste,
     ajusteKcal: modoKcal ? kcalAjuste : null,
-    ...(fcFaixa !== null
-      ? { fcMax: fcFaixa.fcMax, cardioMin: fcFaixa.min, cardioMax: fcFaixa.max }
-      : { fcMax: null, cardioMin: null, cardioMax: null }),
+    fcMax,
+    cardioMin: cardio?.min ?? null,
+    cardioMax: cardio?.max ?? null,
     sono: calculateSleepDuration(a.horaDormir, a.horaAcordar),
     jornada: calculateWorkDuration(a.entradaTrabalho, a.saidaTrabalho),
   };
