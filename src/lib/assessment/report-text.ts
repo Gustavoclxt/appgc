@@ -15,6 +15,7 @@ import { diarioParaRelatorio } from "./food-diary";
 import { examesParaRelatorio } from "./report-exams";
 import { composicaoParaRelatorio, type ComposicaoDiario } from "./diet-composition";
 import { linhasAlimentosRetirar } from "./food-preferences";
+import { resumoVetFinal } from "./free-meal";
 import { painelClinicoParaRelatorio } from "./clinical-dashboard";
 
 interface Linha {
@@ -53,6 +54,11 @@ function montar(
     valor: v || "—",
   });
   const blocos: Bloco[] = [];
+  const vetFinalResumo = resumoVetFinal(
+    d.caloriasSugeridas,
+    a.refeicoesLivresSemana,
+    a.vetRefeicoesLivres,
+  );
   blocos.push({
     titulo: "Dados do paciente",
     linhas: [
@@ -90,6 +96,16 @@ function montar(
         "Calorias sugeridas",
         d.caloriasSugeridas !== null ? `${fmtInt(d.caloriasSugeridas)} kcal/dia` : "",
       ),
+      ...(vetFinalResumo
+        ? [
+            kv("Refeições livres na semana", vetFinalResumo.quantidade),
+            kv("VET da refeição livre", vetFinalResumo.vetRefeicao),
+            kv(
+              "VET final da dieta ajustado",
+              vetFinalResumo.vetFinal !== null ? `${fmtInt(vetFinalResumo.vetFinal)} kcal/dia` : "",
+            ),
+          ]
+        : []),
     ],
     formato: "tabela",
   });
