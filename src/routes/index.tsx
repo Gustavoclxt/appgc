@@ -10,6 +10,7 @@ import { Step3Rotina } from "@/components/assessment/steps/Step3Rotina";
 import { Step4Antropometria } from "@/components/assessment/steps/Step4Antropometria";
 import { Step5Exames } from "@/components/assessment/steps/Step5Exames";
 import { Step6Energia } from "@/components/assessment/steps/Step6Energia";
+import { Step6Cardio } from "@/components/assessment/steps/Step6Cardio";
 import { Step7Resultado } from "@/components/assessment/steps/Step7Resultado";
 import { Step8Pdf } from "@/components/assessment/steps/Step8Pdf";
 import { WeightGoals } from "@/components/assessment/WeightGoals";
@@ -255,6 +256,7 @@ function Index() {
             {MODULO_METAS_ATIVO(dados) && (
               <WeightGoals {...props} metas={metasPeso} onChange={setMetasPeso} />
             )}
+            <Step6Cardio d={derivados} />
           </div>
         )}
         {etapa === 5 && (
