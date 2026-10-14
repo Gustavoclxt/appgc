@@ -17,8 +17,8 @@ export const LOCAIS_REFEICAO = [
   "Hotel",
 ] as const;
 
-export function opcoesDeLocal(valorAtual: string) {
-  const opcoes = LOCAIS_REFEICAO.map((local) => ({ value: local, label: local }));
+export function opcoesDeLocal(valorAtual: string): { value: string; label: string }[] {
+  const opcoes: { value: string; label: string }[] = LOCAIS_REFEICAO.map((local) => ({ value: local, label: local }));
   // Um valor que não esteja na lista (ex.: copiado de outra avaliação) precisa continuar visível.
   if (valorAtual && !opcoes.some((o) => o.value === valorAtual)) opcoes.push({ value: valorAtual, label: valorAtual });
   return opcoes;
