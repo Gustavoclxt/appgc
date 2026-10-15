@@ -24,7 +24,7 @@ export function Step1Dados({ a, set, d }: StepProps) {
               </p>
             </div>
           </Field>
-          <Field label="Sexo">
+          <Field label="Sexo" className="sm:col-start-2">
             <OptionRow
               value={a.sexo}
               onChange={(v) => set("sexo", v as typeof a.sexo)}
