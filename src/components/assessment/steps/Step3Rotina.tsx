@@ -98,7 +98,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                 <p className="mt-2 text-[12px] text-white/70">O diário foi alterado. Recalcule para atualizar.</p>
               )}
               <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                {comp.totais.map((t) => (
+                {comp!.totais.map((t) => (
                   <div key={t.label}>
                     <p className="text-[11px] text-white/60">{t.label}</p>
                     <p className="mt-1 font-mono text-sm tabular-nums">{t.valor}</p>
@@ -142,7 +142,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                   </div>
                 ));
               })()}
-              <p className="mt-3 text-[11px] text-white/50">{comp.nota}</p>
+              <p className="mt-3 text-[11px] text-white/50">{comp!.nota}</p>
             </>
   );
   return (
