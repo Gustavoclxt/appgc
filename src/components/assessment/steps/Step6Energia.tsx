@@ -1,6 +1,7 @@
 import { fmt2, fmtInt, labelMetodo } from "@/lib/assessment/calculations";
 import type { ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { calcularVetCorrigido } from "@/lib/assessment/free-meal";
+import { cn } from "@/lib/utils";
 
 import { Field, MetricCard, OptionRow, Panel, Select, TextInput, UnitInput } from "../fields";
 import type { StepProps } from "./types";
@@ -87,16 +88,34 @@ export function Step6Energia({
       </Panel>
 
       <Panel titulo="Estratégia energética">
-        <OptionRow
-
-          value={a.estrategia}
-          onChange={(v) => v && set("estrategia", v as typeof a.estrategia)}
-          options={[
-            { value: "deficit", label: "Déficit calórico" },
-            { value: "normocalorica", label: "Normocalórica" },
-            { value: "superavit", label: "Superávit calórico" },
-          ]}
-        />
+        <div
+          className={cn(
+            "grid grid-cols-1 items-start gap-5",
+            a.estrategia === "normocalorica" && "sm:grid-cols-2",
+          )}
+        >
+          <OptionRow
+            value={a.estrategia}
+            onChange={(v) => v && set("estrategia", v as typeof a.estrategia)}
+            options={[
+              { value: "deficit", label: "Déficit calórico" },
+              { value: "normocalorica", label: "Normocalórica" },
+              { value: "superavit", label: "Superávit calórico" },
+            ]}
+          />
+          {a.estrategia === "normocalorica" && (
+            <div className="max-w-xs">
+              <Field label="Ajuste manual das calorias" hint="Em branco mantém a prescrição igual ao VET.">
+                <TextInput
+                  value={a.caloriasManuais}
+                  onChange={(v) => set("caloriasManuais", v)}
+                  placeholder={d.vet !== null ? fmtInt(d.vet) : "kcal/dia"}
+                  mono
+                />
+              </Field>
+            </div>
+          )}
+        </div>
 
         {a.estrategia !== "normocalorica" && (
           <div className="mt-5 space-y-4">
@@ -151,19 +170,6 @@ export function Step6Energia({
                 </div>
               </>
             )}
-          </div>
-        )}
-
-        {a.estrategia === "normocalorica" && (
-          <div className="mt-5 max-w-xs">
-            <Field label="Ajuste manual das calorias" hint="Em branco mantém a prescrição igual ao VET.">
-              <TextInput
-                value={a.caloriasManuais}
-                onChange={(v) => set("caloriasManuais", v)}
-                placeholder={d.vet !== null ? fmtInt(d.vet) : "kcal/dia"}
-                mono
-              />
-            </Field>
           </div>
         )}
 
