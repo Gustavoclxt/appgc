@@ -92,6 +92,59 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
     );
     return novo.id;
   };
+  const renderR24h = () => (
+            <>
+              {desatualizada && (
+                <p className="mt-2 text-[12px] text-white/70">O diário foi alterado. Recalcule para atualizar.</p>
+              )}
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {comp.totais.map((t) => (
+                  <div key={t.label}>
+                    <p className="text-[11px] text-white/60">{t.label}</p>
+                    <p className="mt-1 font-mono text-sm tabular-nums">{t.valor}</p>
+                  </div>
+                ))}
+              </div>
+              {(() => {
+                const horarios = new Map(
+                  a.diarioAlimentar.map((r) => [r.refeicao.trim().toLocaleLowerCase("pt-BR") || "refeição", r.horario]),
+                );
+                const grupos: { nome: string; horario: string; itens: NonNullable<typeof composicao>["itens"] }[] = [];
+                for (const i of composicao?.itens ?? []) {
+                  const chave = i.refeicao.trim().toLocaleLowerCase("pt-BR") || "refeição";
+                  const atual = grupos[grupos.length - 1];
+                  if (atual && atual.nome.toLocaleLowerCase("pt-BR") === chave) {
+                    atual.itens.push(i);
+                  } else {
+                    grupos.push({ nome: i.refeicao || "Refeição", horario: horarios.get(chave) ?? "", itens: [i] });
+                  }
+                }
+                const fmt1 = (v: number) => v.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
+                return grupos.map((g, n) => (
+                  <div key={n} className="mt-3 first:mt-0">
+                    <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/70">
+                      {g.nome}
+                      {g.horario ? ` · ${g.horario}` : ""}
+                    </p>
+                    <ul className="mt-1.5 space-y-1.5">
+                      {g.itens.map((i, m) => (
+                        <li key={m} className="text-[12px] leading-snug">
+                          <span className="text-white">
+                            {[i.alimento, i.quantidade].filter(Boolean).join(" — ")}
+                          </span>
+                          <span className="block font-mono text-[11px] text-white/60">
+                            {`${Math.round(i.kcal)} kcal · CHO ${fmt1(i.carboidratos)} g · PTN ${fmt1(i.proteinas)} g · LIP ${fmt1(i.lipidios)} g`}
+                            {i.fonte ? ` · ${i.fonte}` : ""}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ));
+              })()}
+              <p className="mt-3 text-[11px] text-white/50">{comp.nota}</p>
+            </>
+  );
   return (
     <div className="space-y-6">
       <Panel titulo="Rotina de trabalho/faculdade">
@@ -822,6 +875,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           </Field>
         </div>
         <div className="mt-6 flex justify-center">
+        {diaAtipico === null && (
             <button
               type="button"
               onClick={onCalcular}
@@ -831,63 +885,12 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
               {calculando ? "Calculando…" : comp ? "Recalcular" : "Calcular calorias e macronutrientes"}
             </button>
         </div>
-        {comp ? (
-          <div className="mt-4 rounded-[14px] bg-accent p-5 text-white">
-            <>
-              {desatualizada && (
-                <p className="mt-2 text-[12px] text-white/70">O diário foi alterado. Recalcule para atualizar.</p>
-              )}
-              <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                {comp.totais.map((t) => (
-                  <div key={t.label}>
-                    <p className="text-[11px] text-white/60">{t.label}</p>
-                    <p className="mt-1 font-mono text-sm tabular-nums">{t.valor}</p>
-                  </div>
-                ))}
-              </div>
-              {(() => {
-                const horarios = new Map(
-                  a.diarioAlimentar.map((r) => [r.refeicao.trim().toLocaleLowerCase("pt-BR") || "refeição", r.horario]),
-                );
-                const grupos: { nome: string; horario: string; itens: NonNullable<typeof composicao>["itens"] }[] = [];
-                for (const i of composicao?.itens ?? []) {
-                  const chave = i.refeicao.trim().toLocaleLowerCase("pt-BR") || "refeição";
-                  const atual = grupos[grupos.length - 1];
-                  if (atual && atual.nome.toLocaleLowerCase("pt-BR") === chave) {
-                    atual.itens.push(i);
-                  } else {
-                    grupos.push({ nome: i.refeicao || "Refeição", horario: horarios.get(chave) ?? "", itens: [i] });
-                  }
-                }
-                const fmt1 = (v: number) => v.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
-                return grupos.map((g, n) => (
-                  <div key={n} className="mt-3 first:mt-0">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/70">
-                      {g.nome}
-                      {g.horario ? ` · ${g.horario}` : ""}
-                    </p>
-                    <ul className="mt-1.5 space-y-1.5">
-                      {g.itens.map((i, m) => (
-                        <li key={m} className="text-[12px] leading-snug">
-                          <span className="text-white">
-                            {[i.alimento, i.quantidade].filter(Boolean).join(" — ")}
-                          </span>
-                          <span className="block font-mono text-[11px] text-white/60">
-                            {`${Math.round(i.kcal)} kcal · CHO ${fmt1(i.carboidratos)} g · PTN ${fmt1(i.proteinas)} g · LIP ${fmt1(i.lipidios)} g`}
-                            {i.fonte ? ` · ${i.fonte}` : ""}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ));
-              })()}
-              <p className="mt-3 text-[11px] text-white/50">{comp.nota}</p>
-            </>
-          </div>
+        )}
+        {comp && diaAtipico === null ? (
+          <div className="mt-4 rounded-[14px] bg-accent p-5 text-white">{renderR24h()}</div>
         ) : null}
         {diaAtipico !== null && (
-          <AtypicalDay refeicoes={diaAtipico} onChange={onAlterarDiaAtipico} composicao={composicaoAtipica} calculando={calculandoAtipico} onCalcular={onCalcularAtipico} onCopiarR24h={onCopiarR24h} />
+          <AtypicalDay refeicoes={diaAtipico} onChange={onAlterarDiaAtipico} composicao={composicaoAtipica} calculando={calculando || calculandoAtipico} onCalcular={() => { onCalcular(); onCalcularAtipico(); }} onCopiarR24h={onCopiarR24h} r24h={comp ? renderR24h() : null} />
         )}
       </Panel>
 
