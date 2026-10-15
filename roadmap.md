@@ -57,3 +57,4 @@
 - [x] Aproximar "Condições de saúde", HMA/HMP/HMF, a dica e "Medicamentos" do texto de dica de "Histórico do peso" (20 px).
 - [x] Deixar o botão "+ Adicionar dia atípico" com a mesma cor e formato de "+ Adicionar refeição", mantendo o bloqueio quando já existe dia atípico.
 - [x] Trocar o campo "Observações" de "Evolução do peso" por uma caixa de texto de uma linha (texto curto).
+- [x] Trocar "Observações sobre os Exames Laboratoriais" por uma caixa de texto de uma linha, sem texto dentro.
