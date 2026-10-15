@@ -814,9 +814,9 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           >
             + Adicionar refeição
           </RowButton>
-          <Button variant="outline" className="ml-0 sm:ml-3" onClick={onAdicionarDiaAtipico} disabled={diaAtipico !== null}>
+          <RowButton className="ml-0 sm:ml-3" onClick={onAdicionarDiaAtipico} disabled={diaAtipico !== null}>
             + Adicionar dia atípico
-          </Button>
+          </RowButton>
           {diaAtipico !== null && (
             <Button variant="outline" className="ml-0 sm:ml-3" onClick={onRemoverDiaAtipico}>
               - Remover dia atípico

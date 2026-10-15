@@ -325,15 +325,24 @@ export function MetricCard({ label, valor, sub }: { label: string; valor: string
 export function RowButton({
   onClick,
   children,
+  className,
+  disabled,
 }: {
   onClick: () => void;
   children: ReactNode;
+  className?: string;
+  disabled?: boolean;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="rounded-[10px] bg-white/70 px-3 py-2 text-[13px] font-medium text-ink ring-1 ring-line transition-colors hover:bg-white"
+      disabled={disabled}
+      className={cn(
+        "rounded-[10px] bg-white/70 px-3 py-2 text-[13px] font-medium text-ink ring-1 ring-line transition-colors hover:bg-white",
+        disabled && "cursor-not-allowed opacity-50 hover:bg-white/70",
+        className,
+      )}
     >
       {children}
     </button>
