@@ -21,7 +21,7 @@ describe("peso antropométrico do resumo", () => {
     expect(pesoAntropometricoParaResumo(a)).toBe(79.35);
     const painel = painelClinicoParaRelatorio(analise, a, d, null);
     const peso = painel.resumo.find(item => item.label === "PESO")?.valor ?? "";
-    expect(Number(peso.split(" ")[0].replace(",", "."))).toBe(79.35);
+    expect(Number(peso.split(" ")[0]?.replace(",", "."))).toBe(79.35);
     expect(d.pesoKg).toBe(82);
   });
   it("usa a avaliação mais recente sem confundir peso ideal e massa gorda", () => {
@@ -29,10 +29,12 @@ describe("peso antropométrico do resumo", () => {
     expect(pesoAntropometricoParaResumo(a)).toBe(79.35);
   });
   it("mantém o peso conferido na antropometria quando não há indicador anexado", () => {
-    expect(pesoAntropometricoParaResumo({ ...createEmptyAssessment(), peso: "78,4", pesoReferido: "90" })).toBe(78.4);
+    const a = { ...createEmptyAssessment(), peso: "78,4", pesoReferido: "90" };
+    expect(pesoAntropometricoParaResumo(a)).toBe(78.4);
   });
   it("não substitui uma avaliação ausente pelo peso referido", () => {
-    expect(pesoAntropometricoParaResumo({ ...createEmptyAssessment(), pesoReferido: "90" })).toBeNull();
+    const a = { ...createEmptyAssessment(), pesoReferido: "90" };
+    expect(pesoAntropometricoParaResumo(a)).toBeNull();
   });
 });
 
