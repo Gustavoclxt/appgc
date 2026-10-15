@@ -928,7 +928,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
             <UnitInput value={a.pesoReferido} onChange={(v) => set("pesoReferido", v)} unidade="kg" placeholder="78,4" />
           </Field>
           <Field label="Observações" className="sm:col-span-2">
-            <LongText value={a.observacoesEvolucao} onChange={(v) => set("observacoesEvolucao", v)} rows={3} />
+            <TextInput value={a.observacoesEvolucao} onChange={(v) => set("observacoesEvolucao", v)} placeholder="Observações" />
           </Field>
         </div>
       </Panel>
