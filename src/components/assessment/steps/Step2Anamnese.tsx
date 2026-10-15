@@ -86,13 +86,16 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             <Field label="HMA">
               <LongText value={a.hma} onChange={(v) => set("hma", v)} />
             </Field>
-            <Field label="HMP" hint="DM, HAS, DRC, Dislipidemia, Obesidade, problemas cardiovasculares, Osteoporose, SOP etc.">
+            <Field label="HMP">
               <LongText value={a.hmp} onChange={(v) => set("hmp", v)} />
             </Field>
             <Field label="HMF">
               <LongText value={a.hmf} onChange={(v) => set("hmf", v)} />
             </Field>
           </div>
+          <p className="mt-2 text-[11px] text-ink-soft">
+            DM, HAS, DRC, Dislipidemia, Obesidade, problemas cardiovasculares, Osteoporose, SOP etc.
+          </p>
         </div>
         <h2 className="mb-3 mt-7 font-display text-base font-semibold tracking-tight">Medicamentos</h2>
         <div className="space-y-3">
