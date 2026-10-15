@@ -5,7 +5,7 @@ import type { StepProps } from "./types";
 
 export function Step6Cardio({ d }: Pick<StepProps, "d">) {
   return (
-    <Panel titulo="Frequência cardíaca recomendada (cardio)">
+    <Panel titulo="Frequência Cardíaca recomendada (Cardio)">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <MetricCard
           label="FcMax"
