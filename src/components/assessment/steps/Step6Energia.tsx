@@ -37,38 +37,42 @@ export function Step6Energia({
   return (
     <div className="space-y-6">
       <Panel titulo="Gasto energético">
-        <Field label="Equação para a TMB">
-          <OptionRow
-            value={a.metodoTMB}
-            onChange={(v) => v && set("metodoTMB", v as typeof a.metodoTMB)}
-            options={[
-              { value: "harris-benedict", label: "Harris-Benedict" },
-              { value: "mifflin", label: "Mifflin-St Jeor" },
-            ]}
-          />
-        </Field>
-
-        <h2 className="mb-3 mt-7 font-sans text-[13px] font-medium text-ink">Nível de atividade física diária</h2>
-        <div className="max-w-sm">
-          <Select
-            value={fatorPersonalizado ? "" : a.fatorAtividade}
-            onChange={(v) => set("fatorAtividade", v)}
-            options={fatores}
-            placeholder="Selecione o nível de atividade"
-          />
-        </div>
-        <div className="mt-4 max-w-xs">
-          <Field
-            label="Fator Atividade personalizado"
-            hint="Para 2,0 ou superior, informe o valor manualmente."
-          >
-            <UnitInput
-              value={a.fatorAtividade}
-              onChange={(v) => set("fatorAtividade", v)}
-              unidade="FA"
-              placeholder="2,1"
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <Field label="Equação para a TMB">
+            <OptionRow
+              value={a.metodoTMB}
+              onChange={(v) => v && set("metodoTMB", v as typeof a.metodoTMB)}
+              options={[
+                { value: "harris-benedict", label: "Harris-Benedict" },
+                { value: "mifflin", label: "Mifflin-St Jeor" },
+              ]}
             />
           </Field>
+
+          <div>
+            <h2 className="mb-3 font-sans text-[13px] font-medium text-ink">Nível de atividade física diária</h2>
+            <div className="max-w-sm">
+              <Select
+                value={fatorPersonalizado ? "" : a.fatorAtividade}
+                onChange={(v) => set("fatorAtividade", v)}
+                options={fatores}
+                placeholder="Selecione o nível de atividade"
+              />
+            </div>
+            <div className="mt-4 max-w-xs">
+              <Field
+                label="Fator Atividade personalizado"
+                hint="Para 2,0 ou superior, informe o valor manualmente."
+              >
+                <UnitInput
+                  value={a.fatorAtividade}
+                  onChange={(v) => set("fatorAtividade", v)}
+                  unidade="FA"
+                  placeholder="2,1"
+                />
+              </Field>
+            </div>
+          </div>
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
