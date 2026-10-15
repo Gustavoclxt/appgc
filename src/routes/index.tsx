@@ -200,7 +200,7 @@ function Index() {
             alt="Gustavo Calixto — Nutrição, Performance e Longevidade"
             width={200}
             height={100}
-            className="w-[200px] max-w-full object-contain justify-self-start"
+            className="h-[100px] w-[200px] max-w-full object-contain justify-self-start"
           />
           <div className="text-center leading-tight">
             <p className="text-lg font-semibold tracking-tight">
