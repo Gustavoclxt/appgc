@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Posicionar "Nível de atividade física diária" à direita de "Equação para a TMB".
 - [x] Deixar "Observações" do Recordatório 24h como texto de uma linha.
 - [x] Deixar "Aversões alimentares" como texto de uma linha.
 - [x] Remover o campo "Horários personalizados" da rotina e da cópia/PDF.
