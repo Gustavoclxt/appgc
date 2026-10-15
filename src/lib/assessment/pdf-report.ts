@@ -343,6 +343,7 @@ export function generatePDF(
     }
   // Gráfico
   if (metas.pesoInicial !== null) {
+    quebra(90);
     titulo("GRÁFICO COMPARATIVO");
     const gh = 60;
     quebra(gh + 12);
