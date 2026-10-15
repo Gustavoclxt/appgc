@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Deixar "Observações" do Recordatório 24h como texto de uma linha.
 - [x] Deixar "Aversões alimentares" como texto de uma linha.
 - [x] Remover o campo "Horários personalizados" da rotina e da cópia/PDF.
 - [x] Posicionar "Hábitos sociais" abaixo de "Possui alguma restrição alimentar?" e ao lado de "Usa ou já usou EAAs?".
