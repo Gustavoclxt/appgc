@@ -1,9 +1,9 @@
 import type { ExameLaboratorial } from "./types";
 
 const EXAMES_SEMPRE_INCLUIDOS = [
-  ["vitamina d", "25 oh vitamina d", "25 hidroxi vitamina d"],
-  ["vitamina b12", "cobalamina"],
-  ["ferro", "ferro serico"],
+  ["vitamina d", "vitamina d3", "25 oh vitamina d", "25 hidroxi vitamina d", "25 hidroxivitamina d", "hidroxivitamina d", "25 oh d", "calcidiol"],
+  ["vitamina b12", "vit b12", "b12", "cobalamina"],
+  ["ferro", "ferro serico", "ferro total"],
   ["ferritina"],
 ];
 
@@ -23,7 +23,7 @@ export function examesParaRelatorio(exames: ExameLaboratorial[]) {
     const nome = normalizarNome(exame.exame);
     return EXAMES_SEMPRE_INCLUIDOS.some((aliases) =>
       aliases.some(
-        (alias) => nome === alias || nome.startsWith(`${alias} `) || nome.endsWith(` ${alias}`),
+        (alias) => ` ${nome} `.includes(` ${alias} `),
       ),
     );
   });
