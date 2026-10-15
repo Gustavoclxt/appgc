@@ -9,7 +9,7 @@ export function Step1Dados({ a, set, d }: StepProps) {
           <Field label="Data da avaliação" className="sm:col-span-2">
             <TextInput type="date" value={a.dataAvaliacao} onChange={(v) => set("dataAvaliacao", v)} />
           </Field>
-          <Field label="Nome do paciente" className="sm:col-span-2">
+          <Field label="Nome completo" className="sm:col-span-2">
             <TextInput value={a.nome} onChange={(v) => set("nome", v)} placeholder="Nome completo" />
           </Field>
           <Field label="Data de nascimento" className="sm:col-span-2">
