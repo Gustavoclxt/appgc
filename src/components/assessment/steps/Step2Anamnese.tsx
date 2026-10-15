@@ -163,7 +163,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               <TextInput value={a.alergiaDescricao} onChange={(v) => set("alergiaDescricao", v)} />
             </Field>
           )}
-          <Field label="Possui alguma restrição alimentar?">
+          <Field label="Possui alguma restrição alimentar?" className="sm:col-start-2">
             <OptionRow
               value={a.restricaoAlimentar}
               onChange={(v) => set("restricaoAlimentar", v as typeof a.restricaoAlimentar)}
@@ -174,15 +174,10 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               ]}
             />
           </Field>
-          <Field label="Usa ou já usou EAAs?">
+          <Field label="Usa ou já usou EAAs?" className="sm:col-start-1">
             <OptionRow value={a.eaas} onChange={(v) => set("eaas", v as typeof a.eaas)} options={simNao} />
           </Field>
-          {a.eaas === "sim" && (
-            <Field label="Especifique" className="sm:col-span-2">
-              <TextInput value={a.eaasDescricao} onChange={(v) => set("eaasDescricao", v)} />
-            </Field>
-          )}
-          <Field label="Hábitos sociais" className="sm:col-span-2">
+          <Field label="Hábitos sociais" className="sm:col-start-2">
             <MultiOptionRow
               values={a.habitosSociais}
               onChange={(v) => {
@@ -196,6 +191,11 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               ]}
             />
           </Field>
+          {a.eaas === "sim" && (
+            <Field label="Especifique" className="sm:col-span-2">
+              <TextInput value={a.eaasDescricao} onChange={(v) => set("eaasDescricao", v)} />
+            </Field>
+          )}
           {a.habitosSociais.includes("Etilista") && (
             <>
               <Field label="Álcool - Quantidade">
