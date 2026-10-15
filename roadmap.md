@@ -75,3 +75,4 @@
 - [x] Reduzir a caixa de "Data da avaliação" ao espaço suficiente para a data.
 - [x] Mover "Sexo" (Masculino/Feminino) para a direita de "Data de nascimento", com "Profissão" ocupando a linha inteira.
 - [x] Aumentar o tamanho das fontes de "Avaliação Clínica Nutricional" e "GC - Excelência em Nutrição" no cabeçalho.
+- [x] Centralizar na página o título e o subtítulo do cabeçalho, mantendo logotipo à esquerda e dados do paciente à direita.
