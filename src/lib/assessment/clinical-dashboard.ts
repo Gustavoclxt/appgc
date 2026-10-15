@@ -1,5 +1,6 @@
 import { fmt2, fmtInt, fmtLitros, type DerivedResults } from "./calculations";
 import { resumoVetFinal } from "./free-meal";
+import { pesoAntropometricoParaResumo } from "./anthropometry-groups";
 import type { ComposicaoDiario } from "./diet-composition";
 import type { AnaliseIA, Assessment } from "./types";
 
@@ -30,7 +31,8 @@ export function painelClinicoParaRelatorio(
     d.aguaMin !== null && `Referência: ${fmtLitros(d.aguaMin)}–${fmtLitros(d.aguaMax)} L/dia`,
   ].filter(Boolean).join(" · ");
   const intestino = [a.frequenciaEvacuacao, a.bristol && `Bristol ${a.bristol}`].filter(Boolean).join(" · ");
-  const peso = [d.pesoKg !== null && `${fmt2(d.pesoKg)} kg`, a.evolucaoPeso].filter(Boolean).join(" · ");
+  const pesoAntropometrico = pesoAntropometricoParaResumo(a);
+  const peso = [pesoAntropometrico !== null && `${fmt2(pesoAntropometrico)} kg`, a.evolucaoPeso].filter(Boolean).join(" · ");
   const composicaoCorporal = [
     d.percentualGordura !== null && `${fmt2(d.percentualGordura)}% de gordura`,
     d.massaGorda !== null && `${fmt2(d.massaGorda)} kg de massa gorda`,
@@ -56,6 +58,7 @@ export function painelClinicoParaRelatorio(
     { label: "VET", valor: d.vet !== null ? `${fmtInt(d.vet)} kcal/dia` : "" },
     { label: "VET PRESCRITO", valor: vetPrescrito !== null ? `${fmtInt(vetPrescrito)} kcal/dia` : "" },
     { label: "CALORIAS R24H", valor: composicao ? `${fmtInt(composicao.totais.kcal)} kcal` : "" },
+    { label: "FAIXA IDEAL DE BPM", valor: d.cardioMin !== null && d.cardioMax !== null ? `${fmtInt(d.cardioMin)} a ${fmtInt(d.cardioMax)} bpm` : "" },
   ].filter((item): item is { label: string; valor: string } => Boolean(item?.label && item.valor));
 
   const achados: PainelSecaoLista[] = ([

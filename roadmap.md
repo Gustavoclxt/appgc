@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Incluir faixa ideal de BPM e priorizar peso da antropometria anexada no Resumo Clínico, cópia e PDF.
 - [x] Categorizar antropometria e mover datas para o cabeçalho das tabelas.
 - [x] Exibir metas de referência em três cards com perda e peso resultante.
 - [x] Condicionar anexo de exames à resposta Sim e validar os fluxos.
