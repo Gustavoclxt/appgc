@@ -1,4 +1,5 @@
 import { comObs } from "./food-preferences";
+import { observacoesExamesParaRelatorio } from "./anthropometry-groups";
 import {
   fmt2,
   fmtData,
@@ -206,7 +207,7 @@ export function buildResumo(a: Assessment, d: DerivedResults, composicao: Compos
     for (const e of a.exames)
       t += `- ${e.exame}: ${e.resultado} ${e.unidade} | ref: ${e.referencia} | ${e.status}\n`;
   }
-  t += li("Observações sobre os exames", a.observacoesExames);
+  t += li("Observações sobre os exames", observacoesExamesParaRelatorio(a));
 
   return t;
 }

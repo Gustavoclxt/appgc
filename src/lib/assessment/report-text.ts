@@ -1,4 +1,5 @@
 import { metasParaRelatorio } from "./weight-goals-report";
+import { observacoesExamesParaRelatorio } from "./anthropometry-groups";
 import type { MetasPesoResultado } from "./weight-goals";
 import {
   fmt2,
@@ -152,7 +153,7 @@ function montar(
           texto: `${e.exame}: ${e.resultado} ${e.unidade} (ref.: ${e.referencia || "—"}) — ${statusLabel[e.status] ?? e.status}`,
           nivel: 1 as const,
         })),
-        ...(a.observacoesExames ? [{ texto: `Observações: ${a.observacoesExames}` }] : []),
+        ...(observacoesExamesParaRelatorio(a) ? [{ texto: `Observações: ${observacoesExamesParaRelatorio(a)}` }] : []),
       ],
       formato: "lista",
     });

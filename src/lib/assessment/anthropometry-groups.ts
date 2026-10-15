@@ -36,6 +36,10 @@ export function agruparAntropometria(indicadores: IndicadorAntropometrico[], dat
 
 export const podeAnexarExames = (a: Pick<Assessment, "possuiExames">) => a.possuiExames === "sim";
 
+/** As observações sobre os exames só existem enquanto o box de exames é exibido. */
+export const observacoesExamesParaRelatorio = (a: Pick<Assessment, "possuiExames" | "observacoesExames">) =>
+  podeAnexarExames(a) ? a.observacoesExames : "";
+
 /** Prefer the latest measured weight; never substitute the referred or target weight. */
 export function pesoAntropometricoParaResumo(a: Pick<Assessment, "indicadoresAntropometricos" | "dataAvaliacaoAntropometrica" | "peso">): number | null {
   const pesos = a.indicadoresAntropometricos.flatMap((i) => {
