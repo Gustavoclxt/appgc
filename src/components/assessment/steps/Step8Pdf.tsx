@@ -8,11 +8,11 @@ export function Step8Pdf({
   temAnalise: boolean;
 }) {
   return (
-    <Panel titulo="Gerar PDF">
+    <Panel titulo="Laudo em PDF">
       <p className="text-[13px] leading-relaxed text-ink-soft">
         O PDF reúne os dados do paciente, a antropometria, os cálculos energéticos, a necessidade
         hídrica, a conduta energética, os exames laboratoriais identificados e os textos produzidos na
-        análise. Nada além do que foi informado ou calculado é incluído.
+        análise.
       </p>
       {!temAnalise && (
         <p className="mt-4 rounded-[10px] bg-warn-soft px-4 py-3 font-mono text-[11px] text-warn">
