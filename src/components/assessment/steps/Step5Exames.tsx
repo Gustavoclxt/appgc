@@ -8,7 +8,7 @@ import { novoId } from "@/lib/assessment/initial-state";
 import { podeAnexarExames } from "@/lib/assessment/anthropometry-groups";
 
 import { ExamesTable } from "../ExamesTable";
-import { Field, LongText, Panel, RowButton, Select, TextInput } from "../fields";
+import { Field, Panel, RowButton, Select, TextInput } from "../fields";
 import type { StepProps } from "./types";
 import type { ExameLaboratorial } from "@/lib/assessment/types";
 
@@ -152,12 +152,7 @@ export function Step5Exames({ a, set }: StepProps) {
       )}
 
       <Panel titulo="Observações sobre os Exames Laboratoriais">
-        <LongText
-          value={a.observacoesExames}
-          onChange={(v) => set("observacoesExames", v)}
-          rows={4}
-          placeholder="Anotações do nutricionista sobre os achados laboratoriais."
-        />
+        <TextInput value={a.observacoesExames} onChange={(v) => set("observacoesExames", v)} />
       </Panel>
     </div>
   );
