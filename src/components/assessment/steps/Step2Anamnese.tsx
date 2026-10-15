@@ -44,7 +44,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               options={objetivos}
             />
           </Field>
-          <Field label="Em seu físico, o que mais lhe incomoda atualmente?">
+          <Field label="O que mais lhe incomoda atualmente em seu físico?">
             <TextInput value={a.incomodoFisico} onChange={(v) => set("incomodoFisico", v)} />
           </Field>
           {a.objetivos.includes("Emagrecimento") && (
