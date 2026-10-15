@@ -203,11 +203,11 @@ function Index() {
               height={100}
               className="h-[100px] w-[200px] shrink-0 object-contain"
             />
-            <div className="max-w-[230px] leading-tight sm:max-w-none">
-              <p className="text-sm font-semibold tracking-tight">
+            <div className="max-w-[260px] leading-tight sm:max-w-none">
+              <p className="text-lg font-semibold tracking-tight">
                 Avaliação Clínica Nutricional
               </p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-soft">
+              <p className="font-mono text-xs uppercase tracking-[0.12em] text-ink-soft">
                 GC - Excelência em Nutrição
               </p>
             </div>

@@ -74,3 +74,4 @@
 - [x] Reduzir a caixa de "Data de nascimento" ao espaço suficiente para a data, mantendo "Idade" na mesma linha.
 - [x] Reduzir a caixa de "Data da avaliação" ao espaço suficiente para a data.
 - [x] Mover "Sexo" (Masculino/Feminino) para a direita de "Data de nascimento", com "Profissão" ocupando a linha inteira.
+- [x] Aumentar o tamanho das fontes de "Avaliação Clínica Nutricional" e "GC - Excelência em Nutrição" no cabeçalho.
