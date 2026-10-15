@@ -93,7 +93,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               <LongText value={a.hmf} onChange={(v) => set("hmf", v)} />
             </Field>
           </div>
-          <p className="mt-2 text-[11px] text-ink-soft">
+          <p className="mt-1 text-[11px] text-ink-soft">
             DM, HAS, DRC, Dislipidemia, Obesidade, problemas cardiovasculares, Osteoporose, SOP etc.
           </p>
         </div>
