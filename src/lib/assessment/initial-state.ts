@@ -87,7 +87,6 @@ export function createEmptyAssessment(): Assessment {
     fritosFrequencia: "",
 
     horariosFome: [],
-    horariosFomePersonalizado: "",
     observacoesFome: "",
     habitoBeliscar: "",
     beliscarDescricao: "",
