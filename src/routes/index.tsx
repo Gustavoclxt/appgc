@@ -173,7 +173,7 @@ function Index() {
   async function onGerarPdf() {
     try {
       const { generatePDF } = await import("@/lib/assessment/pdf-report");
-      generatePDF(dados, derivados, analise, composicao, resultadoMetas);
+      generatePDF(dados, derivados, analise, composicao, resultadoMetas, diaAtipico ? composicaoAtipica : null);
     } catch {
       toast.error("Não foi possível gerar o PDF.");
     }

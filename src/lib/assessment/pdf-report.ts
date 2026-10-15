@@ -20,6 +20,7 @@ import { linhasAlimentosRetirar } from "./food-preferences";
 import { painelClinicoParaRelatorio } from "./clinical-dashboard";
 import { resumoVetFinal } from "./free-meal";
 import { REPORT_HEADER_COLOR } from "./report-theme";
+import { registerReportFonts } from "./pdf-font";
 
 const MARGEM = 16;
 const LARGURA = 210;
@@ -39,8 +40,10 @@ export function generatePDF(
   analise: AnaliseIA | null,
   composicao: ComposicaoDiario | null = null,
   metas: MetasPesoResultado | null = null,
+  composicaoAtipica: ComposicaoDiario | null = null,
 ) {
   const doc = new jsPDF({ unit: "mm", format: "a4" });
+  registerReportFonts(doc);
   const examesDoRelatorio = examesParaRelatorio(a.exames);
   const diarioDoRelatorio = diarioParaRelatorio(a.diarioAlimentar);
   const anamneseDoRelatorio = anamneseParaRelatorio(a, d);
@@ -65,7 +68,7 @@ export function generatePDF(
   const titulo = (texto: string) => {
     if (y > MARGEM) y += 4;
     quebra(14);
-    doc.setFont("helvetica", "bold");
+    doc.setFont("ReportSans", "bold");
     doc.setFontSize(11);
     doc.setTextColor(22, 32, 43);
     doc.text(texto.toUpperCase(), MARGEM, y);
@@ -78,32 +81,32 @@ export function generatePDF(
 
   const linha = (label: string, valor: string) => {
     quebra(6);
-    doc.setFont("helvetica", "normal");
+    doc.setFont("ReportSans", "normal");
     doc.setFontSize(9.5);
     doc.setTextColor(91, 102, 114);
     doc.text(label, MARGEM, y);
     doc.setTextColor(22, 32, 43);
-    doc.setFont("helvetica", "bold");
+    doc.setFont("ReportSans", "bold");
     doc.text(valor, MARGEM + 58, y);
     y += 5.5;
   };
 
   const linhaPaciente = (label: string, valor: string) => {
     quebra(6);
-    doc.setFont("helvetica", "normal");
+    doc.setFont("ReportSans", "normal");
     doc.setFontSize(9.5);
     doc.setTextColor(91, 102, 114);
     const pergunta = `${label}:`;
     doc.text(pergunta, MARGEM, y);
     doc.setTextColor(22, 32, 43);
-    doc.setFont("helvetica", "bold");
+    doc.setFont("ReportSans", "bold");
     doc.text(valor, MARGEM + doc.getTextWidth(pergunta) + 2.5, y);
     y += 5.5;
   };
 
   const paragrafo = (texto: string) => {
     if (!texto) return;
-    doc.setFont("helvetica", "normal");
+    doc.setFont("ReportSans", "normal");
     doc.setFontSize(9.5);
     doc.setTextColor(40, 50, 60);
     const linhas = doc.splitTextToSize(texto, CONTEUDO);
@@ -117,22 +120,22 @@ export function generatePDF(
 
   const campoAnamnese = (label: string, valor: string) => {
     const pergunta = /[:?]$/.test(label.trim()) ? label.trim() : `${label.trim()}:`;
-    doc.setFont("helvetica", "bold");
+    doc.setFont("ReportSans", "bold");
     doc.setFontSize(9);
     const larguraPergunta = doc.getTextWidth(pergunta);
-    doc.setFont("helvetica", "normal");
+    doc.setFont("ReportSans", "normal");
     doc.setFontSize(9.5);
     const larguraResposta = doc.getTextWidth(valor);
     const respostaCurta = !valor.includes("\n") && larguraPergunta + 2.5 + larguraResposta <= CONTEUDO;
 
     quebra(respostaCurta ? 6 : 10);
-    doc.setFont("helvetica", "bold");
+    doc.setFont("ReportSans", "bold");
     doc.setFontSize(9);
     doc.setTextColor(91, 102, 114);
     doc.text(pergunta, MARGEM, y);
 
     if (respostaCurta) {
-      doc.setFont("helvetica", "normal");
+      doc.setFont("ReportSans", "normal");
       doc.setFontSize(9.5);
       doc.setTextColor(40, 50, 60);
       doc.text(valor, MARGEM + larguraPergunta + 2.5, y);
@@ -148,10 +151,10 @@ export function generatePDF(
   doc.setFillColor(...REPORT_HEADER_COLOR);
   doc.rect(0, 0, LARGURA, 26, "F");
   doc.setTextColor(255, 255, 255);
-  doc.setFont("helvetica", "bold");
+  doc.setFont("ReportSans", "bold");
   doc.setFontSize(14);
   doc.text("RELATÓRIO DE AVALIAÇÃO NUTRICIONAL", LARGURA / 2, 13, { align: "center" });
-  doc.setFont("helvetica", "normal");
+  doc.setFont("ReportSans", "normal");
   doc.setFontSize(9);
   doc.text("GC - Excelência em Nutrição", LARGURA / 2, 19.5, { align: "center" });
   y = 36;
@@ -174,7 +177,7 @@ export function generatePDF(
     titulo("Recordatório 24h");
     for (const refeicao of diarioDoRelatorio) {
       quebra(7);
-      doc.setFont("helvetica", "bold");
+      doc.setFont("ReportSans", "bold");
       doc.setFontSize(9.5);
       doc.setTextColor(22, 32, 43);
       const detalhes = [
@@ -196,6 +199,12 @@ export function generatePDF(
   if (comp) {
     titulo("Composição estimada do Recordatório 24h");
     for (const t of comp.totais) linha(t.label, t.valor);
+  }
+
+  const compAtipica = composicaoParaRelatorio(composicaoAtipica);
+  if (compAtipica) {
+    titulo("Composição estimada do R24h — Dia atípico");
+    for (const t of compAtipica.totais) linha(t.label, t.valor);
   }
 
   for (const section of anamneseAPartirDaEvolucao) {
@@ -273,28 +282,41 @@ export function generatePDF(
 
   if (examesDoRelatorio.length) {
     titulo("Exames laboratoriais");
-    quebra(8);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(8.5);
-    doc.setTextColor(91, 102, 114);
-    doc.text("Exame", MARGEM, y);
-    doc.text("Resultado", MARGEM + 70, y);
-    doc.text("Referência", MARGEM + 110, y);
-    doc.text("Status", MARGEM + 145, y);
-    y += 4;
-    doc.setDrawColor(223, 228, 233);
-    doc.setLineWidth(0.2);
-    doc.line(MARGEM, y, MARGEM + CONTEUDO, y);
-    y += 4;
-    doc.setFont("helvetica", "normal");
-    doc.setTextColor(22, 32, 43);
+    const colunas = [
+      { x: MARGEM, largura: 64 },
+      { x: MARGEM + 64, largura: 36 },
+      { x: MARGEM + 100, largura: 43 },
+      { x: MARGEM + 143, largura: CONTEUDO - 143 },
+    ];
+    const linhaTabela = (valores: string[], cabecalho = false) => {
+      doc.setFont("ReportSans", cabecalho ? "bold" : "normal");
+      doc.setFontSize(8.5);
+      const celulas = valores.map((valor, i) => doc.splitTextToSize(valor, (colunas[i]?.largura ?? 30) - 3) as string[]);
+      const altura = Math.max(1, ...celulas.map(c => c.length)) * 4 + 2;
+      if (!cabecalho && y + altura > ALTURA - MARGEM - 10) {
+        quebra(altura);
+        linhaTabela(["Exame", "Resultado", "Referência", "Status"], true);
+        doc.setFont("ReportSans", "normal");
+        doc.setFontSize(8.5);
+      } else {
+        quebra(altura);
+      }
+      doc.setTextColor(...(cabecalho ? [91, 102, 114] : [22, 32, 43]) as [number, number, number]);
+      celulas.forEach((celula, i) => {
+        const coluna = colunas[i];
+        if (coluna) doc.text(celula, coluna.x, y, { lineHeightFactor: 1.33 });
+      });
+      y += altura;
+      if (cabecalho) {
+        doc.setDrawColor(223, 228, 233);
+        doc.setLineWidth(0.2);
+        doc.line(MARGEM, y - 2, MARGEM + CONTEUDO, y - 2);
+        y += 2;
+      }
+    };
+    linhaTabela(["Exame", "Resultado", "Referência", "Status"], true);
     for (const e of examesDoRelatorio) {
-      quebra(6);
-      doc.text(doc.splitTextToSize(e.exame, 66)[0] ?? "", MARGEM, y);
-      doc.text(`${e.resultado} ${e.unidade}`.trim(), MARGEM + 70, y);
-      doc.text(doc.splitTextToSize(e.referencia || "—", 32)[0] ?? "—", MARGEM + 110, y);
-      doc.text(statusLabel[e.status] ?? "—", MARGEM + 145, y);
-      y += 5;
+      linhaTabela([e.exame, `${e.resultado} ${e.unidade}`.trim(), e.referencia || "—", statusLabel[e.status] ?? "—"]);
     }
     y += 2;
   }
@@ -306,7 +328,7 @@ export function generatePDF(
       if (secao.colunas && secao.linhas) {
         const largura = CONTEUDO / secao.colunas.length;
         const desenharLinha = (valores: string[], negrito: boolean) => {
-          doc.setFont("helvetica", negrito ? "bold" : "normal").setFontSize(8);
+          doc.setFont("ReportSans", negrito ? "bold" : "normal").setFontSize(8);
           const celulas = valores.map(v => doc.splitTextToSize(v, largura - 3) as string[]);
           const altura = Math.max(...celulas.map(c => c.length)) * 4 + 3;
           quebra(altura);
@@ -380,7 +402,7 @@ export function generatePDF(
         const [r, g, b] = cores[grupo.tom ?? "favoravel"] ?? [15, 111, 106];
         doc.setFillColor(r, g, b);
         doc.rect(MARGEM, y - 3.5, 3, 5, "F");
-        doc.setFont("helvetica", "bold");
+        doc.setFont("ReportSans", "bold");
         doc.setFontSize(9);
         doc.setTextColor(22, 32, 43);
         doc.text(grupo.titulo.toUpperCase(), MARGEM + 6, y);
@@ -392,7 +414,7 @@ export function generatePDF(
       titulo("Estratégia inicial");
       for (const grupo of painel.estrategia) {
         quebra(7);
-        doc.setFont("helvetica", "bold");
+        doc.setFont("ReportSans", "bold");
         doc.setFontSize(9);
         doc.setTextColor(15, 111, 106);
         doc.text(grupo.categoria, MARGEM, y);
@@ -414,7 +436,7 @@ export function generatePDF(
   const paginas = doc.getNumberOfPages();
   for (let i = 1; i <= paginas; i++) {
     doc.setPage(i);
-    doc.setFont("helvetica", "normal");
+    doc.setFont("ReportSans", "normal");
     doc.setFontSize(7.5);
     doc.setTextColor(120, 130, 140);
     doc.text(`${i}/${paginas}`, LARGURA - MARGEM, ALTURA - 10, { align: "right" });

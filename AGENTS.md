@@ -30,3 +30,6 @@
 - Keep shift-range selection in MultiOptionRow/selection-range.ts and apply preference-group rules (Nenhum/Todos) only through aplicarSelecaoPreferencia, so every button row — training days, habits and food preferences — behaves identically.
 - Keep the meal-location choices in food-diary.ts (LOCAIS_REFEICAO + opcoesDeLocal) so the 24h recall, the atypical day and every export share one option list, and so a value outside the list stays visible instead of silently resetting to empty.
 - Keep the cardio heart-rate panel in its own Step6Cardio component rendered after the weight-goals module so it always sits last on the energy step, whether or not the weight-goal module is active.
+
+- Embed Unicode report fonts through pdf-font.ts and wrap every laboratory-table cell in pdf-report.ts so clinical units remain intact and columns never overlap.
+- Pass the session-only atypical composition separately to the unified PDF exporter and format it with composicaoParaRelatorio so habitual and atypical totals stay independent.
