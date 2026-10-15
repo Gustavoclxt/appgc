@@ -17,7 +17,7 @@ export const lacteos = ["Leite", "Iogurte", "Queijo", "Requeijão", "Nenhum", "T
 export const cereais = ["Aveia", "Quinoa", "Linhaça", "Chia", "Granola", "Nenhum", "Todos"];
 export const gorduras = ["Margarina", "Manteiga", "Banha", "Oleaginosas", "Azeite de Oliva", "Nenhum", "Todas"];
 export const doces = ["Doce de Leite", "Geleia", "Pasta de Amendoim", "Sucrilhos", "Biscoitos", "Chocolate", "Bala", "Chicletes", "Guloseimas", "Nenhum", "Todos"];
-export const cafeCha = ["Café puro", "Café com leite", "Chá", "Refri Normal", "Refri Zero", "Suco Natural", "Suco Artificial", "H2OH", "Água c/gás", "Chimarrão", "Nenhum", "Todas"];
+export const cafeCha = ["Café puro", "Café com leite", "Chá", "Refri Normal", "Refri Zero", "Suco Natural", "Suco Artificial", "H2OH", "Água c/gás", "Chimarrão", "Nenhuma", "Todas"];
 
 const GLOBAIS = ["Nenhum", "Nenhuma", "Todos", "Todas"];
 const nomeProteina: Record<string, string> = {
