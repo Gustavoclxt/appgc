@@ -1,4 +1,5 @@
 import type { Assessment, IndicadorAntropometrico } from "./types";
+import { parseNumero } from "./calculations";
 
 const normalizar = (nome: string) => nome.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9%]+/g, " ").trim();
 
@@ -34,3 +35,19 @@ export function agruparAntropometria(indicadores: IndicadorAntropometrico[], dat
 }
 
 export const podeAnexarExames = (a: Pick<Assessment, "possuiExames">) => a.possuiExames === "sim";
+
+/** Prefer the latest measured weight; never substitute the referred or target weight. */
+export function pesoAntropometricoParaResumo(a: Pick<Assessment, "indicadoresAntropometricos" | "dataAvaliacaoAntropometrica" | "peso">): number | null {
+  const pesos = a.indicadoresAntropometricos.flatMap((i) => {
+    if (!/^(peso|peso atual|peso corporal|peso total|peso corporal atual)$/.test(normalizar(i.nome))) return [];
+    const unidade = normalizar(i.unidade);
+    if (unidade && unidade !== "kg" && unidade !== "g") return [];
+    const valor = parseNumero(i.valor.replace(/\s*(kg|g)\s*$/i, ""));
+    if (valor === null || valor <= 0) return [];
+    const kg = unidade === "g" || /\s g\s*$/i.test(i.valor) ? valor / 1000 : valor;
+    const data = Date.parse(i.data || a.dataAvaliacaoAntropometrica);
+    return [{ kg, data: Number.isFinite(data) ? data : 0 }];
+  });
+  pesos.sort((a, b) => b.data - a.data);
+  return pesos[0]?.kg ?? parseNumero(a.peso);
+}

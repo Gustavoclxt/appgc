@@ -16,6 +16,7 @@
 - Centralize a organização da anamnese do relatório em um helper compartilhado para manter prévia, PDF e cópia consistentes.
 - Mantenha o fluxo principal em seis etapas, com Dados/Anamnese juntos e Relatório/PDF juntos, para reduzir a navegação.
 - Centralize a estrutura do painel clínico final para manter tela, cópia e PDF com os mesmos blocos e ordem.
+- Resolve the summary's measured weight through anthropometry-groups and consume the existing derived cardio range in clinical-dashboard so screen, copy and PDF agree without changing energy calculations.
 - Preserve a cópia do relatório em formatos HTML semântico e texto puro para compatibilidade com editores ricos e simples.
 - Keep adjusted-weight and hydration decisions in deriveResults so all displays and exports consume the same unrounded result.
 - Keep training-day global selection transitions in training-days.ts so training and rest controls remain consistent and testable.
