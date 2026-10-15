@@ -62,3 +62,4 @@
 - [x] Trocar "Observações sobre os Exames Laboratoriais" por uma caixa de texto de uma linha, sem texto dentro.
 - [x] Exibir "Observações sobre os Exames Laboratoriais" (tela, cópia e PDF) apenas quando o box de exames é exibido, com teste.
 - [x] Retirar o texto "Nome completo" de dentro da caixa do nome, mantendo o título acima.
+- [x] Reduzir a caixa de "Data de nascimento" ao espaço suficiente para a data, mantendo "Idade" na mesma linha.
