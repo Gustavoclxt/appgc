@@ -334,7 +334,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
         </div>
       </Panel>
 
-      <Panel titulo="Rotina alimentar">
+      <Panel titulo="Hábitos alimentares">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label="Em casa, quem prepara os alimentos?">
             <OptionRow
