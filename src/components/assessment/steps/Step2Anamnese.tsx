@@ -273,7 +273,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           <Field label="Consumo de água / ingestão de líquidos">
             <TextInput value={a.consumoAgua} onChange={(v) => set("consumoAgua", v)} />
           </Field>
-          <Field label="Escala Armstrong">
+          <Field label="Escala de Armstrong">
             <Select
               value={a.armstrong}
               onChange={(v) => set("armstrong", v)}
