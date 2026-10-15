@@ -204,7 +204,7 @@ function Index() {
               className="h-[100px] w-[200px] shrink-0 object-contain"
             />
             <div className="max-w-[230px] leading-tight sm:max-w-none">
-              <p className="font-display text-sm font-semibold tracking-tight">
+              <p className="text-sm font-semibold tracking-tight">
                 Avaliação Clínica Nutricional
               </p>
               <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-soft">
