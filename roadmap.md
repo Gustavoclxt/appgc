@@ -64,3 +64,4 @@
 - [x] Retirar o texto "Nome completo" de dentro da caixa do nome, mantendo o título acima.
 - [x] Reduzir a caixa de "Data de nascimento" ao espaço suficiente para a data, mantendo "Idade" na mesma linha.
 - [x] Reduzir a caixa de "Data da avaliação" ao espaço suficiente para a data.
+- [x] Mover "Sexo" (Masculino/Feminino) para a direita de "Data de nascimento", com "Profissão" ocupando a linha inteira.
