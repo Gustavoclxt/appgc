@@ -81,7 +81,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           >
             <LongText value={a.historicoPeso} onChange={(v) => set("historicoPeso", v)} rows={4} />
           </Field>
-          <h2 className="mt-7 font-display text-base font-semibold tracking-tight">Condições de saúde</h2>
+          <h2 className="font-display text-base font-semibold tracking-tight">Condições de saúde</h2>
           <div>
             <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
               <Field label="HMA">
