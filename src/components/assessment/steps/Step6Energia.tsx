@@ -59,19 +59,6 @@ export function Step6Energia({
                 placeholder="Selecione o nível de atividade"
               />
             </div>
-            <div className="mt-4 max-w-xs">
-              <Field
-                label="Fator Atividade personalizado"
-                hint="Para 2,0 ou superior, informe o valor manualmente."
-              >
-                <UnitInput
-                  value={a.fatorAtividade}
-                  onChange={(v) => set("fatorAtividade", v)}
-                  unidade="FA"
-                  placeholder="2,1"
-                />
-              </Field>
-            </div>
           </div>
         </div>
 
