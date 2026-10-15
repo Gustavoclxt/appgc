@@ -3,7 +3,7 @@ import type { Assessment } from "./types";
 export const vegetais = [
   "Alface", "Rúcula", "Agrião", "Couve", "Espinafre", "Acelga", "Repolho", "Couve-flor",
   "Brócolis", "Abobrinha", "Berinjela", "Pepino", "Tomate", "Cenoura", "Beterraba", "Chuchu",
-  "Vagem", "Abóbora", "Nenhum", "Todos",
+  "Vagem", "Abóbora", "Nenhuma", "Todos",
 ];
 export const proteinas = ["Bovina", "Frango", "Peixe", "Suína", "Ovos", "Vísceras", "Nenhuma", "Todas"];
 export const carboidratos = ["Arroz", "Macarrão", "Batata", "Batata-doce", "Mandioca", "Pão", "Torrada", "Tapioca", "Cuscuz", "Rap10", "Nenhum", "Todos"];
