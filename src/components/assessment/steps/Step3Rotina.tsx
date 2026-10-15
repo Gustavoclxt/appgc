@@ -4,7 +4,6 @@ import { novoId } from "@/lib/assessment/initial-state";
 
 import {
   Field,
-  LongText,
   MultiOptionRow,
   OptionRow,
   Panel,
@@ -819,7 +818,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
 
         <div className="mt-6">
           <Field label="Observações">
-            <LongText value={a.observacoesRecordatorio} onChange={(v) => set("observacoesRecordatorio", v)} rows={3} />
+            <TextInput value={a.observacoesRecordatorio} onChange={(v) => set("observacoesRecordatorio", v)} />
           </Field>
         </div>
         <div className="mt-6 flex justify-center">
