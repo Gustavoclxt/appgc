@@ -54,3 +54,4 @@
 - [x] Inverter o intervalo de peso após a perda nos cards de referência, exibindo da menor para a maior perda (ex.: "95,00 a 90,00 kg").
 - [x] Mover a dica "DM, HAS, DRC, Dislipidemia, Obesidade, problemas cardiovasculares, Osteoporose, SOP etc." para abaixo da linha inteira de "Condições de saúde" (HMA/HMP/HMF).
 - [x] Aproximar a dica das caixas e igualar o espaçamento de "Condições de saúde" ao usado entre "História clínica" e "Histórico do peso".
+- [x] Aproximar "Condições de saúde", HMA/HMP/HMF, a dica e "Medicamentos" do texto de dica de "Histórico do peso" (20 px).
