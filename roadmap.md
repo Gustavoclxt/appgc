@@ -58,3 +58,4 @@
 - [x] Deixar o botão "+ Adicionar dia atípico" com a mesma cor e formato de "+ Adicionar refeição", mantendo o bloqueio quando já existe dia atípico.
 - [x] Trocar o campo "Observações" de "Evolução do peso" por uma caixa de texto de uma linha (texto curto).
 - [x] Trocar "Observações sobre os Exames Laboratoriais" por uma caixa de texto de uma linha, sem texto dentro.
+- [x] Exibir "Observações sobre os Exames Laboratoriais" (tela, cópia e PDF) apenas quando o box de exames é exibido, com teste.

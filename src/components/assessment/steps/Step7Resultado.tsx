@@ -1,4 +1,5 @@
 import { WeightGoalsReport } from "../WeightGoalsReport";
+import { observacoesExamesParaRelatorio } from "@/lib/assessment/anthropometry-groups";
 import type { MetasPesoResultado } from "@/lib/assessment/weight-goals";
 import {
   fmt2,
@@ -264,8 +265,8 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
         {examesDoRelatorio.length > 0 && (
           <Bloco titulo="Exames laboratoriais">
             <ExamesTable exames={examesDoRelatorio} />
-            {a.observacoesExames && (
-              <p className="mt-3 text-[13px] text-ink-soft">{a.observacoesExames}</p>
+            {observacoesExamesParaRelatorio(a) && (
+              <p className="mt-3 text-[13px] text-ink-soft">{observacoesExamesParaRelatorio(a)}</p>
             )}
           </Bloco>
         )}

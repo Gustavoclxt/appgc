@@ -1,4 +1,5 @@
 import { comObs } from "./food-preferences";
+import { observacoesExamesParaRelatorio } from "./anthropometry-groups";
 import type { DerivedResults } from "./calculations";
 import type { Assessment } from "./types";
 import {
@@ -94,7 +95,7 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Hábitos sociais", lista(a.habitosSociais)),
       campo("Etilismo", a.habitosSociais.includes("Etilista") ? [a.etilismoQuantidade && `Quantidade: ${a.etilismoQuantidade}`, a.etilismoFrequencia && `Frequência: ${a.etilismoFrequencia}`].filter(Boolean).join(" · ") : ""),
       campo("Tabagismo", a.habitosSociais.includes("Tabagista") ? [a.tabagismoQuantidade && `Quantidade: ${a.tabagismoQuantidade}`, a.tabagismoFrequencia && `Frequência: ${a.tabagismoFrequencia}`].filter(Boolean).join(" · ") : ""),
-      campo("Observações sobre os exames", a.observacoesExames),
+      campo("Observações sobre os exames", observacoesExamesParaRelatorio(a)),
     ]),
     secao("Revisão de sistemas", [
       campo("Função estomacal/intestinal", lista(a.funcaoEstomacal)),
