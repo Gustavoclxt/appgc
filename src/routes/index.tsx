@@ -194,25 +194,23 @@ function Index() {
       </div>
 
       <header className="sticky top-0 z-30 border-b border-line/70 bg-white/55 backdrop-blur-xl no-print">
-        <div className="mx-auto flex max-w-6xl items-center gap-4 px-6 py-3.5">
-          <div className="flex items-center gap-4">
-            <img
-              src={logoGc.url}
-              alt="Gustavo Calixto — Nutrição, Performance e Longevidade"
-              width={200}
-              height={100}
-              className="h-[100px] w-[200px] shrink-0 object-contain"
-            />
-            <div className="max-w-[260px] leading-tight sm:max-w-none">
-              <p className="text-lg font-semibold tracking-tight">
-                Avaliação Clínica Nutricional
-              </p>
-              <p className="font-mono text-xs uppercase tracking-[0.12em] text-ink-soft">
-                GC - Excelência em Nutrição
-              </p>
-            </div>
+        <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-4 px-6 py-3.5">
+          <img
+            src={logoGc.url}
+            alt="Gustavo Calixto — Nutrição, Performance e Longevidade"
+            width={200}
+            height={100}
+            className="w-[200px] max-w-full object-contain justify-self-start"
+          />
+          <div className="text-center leading-tight">
+            <p className="text-lg font-semibold tracking-tight">
+              Avaliação Clínica Nutricional
+            </p>
+            <p className="font-mono text-xs uppercase tracking-[0.12em] text-ink-soft">
+              GC - Excelência em Nutrição
+            </p>
           </div>
-          <div className="ml-auto flex items-center gap-3">
+          <div className="flex items-center gap-3 justify-self-end">
             <span className="hidden text-right font-mono text-[11px] leading-relaxed text-ink-soft sm:inline">
               Paciente: <span className="text-ink">{dados.nome || "—"}</span>
               <br />
