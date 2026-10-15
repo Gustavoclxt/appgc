@@ -14,7 +14,7 @@ export function Step1Dados({ a, set, d }: StepProps) {
           </Field>
           <Field label="Data de nascimento" className="sm:col-span-2">
             <div className="flex items-center gap-3">
-              <div className="min-w-0 flex-1">
+              <div className="w-[165px] shrink-0">
                 <TextInput type="date" value={a.dataNascimento} onChange={(v) => set("dataNascimento", v)} />
               </div>
               <p className="shrink-0 text-[13px] font-medium text-ink">
