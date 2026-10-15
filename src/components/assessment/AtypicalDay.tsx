@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { novoId } from "@/lib/assessment/initial-state";
 import { chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
@@ -17,9 +17,10 @@ interface Props {
   calculando: boolean;
   onCalcular: () => void;
   onCopiarR24h: () => void;
+  r24h?: ReactNode;
 }
 
-export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCalcular, onCopiarR24h }: Props) {
+export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCalcular, onCopiarR24h, r24h }: Props) {
   const comp = composicaoParaRelatorio(composicao);
   const [foco, setFoco] = useState<string | null>(null);
   const refs = useRef(new Map<string, HTMLInputElement>());
@@ -66,8 +67,16 @@ export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCal
       <div className="mt-6 flex justify-center">
         <Button disabled={calculando} onClick={onCalcular} className="h-auto whitespace-normal text-center text-[13px]">{calculando ? "Calculando…" : "Calcular calorias e macronutrientes"}</Button>
       </div>
-      {comp && (
-        <div className="mt-4 rounded-lg bg-accent p-5 text-accent-foreground" aria-live="polite">
+      {(comp || r24h) && (
+        <div className="mt-4 rounded-[14px] bg-accent p-5 text-white" aria-live="polite">
+          {r24h && (
+            <div className="mb-5 border-b border-white/20 pb-5">
+              <h3 className="mb-2 font-display text-sm font-semibold">Recordatório 24 horas</h3>
+              {r24h}
+            </div>
+          )}
+          {comp && <>
+          <h3 className="mb-2 font-display text-sm font-semibold">Dia atípico</h3>
           {composicao?.chave !== chaveDiario(refeicoes) && <p className="mb-3 text-xs">O dia atípico foi alterado. Recalcule para atualizar.</p>}
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {comp.totais.map(t => <div key={t.label}><p className="text-[11px] opacity-70">{t.label}</p><p className="mt-1 font-mono text-sm tabular-nums">{t.valor}</p></div>)}
@@ -76,6 +85,7 @@ export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCal
             {composicao?.itens.map((item, i) => <li key={i} className="text-xs"><strong>{item.refeicao}</strong> — {comp.itens[i]?.texto}<span className="block font-mono text-[11px] opacity-70">{comp.itens[i]?.valores}</span></li>)}
           </ul>
           <p className="mt-3 text-[11px] opacity-70">{comp.nota}</p>
+          </>}
         </div>
       )}
     </section>

@@ -19,6 +19,13 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
   const extrair = useServerFn(extrairAntropometria);
   const mostrarConferencia = lido || falhou || Boolean(a.altura || a.peso);
 
+  const temAvaliacao = lido && a.indicadoresAntropometricos.length > 0;
+  function removerAvaliacao() {
+    set("indicadoresAntropometricos", []);
+    set("altura", ""); set("peso", ""); set("percentualGordura", ""); set("metodoGordura", ""); set("dataAvaliacaoAntropometrica", "");
+    setLido(false); setFalhou(false); setPendentes([]);
+  }
+
   async function processarArquivo(file: File) {
     setLendo(true);
     try {
@@ -59,6 +66,9 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
       <Panel titulo="Anexar Antropometria">
         <div className="rounded-[10px] border border-dashed border-line bg-white/50 px-5 py-8 text-center">
           <p className="text-[13px] font-semibold text-ink">Selecione uma avaliação antropométrica em PDF:</p>
+          {temAvaliacao ? (
+            <button type="button" onClick={removerAvaliacao} className="mt-4 inline-flex cursor-pointer items-center rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90">Remover avaliação</button>
+          ) : (
           <label className="mt-4 inline-flex cursor-pointer items-center rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90">
             {lendo ? "Lendo antropometria…" : "Adicionar avaliação"}
             <input
@@ -73,28 +83,25 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
               }}
             />
           </label>
+          )}
         </div>
       </Panel>
 
       {a.indicadoresAntropometricos.length > 0 && (
-        <Panel titulo="Dados extraídos do PDF" meta={`${a.indicadoresAntropometricos.length} indicador(es)`}>
+        <Panel titulo="Dados extraídos do PDF" meta={(() => { const g = agruparAntropometria(a.indicadoresAntropometricos, a.dataAvaliacaoAntropometrica); const datas = [...new Set(g.map(x => x.data))]; const f = (x: string) => /^\d{4}-\d{2}-\d{2}$/.test(x) ? fmtData(x) : x || "Não informada"; return `Data da avaliação: ${datas.map(f).join(", ")}`; })()}>
           <div className="space-y-6">
           {agruparAntropometria(a.indicadoresAntropometricos, a.dataAvaliacaoAntropometrica).map(grupo => (
           <section key={`${grupo.categoria}-${grupo.data}`}>
             <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
               <h3 className="font-display text-sm font-semibold text-accent">{grupo.categoria}</h3>
-              <p className="text-[12px] text-ink-soft">Data da avaliação: {/^\d{4}-\d{2}-\d{2}$/.test(grupo.data) ? fmtData(grupo.data) : grupo.data || "Não informada"}</p>
             </div>
             <div className="overflow-x-auto">
-            <table className="w-full text-left text-[13px]">
-              <thead className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-soft">
-                <tr><th scope="col" className="py-2 pr-4">Indicador</th><th scope="col" className="py-2 text-right">Valor</th></tr>
-              </thead>
+            <table className="w-auto text-left text-[13px]">
               <tbody>
                 {grupo.indicadores.map((i) => (
                   <tr key={i.id} className="border-t border-line/70">
                     <td className="py-2 pr-4 text-ink">{i.nome}</td>
-                    <td className="py-2 text-right font-mono">{valorComUnidade(i)}</td>
+                    <td className="py-2 pl-6 font-mono">{valorComUnidade(i)}</td>
                   </tr>
                 ))}
               </tbody>
