@@ -1,4 +1,6 @@
 # Roadmap
+- [x] Incluir composição do dia atípico no PDF, separada do R24h habitual.
+- [x] Corrigir caracteres especiais e sobreposição nas colunas de exames do PDF; validar visualmente.
 - [x] Posicionar "Nome completo" à direita de "Data da avaliação".
 - [x] Posicionar "Ajuste manual das calorias" à direita dos botões de estratégia energética.
 - [x] Remover "Fator Atividade personalizado" do passo de cálculos.
