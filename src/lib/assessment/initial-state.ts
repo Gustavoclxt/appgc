@@ -146,5 +146,5 @@ export const ETAPAS = [
   { id: 2, titulo: "Rotina", nomeCompleto: "Rotina, Treino e Alimentação" },
   { id: 3, titulo: "Avaliação", nomeCompleto: "Antropometria e Exames Laboratoriais" },
   { id: 4, titulo: "Energia", nomeCompleto: "Cálculos energéticos" },
-  { id: 5, titulo: "Relatório", nomeCompleto: "Relatório da avaliação e PDF" },
+  { id: 5, titulo: "Relatório", nomeCompleto: "Relatórios" },
 ] as const;
