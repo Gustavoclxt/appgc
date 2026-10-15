@@ -14,7 +14,7 @@ export function Step1Dados({ a, set, d }: StepProps) {
           <Field label="Nome completo" className="sm:col-span-2">
             <TextInput value={a.nome} onChange={(v) => set("nome", v)} />
           </Field>
-          <Field label="Data de nascimento" className="sm:col-span-2">
+          <Field label="Data de nascimento" className="sm:col-start-1">
             <div className="flex items-center gap-3">
               <div className="w-[165px] shrink-0">
                 <TextInput type="date" value={a.dataNascimento} onChange={(v) => set("dataNascimento", v)} />
@@ -24,7 +24,7 @@ export function Step1Dados({ a, set, d }: StepProps) {
               </p>
             </div>
           </Field>
-          <Field label="Sexo">
+          <Field label="Sexo" className="sm:col-start-2">
             <OptionRow
               value={a.sexo}
               onChange={(v) => set("sexo", v as typeof a.sexo)}
@@ -34,7 +34,7 @@ export function Step1Dados({ a, set, d }: StepProps) {
               ]}
             />
           </Field>
-          <Field label="Profissão">
+          <Field label="Profissão" className="sm:col-span-2">
             <TextInput value={a.profissao} onChange={(v) => set("profissao", v)} />
           </Field>
         </div>
