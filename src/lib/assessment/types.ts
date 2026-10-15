@@ -141,7 +141,6 @@ export interface Assessment {
 
   // Fome e apetite
   horariosFome: string[];
-  horariosFomePersonalizado: string;
   observacoesFome: string;
   habitoBeliscar: "sim" | "nao" | "";
   beliscarDescricao: string;

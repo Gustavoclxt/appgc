@@ -112,7 +112,7 @@ export function buildResumo(a: Assessment, d: DerivedResults, composicao: Compos
   t += li("Quem prepara", a.quemPrepara === "outra" ? a.quemPreparaOutra || "outra pessoa" : a.quemPrepara);
   t += li("Come fora", a.comeFora === "sim" ? `${a.comeForaFrequencia} ${a.comeForaDias}` : a.comeFora);
   t += li("Consome fritos", a.consomeFritos && a.consomeFritos !== "nao" ? `${a.consomeFritos} ${a.fritosFrequencia}` : a.consomeFritos);
-  t += li("Horários de mais fome", [...a.horariosFome, a.horariosFomePersonalizado].filter(Boolean).join(", "));
+  t += li("Horários de mais fome", a.horariosFome.filter(Boolean).join(", "));
   t += li("Observações fome/apetite", a.observacoesFome);
   t += li("Hábito de beliscar ao longo do dia", a.habitoBeliscar);
   if (a.habitoBeliscar === "sim") t += li("O que belisca", a.beliscarDescricao);

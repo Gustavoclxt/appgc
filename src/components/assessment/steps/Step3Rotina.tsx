@@ -361,13 +361,6 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
               ].map((x) => ({ value: x, label: x }))}
             />
           </Field>
-          <Field label="Horários personalizados">
-            <TextInput
-              value={a.horariosFomePersonalizado}
-              onChange={(v) => set("horariosFomePersonalizado", v)}
-              placeholder="ex.: 22:30"
-            />
-          </Field>
           <Field label="Observações sobre fome/apetite">
             <TextInput value={a.observacoesFome} onChange={(v) => set("observacoesFome", v)} />
           </Field>
