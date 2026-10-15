@@ -874,8 +874,8 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
             <TextInput value={a.observacoesRecordatorio} onChange={(v) => set("observacoesRecordatorio", v)} />
           </Field>
         </div>
-        <div className="mt-6 flex justify-center">
         {diaAtipico === null && (
+        <div className="mt-6 flex justify-center">
             <button
               type="button"
               onClick={onCalcular}
