@@ -628,7 +628,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           </Field>
 
           <Field label="Aversões alimentares">
-            <LongText value={a.aversoes} onChange={(v) => set("aversoes", v)} rows={2} />
+            <TextInput value={a.aversoes} onChange={(v) => set("aversoes", v)} />
           </Field>
         </div>
       </Panel>
