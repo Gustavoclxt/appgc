@@ -20,7 +20,7 @@ const refeicoesIniciais: Refeicao[] = ([
 export const novoId = uid;
 
 export function createEmptyAssessment(): Assessment {
-  const hoje = new Date().toISOString().slice(0, 10);
+  const hoje = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
   return {
     nome: "",
     dataNascimento: "",
