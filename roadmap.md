@@ -79,3 +79,4 @@
 - [x] Mover "Qual seu principal objetivo (motivo da consulta)?" para a coluna direita, ao lado de "Já fez dieta e/ou consultou nutricionista anteriormente?".
 - [x] Reduzir as caixas de hora "Entrada" e "Saída" (Rotina de trabalho/faculdade) ao espaço suficiente para o horário.
 - [x] Ajustar o botão "GERAR PDF" para o mesmo tamanho e fonte do botão "Adicionar avaliação".
+- [x] Centralizar o botão "GERAR PDF" no painel "Laudo em PDF".

@@ -19,13 +19,15 @@ export function Step8Pdf({
           A análise técnica ainda não foi gerada. O PDF sairá apenas com os dados e cálculos.
         </p>
       )}
-      <button
-        type="button"
-        onClick={onGerar}
-        className="mt-6 inline-flex cursor-pointer items-center rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90"
-      >
-        GERAR PDF
-      </button>
+      <div className="mt-6 flex justify-center">
+        <button
+          type="button"
+          onClick={onGerar}
+          className="inline-flex cursor-pointer items-center rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90"
+        >
+          GERAR PDF
+        </button>
+      </div>
     </Panel>
   );
 }
