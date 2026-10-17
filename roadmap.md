@@ -76,3 +76,4 @@
 - [x] Mover "Sexo" (Masculino/Feminino) para a direita de "Data de nascimento", com "Profissão" ocupando a linha inteira.
 - [x] Aumentar o tamanho das fontes de "Avaliação Clínica Nutricional" e "GC - Excelência em Nutrição" no cabeçalho.
 - [x] Centralizar na página o título e o subtítulo do cabeçalho, mantendo logotipo à esquerda e dados do paciente à direita.
+- [x] Mover "Qual seu principal objetivo (motivo da consulta)?" para a coluna direita, ao lado de "Já fez dieta e/ou consultou nutricionista anteriormente?".

@@ -34,7 +34,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           <Field label="Já fez dieta e/ou consultou nutricionista anteriormente?">
             <OptionRow value={a.jaFezDieta} onChange={(v) => set("jaFezDieta", v as typeof a.jaFezDieta)} options={simNao} />
           </Field>
-          <Field label="Qual seu principal objetivo (motivo da consulta)?" className="sm:col-span-2">
+          <Field label="Qual seu principal objetivo (motivo da consulta)?" className="sm:col-start-2">
             <MultiOptionRow
               values={a.objetivos}
               onChange={(v) => {
