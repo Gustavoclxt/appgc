@@ -23,9 +23,10 @@ describe("dados completos para análise", () => {
     for (const [chave, valor] of Object.entries(modalidade)) if (chave !== "id") expect(resumo).toContain(valor);
   });
   it("transmite resposta negativa sobre exames e observações quando disponíveis", () => {
-    const a = { ...createEmptyAssessment(), possuiExames: "nao" as const };
+    const a = createEmptyAssessment();
+    a.possuiExames = "nao";
     expect(buildResumo(a, deriveResults(a))).toContain("nao");
-    a.possuiExames = "sim" as typeof a.possuiExames;
+    a.possuiExames = "sim";
     a.observacoesExames = "Coleta após infecção recente";
     expect(buildResumo(a, deriveResults(a))).toContain(a.observacoesExames);
   });
