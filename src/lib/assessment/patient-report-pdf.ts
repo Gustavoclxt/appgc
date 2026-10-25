@@ -13,7 +13,7 @@ export function generatePatientPDF(nome: string, data: string, objetivo: string,
   const text = (value: string, bold = false, size = 9, x = 16, width = 178) => {
     doc.setFont("ReportSans", bold ? "bold" : "normal").setFontSize(size).setTextColor(...PATIENT_PDF_COLORS.ink);
     const lines: string[] = doc.splitTextToSize(value, width);
-    for (const line of lines) { space(size * 0.43 + 1); doc.text(line, x, y); y += size * 0.43 + 1; }
+    for (const line of lines) { space(size * 0.4 + 0.7); doc.text(line, x, y); y += size * 0.4 + 0.7; }
   };
   doc.setFillColor(...REPORT_HEADER_COLOR).rect(0, 0, 210, 3, "F");
   text("Relatório do Paciente", true, 20);
@@ -43,7 +43,7 @@ export function generatePatientPDF(nome: string, data: string, objetivo: string,
         });
         y += height + 3;
       }
-      y += 2;
+      y += 1;
       continue;
     }
     for (const item of itens) {
@@ -54,7 +54,7 @@ export function generatePatientPDF(nome: string, data: string, objetivo: string,
       if (item.acompanhamento) text(`Como acompanhar: ${item.acompanhamento}`);
       y += 2;
     }
-    y += 2;
+    y += 1;
   }
   if (avisos.length) { text("Revisão pelo nutricionista", true); for (const aviso of avisos) text(aviso, false, 8); y += 3; }
   text(PATIENT_REPORT_FINAL_MESSAGE, true, 9);
