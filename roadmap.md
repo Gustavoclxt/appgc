@@ -1,4 +1,5 @@
 # Roadmap
+- [ ] Ampliar análise final para todas as respostas e observações, com sugestões individualizadas e testes de cobertura.
 - [x] Incluir composição do dia atípico no PDF, separada do R24h habitual.
 - [x] Corrigir caracteres especiais e sobreposição nas colunas de exames do PDF; validar visualmente.
 - [x] Posicionar "Nome completo" à direita de "Data da avaliação".
