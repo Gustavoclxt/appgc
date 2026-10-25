@@ -34,3 +34,4 @@
 - Embed Unicode report fonts through pdf-font.ts and wrap every laboratory-table cell in pdf-report.ts so clinical units remain intact and columns never overlap.
 - Pass the session-only atypical composition separately to the unified PDF exporter and format it with composicaoParaRelatorio so habitual and atypical totals stay independent.
 - Keep form-specific review guidance in analysis-guidance.ts and factual inputs in buildResumo; normalize AI output through analysis-result.ts without truncating relevant findings/actions so shared screen, copy and PDF consumers retain clinical coverage.
+- Keep the patient-facing report additive and independent of technical analysis; derive data-backed blocks and in-session checkpoints in patient-report.ts, keep its mounted editor state across step navigation, and export the same reviewed items through patient-report-pdf.ts without changing technical calculations.
