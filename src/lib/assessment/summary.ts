@@ -28,6 +28,7 @@ import {
 import { doseComUnidade } from "./report-anamnesis";
 import type { ComposicaoDiario } from "./diet-composition";
 import { resumoVetFinal } from "./free-meal";
+import { orientacoesParaAnalise } from "./analysis-guidance";
 
 const li = (label: string, valor: string | number | null | undefined) =>
   valor === null || valor === undefined || valor === "" ? "" : `${label}: ${valor}\n`;
@@ -60,6 +61,7 @@ export function buildResumo(a: Assessment, d: DerivedResults, composicao: Compos
     t += `Medicamentos: ${a.medicamentos.map((m) => `${m.nome} | dose: ${m.dose ? doseComUnidade(m.dose) : "não informada"} | ação: ${m.acao || "não informada"}`).join("; ")}\n`;
 
   t += "\n## Hábitos e restrições\n";
+  t += li("Possui exames bioquímicos recentes", a.possuiExames);
   t += li("Alergia/intolerância", a.alergia === "sim" ? a.alergiaDescricao || "sim" : a.alergia);
   t += li("Restrição alimentar", a.restricaoAlimentar);
   t += li("EAAs", a.eaas === "sim" ? a.eaasDescricao || "sim" : a.eaas);
@@ -86,6 +88,8 @@ export function buildResumo(a: Assessment, d: DerivedResults, composicao: Compos
     d.sono ? `${d.sono.horas}h ${d.sono.restoMinutos}min` : "",
   );
   t += li("Qualidade do sono", a.qualidadeSono);
+  t += li("Entrada no trabalho/faculdade", a.entradaTrabalho);
+  t += li("Saída do trabalho/faculdade", a.saidaTrabalho);
   t += li("Jornada de trabalho", d.jornada ? `${d.jornada.horas}h ${d.jornada.restoMinutos}min` : "");
   t += li(
     "Intervalo para refeições",
@@ -201,6 +205,11 @@ export function buildResumo(a: Assessment, d: DerivedResults, composicao: Compos
     );
   }
   t += li("Calorias calculadas do Recordatório 24h (kcal)", composicao ? fmtInt(composicao.totais.kcal) : "");
+  if (composicao) {
+    t += li("Carboidratos calculados do Recordatório 24h (g)", fmt2(composicao.totais.carboidratos));
+    t += li("Proteínas calculadas do Recordatório 24h (g)", fmt2(composicao.totais.proteinas));
+    t += li("Lipídios calculados do Recordatório 24h (g)", fmt2(composicao.totais.lipidios));
+  }
 
   if (a.exames.length) {
     t += "\n## Exames laboratoriais\n";
@@ -208,6 +217,9 @@ export function buildResumo(a: Assessment, d: DerivedResults, composicao: Compos
       t += `- ${e.exame}: ${e.resultado} ${e.unidade} | ref: ${e.referencia} | ${e.status}\n`;
   }
   t += li("Observações sobre os exames", observacoesExamesParaRelatorio(a));
+
+  const orientacoes = orientacoesParaAnalise(a);
+  if (orientacoes.length) t += `\n## Pontos condicionais para revisão pelo nutricionista\n${orientacoes.map((item) => `- ${item}`).join("\n")}\n`;
 
   return t;
 }

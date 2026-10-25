@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { DIRETRIZES_ANALISE_COMPLETA } from "./analysis-guidance";
 
 const analiseInput = z.object({ resumo: z.string().min(10).max(40000) });
 const examesInput = z.object({ textoPdf: z.string().min(10).max(60000) });
@@ -16,8 +17,8 @@ REGRA PRINCIPAL — CONTEXTO CLÍNICO INTEGRADO:
 
 SEÇÕES:
 - "resumoClinico": pares de rótulo e valor. Use somente rótulos aplicáveis entre OBJETIVO, PRINCIPAL INCÔMODO, ADESÃO, TREINO, SONO, HIDRATAÇÃO, INTESTINO, PESO, COMPOSIÇÃO CORPORAL, VET e CALORIAS R24h. Omita dados ausentes. Valores factuais e compactos, sem recomendações.
-- "achados": separar constatações em prioridade, monitorar e favoraveis. Não preencher artificialmente grupos. Cada item deve ter no máximo 12 palavras e, quando útil, conter o número observado. Achado não contém conduta.
-- "estrategiaInicial": somente categorias relevantes entre ENERGIA, HIDRATAÇÃO, INTESTINO, SONO/RECUPERAÇÃO e ADESÃO. Cada categoria contém 1 a 3 ações com no máximo 12 palavras. Conduta não repete toda a descrição do achado.
+- "achados": separar constatações em prioridade, monitorar e favoraveis. Não preencher artificialmente grupos. Usar frases concisas, mas completas, com o número observado quando útil. Achado não contém conduta. Incluir todos os pontos de atenção relevantes, sem limite artificial de itens.
+- "estrategiaInicial": categorias conforme os temas relevantes, incluindo ENERGIA, ADESÃO/MOTIVAÇÃO, HISTÓRIA CLÍNICA, MEDICAMENTOS/EAAs, EXAMES, ALERGIAS/RESTRIÇÕES, HÁBITOS SOCIAIS, HIDRATAÇÃO, INTESTINO, SONO/RECUPERAÇÃO, TRABALHO/PREPARO, TREINO, HÁBITOS ALIMENTARES, SUPLEMENTAÇÃO, RECORDATÓRIO e EVOLUÇÃO DO PESO. Ações concisas, específicas e suficientes para cobrir as respostas; não limitar a três ações quando houver mais orientações pertinentes. Conduta não repete toda a descrição do achado.
 - "focoProximoRetorno": 3 a 5 prioridades específicas, ordenadas por impacto e ligadas aos achados.
 - "reavaliarRetorno": checklist curto e dinâmico, somente com itens relevantes aos problemas encontrados.
 
@@ -31,6 +32,8 @@ REGRAS OBRIGATÓRIAS:
 - Diferencie achado de conduta.
 - Para dados que exigem confirmação, use Confirmar, Investigar, Monitorar, Correlacionar clinicamente ou Conferir no laudo.
 - Alteração laboratorial não é diagnóstico: informe o status e recomende correlação clínica ou avaliação médica quando pertinente.
+
+${DIRETRIZES_ANALISE_COMPLETA}
 
 Responda APENAS um objeto JSON com estas chaves:
 {
@@ -57,7 +60,7 @@ export const analisarAvaliacao = createServerFn({ method: "POST" })
     const { chatJSON } = await import("./ai.server");
     const resultado = (await chatJSON(SISTEMA_ANALISE, data.resumo)) as Record<string, unknown>;
     const texto = (v: unknown) => (typeof v === "string" ? v.trim() : "");
-    const listaTextos = (valor: unknown, limite = 12) =>
+    const listaTextos = (valor: unknown, limite?: number) =>
       (Array.isArray(valor) ? valor : []).map(texto).filter(Boolean).slice(0, limite);
     const objetos = (valor: unknown) =>
       (Array.isArray(valor) ? valor : []).filter(
@@ -80,11 +83,11 @@ export const analisarAvaliacao = createServerFn({ method: "POST" })
       estrategiaInicial: objetos(resultado["estrategiaInicial"])
         .map((item) => ({
           categoria: texto(item["categoria"]).toUpperCase(),
-          acoes: listaTextos(item["acoes"], 3),
+          acoes: listaTextos(item["acoes"]),
         }))
         .filter((item) => item.categoria && item.acoes.length > 0),
       focoProximoRetorno: listaTextos(resultado["focoProximoRetorno"], 5),
-      reavaliarRetorno: listaTextos(resultado["reavaliarRetorno"], 12),
+      reavaliarRetorno: listaTextos(resultado["reavaliarRetorno"]),
     };
   });
 
