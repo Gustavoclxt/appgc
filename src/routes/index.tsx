@@ -13,7 +13,6 @@ import { Step6Energia } from "@/components/assessment/steps/Step6Energia";
 import { Step6Cardio } from "@/components/assessment/steps/Step6Cardio";
 import { Step7Resultado } from "@/components/assessment/steps/Step7Resultado";
 import { Step8Pdf } from "@/components/assessment/steps/Step8Pdf";
-import { PatientReport } from "@/components/assessment/PatientReport";
 import { WeightGoals } from "@/components/assessment/WeightGoals";
 import { MODULO_METAS_ATIVO, calcularMetasPeso } from "@/lib/assessment/weight-goals";
 import { metasPesoIniciais, type MetasPesoEstado } from "@/lib/assessment/weight-projection";
@@ -286,8 +285,6 @@ function Index() {
             <Step8Pdf onGerar={onGerarPdf} temAnalise={analise !== null} />
           </div>
         )}
-
-        <PatientReport a={dados} d={derivados} visible={etapa === 5} />
 
         <div className="mt-8 flex items-center justify-between gap-3 no-print">
           <button

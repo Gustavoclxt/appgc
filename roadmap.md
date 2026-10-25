@@ -1,6 +1,4 @@
 # Roadmap
-- [x] Concluir relatório independente do paciente com blocos A–D, revisão e retomada por etapa na sessão.
-- [x] Validar fidelidade, preservação de resultados e exportação do PDF do paciente sem alterar o relatório técnico.
 - [x] Ampliar análise final para todas as respostas e observações, com sugestões individualizadas e testes de cobertura.
 - [x] Incluir composição do dia atípico no PDF, separada do R24h habitual.
 - [x] Corrigir caracteres especiais e sobreposição nas colunas de exames do PDF; validar visualmente.
