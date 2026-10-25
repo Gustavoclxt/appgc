@@ -71,7 +71,7 @@ export function buildPatientBlock(bloco: PatientBlock, a: Assessment, d: Derived
 }
 
 export function patientBlockKeys(a: Assessment, d: DerivedResults): Record<PatientBlock, string> {
-  return Object.fromEntries(PATIENT_BLOCKS.map(b => [b, JSON.stringify(buildPatientBlock(b, a, d))])) as Record<PatientBlock, string>;
+  return Object.fromEntries(PATIENT_BLOCKS.map(b => [b, JSON.stringify([a.nome, a.dataAvaliacao, a.objetivos, buildPatientBlock(b, a, d)])])) as Record<PatientBlock, string>;
 }
 export function pendingPatientBlocks(progresso: PatientProgress, chaves: Record<PatientBlock, string>) {
   return PATIENT_BLOCKS.filter(b => progresso.blocos[b]?.chave !== chaves[b]);

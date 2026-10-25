@@ -28,6 +28,24 @@ export function generatePatientPDF(nome: string, data: string, objetivo: string,
     y += 1;
     const itens = progresso.blocos[b]?.itens ?? [];
     if (!itens.length) text("Dados insuficientes para este bloco. Revisão pelo nutricionista necessária.");
+    if (b === "A" && itens.length) {
+      for (let i = 0; i < itens.length; i += 2) {
+        const row = itens.slice(i, i + 2);
+        doc.setFont("ReportSans", "normal").setFontSize(8);
+        const height = Math.max(...row.map(item => doc.splitTextToSize(item.texto, 79).length * 4.5 + 14));
+        space(height + 3);
+        row.forEach((item, col) => {
+          const x = 16 + col * 91;
+          doc.setDrawColor(...REPORT_HEADER_COLOR).setLineWidth(0.25).roundedRect(x, y - 2, 87, height, 2, 2, "S");
+          doc.setFont("ReportSans", "bold").setFontSize(9).setTextColor(...PATIENT_PDF_COLORS.ink).text(item.titulo, x + 4, y + 3);
+          doc.setFont("ReportSans", "normal").setFontSize(8);
+          doc.text(doc.splitTextToSize(item.texto, 79), x + 4, y + 9);
+        });
+        y += height + 3;
+      }
+      y += 2;
+      continue;
+    }
     for (const item of itens) {
       space(15);
       text(item.titulo, true);
