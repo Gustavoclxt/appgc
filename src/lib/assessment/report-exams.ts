@@ -2,7 +2,7 @@ import type { ExameLaboratorial } from "./types";
 
 const EXAMES_SEMPRE_INCLUIDOS = [
   ["vitamina d", "vitamina d3", "25 oh vitamina d", "25 hidroxi vitamina d", "25 hidroxivitamina d", "hidroxivitamina d", "25 oh d", "calcidiol"],
-  ["vitamina b12", "vit b12", "b12", "cobalamina"],
+  ["vitamina b12", "vitamina b 12", "vit b12", "b12", "cobalamina", "metilcobalamina", "cianocobalamina"],
   ["ferro", "ferro serico", "ferro total"],
   ["ferritina"],
 ];
