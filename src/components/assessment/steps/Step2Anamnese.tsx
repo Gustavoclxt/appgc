@@ -142,7 +142,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               set("medicamentos", [...a.medicamentos, { id: novoId(), nome: "", dose: "", acao: "" }])
             }
           >
-            + Adicionar medicamento
+            + Adicionar medicamento(s)
           </RowButton>
         </div>
       </Panel>
