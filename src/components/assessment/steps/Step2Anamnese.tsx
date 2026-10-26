@@ -1,4 +1,6 @@
 import { novoId } from "@/lib/assessment/initial-state";
+import { podeAnexarExames } from "@/lib/assessment/anthropometry-groups";
+import { ExamUpload } from "../ExamUpload";
 
 import {
   Field,
@@ -150,7 +152,10 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
       <Panel titulo="Exames bioquímicos, Alergias e Hábitos">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label="Possui exames bioquímicos recentes?">
-            <OptionRow value={a.possuiExames} onChange={(v) => set("possuiExames", v as typeof a.possuiExames)} options={simNao} />
+            <div className="flex flex-wrap items-center gap-3">
+              <OptionRow value={a.possuiExames} onChange={(v) => set("possuiExames", v as typeof a.possuiExames)} options={simNao} />
+              {podeAnexarExames(a) && <ExamUpload a={a} set={set} />}
+            </div>
           </Field>
           <Field label="Possui plano de saúde?">
             <OptionRow value={a.planoSaude} onChange={(v) => set("planoSaude", v as typeof a.planoSaude)} options={simNao} />
