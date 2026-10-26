@@ -81,7 +81,7 @@ export function bodySite(nome: string, categoria: CategoriaAntropometrica, sexo:
   const left = /\b(esquerd\w*|esq|e)\b/.test(n);
   const fig = PONTOS[sexo];
   const ponto = (view: VistaSilhueta, key: string, espelhar: boolean): BodySite => {
-    const [x, y] = fig[view][key];
+    const [x, y] = fig[view][key]!;
     return { view, x: espelhar ? 360 - x : x, y };
   };
   // Anterior view: the default drawn side is the patient's right; posterior view: the patient's left.
