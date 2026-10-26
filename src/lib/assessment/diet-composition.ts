@@ -42,6 +42,32 @@ export async function calcularComposicaoDasRefeicoes(
   return { chave, itens: resultado, totais: somarTotais(resultado) };
 }
 
+/** Session cache so the same food + quantity always returns the same composition. */
+export type CacheComposicao = Map<string, Omit<ItemComposicao, keyof ReturnType<typeof alimentosDoDiario>[number]>>;
+
+const chaveItem = (i: { alimento: string; quantidade: string }) =>
+  `${i.alimento.trim().toLowerCase().replace(/\s+/g, " ")}|${i.quantidade.trim().toLowerCase().replace(/\s+/g, " ")}`;
+
+export function comCacheDeComposicao(
+  cache: CacheComposicao,
+  calcular: (itens: ReturnType<typeof alimentosDoDiario>) => Promise<ItemComposicao[]>,
+) {
+  return async (itens: ReturnType<typeof alimentosDoDiario>): Promise<ItemComposicao[]> => {
+    const pendentes = itens.filter(i => !cache.has(chaveItem(i)));
+    const unicos = pendentes.filter((i, n) => pendentes.findIndex(p => chaveItem(p) === chaveItem(i)) === n);
+    if (unicos.length) {
+      const calculados = await calcular(unicos);
+      calculados.forEach((c, n) => {
+        const origem = unicos[n];
+        if (!origem) return;
+        const { kcal, carboidratos, proteinas, lipidios, fonte } = c;
+        cache.set(chaveItem(origem), { kcal, carboidratos, proteinas, lipidios, fonte } as never);
+      });
+    }
+    return itens.map(i => ({ ...i, ...(cache.get(chaveItem(i)) ?? { kcal: 0, carboidratos: 0, proteinas: 0, lipidios: 0, fonte: "" }) }) as ItemComposicao);
+  };
+}
+
 export function somarTotais(itens: ItemComposicao[]) {
   return itens.reduce(
     (t, i) => ({
