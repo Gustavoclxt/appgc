@@ -54,8 +54,8 @@ const PONTOS: Record<SexoSilhueta, Record<VistaSilhueta, Record<string, [number,
       bracoContraido: [136, 160],
       antebraco: [118, 253],
       peitoral: [180, 149],
-      cintura: [180, 242],
-      abdomen: [180, 258],
+      cintura: [180, 204],
+      abdomen: [180, 219],
       quadril: [180, 298],
       coxaProximal: [154, 319],
       coxaDistal: [152, 381],
@@ -63,8 +63,8 @@ const PONTOS: Record<SexoSilhueta, Record<VistaSilhueta, Record<string, [number,
       biceps: [132, 178],
       axilar: [150, 142],
       peitoralDobra: [165, 149],
-      abdominal: [185, 261],
-      suprailiaca: [156, 255],
+      abdominal: [174, 216],
+      suprailiaca: [154, 222],
       coxaDobra: [153, 352],
       panturrilhaDobra: [154, 444],
     },
@@ -81,7 +81,7 @@ export function bodySite(nome: string, categoria: CategoriaAntropometrica, sexo:
   const left = /\b(esquerd\w*|esq|e)\b/.test(n);
   const fig = PONTOS[sexo];
   const ponto = (view: VistaSilhueta, key: string, espelhar: boolean): BodySite => {
-    const [x, y] = fig[view][key];
+    const [x, y] = fig[view][key]!;
     return { view, x: espelhar ? 360 - x : x, y };
   };
   // Anterior view: the default drawn side is the patient's right; posterior view: the patient's left.
