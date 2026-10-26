@@ -3,6 +3,9 @@ import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
+import { Field, TextInput } from "@/components/assessment/fields";
+
+
 import { StepRail } from "@/components/assessment/StepRail";
 import { Step1Dados } from "@/components/assessment/steps/Step1Dados";
 import { Step2Anamnese } from "@/components/assessment/steps/Step2Anamnese";
@@ -235,6 +238,12 @@ function Index() {
             </h1>
           </div>
           {etapa === 1 && (
+            <Field label="Data da avaliação" className="w-[165px]">
+              <TextInput type="date" value={dados.dataAvaliacao} onChange={(v) => set("dataAvaliacao", v)} />
+            </Field>
+          )}
+          {etapa === 1 && (
+
             <button
               type="button"
               onClick={() => {

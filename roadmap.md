@@ -81,3 +81,5 @@
 - [x] Reduzir as caixas de hora "Entrada" e "Saída" (Rotina de trabalho/faculdade) ao espaço suficiente para o horário.
 - [x] Ajustar o botão "GERAR PDF" para o mesmo tamanho e fonte do botão "Adicionar avaliação".
 - [x] Centralizar o botão "GERAR PDF" no painel "Laudo em PDF".
+- [x] Mover "Data da avaliação" para a área do título da etapa 1, entre o título e "Preencher Exemplo".
+
