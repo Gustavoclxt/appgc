@@ -7,6 +7,7 @@ import { fmt2, fmtData } from "@/lib/assessment/calculations";
 import { agruparAntropometria, valorComUnidade } from "@/lib/assessment/anthropometry-groups";
 import { extractPdfText } from "@/lib/assessment/extract-pdf-text";
 import { novoId } from "@/lib/assessment/initial-state";
+import { AnthropometryBody } from "../AnthropometryBody";
 
 import { Field, Panel, Readout, Select, TextInput, UnitInput } from "../fields";
 import type { StepProps } from "./types";
@@ -95,6 +96,7 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
             <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
               <h3 className="font-display text-sm font-semibold text-accent">{grupo.categoria}</h3>
             </div>
+            <div className={grupo.categoria === "Circunferências" || grupo.categoria === "Dobras cutâneas" ? "grid grid-cols-1 items-start gap-6 md:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)]" : ""}>
             <div className="overflow-x-auto">
             <table className="w-auto text-left text-[13px]">
               <tbody>
@@ -106,6 +108,10 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
                 ))}
               </tbody>
             </table>
+            </div>
+            {(grupo.categoria === "Circunferências" || grupo.categoria === "Dobras cutâneas") && (
+              <AnthropometryBody indicadores={grupo.indicadores} categoria={grupo.categoria} />
+            )}
             </div>
           </section>
           ))}
