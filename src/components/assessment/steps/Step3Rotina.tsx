@@ -425,20 +425,22 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
             <TextInput value={a.observacoesFome} onChange={(v) => set("observacoesFome", v)} />
           </Field>
           <Field label="Hábito de beliscar ao longo do dia?">
-            <OptionRow
-              value={a.habitoBeliscar}
-              onChange={(v) => {
-                set("habitoBeliscar", v as typeof a.habitoBeliscar);
-                if (v !== "sim") set("beliscarDescricao", "");
-              }}
-              options={simNao}
-            />
+            <div className="flex flex-wrap items-center gap-2">
+              <OptionRow
+                value={a.habitoBeliscar}
+                onChange={(v) => {
+                  set("habitoBeliscar", v as typeof a.habitoBeliscar);
+                  if (v !== "sim") set("beliscarDescricao", "");
+                }}
+                options={simNao}
+              />
+              {a.habitoBeliscar === "sim" && (
+                <div className="w-[110px]">
+                  <TextInput value={a.beliscarDescricao} onChange={(v) => set("beliscarDescricao", v)} placeholder="O que?" />
+                </div>
+              )}
+            </div>
           </Field>
-          {a.habitoBeliscar === "sim" && (
-            <Field label="O que?">
-              <TextInput value={a.beliscarDescricao} onChange={(v) => set("beliscarDescricao", v)} />
-            </Field>
-          )}
         </div>
       </Panel>
 
