@@ -49,11 +49,6 @@ export function metasParaRelatorio(r: MetasPesoResultado): SecaoMetasRelatorio[]
       ...(r.classificacao ? [`Classificação: ${labelClassificacao[r.classificacao]} (referência para o prazo: até ${fmt2(r.percentualReferencia)}%).`] : []),
     ] : ["Expectativa não informada."],
   });
-  if (r.metas.length) secoes.push({
-    titulo: "Metas clínicas de referência (ajustáveis)",
-    colunas: ["Meta", "% perda", "Kg", "Peso meta", "kg/sem", "%/sem", "kg/mês"],
-    linhas: r.metas.map(m => [m.rotulo, `${fmt2(m.percentual)}%`, fmt2(m.kg), `${fmt2(m.pesoMeta)} kg`, fmt2(m.kgSemana), fmt2(m.pctSemana), fmt2(m.kgMes)]),
-  });
   if (r.modelo) secoes.push({
     titulo: "Modelo dinâmico de perda de peso (Hall/NIH)",
     colunas: ["Prazo", "Peso projetado", "Perda estimada"],
