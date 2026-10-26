@@ -31,7 +31,7 @@ it("mantém as demais seções da projeção", () => {
     expect.arrayContaining([
       "Dados da projeção",
       "Expectativa do paciente",
-      "Metas clínicas de referência (ajustáveis)",
     ]),
   );
+  expect(titulos).not.toContain("Metas clínicas de referência (ajustáveis)");
 });
