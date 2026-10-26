@@ -54,20 +54,6 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [etapa, setEtapa] = useState(1);
   const [dados, setDados] = useState<Assessment>(() => createEmptyAssessment());
-  // DEBUG-SILHUETA: remover após verificação visual
-  useEffect(() => {
-    if (!new URLSearchParams(window.location.search).has("silhueta-debug")) return;
-    const data = "2026-10-26";
-    const ind = (nome: string, valor: string) => ({ id: nome, nome, valor, unidade: "mm", data });
-    setDados((atual) => ({
-      ...atual,
-      sexo: "masculino",
-      indicadoresAntropometricos: [
-        ind("Axilar média", "20,00"), ind("Tórax", "16,00"), ind("Bíceps", "10,50"), ind("Abdominal", "17,00"),
-        ind("Suprailíaca", "15,00"), ind("Coxa", "37,50"), ind("Panturrilha medial", "13,00"),
-      ],
-    }));
-  }, []);
   const [analise, setAnalise] = useState<AnaliseIA | null>(null);
   const [analisando, setAnalisando] = useState(false);
 
