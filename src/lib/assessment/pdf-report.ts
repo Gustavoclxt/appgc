@@ -341,50 +341,6 @@ export function generatePDF(
       }
       for (const item of secao.itens ?? []) paragrafo(`• ${item.replace(/→/g, ">")}`);
     }
-  // Gráfico
-  if (metas.pesoInicial !== null) {
-    quebra(90);
-    titulo("GRÁFICO COMPARATIVO");
-    const gh = 60;
-    quebra(gh + 12);
-    const gx = MARGEM + 12;
-    const gw = LARGURA - 2 * MARGEM - 14;
-    const vals = [metas.pesoInicial, ...metas.metas.map((m) => m.pesoMeta)];
-    if (metas.expectativa) vals.push(metas.expectativa.pesoAlvo);
-    if (metas.modelo) vals.push(metas.modelo.serie[365]?.peso ?? metas.pesoInicial);
-    const max = Math.max(...vals) + 1;
-    const min = Math.min(...vals) - 1;
-    const px = (dia: number) => gx + (dia / 365) * gw;
-    const py = (p: number) => y + gh - ((p - min) / (max - min)) * gh;
-    doc.setDrawColor(180).setLineWidth(0.2).rect(gx, y, gw, gh);
-    doc.setFontSize(7).setTextColor(100);
-    for (const t of [0, 30, 90, 180, 365]) doc.text(`${t}d`, px(t), y + gh + 4, { align: "center" });
-    for (let i = 0; i <= 4; i++) {
-      const v = min + ((max - min) * i) / 4;
-      doc.text(fmt2(v), gx - 1, py(v) + 1, { align: "right" });
-    }
-    doc.setLineDashPattern([1, 1], 0).setDrawColor(120);
-    doc.line(gx, py(metas.pesoInicial), gx + gw, py(metas.pesoInicial));
-    if (metas.expectativa) {
-      doc.setDrawColor(200, 140, 0);
-      doc.line(gx, py(metas.expectativa.pesoAlvo), gx + gw, py(metas.expectativa.pesoAlvo));
-    }
-    doc.setLineDashPattern([], 0);
-    if (metas.modelo) {
-      doc.setDrawColor(...REPORT_HEADER_COLOR).setLineWidth(0.6);
-      for (let dia = 5; dia <= 365; dia += 5) { const p0 = metas.modelo.serie[dia - 5]; const p1 = metas.modelo.serie[dia]; if (p0 && p1) doc.line(px(dia - 5), py(p0.peso), px(dia), py(p1.peso)); }
-    }
-    doc.setFillColor(30, 30, 30);
-    for (const m of metas.metas) doc.circle(px(m.meses * 30.4375), py(m.pesoMeta), 0.9, "F");
-    y += gh + 7;
-    doc.setTextColor(80).setFontSize(7.5);
-    const legenda = [metas.modelo ? "Trajetória dinâmica (verde)" : "", "Peso inicial (cinza)", metas.expectativa ? "Peso desejado (laranja)" : "", "Metas de referência (pontos)"].filter(Boolean).join(" | ");
-    const linhasLegenda = doc.splitTextToSize(legenda, CONTEUDO) as string[];
-    doc.text(linhasLegenda, MARGEM, y);
-    doc.setTextColor(30, 30, 30);
-    y += linhasLegenda.length * 4;
-  }
-
   }
 
   if (analise) {

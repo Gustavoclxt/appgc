@@ -39,9 +39,9 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
                   <title>{`${indicador.nome}: ${valorComUnidade(indicador)}`}</title>
                   <path d={`M${site.x} ${site.y} L${left ? 106 : 254} ${labelY} H${left ? 8 : 352}`} className="fill-none stroke-accent/50" strokeWidth="1" />
                   <circle cx={site.x} cy={site.y} r="3" className="fill-accent" />
-                  <rect x={left ? 0 : 258} y={labelY - 31} width="102" height="30" rx="3" className="fill-paper" />
+                  <rect x={left ? 0 : 238} y={labelY - 31} width="122" height="30" rx="3" className="fill-paper" />
                   <text x={left ? 4 : 352} y={labelY - 19} textAnchor={left ? "start" : "end"} className="fill-ink-soft text-[10px]">
-                    {indicador.nome.length > 18 ? `${indicador.nome.slice(0, 17)}…` : indicador.nome}
+                    {indicador.nome}
                   </text>
                   <text x={left ? 4 : 352} y={labelY - 5} textAnchor={left ? "start" : "end"} className="fill-accent font-mono text-[12px] font-semibold">{valorComUnidade(indicador)}</text>
                 </g>

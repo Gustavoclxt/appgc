@@ -341,33 +341,37 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
       <Panel titulo="Hábitos alimentares">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label="Em casa, quem prepara os alimentos?">
-            <OptionRow
-              value={a.quemPrepara}
-              onChange={(v) => set("quemPrepara", v as typeof a.quemPrepara)}
-              options={[
-                { value: "propria", label: "Própria pessoa" },
-                { value: "outra", label: "Outra pessoa" },
-              ]}
-            />
+            <div className="flex flex-wrap items-center gap-2">
+              <OptionRow
+                value={a.quemPrepara}
+                onChange={(v) => set("quemPrepara", v as typeof a.quemPrepara)}
+                options={[
+                  { value: "propria", label: "Própria pessoa" },
+                  { value: "outra", label: "Outra pessoa" },
+                ]}
+              />
+              {a.quemPrepara === "outra" && (
+                <div className="w-[110px]">
+                  <TextInput value={a.quemPreparaOutra} onChange={(v) => set("quemPreparaOutra", v)} placeholder="Quem?" />
+                </div>
+              )}
+            </div>
           </Field>
-          {a.quemPrepara === "outra" && (
-            <Field label="Quem?">
-              <TextInput value={a.quemPreparaOutra} onChange={(v) => set("quemPreparaOutra", v)} />
-            </Field>
-          )}
           <Field label="Come fora?">
-            <OptionRow value={a.comeFora} onChange={(v) => set("comeFora", v as typeof a.comeFora)} options={simNao} />
+            <div className="flex flex-wrap items-center gap-2">
+              <OptionRow value={a.comeFora} onChange={(v) => set("comeFora", v as typeof a.comeFora)} options={simNao} />
+              {a.comeFora === "sim" && (
+                <>
+                  <div className="w-[110px]">
+                    <TextInput value={a.comeForaFrequencia} onChange={(v) => set("comeForaFrequencia", v)} placeholder="Frequência" />
+                  </div>
+                  <div className="w-[90px]">
+                    <TextInput value={a.comeForaDias} onChange={(v) => set("comeForaDias", v)} placeholder="Dias" />
+                  </div>
+                </>
+              )}
+            </div>
           </Field>
-          {a.comeFora === "sim" && (
-            <>
-              <Field label="Frequência">
-                <TextInput value={a.comeForaFrequencia} onChange={(v) => set("comeForaFrequencia", v)} />
-              </Field>
-              <Field label="Dias">
-                <TextInput value={a.comeForaDias} onChange={(v) => set("comeForaDias", v)} />
-              </Field>
-            </>
-          )}
           <Field label="Costuma consumir alimentos fritos?">
             <OptionRow
               value={a.consomeFritos}
