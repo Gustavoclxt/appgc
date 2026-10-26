@@ -12,6 +12,28 @@ import { AnthropometryBody } from "../AnthropometryBody";
 import { Field, Panel, Readout, Select, TextInput, UnitInput } from "../fields";
 import type { StepProps } from "./types";
 
+type GrupoAntropometrico = ReturnType<typeof agruparAntropometria>[number];
+
+function TabelaIndicadores({ titulo, indicadores }: { titulo: string; indicadores: GrupoAntropometrico["indicadores"] }) {
+  return (
+    <div className="min-w-0 flex-1">
+      <h3 className="mb-2 font-display text-sm font-semibold text-accent">{titulo}</h3>
+      <div className="overflow-x-auto">
+        <table className="w-auto text-left text-[13px]">
+          <tbody>
+            {indicadores.map((i) => (
+              <tr key={i.id} className="border-t border-line/70">
+                <td className="py-2 pr-4 text-ink">{i.nome}</td>
+                <td className="py-2 pl-6 font-mono">{valorComUnidade(i)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 export function Step4Antropometria({ a, set, d }: StepProps) {
   const [lendo, setLendo] = useState(false);
   const [lido, setLido] = useState(false);
