@@ -10,7 +10,7 @@ export function bodySite(nome: string, categoria: CategoriaAntropometrica): Body
   const limb = left ? 224 : 136; // Patient's left is on the viewer's right in anterior view.
   const leg = left ? 202 : 158;
   if (categoria === "Circunferências") {
-    if (/\b(ombros?)\b/.test(n)) return { view: "front", x: 180, y: 124 };
+    if (/\b(ombros?)\b/.test(n)) return { view: "front", x: 142, y: 113 };
     if (/\b(pescoco|cervical)\b/.test(n)) return { view: "front", x: 180, y: 99 };
     if (/\b(antebraco)\b/.test(n)) return { view: "front", x: left ? 244 : 116, y: 237 };
     if (/\b(braco)\b/.test(n)) return { view: "front", x: limb, y: /contraido|flexionado/.test(n) ? 164 : 192 };

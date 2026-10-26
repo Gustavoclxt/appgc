@@ -91,30 +91,39 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
       {a.indicadoresAntropometricos.length > 0 && (
         <Panel titulo="Dados extraídos do PDF" meta={(() => { const g = agruparAntropometria(a.indicadoresAntropometricos, a.dataAvaliacaoAntropometrica); const datas = [...new Set(g.map(x => x.data))]; const f = (x: string) => /^\d{4}-\d{2}-\d{2}$/.test(x) ? fmtData(x) : x || "Não informada"; return `Data da avaliação: ${datas.map(f).join(", ")}`; })()}>
           <div className="space-y-6">
-          {agruparAntropometria(a.indicadoresAntropometricos, a.dataAvaliacaoAntropometrica).map(grupo => (
+          {agruparAntropometria(a.indicadoresAntropometricos, a.dataAvaliacaoAntropometrica).map(grupo => {
+          const comSilhueta = grupo.categoria === "Circunferências" || grupo.categoria === "Dobras cutâneas";
+          return (
           <section key={`${grupo.categoria}-${grupo.data}`}>
-            <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
-              <h3 className="font-display text-sm font-semibold text-accent">{grupo.categoria}</h3>
-            </div>
-            <div className={grupo.categoria === "Circunferências" || grupo.categoria === "Dobras cutâneas" ? "grid grid-cols-1 items-start gap-6 md:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)]" : ""}>
-            <div className="overflow-x-auto">
-            <table className="w-auto text-left text-[13px]">
-              <tbody>
-                {grupo.indicadores.map((i) => (
-                  <tr key={i.id} className="border-t border-line/70">
-                    <td className="py-2 pr-4 text-ink">{i.nome}</td>
-                    <td className="py-2 pl-6 font-mono">{valorComUnidade(i)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            </div>
-            {(grupo.categoria === "Circunferências" || grupo.categoria === "Dobras cutâneas") && (
-              <AnthropometryBody indicadores={grupo.indicadores} categoria={grupo.categoria} />
+            {comSilhueta ? (
+              <div className="flex flex-col items-center">
+                <h3 className="mb-3 text-center font-display text-sm font-semibold text-accent">{grupo.categoria}</h3>
+                <div className="w-full max-w-[720px]">
+                  <AnthropometryBody indicadores={grupo.indicadores} categoria={grupo.categoria} />
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
+                  <h3 className="font-display text-sm font-semibold text-accent">{grupo.categoria}</h3>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-auto text-left text-[13px]">
+                    <tbody>
+                      {grupo.indicadores.map((i) => (
+                        <tr key={i.id} className="border-t border-line/70">
+                          <td className="py-2 pr-4 text-ink">{i.nome}</td>
+                          <td className="py-2 pl-6 font-mono">{valorComUnidade(i)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
             )}
-            </div>
           </section>
-          ))}
+          );
+          })}
           </div>
         </Panel>
       )}
