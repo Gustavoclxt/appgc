@@ -238,12 +238,6 @@ function Index() {
             </h1>
           </div>
           {etapa === 1 && (
-            <Field label="Data da avaliação" className="w-[165px]">
-              <TextInput type="date" value={dados.dataAvaliacao} onChange={(v) => set("dataAvaliacao", v)} />
-            </Field>
-          )}
-          {etapa === 1 && (
-
             <button
               type="button"
               onClick={() => {
@@ -257,6 +251,12 @@ function Index() {
               Preencher Exemplo
             </button>
           )}
+          {etapa === 1 && (
+            <Field label="Data da avaliação" className="w-[165px]">
+              <TextInput type="date" value={dados.dataAvaliacao} onChange={(v) => set("dataAvaliacao", v)} />
+            </Field>
+          )}
+
         </div>
 
         {etapa === 1 && (
