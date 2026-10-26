@@ -20,7 +20,7 @@ import { WeightGoals } from "@/components/assessment/WeightGoals";
 import { MODULO_METAS_ATIVO, calcularMetasPeso } from "@/lib/assessment/weight-goals";
 import { metasPesoIniciais, type MetasPesoEstado } from "@/lib/assessment/weight-projection";
 import { analisarAvaliacao, calcularComposicaoDiario } from "@/lib/assessment/analysis.functions";
-import { alimentosDoDiario, calcularComposicaoDasRefeicoes, chaveDiario, somarTotais, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
+import { alimentosDoDiario, calcularComposicaoDasRefeicoes, chaveDiario, comCacheDeComposicao, type CacheComposicao, somarTotais, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { novaRefeicaoAtipica } from "@/components/assessment/AtypicalDay";
 import { deriveResults, fmtData } from "@/lib/assessment/calculations";
 import { createEmptyAssessment, ETAPAS, novoId } from "@/lib/assessment/initial-state";
@@ -58,7 +58,12 @@ function Index() {
   const [analisando, setAnalisando] = useState(false);
 
   const analisar = useServerFn(analisarAvaliacao);
-  const calcularDiario = useServerFn(calcularComposicaoDiario);
+  const calcularDiarioServidor = useServerFn(calcularComposicaoDiario);
+  const cacheComposicaoRef = useRef<CacheComposicao>(new Map());
+  const calcularDiario = useMemo(() => {
+    const cacheado = comCacheDeComposicao(cacheComposicaoRef.current, itens => calcularDiarioServidor({ data: { itens } }));
+    return ({ data }: { data: { itens: Parameters<typeof cacheado>[0] } }) => cacheado(data.itens);
+  }, [calcularDiarioServidor]);
   const [composicao, setComposicao] = useState<ComposicaoDiario | null>(null);
   const [calculando, setCalculando] = useState(false);
   const calculoEmCursoRef = useRef(false);
@@ -166,12 +171,12 @@ function Index() {
   useEffect(() => {
     if (etapa !== ETAPAS.length) return;
     const temAlimentos = alimentosDoDiario(dados.diarioAlimentar).length > 0;
-    if (temAlimentos && composicao?.chave !== chaveDiario(dados.diarioAlimentar)) return;
+    if (temAlimentos && composicao?.chave !== chaveDiario(dados.diarioAlimentar) && (calculando || calculoEmCursoRef.current)) return;
     if (disparoAutomaticoRef.current) return;
     if (analise !== null || analisando) return;
     disparoAutomaticoRef.current = true;
     void onAnalisar();
-  }, [etapa, analise, analisando, composicao, dados.diarioAlimentar, onAnalisar]);
+  }, [etapa, analise, analisando, composicao, calculando, dados.diarioAlimentar, onAnalisar]);
 
   async function onGerarPdf() {
     try {
