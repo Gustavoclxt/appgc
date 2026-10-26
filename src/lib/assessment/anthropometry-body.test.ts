@@ -14,6 +14,11 @@ it("localiza tríceps e subescapular na vista posterior", () => {
   expect(bodySite("Subescapular", "Dobras cutâneas", "masculino")?.view).toBe("back");
   expect(bodySite("Bíceps", "Dobras cutâneas", "feminino")?.view).toBe("front");
 });
+it("calibra quadril, axilar média e panturrilha medial na silhueta feminina", () => {
+  expect(bodySite("Quadril", "Circunferências", "feminino")).toEqual({ view: "front", x: 206, y: 256 });
+  expect(bodySite("Axilar média", "Dobras cutâneas", "feminino")).toEqual({ view: "front", x: 142, y: 172 });
+  expect(bodySite("Panturrilha medial", "Dobras cutâneas", "feminino")).toEqual({ view: "front", x: 156, y: 433 });
+});
 it("preserva cada valor e unidade original sem criar medidas ausentes", () => {
   const indicador = { id: "1", nome: "Cintura", valor: "82,5", unidade: "cm", data: "2026-10-25" };
   expect(bodyMeasurements([indicador], "Circunferências", "masculino")).toEqual([{ indicador, site: { view: "front", x: 180, y: 207 } }]);
