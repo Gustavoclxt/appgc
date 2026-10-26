@@ -6,9 +6,10 @@ export function Step1Dados({ a, set, d }: StepProps) {
     <div>
       <Panel titulo="Informações pessoais">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <Field label="Nome completo" className="sm:col-start-1">
+          <Field label="Nome completo" className="sm:col-span-2">
             <TextInput value={a.nome} onChange={(v) => set("nome", v)} />
           </Field>
+
 
           <Field label="Data de nascimento" className="sm:col-start-1">
             <div className="flex items-center gap-3">
