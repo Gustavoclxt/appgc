@@ -365,7 +365,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                   <div className="w-[110px]">
                     <TextInput value={a.comeForaFrequencia} onChange={(v) => set("comeForaFrequencia", v)} placeholder="Frequência" />
                   </div>
-                  <div className="w-[90px]">
+                  <div className="flex-1 min-w-[90px]">
                     <TextInput value={a.comeForaDias} onChange={(v) => set("comeForaDias", v)} placeholder="Dias" />
                   </div>
                 </>
