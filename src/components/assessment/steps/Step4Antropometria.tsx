@@ -99,7 +99,7 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
               <div className="flex flex-col items-center">
                 <h3 className="mb-3 text-center font-display text-sm font-semibold text-accent">{grupo.categoria}</h3>
                 <div className="w-full max-w-[720px]">
-                  <AnthropometryBody indicadores={grupo.indicadores} categoria={grupo.categoria} />
+                  <AnthropometryBody indicadores={grupo.indicadores} categoria={grupo.categoria} sexo={a.sexo === "feminino" ? "feminino" : "masculino"} />
                 </div>
               </div>
             ) : (

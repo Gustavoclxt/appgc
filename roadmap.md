@@ -85,3 +85,4 @@
 - [x] Centralizar o botão "GERAR PDF" no painel "Laudo em PDF".
 - [x] Mover "Data da avaliação" para a área do título da etapa 1, entre o título e "Preencher Exemplo".
 
+- [x] Substituir as silhuetas em SVG pelas imagens enviadas (masculina/feminina, frente e costas), escolhidas pela opção "Sexo".

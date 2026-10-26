@@ -35,4 +35,4 @@
 - Pass the session-only atypical composition separately to the unified PDF exporter and format it with composicaoParaRelatorio so habitual and atypical totals stay independent.
 - Keep form-specific review guidance in analysis-guidance.ts and factual inputs in buildResumo; normalize AI output through analysis-result.ts without truncating relevant findings/actions so shared screen, copy and PDF consumers retain clinical coverage.
 - Keep laboratory PDF import in ExamUpload, writing to the existing session assessment state, so moving the upload control does not change downstream display, analysis or exports.
-- Keep anthropometric body-site mapping in anthropometry-body and render each dated group's original measurements through AnthropometryBody; diagrams are presentation-only and never calculate or infer values.
+- Keep anthropometric body-site mapping in anthropometry-body and render each dated group's original measurements through AnthropometryBody; diagrams are presentation-only and never calculate or infer values. Silhouettes are per-sex CDN image assets chosen by the assessment sex, with landmark coordinates calibrated per figure.
