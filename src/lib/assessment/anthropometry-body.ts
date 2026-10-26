@@ -39,7 +39,7 @@ const PONTOS: Record<SexoSilhueta, Record<VistaSilhueta, Record<string, [number,
       abdominal: [184, 216],
       suprailiaca: [154, 239],
       coxaDobra: [154, 345],
-      panturrilhaDobra: [151, 429],
+      panturrilhaDobra: [154, 411],
     },
     back: {
       triceps: [126, 177],

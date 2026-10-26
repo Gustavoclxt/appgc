@@ -14,10 +14,12 @@ it("localiza tríceps e subescapular na vista posterior", () => {
   expect(bodySite("Subescapular", "Dobras cutâneas", "masculino")?.view).toBe("back");
   expect(bodySite("Bíceps", "Dobras cutâneas", "feminino")?.view).toBe("front");
 });
-it("calibra quadril e panturrilha na silhueta masculina", () => {
+it("calibra quadril, panturrilha e dobras na silhueta masculina", () => {
   expect(bodySite("Quadril", "Circunferências", "masculino")).toEqual({ view: "front", x: 217, y: 258 });
   expect(bodySite("Panturrilha direita", "Circunferências", "masculino")).toEqual({ view: "front", x: 151, y: 415 });
   expect(bodySite("Panturrilha esquerda", "Circunferências", "masculino")).toEqual({ view: "front", x: 209, y: 415 });
+  expect(bodySite("Axilar média", "Dobras cutâneas", "masculino")).toEqual({ view: "front", x: 147, y: 175 });
+  expect(bodySite("Panturrilha medial", "Dobras cutâneas", "masculino")).toEqual({ view: "front", x: 154, y: 411 });
 });
 it("calibra quadril, axilar média e panturrilha medial na silhueta feminina", () => {
   expect(bodySite("Quadril", "Circunferências", "feminino")).toEqual({ view: "front", x: 206, y: 256 });
