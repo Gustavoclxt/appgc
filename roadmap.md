@@ -1,5 +1,5 @@
 # Roadmap
-- [ ] Mover o anexo de exames para a anamnese junto de Sim/Não, preservando resultados na Avaliação e processamento existente.
+- [x] Mover o anexo de exames para a anamnese junto de Sim/Não, preservando resultados na Avaliação e processamento existente.
 - [x] Ampliar análise final para todas as respostas e observações, com sugestões individualizadas e testes de cobertura.
 - [x] Incluir composição do dia atípico no PDF, separada do R24h habitual.
 - [x] Corrigir caracteres especiais e sobreposição nas colunas de exames do PDF; validar visualmente.
