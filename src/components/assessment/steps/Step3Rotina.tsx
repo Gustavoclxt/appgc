@@ -333,7 +333,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
               ])
             }
           >
-            + Adicionar modalidade
+            + Adicionar modalidade(s)
           </RowButton>
         </div>
       </Panel>
