@@ -99,11 +99,6 @@ export function createExampleAssessment(): Assessment {
     peso: "82",
     percentualGordura: "34",
     metodoGordura: "Bioimpedância",
-    dataAvaliacaoAntropometrica: "2026-10-20",
-    indicadoresAntropometricos: [
-      ...["Ombro", "Pescoço", "Peitoral", "Braço direito", "Braço esquerdo", "Antebraço direito", "Cintura", "Abdômen", "Quadril", "Coxa proximal direita", "Coxa distal esquerda", "Panturrilha direita", "Panturrilha esquerda"].map((nome, i) => ({ id: `c${i}`, nome, valor: `${40 + i},0`, unidade: "cm", data: "2026-10-20" })),
-      ...["Tríceps", "Subescapular", "Bíceps", "Axilar", "Peitoral", "Abdominal", "Suprailíaca", "Coxa", "Panturrilha"].map((nome, i) => ({ id: `d${i}`, nome, valor: `${10 + i},0`, unidade: "mm", data: "2026-10-20" })),
-    ],
     fatorAtividade: "1.5",
     estrategia: "deficit",
     tipoAjuste: "percentual",
