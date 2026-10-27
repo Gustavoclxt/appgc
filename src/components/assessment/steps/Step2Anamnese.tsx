@@ -62,6 +62,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               <div className="w-24">
                 <Select
                   value={a.motivacao}
+                  placeholder=""
                   onChange={(v) => {
                     set("motivacao", v);
                     if (v === "" || v === "10") set("faltaParaDez", "");
