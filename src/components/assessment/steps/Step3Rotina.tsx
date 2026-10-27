@@ -160,24 +160,29 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
             </div>
           </Field>
           <Field label="Intervalo para refeições?">
-            <OptionRow
-              value={a.intervaloRefeicoes}
-              onChange={(v) => {
-                set("intervaloRefeicoes", v as typeof a.intervaloRefeicoes);
-                if (v !== "sim") set("intervaloRefeicoesHorarios", "");
-              }}
-              options={simNao}
-            />
-          </Field>
-          {a.intervaloRefeicoes === "sim" && (
-            <Field label="Horários dos intervalos">
-              <TextInput
-                value={a.intervaloRefeicoesHorarios}
-                onChange={(v) => set("intervaloRefeicoesHorarios", v)}
-                placeholder="Ex.: 10:00 e 15:30"
+            <div className="flex flex-wrap items-center gap-2">
+              <OptionRow
+                value={a.intervaloRefeicoes}
+                onChange={(v) => {
+                  set("intervaloRefeicoes", v as typeof a.intervaloRefeicoes);
+                  if (v !== "sim") set("intervaloRefeicoesHorarios", "");
+                }}
+                options={simNao}
               />
-            </Field>
-          )}
+              {a.intervaloRefeicoes === "sim" && (
+                <>
+                  <span className="whitespace-nowrap text-[11px] font-medium text-ink">Horário dos intervalos</span>
+                  <div className="w-[170px]">
+                    <TextInput
+                      value={a.intervaloRefeicoesHorarios}
+                      onChange={(v) => set("intervaloRefeicoesHorarios", v)}
+                      placeholder="12:00; 16:00"
+                    />
+                  </div>
+                </>
+              )}
+            </div>
+          </Field>
           <Field label="Possui cozinha/copa no trabalho?">
             <OptionRow
               value={a.cozinhaTrabalho}
