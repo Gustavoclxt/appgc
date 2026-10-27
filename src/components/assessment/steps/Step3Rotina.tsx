@@ -170,16 +170,13 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                 options={simNao}
               />
               {a.intervaloRefeicoes === "sim" && (
-                <>
-                  <span className="whitespace-nowrap text-[11px] font-medium text-ink">Horário dos intervalos</span>
-                  <div className="w-[170px]">
-                    <TextInput
-                      value={a.intervaloRefeicoesHorarios}
-                      onChange={(v) => set("intervaloRefeicoesHorarios", v)}
-                      placeholder="12:00; 16:00"
-                    />
-                  </div>
-                </>
+                <div className="w-[130px]">
+                  <TextInput
+                    value={a.intervaloRefeicoesHorarios}
+                    onChange={(v) => set("intervaloRefeicoesHorarios", v)}
+                    placeholder="Horário(s)"
+                  />
+                </div>
               )}
             </div>
           </Field>
