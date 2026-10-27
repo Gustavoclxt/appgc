@@ -166,13 +166,19 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             <OptionRow value={a.planoSaude} onChange={(v) => set("planoSaude", v as typeof a.planoSaude)} options={simNao} />
           </Field>
           <Field label="Alergia e/ou intolerância alimentar?">
-            <OptionRow value={a.alergia} onChange={(v) => set("alergia", v as typeof a.alergia)} options={simNao} />
+            <div className="flex flex-wrap items-center gap-3">
+              <OptionRow value={a.alergia} onChange={(v) => set("alergia", v as typeof a.alergia)} options={simNao} />
+              {a.alergia === "sim" && (
+                <div className="w-[280px]">
+                  <TextInput
+                    value={a.alergiaDescricao}
+                    onChange={(v) => set("alergiaDescricao", v)}
+                    placeholder="Qual(is)?"
+                  />
+                </div>
+              )}
+            </div>
           </Field>
-          {a.alergia === "sim" && (
-            <Field label="Qual?">
-              <TextInput value={a.alergiaDescricao} onChange={(v) => set("alergiaDescricao", v)} />
-            </Field>
-          )}
           <Field label="Possui alguma restrição alimentar?" className="sm:col-start-2">
             <OptionRow
               value={a.restricaoAlimentar}
