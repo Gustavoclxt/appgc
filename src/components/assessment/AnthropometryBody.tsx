@@ -14,7 +14,6 @@ const imagens: Record<SexoSilhueta, Record<VistaSilhueta, string>> = {
 export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadores: IndicadorAntropometrico[]; categoria: CategoriaAntropometrica; sexo: SexoSilhueta }) {
   const measurements = bodyMeasurements(indicadores, categoria, sexo);
   const views = categoria === "Dobras cutâneas" ? (["front", "back"] as const) : (["front"] as const);
-  return (
   const ladoALado = views.length > 1;
   return (
     <div className={ladoALado ? "overflow-x-auto" : undefined}>
