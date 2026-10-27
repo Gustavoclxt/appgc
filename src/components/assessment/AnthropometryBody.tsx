@@ -53,5 +53,6 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
         );
       })}
     </div>
+    </div>
   );
 }
