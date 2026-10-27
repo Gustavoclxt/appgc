@@ -15,7 +15,10 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
   const measurements = bodyMeasurements(indicadores, categoria, sexo);
   const views = categoria === "Dobras cutâneas" ? (["front", "back"] as const) : (["front"] as const);
   return (
-    <div className={`grid items-start gap-4 ${views.length > 1 ? "grid-cols-1" : "grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))]"}`}>
+  const ladoALado = views.length > 1;
+  return (
+    <div className={ladoALado ? "overflow-x-auto" : undefined}>
+    <div className={`grid items-start gap-4 ${ladoALado ? "w-max grid-cols-2" : "grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))]"}`}>
       {views.map(view => {
         const items = measurements.filter(m => m.site.view === view);
         // Place labels in two rails with stable spacing, retaining exact anatomical markers.
