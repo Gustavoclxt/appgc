@@ -169,12 +169,13 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             <div className="flex flex-wrap items-center gap-3">
               <OptionRow value={a.alergia} onChange={(v) => set("alergia", v as typeof a.alergia)} options={simNao} />
               {a.alergia === "sim" && (
-                <TextInput
-                  value={a.alergiaDescricao}
-                  onChange={(v) => set("alergiaDescricao", v)}
-                  placeholder="Qual(is)?"
-                  className="w-[280px]"
-                />
+                <div className="w-[280px]">
+                  <TextInput
+                    value={a.alergiaDescricao}
+                    onChange={(v) => set("alergiaDescricao", v)}
+                    placeholder="Qual(is)?"
+                  />
+                </div>
               )}
             </div>
           </Field>
