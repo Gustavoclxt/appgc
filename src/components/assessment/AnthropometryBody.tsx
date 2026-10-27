@@ -33,7 +33,7 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
         });
         const silhueta = SILHUETAS[sexo][view];
         return (
-          <figure key={view} className="mx-auto w-full max-w-[440px]">
+          <figure key={view} className={ladoALado ? "w-[440px]" : "mx-auto w-full max-w-[440px]"}>
             <svg viewBox="0 0 480 540" className="h-auto w-full overflow-visible" role="img" aria-label={categoria}>
               <image href={imagens[sexo][view]} x={silhueta.x + 60} y={silhueta.y} width={silhueta.width} height={silhueta.height} />
               {labels.map(({ indicador, site, labelY, left }) => (
