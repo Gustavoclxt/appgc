@@ -94,6 +94,18 @@ export function createExampleAssessment(): Assessment {
     alturaReferida: "1,65",
     pesoReferido: "80",
     evolucaoPeso: "Ganhando peso",
+    // TEMP-VERIFICACAO: remover após conferência visual
+    indicadoresAntropometricos: [
+      "Ombro|138,00|cm", "Peitoral|123,00|cm", "Braço contraído direito|44,00|cm", "Braço contraído esquerdo|45,00|cm",
+      "Braço relaxado direito|42,50|cm", "Braço relaxado esquerdo|43,50|cm", "Cintura|102,50|cm", "Abdômen|115,00|cm",
+      "Quadril|123,00|cm", "Coxa direita|67,50|cm", "Coxa esquerda|64,50|cm", "Panturrilha direita|43,00|cm",
+      "Panturrilha esquerda|42,00|cm", "Punho|16,00|cm", "Tórax|24,50|mm", "Bíceps|8,00|mm", "Tríceps|17,00|mm",
+      "Subescapular|19,00|mm", "Suprailíaca|22,00|mm", "Abdominal|32,00|mm", "Axilar média|25,00|mm", "Coxa|22,00|mm",
+      "Panturrilha medial|16,00|mm",
+    ].map((linha) => {
+      const [nome, valor, unidade] = linha.split("|") as [string, string, string];
+      return { id: nome, nome, valor, unidade, data: "2026-10-27" };
+    }),
     altura: "1.65",
     alturaUnidade: "m",
     peso: "82",
