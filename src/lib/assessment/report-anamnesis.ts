@@ -95,6 +95,7 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Hábitos sociais", lista(a.habitosSociais)),
       campo("Etilismo", a.habitosSociais.includes("Etilista") ? [a.etilismoQuantidade && `Quantidade: ${a.etilismoQuantidade}`, a.etilismoFrequencia && `Frequência: ${a.etilismoFrequencia}`].filter(Boolean).join(" · ") : ""),
       campo("Tabagismo", a.habitosSociais.includes("Tabagista") ? [a.tabagismoQuantidade && `Quantidade: ${a.tabagismoQuantidade}`, a.tabagismoFrequencia && `Frequência: ${a.tabagismoFrequencia}`].filter(Boolean).join(" · ") : ""),
+      campo("Drogas", a.habitosSociais.includes("Drogas") ? a.drogasDescricao : ""),
       campo("Observações sobre os exames", observacoesExamesParaRelatorio(a)),
     ]),
     secao("Revisão de sistemas", [

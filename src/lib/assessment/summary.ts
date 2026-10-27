@@ -68,6 +68,7 @@ export function buildResumo(a: Assessment, d: DerivedResults, composicao: Compos
   t += li("Hábitos sociais", a.habitosSociais.join(", "));
   if (a.habitosSociais.includes("Etilista")) t += li("Álcool (quantidade/frequência)", [a.etilismoQuantidade, a.etilismoFrequencia].filter(Boolean).join(" / "));
   if (a.habitosSociais.includes("Tabagista")) t += li("Tabaco (quantidade/frequência)", [a.tabagismoQuantidade, a.tabagismoFrequencia].filter(Boolean).join(" / "));
+  if (a.habitosSociais.includes("Drogas")) t += li("Drogas", a.drogasDescricao);
   t += li("Plano de saúde", a.planoSaude === "sim" ? "sim — considerar solicitação médica" : a.planoSaude);
 
   const retirar = fraseAlimentosRetirar(a);
