@@ -59,6 +59,7 @@ export function createEmptyAssessment(): Assessment {
     etilismoFrequencia: "",
     tabagismoQuantidade: "",
     tabagismoFrequencia: "",
+    drogasDescricao: "",
 
     funcaoEstomacal: [],
     frequenciaEvacuacao: "",
