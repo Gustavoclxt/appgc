@@ -14,8 +14,10 @@ const imagens: Record<SexoSilhueta, Record<VistaSilhueta, string>> = {
 export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadores: IndicadorAntropometrico[]; categoria: CategoriaAntropometrica; sexo: SexoSilhueta }) {
   const measurements = bodyMeasurements(indicadores, categoria, sexo);
   const views = categoria === "Dobras cutâneas" ? (["front", "back"] as const) : (["front"] as const);
+  const ladoALado = views.length > 1;
   return (
-    <div className={`grid items-start gap-4 ${views.length > 1 ? "grid-cols-1" : "grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))]"}`}>
+    <div className={ladoALado ? "overflow-x-auto" : undefined}>
+    <div className={`grid items-start gap-4 ${ladoALado ? "w-max grid-cols-2" : "grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))]"}`}>
       {views.map(view => {
         const items = measurements.filter(m => m.site.view === view);
         // Place labels in two rails with stable spacing, retaining exact anatomical markers.
@@ -30,7 +32,7 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
         });
         const silhueta = SILHUETAS[sexo][view];
         return (
-          <figure key={view} className="mx-auto w-full max-w-[440px]">
+          <figure key={view} className={ladoALado ? "w-[440px]" : "mx-auto w-full max-w-[440px]"}>
             <svg viewBox="0 0 480 540" className="h-auto w-full overflow-visible" role="img" aria-label={categoria}>
               <image href={imagens[sexo][view]} x={silhueta.x + 60} y={silhueta.y} width={silhueta.width} height={silhueta.height} />
               {labels.map(({ indicador, site, labelY, left }) => (
@@ -49,6 +51,7 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
           </figure>
         );
       })}
+    </div>
     </div>
   );
 }
