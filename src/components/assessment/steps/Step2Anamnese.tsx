@@ -198,6 +198,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
                 { value: "Nenhum", label: "Nenhum" },
                 { value: "Etilista", label: "Etilista" },
                 { value: "Tabagista", label: "Tabagista" },
+                { value: "Drogas", label: "Drogas" },
               ]}
             />
           </Field>
@@ -225,6 +226,11 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
                 <TextInput value={a.tabagismoFrequencia} onChange={(v) => set("tabagismoFrequencia", v)} />
               </Field>
             </>
+          )}
+          {a.habitosSociais.includes("Drogas") && (
+            <Field label="Drogas - Qual(is)?">
+              <TextInput value={a.drogasDescricao} onChange={(v) => set("drogasDescricao", v)} />
+            </Field>
           )}
         </div>
       </Panel>

@@ -108,6 +108,7 @@ export interface Assessment {
   etilismoFrequencia: string;
   tabagismoQuantidade: string;
   tabagismoFrequencia: string;
+  drogasDescricao: string;
 
   // Revisão de sistemas
   funcaoEstomacal: string[];

@@ -14,6 +14,7 @@ describe("revisão condicional das respostas", () => {
     { nome: "Sim aos EAAs", ativa: { eaas: "sim" }, inativa: { eaas: "nao" } },
     { nome: "Tabagista", ativa: { habitosSociais: ["Tabagista"] }, inativa: { habitosSociais: ["Nenhum"] } },
     { nome: "Etilista", ativa: { habitosSociais: ["Etilista"] }, inativa: { habitosSociais: ["Nenhum"] } },
+    { nome: "Drogas", ativa: { habitosSociais: ["Drogas"] }, inativa: { habitosSociais: ["Nenhum"] } },
     { nome: "Sim a comer fora", ativa: { comeFora: "sim" }, inativa: { comeFora: "nao" } },
     { nome: "Sim a frituras", ativa: { consomeFritos: "sim" }, inativa: { consomeFritos: "nao" } },
     { nome: "frituras às vezes", ativa: { consomeFritos: "as-vezes" }, inativa: { consomeFritos: "nao" } },
