@@ -733,7 +733,8 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                 <div className="mt-3 flex justify-end">
                   <RowButton
                     className="bg-accent text-white ring-accent/40 hover:bg-accent/90"
-                        (refeicao) => refeicao.refeicao.trim().toLocaleLowerCase("pt-BR") === "almoço",
+                    onClick={() => {
+                      const almoco = a.diarioAlimentar.find(
                       );
                       if (!almoco) return;
                       set(
