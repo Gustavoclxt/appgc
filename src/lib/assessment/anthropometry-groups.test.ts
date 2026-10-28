@@ -42,11 +42,18 @@ describe("rótulo do indicador", () => {
 
 describe("valor com unidade", () => {
   it("apresenta a unidade junto ao valor", () => {
-    expect(valorComUnidade({ valor: "1,60", unidade: "m" })).toBe("1,60 m");
-    expect(valorComUnidade({ valor: "73,10", unidade: "kg" })).toBe("73,10 kg");
+    expect(valorComUnidade({ valor: "1,60", unidade: "m" })).toBe("1,6 m");
+    expect(valorComUnidade({ valor: "73,10", unidade: "kg" })).toBe("73,1 kg");
     expect(valorComUnidade({ valor: "18,5", unidade: "%" })).toBe("18,5%");
-    expect(valorComUnidade({ valor: "25,50", unidade: "kg/m²" })).toBe("25,50 kg/m²");
-    expect(valorComUnidade({ valor: "2,00", unidade: "" })).toBe("2,00");
+    expect(valorComUnidade({ valor: "25,50", unidade: "kg/m²" })).toBe("25,5 kg/m²");
+    expect(valorComUnidade({ valor: "2,00", unidade: "" })).toBe("2,0");
     expect(valorComUnidade({ valor: "", unidade: "" })).toBe("—");
+  });
+  it("exibe uma casa decimal sem alterar a medida original", () => {
+    const medida = { valor: "112,54", unidade: "cm" };
+    expect(valorComUnidade(medida)).toBe("112,5 cm");
+    expect(medida.valor).toBe("112,54");
+    expect(valorComUnidade({ valor: "16", unidade: "mm" })).toBe("16,0 mm");
+    expect(valorComUnidade({ valor: "112.50 cm", unidade: "cm" })).toBe("112,5 cm");
   });
 });

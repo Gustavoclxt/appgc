@@ -1,4 +1,5 @@
 # Roadmap
+- [x] Corrigir o prefixo DC nas silhuetas e formatar medidas antropométricas com uma casa decimal, preservando os valores originais.
 - [x] Exibir silhuetas com medidas ao lado das tabelas de Circunferências e Dobras cutâneas; validar importação e disposição.
 - [x] Mover o anexo de exames para a anamnese junto de Sim/Não, preservando resultados na Avaliação e processamento existente.
 - [x] Ampliar análise final para todas as respostas e observações, com sugestões individualizadas e testes de cobertura.
