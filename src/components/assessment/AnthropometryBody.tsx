@@ -42,9 +42,9 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
         });
         const silhueta = SILHUETAS[sexo][view];
         return (
-          <figure key={view} className={ladoALado ? "w-[590px]" : "mx-auto w-full max-w-[590px]"}>
-            <svg viewBox="0 0 640 540" className="h-auto w-full overflow-visible" role="img" aria-label={categoria}>
-              <image href={imagens[sexo][view]} x={silhueta.x + 160} y={silhueta.y} width={silhueta.width} height={silhueta.height} />
+          <figure key={view} className={ladoALado ? "w-[452px] shrink-0" : "mx-auto w-full max-w-[540px]"}>
+            <svg viewBox="0 0 540 540" className="h-auto w-full overflow-visible" role="img" aria-label={categoria}>
+              <image href={imagens[sexo][view]} x={silhueta.x + 90} y={silhueta.y} width={silhueta.width} height={silhueta.height} />
               {labels.map(({ indicador, site, labelY, left }) => {
                 const rotulo = rotuloIndicador(indicador.nome, categoria);
                 const valor = valorComUnidade(indicador, categoria);
@@ -52,13 +52,13 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
                 return (
                 <g key={indicador.id}>
                   <title>{`${rotulo}: ${valor}`}</title>
-                  <path d={`M${site.x + 160} ${site.y} L${left ? 270 : 410} ${labelY} H${left ? 52 : 598}`} className="fill-none stroke-accent/50" strokeWidth="1" />
-                  <circle cx={site.x + 160} cy={site.y} r="3" className="fill-accent" />
-                  <rect x={left ? 40 : 640 - largura} y={labelY - 35} width={largura} height="32" rx="3" className="fill-paper" />
-                  <text x={left ? 48 : 632} y={labelY - 24} textAnchor={left ? "start" : "end"} className="fill-ink-soft text-[11px]">
+                  <path d={`M${site.x + 90} ${site.y} L${left ? 200 : 350} ${labelY} H${left ? 20 : 524}`} className="fill-none stroke-accent/50" strokeWidth="1" />
+                  <circle cx={site.x + 90} cy={site.y} r="3" className="fill-accent" />
+                  <rect x={left ? 8 : 540 - largura} y={labelY - 35} width={largura} height="32" rx="3" className="fill-paper" />
+                  <text x={left ? 16 : 524} y={labelY - 24} textAnchor={left ? "start" : "end"} className="fill-ink-soft text-[11px]">
                     {rotulo}
                   </text>
-                  <text x={left ? 48 : 632} y={labelY - 9} textAnchor={left ? "start" : "end"} className="fill-accent font-mono text-[14px] font-semibold">{valor}</text>
+                  <text x={left ? 16 : 524} y={labelY - 9} textAnchor={left ? "start" : "end"} className="fill-accent font-mono text-[14px] font-semibold">{valor}</text>
                 </g>
                 );
               })}
