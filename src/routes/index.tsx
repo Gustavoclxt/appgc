@@ -189,7 +189,8 @@ function Index() {
 
   function avancar() {
     setEtapa((e) => Math.min(ETAPAS.length, e + 1));
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Subida imediata: a animação suave demora em páginas longas (especialmente no mobile).
+    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   }
 
   const props = { a: dados, set, d: derivados };
