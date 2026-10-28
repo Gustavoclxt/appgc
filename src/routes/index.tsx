@@ -244,23 +244,23 @@ function Index() {
             </h1>
           </div>
           {etapa === 1 && (
-            <button
-              type="button"
-              onClick={() => {
-                setDados(createExampleAssessment());
-                setAnalise(null);
-                setComposicao(null);
-                toast.success("Formulário preenchido com paciente fictício.");
-              }}
-              className="rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90"
-            >
-              Preencher Exemplo
-            </button>
-          )}
-          {etapa === 1 && (
-            <Field label="Data da avaliação" className="w-[165px]">
-              <TextInput type="date" value={dados.dataAvaliacao} onChange={(v) => set("dataAvaliacao", v)} />
-            </Field>
+            <div className="ml-auto flex items-end gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setDados(createExampleAssessment());
+                  setAnalise(null);
+                  setComposicao(null);
+                  toast.success("Formulário preenchido com paciente fictício.");
+                }}
+                className="rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90"
+              >
+                Preencher Exemplo
+              </button>
+              <Field label="Data da avaliação" className="w-[165px]">
+                <TextInput type="date" value={dados.dataAvaliacao} onChange={(v) => set("dataAvaliacao", v)} />
+              </Field>
+            </div>
           )}
 
         </div>
