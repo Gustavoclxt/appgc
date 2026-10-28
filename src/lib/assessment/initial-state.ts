@@ -75,6 +75,7 @@ export function createEmptyAssessment(): Assessment {
     saidaTrabalho: "",
     intervaloRefeicoes: "",
     intervaloRefeicoesHorarios: "",
+    praticaAtividadeFisica: "",
     cozinhaTrabalho: "",
 
     modalidades: [],
