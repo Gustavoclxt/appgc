@@ -14,10 +14,10 @@ import type { StepProps } from "./types";
 
 type GrupoAntropometrico = ReturnType<typeof agruparAntropometria>[number];
 
-function TabelaIndicadores({ titulo, indicadores }: { titulo: string; indicadores: GrupoAntropometrico["indicadores"] }) {
+function TabelaIndicadores({ categoria, indicadores }: { categoria: string; indicadores: GrupoAntropometrico["indicadores"] }) {
   return (
     <div className="min-w-0 flex-1">
-      <h3 className="mb-2 font-display text-sm font-semibold text-accent">{titulo}</h3>
+      <h3 className="mb-2 font-display text-sm font-semibold text-accent">{categoria}</h3>
       <div className="overflow-x-auto">
         <table className="w-auto text-left text-[13px]">
           <tbody>
