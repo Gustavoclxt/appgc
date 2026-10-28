@@ -11,6 +11,16 @@ const imagens: Record<SexoSilhueta, Record<VistaSilhueta, string>> = {
   feminino: { front: femFrente.url, back: femCostas.url },
 };
 
+let contextoMedicao: CanvasRenderingContext2D | null | undefined;
+/** Largura do texto renderizado, medida no cliente; estimativa no SSR. */
+function larguraTexto(texto: string, fonte: string): number {
+  if (typeof document === "undefined") return texto.length * (fonte.includes("mono") ? 8.4 : 5.8);
+  contextoMedicao ??= document.createElement("canvas").getContext("2d");
+  if (!contextoMedicao) return texto.length * 6;
+  contextoMedicao.font = fonte;
+  return contextoMedicao.measureText(texto).width;
+}
+
 export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadores: IndicadorAntropometrico[]; categoria: CategoriaAntropometrica; sexo: SexoSilhueta }) {
   const measurements = bodyMeasurements(indicadores, categoria, sexo);
   const views = categoria === "Dobras cutâneas" ? (["front", "back"] as const) : (["front"] as const);
@@ -35,18 +45,23 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
           <figure key={view} className={ladoALado ? "w-[590px]" : "mx-auto w-full max-w-[590px]"}>
             <svg viewBox="0 0 640 540" className="h-auto w-full overflow-visible" role="img" aria-label={categoria}>
               <image href={imagens[sexo][view]} x={silhueta.x + 160} y={silhueta.y} width={silhueta.width} height={silhueta.height} />
-              {labels.map(({ indicador, site, labelY, left }) => (
+              {labels.map(({ indicador, site, labelY, left }) => {
+                const rotulo = rotuloIndicador(indicador.nome, categoria);
+                const valor = valorComUnidade(indicador, categoria);
+                const largura = Math.ceil(Math.max(larguraTexto(rotulo, "11px sans-serif"), larguraTexto(valor, "bold 14px monospace"))) + 14;
+                return (
                 <g key={indicador.id}>
-                  <title>{`${rotuloIndicador(indicador.nome, categoria)}: ${valorComUnidade(indicador, categoria)}`}</title>
+                  <title>{`${rotulo}: ${valor}`}</title>
                   <path d={`M${site.x + 160} ${site.y} L${left ? 270 : 410} ${labelY} H${left ? 52 : 598}`} className="fill-none stroke-accent/50" strokeWidth="1" />
                   <circle cx={site.x + 160} cy={site.y} r="3" className="fill-accent" />
-                  <rect x={left ? 40 : 480} y={labelY - 37} width="160" height="36" rx="3" className="fill-paper" />
+                  <rect x={left ? 40 : 640 - largura} y={labelY - 35} width={largura} height="32" rx="3" className="fill-paper" />
                   <text x={left ? 48 : 632} y={labelY - 24} textAnchor={left ? "start" : "end"} className="fill-ink-soft text-[11px]">
-                    {rotuloIndicador(indicador.nome, categoria)}
+                    {rotulo}
                   </text>
-                  <text x={left ? 48 : 632} y={labelY - 9} textAnchor={left ? "start" : "end"} className="fill-accent font-mono text-[14px] font-semibold">{valorComUnidade(indicador, categoria)}</text>
+                  <text x={left ? 48 : 632} y={labelY - 9} textAnchor={left ? "start" : "end"} className="fill-accent font-mono text-[14px] font-semibold">{valor}</text>
                 </g>
-              ))}
+                );
+              })}
             </svg>
           </figure>
         );
