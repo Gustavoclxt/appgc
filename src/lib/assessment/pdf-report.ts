@@ -428,7 +428,7 @@ export const nomeArquivoPdf = (dataAvaliacao: string, nome: string) => {
     const [aHj, mHj] = hoje.split("-");
     const mes = MESES_EXTENSO[Number(mHj) - 1] ?? "Janeiro";
     mesExt = mes;
-    ano = aHj;
+    ano = aHj ?? "";
   }
   const nomePaciente = (nome || "").replace(/\s+/g, " ").trim();
   return `Avaliação de 1ª consulta ${mesExt} ${ano} - ${nomePaciente || "Paciente"}.pdf`;
