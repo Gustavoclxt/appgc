@@ -29,4 +29,11 @@ describe("slider de hidratação", () => {
     expect(formatarLitrosAgua(1.5)).toBe("1,5 L/dia");
     expect(formatarLitrosAgua(0)).toBe("0 L/dia");
   });
+
+  it("marca a régua de 0,5 em 0,5 litros até 6 L", () => {
+    expect(escalaAgua).toHaveLength(13);
+    expect(escalaAgua[0]).toBe(0);
+    expect(escalaAgua[6]).toBe(3);
+    expect(escalaAgua[escalaAgua.length - 1]).toBe(AGUA_MAX);
+  });
 });
