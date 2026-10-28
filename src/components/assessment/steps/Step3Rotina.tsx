@@ -730,7 +730,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
               </div>
 
               {r.refeicao.trim().toLocaleLowerCase("pt-BR") === "jantar" && (
-                <div className="mt-3">
+                <div className="mt-3 flex justify-end">
                   <RowButton
                     onClick={() => {
                       const almoco = a.diarioAlimentar.find(
