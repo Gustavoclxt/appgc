@@ -37,7 +37,7 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
               <image href={imagens[sexo][view]} x={silhueta.x + 160} y={silhueta.y} width={silhueta.width} height={silhueta.height} />
               {labels.map(({ indicador, site, labelY, left }) => (
                 <g key={indicador.id}>
-                  <title>{`${rotuloIndicador(indicador.nome, categoria)}: ${valorComUnidade(indicador)}`}</title>
+                  <title>{`${rotuloIndicador(indicador.nome, categoria)}: ${valorComUnidade(indicador, categoria)}`}</title>
                   <path d={`M${site.x + 160} ${site.y} L${left ? 270 : 410} ${labelY} H${left ? 52 : 598}`} className="fill-none stroke-accent/50" strokeWidth="1" />
                   <circle cx={site.x + 160} cy={site.y} r="3" className="fill-accent" />
                   <rect x={left ? 40 : 480} y={labelY - 37} width="160" height="36" rx="3" className="fill-paper" />
