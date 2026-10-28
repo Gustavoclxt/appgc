@@ -123,8 +123,8 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
               <div className="space-y-6">
                 {Array.from({ length: pares }, (_, k) => (
                   <div key={`par-${k}`} className="flex flex-wrap items-start gap-x-12 gap-y-6">
-                    {medidas[k] && <TabelaIndicadores titulo={medidas[k].categoria} indicadores={medidas[k].indicadores} />}
-                    {resultados[k] && <TabelaIndicadores titulo={resultados[k].categoria} indicadores={resultados[k].indicadores} />}
+                    {medidas[k] && <TabelaIndicadores categoria={medidas[k].categoria} indicadores={medidas[k].indicadores} />}
+                    {resultados[k] && <TabelaIndicadores categoria={resultados[k].categoria} indicadores={resultados[k].indicadores} />}
                   </div>
                 ))}
                 {outros.map((grupo) => {
@@ -139,7 +139,7 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
                           </div>
                         </div>
                       ) : (
-                        <TabelaIndicadores titulo={grupo.categoria} indicadores={grupo.indicadores} />
+                        <TabelaIndicadores categoria={grupo.categoria} indicadores={grupo.indicadores} />
                       )}
                     </section>
                   );
