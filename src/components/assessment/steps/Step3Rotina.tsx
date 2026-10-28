@@ -195,13 +195,6 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                 options={simNao}
               />
             </Field>
-            <Field label="Possui cozinha/copa no trabalho?" className="mt-5">
-              <OptionRow
-                value={a.cozinhaTrabalho}
-                onChange={(v) => set("cozinhaTrabalho", v as typeof a.cozinhaTrabalho)}
-                options={simNao}
-              />
-            </Field>
           </div>
         </div>
         {d.jornada && (
