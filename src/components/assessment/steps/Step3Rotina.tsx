@@ -179,21 +179,14 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                 )}
               </div>
             </Field>
-            <Field label="Pratica atividade física?" className="mt-5">
+            <Field label="Possui cozinha/copa no trabalho?" className="mt-5">
               <OptionRow
-                value={a.praticaAtividadeFisica}
-                onChange={(v) => set("praticaAtividadeFisica", v as typeof a.praticaAtividadeFisica)}
+                value={a.cozinhaTrabalho}
+                onChange={(v) => set("cozinhaTrabalho", v as typeof a.cozinhaTrabalho)}
                 options={simNao}
               />
             </Field>
           </div>
-          <Field label="Possui cozinha/copa no trabalho?">
-            <OptionRow
-              value={a.cozinhaTrabalho}
-              onChange={(v) => set("cozinhaTrabalho", v as typeof a.cozinhaTrabalho)}
-              options={simNao}
-            />
-          </Field>
         </div>
         {d.jornada && (
           <p className="mt-4 rounded-[10px] bg-accent-soft/70 px-4 py-3 font-mono text-[12px] text-accent ring-1 ring-accent/15">
