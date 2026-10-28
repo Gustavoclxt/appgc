@@ -400,6 +400,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                 <div className="w-[170px]">
                   <Select
                     aria-label="Com qual frequência"
+                    placeholder="Frequência"
                     value={a.fritosFrequencia}
                     onChange={(v) => set("fritosFrequencia", v)}
                     options={[
