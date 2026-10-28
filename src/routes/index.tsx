@@ -252,7 +252,7 @@ function Index() {
                 setComposicao(null);
                 toast.success("Formulário preenchido com paciente fictício.");
               }}
-              className="rounded-[10px] bg-white px-5 py-2.5 text-sm font-medium text-ink ring-1 ring-line transition-colors hover:bg-white/70"
+              className="rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90"
             >
               Preencher Exemplo
             </button>
