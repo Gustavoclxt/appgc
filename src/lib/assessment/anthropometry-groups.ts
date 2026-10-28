@@ -16,6 +16,12 @@ export function categoriaAntropometrica(i: Pick<IndicadorAntropometrico, "nome" 
   return "Outros indicadores";
 }
 
+/** Rótulo curto para exibição: abrevia "Dobra(s) cutânea(s)" para "DC" (ex.: "DC Abdominal"); o valor guardado permanece original. */
+export function rotuloIndicador(nome: string): string {
+  const abreviado = nome.replace(/dobras?\s+cut[âa]ne[oa]s?/gi, "DC");
+  return abreviado.replace(/^(DC)(\s*)(\p{L})/u, (_, dc, espaco, letra) => `${dc}${espaco}${letra.toUpperCase()}`);
+}
+
 /** Exibe o valor já acompanhado da unidade, ex.: "1,60 m" ou "73,10 kg". */
 export function valorComUnidade(i: Pick<IndicadorAntropometrico, "valor" | "unidade">): string {
   const valor = i.valor.trim();

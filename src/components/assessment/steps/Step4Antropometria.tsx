@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 import { extrairAntropometria } from "@/lib/assessment/analysis.functions";
 import { fmt2, fmtData } from "@/lib/assessment/calculations";
-import { agruparAntropometria, valorComUnidade } from "@/lib/assessment/anthropometry-groups";
+import { agruparAntropometria, rotuloIndicador, valorComUnidade } from "@/lib/assessment/anthropometry-groups";
 import { extractPdfText } from "@/lib/assessment/extract-pdf-text";
 import { novoId } from "@/lib/assessment/initial-state";
 import { AnthropometryBody } from "../AnthropometryBody";
@@ -23,7 +23,7 @@ function TabelaIndicadores({ titulo, indicadores }: { titulo: string; indicadore
           <tbody>
             {indicadores.map((i) => (
               <tr key={i.id} className="border-t border-line/70">
-                <td className="py-2 pr-4 text-ink">{i.nome}</td>
+                <td className="py-2 pr-4 text-ink">{rotuloIndicador(i.nome)}</td>
                 <td className="py-2 pl-6 font-mono">{valorComUnidade(i)}</td>
               </tr>
             ))}
