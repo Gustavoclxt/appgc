@@ -23,28 +23,28 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
         // Place labels in two rails with stable spacing, retaining exact anatomical markers.
         const labels = [true, false].flatMap(left => {
           const entries = items.filter(m => (m.site.x <= 180) === left).sort((a, b) => a.site.y - b.site.y);
-          let previous = 78;
+          let previous = 84;
           return entries.map((m, index) => {
-            const y = Math.min(490 - (entries.length - index - 1) * 43, Math.max(m.site.y, previous + 43));
+            const y = Math.min(490 - (entries.length - index - 1) * 52, Math.max(m.site.y, previous + 52));
             previous = y;
             return { ...m, labelY: y, left };
           });
         });
         const silhueta = SILHUETAS[sexo][view];
         return (
-          <figure key={view} className={ladoALado ? "w-[440px]" : "mx-auto w-full max-w-[440px]"}>
-            <svg viewBox="0 0 480 540" className="h-auto w-full overflow-visible" role="img" aria-label={categoria}>
-              <image href={imagens[sexo][view]} x={silhueta.x + 60} y={silhueta.y} width={silhueta.width} height={silhueta.height} />
+          <figure key={view} className={ladoALado ? "w-[590px]" : "mx-auto w-full max-w-[590px]"}>
+            <svg viewBox="0 0 640 540" className="h-auto w-full overflow-visible" role="img" aria-label={categoria}>
+              <image href={imagens[sexo][view]} x={silhueta.x + 160} y={silhueta.y} width={silhueta.width} height={silhueta.height} />
               {labels.map(({ indicador, site, labelY, left }) => (
                 <g key={indicador.id}>
                   <title>{`${indicador.nome}: ${valorComUnidade(indicador)}`}</title>
-                  <path d={`M${site.x + 60} ${site.y} L${left ? 170 : 310} ${labelY} H${left ? 8 : 472}`} className="fill-none stroke-accent/50" strokeWidth="1" />
-                  <circle cx={site.x + 60} cy={site.y} r="3" className="fill-accent" />
-                  <rect x={left ? 0 : 358} y={labelY - 31} width="122" height="30" rx="3" className="fill-paper" />
-                  <text x={left ? 4 : 476} y={labelY - 19} textAnchor={left ? "start" : "end"} className="fill-ink-soft text-[10px]">
+                  <path d={`M${site.x + 160} ${site.y} L${left ? 270 : 410} ${labelY} H${left ? 52 : 598}`} className="fill-none stroke-accent/50" strokeWidth="1" />
+                  <circle cx={site.x + 160} cy={site.y} r="3" className="fill-accent" />
+                  <rect x={left ? 40 : 480} y={labelY - 37} width="160" height="36" rx="3" className="fill-paper" />
+                  <text x={left ? 48 : 632} y={labelY - 24} textAnchor={left ? "start" : "end"} className="fill-ink-soft text-[11px]">
                     {indicador.nome}
                   </text>
-                  <text x={left ? 4 : 476} y={labelY - 5} textAnchor={left ? "start" : "end"} className="fill-accent font-mono text-[12px] font-semibold">{valorComUnidade(indicador)}</text>
+                  <text x={left ? 48 : 632} y={labelY - 9} textAnchor={left ? "start" : "end"} className="fill-accent font-mono text-[14px] font-semibold">{valorComUnidade(indicador)}</text>
                 </g>
               ))}
             </svg>
