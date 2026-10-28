@@ -732,6 +732,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
               {r.refeicao.trim().toLocaleLowerCase("pt-BR") === "jantar" && (
                 <div className="mt-3 flex justify-end">
                   <RowButton
+                    className="bg-accent text-white ring-accent/40 hover:bg-accent/90"
                     onClick={() => {
                       const almoco = a.diarioAlimentar.find(
                         (refeicao) => refeicao.refeicao.trim().toLocaleLowerCase("pt-BR") === "almoço",
@@ -758,6 +759,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
               {r.refeicao.trim().toLocaleLowerCase("pt-BR") === "lanche da tarde" && (
                 <div className="mt-3 flex justify-end">
                   <RowButton
+                    className="bg-accent text-white ring-accent/40 hover:bg-accent/90"
                     onClick={() => {
                       const desjejum = a.diarioAlimentar.find(
                         (refeicao) => refeicao.refeicao.trim().toLocaleLowerCase("pt-BR") === "desjejum",
