@@ -399,10 +399,35 @@ export function generatePDF(
     doc.text(`${i}/${paginas}`, LARGURA - MARGEM, ALTURA - 10, { align: "right" });
   }
 
-  const nomeArquivo = `avaliacao-nutricional-${(a.nome || "paciente")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-zA-Z0-9]+/g, "-")
-    .toLowerCase()}.pdf`;
-  doc.save(nomeArquivo);
+  doc.save(nomeArquivoPdf(a.dataAvaliacao, a.nome));
 }
+
+const MESES_EXTENSO = [
+  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
+] as const;
+
+export const nomeArquivoPdf = (dataAvaliacao: string, nome: string) => {
+  let mesExt = null as string | null;
+  let ano = null as string | null;
+  const m = /^(\d{4})-(\d{2})/.exec((dataAvaliacao || "").trim());
+  if (m) {
+    const indiceMes = Number(m[2]) - 1;
+    if (indiceMes >= 0 && indiceMes < 12) {
+      mesExt = MESES_EXTENSO[indiceMes];
+      ano = m[1];
+    }
+  }
+  if (!mesExt || !ano) {
+    const hoje = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "America/Sao_Paulo",
+      year: "numeric",
+      month: "2-digit",
+    }).format(new Date());
+    const [aHj, mHj] = hoje.split("-");
+    mesExt = MESES_EXTENSO[Number(mHj) - 1];
+    ano = aHj;
+  }
+  const nomePaciente = (nome || "").replace(/\s+/g, " ").trim();
+  return `Avaliação de 1ª consulta ${mesExt} ${ano} - ${nomePaciente || "Paciente"}.pdf`;
+};
