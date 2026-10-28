@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { formatarLitros, formatarLitrosAgua, lerLitrosAgua } from "./hydration";
+import { AGUA_MAX, escalaAgua, formatarLitros, formatarLitrosAgua, lerLitrosAgua } from "./hydration";
 
 describe("slider de hidratação", () => {
   it("lê litros a partir do valor armazenado na sessão", () => {

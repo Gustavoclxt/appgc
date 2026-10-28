@@ -296,15 +296,31 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           </Field>
           <Field label="Consumo diário de água">
             <div className="flex items-center gap-4">
-              <Slider
-                value={[lerLitrosAgua(a.consumoAgua)]}
-                min={AGUA_MIN}
-                max={AGUA_MAX}
-                step={AGUA_PASSO}
-                aria-label="Consumo diário de água"
-                onValueChange={([v]) => set("consumoAgua", formatarLitrosAgua(v ?? 0))}
-                className="w-full"
-              />
+              <div className="min-w-0 flex-1">
+                <Slider
+                  value={[lerLitrosAgua(a.consumoAgua)]}
+                  min={AGUA_MIN}
+                  max={AGUA_MAX}
+                  step={AGUA_PASSO}
+                  aria-label="Consumo diário de água"
+                  onValueChange={([v]) => set("consumoAgua", formatarLitrosAgua(v ?? 0))}
+                  className="w-full"
+                />
+                <div aria-hidden className="relative mt-2 h-4">
+                  {escalaAgua.map((litros) => (
+                    <span
+                      key={litros}
+                      className="absolute top-0 flex -translate-x-1/2 flex-col items-center"
+                      style={{ left: `${(litros / AGUA_MAX) * 100}%` }}
+                    >
+                      <span className="h-1.5 w-px bg-line" />
+                      <span className="mt-1 font-mono text-[10px] leading-none text-ink-soft">
+                        {formatarLitros(litros)}
+                      </span>
+                    </span>
+                  ))}
+                </div>
+              </div>
               <span className="min-w-[5.5rem] text-right font-mono text-2xl font-medium tracking-tight tabular-nums text-accent">
                 {formatarLitros(lerLitrosAgua(a.consumoAgua))}
                 <span className="ml-1.5 align-baseline text-[11px] font-medium text-ink-soft">L/dia</span>
