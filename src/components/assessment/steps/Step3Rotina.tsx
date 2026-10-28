@@ -926,7 +926,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
               ]}
             />
           </Field>
-          <Field label="Altura referida">
+          <Field label="Altura referida" className="w-full sm:w-[150px]">
             <UnitInput
               value={a.alturaReferida}
               onChange={(v) => set("alturaReferida", v)}
@@ -935,7 +935,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
               casas={2}
             />
           </Field>
-          <Field label="Peso referido">
+          <Field label="Peso referido" className="w-full sm:w-[150px]">
             <UnitInput value={a.pesoReferido} onChange={(v) => set("pesoReferido", v)} unidade="kg" placeholder="78,4" />
           </Field>
           <Field label="Observações" className="sm:col-span-2">
