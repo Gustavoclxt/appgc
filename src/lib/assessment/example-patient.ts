@@ -63,7 +63,7 @@ export function createExampleAssessment(): Assessment {
     comeForaDias: "Sábado e domingo",
     consomeFritos: "as-vezes",
     fritosFrequencia: "1x/semana",
-    horariosFome: ["Meio da tarde"],
+    horariosFome: ["Tarde"],
     observacoesFome: "Vontade de doce após o almoço",
     habitoBeliscar: "sim",
     beliscarDescricao: "Biscoitos no trabalho",
