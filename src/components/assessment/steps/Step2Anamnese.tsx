@@ -353,8 +353,8 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
         </div>
 
         <h2 className="mb-3 mt-7 font-display text-base font-semibold tracking-tight">Sono</h2>
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-        <div className="flex items-end gap-1 sm:col-span-2">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div className="flex items-end gap-1">
           <Field label="Dorme" className="w-[120px]">
             <TextInput type="time" value={a.horaDormir} onChange={(v) => set("horaDormir", v)} />
           </Field>
