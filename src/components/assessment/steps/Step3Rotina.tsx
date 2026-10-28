@@ -421,12 +421,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
               onChange={(v) => set("horariosFome", v)}
               options={[
                 "Manhã",
-                "Meio da manhã",
-                "Almoço",
-                "Meio da tarde",
                 "Tarde",
-                "Final da tarde",
-                "Jantar",
                 "Noite",
                 "Madrugada",
               ].map((x) => ({ value: x, label: x }))}
