@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 import { extrairAntropometria } from "@/lib/assessment/analysis.functions";
 import { fmt2, fmtData } from "@/lib/assessment/calculations";
-import { agruparAntropometria, rotuloIndicador, valorComUnidade } from "@/lib/assessment/anthropometry-groups";
+import { agruparAntropometria, rotuloIndicador, valorComUnidade, type CategoriaAntropometrica } from "@/lib/assessment/anthropometry-groups";
 import { extractPdfText } from "@/lib/assessment/extract-pdf-text";
 import { novoId } from "@/lib/assessment/initial-state";
 import { AnthropometryBody } from "../AnthropometryBody";

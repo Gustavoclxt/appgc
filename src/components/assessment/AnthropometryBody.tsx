@@ -44,7 +44,7 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
                   <text x={left ? 48 : 632} y={labelY - 24} textAnchor={left ? "start" : "end"} className="fill-ink-soft text-[11px]">
                     {rotuloIndicador(indicador.nome, categoria)}
                   </text>
-                  <text x={left ? 48 : 632} y={labelY - 9} textAnchor={left ? "start" : "end"} className="fill-accent font-mono text-[14px] font-semibold">{valorComUnidade(indicador)}</text>
+                  <text x={left ? 48 : 632} y={labelY - 9} textAnchor={left ? "start" : "end"} className="fill-accent font-mono text-[14px] font-semibold">{valorComUnidade(indicador, categoria)}</text>
                 </g>
               ))}
             </svg>
