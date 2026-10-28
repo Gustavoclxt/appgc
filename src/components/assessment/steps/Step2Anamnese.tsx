@@ -306,18 +306,21 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
                   onValueChange={([v]) => set("consumoAgua", formatarLitrosAgua(v ?? 0))}
                   className="w-full"
                 />
-                <div aria-hidden className="relative mt-2 h-4">
+                <div className="relative mt-2 h-6">
                   {escalaAgua.map((litros) => (
-                    <span
+                    <button
                       key={litros}
-                      className="absolute top-0 flex -translate-x-1/2 flex-col items-center"
+                      type="button"
+                      aria-label={`Selecionar ${formatarLitros(litros)} L/dia`}
+                      onClick={() => set("consumoAgua", formatarLitrosAgua(litros))}
+                      className="absolute top-0 flex -translate-x-1/2 cursor-pointer flex-col items-center rounded-sm outline-none transition-colors hover:text-accent focus-visible:ring-2 focus-visible:ring-accent/40"
                       style={{ left: `${(litros / AGUA_MAX) * 100}%` }}
                     >
                       <span className="h-1.5 w-px bg-line" />
                       <span className="mt-1 font-mono text-[10px] leading-none text-ink-soft">
                         {formatarLitros(litros)}
                       </span>
-                    </span>
+                    </button>
                   ))}
                 </div>
               </div>
