@@ -149,12 +149,21 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
     <div className="space-y-6">
       <Panel titulo="Rotina de trabalho/faculdade">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <div className="flex items-start gap-1">
-            <Field label="Entrada" className="w-[120px]">
-              <TextInput type="time" value={a.entradaTrabalho} onChange={(v) => set("entradaTrabalho", v)} />
-            </Field>
-            <Field label="Saída" className="w-[120px]">
-              <TextInput type="time" value={a.saidaTrabalho} onChange={(v) => set("saidaTrabalho", v)} />
+          <div className="flex flex-col items-start gap-5">
+            <div className="flex items-start gap-1">
+              <Field label="Entrada" className="w-[120px]">
+                <TextInput type="time" value={a.entradaTrabalho} onChange={(v) => set("entradaTrabalho", v)} />
+              </Field>
+              <Field label="Saída" className="w-[120px]">
+                <TextInput type="time" value={a.saidaTrabalho} onChange={(v) => set("saidaTrabalho", v)} />
+              </Field>
+            </div>
+            <Field label="Possui cozinha/copa no trabalho?">
+              <OptionRow
+                value={a.cozinhaTrabalho}
+                onChange={(v) => set("cozinhaTrabalho", v as typeof a.cozinhaTrabalho)}
+                options={simNao}
+              />
             </Field>
           </div>
           <div>
@@ -183,13 +192,6 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
               <OptionRow
                 value={a.praticaAtividadeFisica}
                 onChange={(v) => set("praticaAtividadeFisica", v as typeof a.praticaAtividadeFisica)}
-                options={simNao}
-              />
-            </Field>
-            <Field label="Possui cozinha/copa no trabalho?" className="mt-5">
-              <OptionRow
-                value={a.cozinhaTrabalho}
-                onChange={(v) => set("cozinhaTrabalho", v as typeof a.cozinhaTrabalho)}
                 options={simNao}
               />
             </Field>
