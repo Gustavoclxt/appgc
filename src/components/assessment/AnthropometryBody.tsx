@@ -32,19 +32,19 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
         });
         const silhueta = SILHUETAS[sexo][view];
         return (
-          <figure key={view} className={ladoALado ? "w-[590px]" : "mx-auto w-full max-w-[590px]"}>
-            <svg viewBox="0 0 640 540" className="h-auto w-full overflow-visible" role="img" aria-label={categoria}>
+          <figure key={view} className={ladoALado ? "w-[460px]" : "mx-auto w-full max-w-[460px]"}>
+            <svg viewBox="0 0 500 540" className="h-auto w-full overflow-visible" role="img" aria-label={categoria}>
               <image href={imagens[sexo][view]} x={silhueta.x + 160} y={silhueta.y} width={silhueta.width} height={silhueta.height} />
               {labels.map(({ indicador, site, labelY, left }) => (
                 <g key={indicador.id}>
                   <title>{`${indicador.nome}: ${valorComUnidade(indicador)}`}</title>
-                  <path d={`M${site.x + 160} ${site.y} L${left ? 270 : 410} ${labelY} H${left ? 52 : 598}`} className="fill-none stroke-accent/50" strokeWidth="1" />
+                  <path d={`M${site.x + 160} ${site.y} L${left ? 270 : 300} ${labelY} H${left ? 52 : 482}`} className="fill-none stroke-accent/50" strokeWidth="1" />
                   <circle cx={site.x + 160} cy={site.y} r="3" className="fill-accent" />
-                  <rect x={left ? 40 : 480} y={labelY - 37} width="160" height="36" rx="3" className="fill-paper" />
-                  <text x={left ? 48 : 632} y={labelY - 24} textAnchor={left ? "start" : "end"} className="fill-ink-soft text-[11px]">
+                  <rect x={left ? 40 : 322} y={labelY - 37} width="160" height="36" rx="3" className="fill-paper" />
+                  <text x={left ? 48 : 474} y={labelY - 24} textAnchor={left ? "start" : "end"} className="fill-ink-soft text-[11px]">
                     {indicador.nome}
                   </text>
-                  <text x={left ? 48 : 632} y={labelY - 9} textAnchor={left ? "start" : "end"} className="fill-accent font-mono text-[14px] font-semibold">{valorComUnidade(indicador)}</text>
+                  <text x={left ? 48 : 474} y={labelY - 9} textAnchor={left ? "start" : "end"} className="fill-accent font-mono text-[14px] font-semibold">{valorComUnidade(indicador)}</text>
                 </g>
               ))}
             </svg>
