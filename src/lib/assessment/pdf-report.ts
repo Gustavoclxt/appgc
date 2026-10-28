@@ -408,13 +408,14 @@ const MESES_EXTENSO = [
 ] as const;
 
 export const nomeArquivoPdf = (dataAvaliacao: string, nome: string) => {
-  let mesExt = null as string | null;
-  let ano = null as string | null;
+  let mesExt: string | null = null;
+  let ano: string | null = null;
   const m = /^(\d{4})-(\d{2})/.exec((dataAvaliacao || "").trim());
   if (m) {
     const indiceMes = Number(m[2]) - 1;
-    if (indiceMes >= 0 && indiceMes < 12) {
-      mesExt = MESES_EXTENSO[indiceMes];
+    const mes = indiceMes >= 0 && indiceMes < 12 ? MESES_EXTENSO[indiceMes] : undefined;
+    if (mes) {
+      mesExt = mes;
       ano = m[1];
     }
   }
@@ -425,7 +426,8 @@ export const nomeArquivoPdf = (dataAvaliacao: string, nome: string) => {
       month: "2-digit",
     }).format(new Date());
     const [aHj, mHj] = hoje.split("-");
-    mesExt = MESES_EXTENSO[Number(mHj) - 1];
+    const mes = MESES_EXTENSO[Number(mHj) - 1] ?? MESES_EXTENSO[0];
+    mesExt = mes;
     ano = aHj;
   }
   const nomePaciente = (nome || "").replace(/\s+/g, " ").trim();
