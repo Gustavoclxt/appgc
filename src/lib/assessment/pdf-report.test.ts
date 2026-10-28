@@ -46,3 +46,19 @@ describe("Composições independentes no PDF", () => {
     expect(textos.filter(t => /^\d[\d.]* kcal$/.test(t))).toEqual(["1.546 kcal"]);
   });
 });
+
+describe("Nome do arquivo do PDF", () => {
+  it("usa mês por extenso, ano e nome completo do paciente", () => {
+    arquivos.length = 0;
+    const a = { ...createEmptyAssessment(), dataAvaliacao: "2026-10-28", nome: "Guilherme Calixto" };
+    generatePDF(a, deriveResults(a), null, composicao(1546, 164.4));
+    expect(arquivos).toEqual(["Avaliação de 1ª consulta Outubro 2026 - Guilherme Calixto.pdf"]);
+  });
+
+  it("mantém o nome completo do paciente com acentos e sobrenomes", () => {
+    arquivos.length = 0;
+    const a = { ...createEmptyAssessment(), dataAvaliacao: "2026-01-05", nome: "Mariana Souza Lima" };
+    generatePDF(a, deriveResults(a), null, composicao(1546, 164.4));
+    expect(arquivos).toEqual(["Avaliação de 1ª consulta Janeiro 2026 - Mariana Souza Lima.pdf"]);
+  });
+});
