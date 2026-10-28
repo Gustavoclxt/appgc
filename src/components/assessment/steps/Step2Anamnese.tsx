@@ -1,5 +1,7 @@
 import { novoId } from "@/lib/assessment/initial-state";
 import { podeAnexarExames } from "@/lib/assessment/anthropometry-groups";
+import { AGUA_MAX, AGUA_MIN, AGUA_PASSO, formatarLitros, formatarLitrosAgua, lerLitrosAgua } from "@/lib/assessment/hydration";
+import { Slider } from "@/components/ui/slider";
 import { ExamUpload } from "../ExamUpload";
 
 import {
