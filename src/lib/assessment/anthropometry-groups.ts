@@ -24,12 +24,14 @@ export function rotuloIndicador(nome: string, categoria?: CategoriaAntropometric
   return abreviado.replace(/^(DC)(\s*)(\p{L})/u, (_, dc, espaco, letra) => `${dc}${espaco}${letra.toUpperCase()}`);
 }
 
-/** Round only the displayed measurement, preserving the original imported value. */
-export function valorComUnidade(i: Pick<IndicadorAntropometrico, "valor" | "unidade">): string {
+/** Round only the displayed measurement, preserving the original imported value.
+ *  Medidas (altura/peso) keep two decimals; every other group shows one. */
+export function valorComUnidade(i: Pick<IndicadorAntropometrico, "valor" | "unidade">, categoria?: CategoriaAntropometrica): string {
   const original = i.valor.trim();
   const partes = original.match(/^([+-]?\d+(?:[.,]\d+)?)\s*([^\d.,].*)?$/u);
   const numero = parseNumero(partes?.[1] ?? original);
-  const valor = numero === null ? original : numero.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1, useGrouping: false });
+  const casas = categoria === "Medidas" ? 2 : 1;
+  const valor = numero === null ? original : numero.toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas, useGrouping: false });
   const unidade = i.unidade.trim() || partes?.[2]?.trim() || "";
   if (!valor) return unidade || "—";
   if (!unidade) return valor;
