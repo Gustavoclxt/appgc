@@ -3,7 +3,10 @@ import { createEmptyAssessment } from "./initial-state";
 import { deriveResults } from "./calculations";
 import { somarTotais, type ComposicaoDiario } from "./diet-composition";
 
-const { textos } = vi.hoisted(() => ({ textos: [] as string[] }));
+const { textos, arquivos } = vi.hoisted(() => ({
+  textos: [] as string[],
+  arquivos: [] as string[],
+}));
 vi.mock("jspdf", () => ({
   default: class {
     constructor() {
@@ -13,6 +16,7 @@ vi.mock("jspdf", () => ({
           if (key === "splitTextToSize") return (texto: string) => [texto];
           if (key === "getTextWidth") return (texto: string) => texto.length;
           if (key === "getNumberOfPages") return () => 1;
+          if (key === "save") return (nome: string) => { arquivos.push(nome); };
           return () => this;
         },
       });
