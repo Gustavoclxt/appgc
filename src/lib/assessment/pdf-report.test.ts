@@ -3,7 +3,10 @@ import { createEmptyAssessment } from "./initial-state";
 import { deriveResults } from "./calculations";
 import { somarTotais, type ComposicaoDiario } from "./diet-composition";
 
-const { textos } = vi.hoisted(() => ({ textos: [] as string[] }));
+const { textos, arquivos } = vi.hoisted(() => ({
+  textos: [] as string[],
+  arquivos: [] as string[],
+}));
 vi.mock("jspdf", () => ({
   default: class {
     constructor() {
@@ -13,6 +16,7 @@ vi.mock("jspdf", () => ({
           if (key === "splitTextToSize") return (texto: string) => [texto];
           if (key === "getTextWidth") return (texto: string) => texto.length;
           if (key === "getNumberOfPages") return () => 1;
+          if (key === "save") return (nome: string) => { arquivos.push(nome); };
           return () => this;
         },
       });
@@ -40,5 +44,21 @@ describe("Composições independentes no PDF", () => {
     const a = createEmptyAssessment();
     generatePDF(a, deriveResults(a), null, composicao(1546, 164.4));
     expect(textos.filter(t => /^\d[\d.]* kcal$/.test(t))).toEqual(["1.546 kcal"]);
+  });
+});
+
+describe("Nome do arquivo do PDF", () => {
+  it("usa mês por extenso, ano e nome completo do paciente", () => {
+    arquivos.length = 0;
+    const a = { ...createEmptyAssessment(), dataAvaliacao: "2026-10-28", nome: "Guilherme Calixto" };
+    generatePDF(a, deriveResults(a), null, composicao(1546, 164.4));
+    expect(arquivos).toEqual(["Avaliação de 1ª consulta Outubro 2026 - Guilherme Calixto.pdf"]);
+  });
+
+  it("mantém o nome completo do paciente com acentos e sobrenomes", () => {
+    arquivos.length = 0;
+    const a = { ...createEmptyAssessment(), dataAvaliacao: "2026-01-05", nome: "Mariana Souza Lima" };
+    generatePDF(a, deriveResults(a), null, composicao(1546, 164.4));
+    expect(arquivos).toEqual(["Avaliação de 1ª consulta Janeiro 2026 - Mariana Souza Lima.pdf"]);
   });
 });
