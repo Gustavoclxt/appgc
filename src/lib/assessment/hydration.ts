@@ -1,10 +1,10 @@
-// Faixa e formatação do consumo diário de água (slider de 0 a 6 L, em passos de 0,25 L).
+// Faixa e formatação do consumo diário de água (slider de 0 a 6 L, em passos de 0,1 L).
 export const AGUA_MIN = 0;
 export const AGUA_MAX = 6;
-export const AGUA_PASSO = 0.25;
+export const AGUA_PASSO = 0.1;
 
-// Marcação da régua abaixo da trilha: um tick a cada 0,5 L (0, 0,5, 1 … 6).
-export const escalaAgua: number[] = Array.from({ length: AGUA_MAX / 0.5 + 1 }, (_, i) => i * 0.5);
+// Marcação da régua abaixo da trilha: um tick a cada 1 L (0, 1, 2 … 6), clicável.
+export const escalaAgua: number[] = Array.from({ length: AGUA_MAX + 1 }, (_, i) => i);
 
 // Lê litros a partir do valor armazenado (ex.: "1,5 L/dia"); texto livre não reconhecido volta a 0.
 export function lerLitrosAgua(valor: string): number {
