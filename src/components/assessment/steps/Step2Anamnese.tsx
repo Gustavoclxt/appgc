@@ -307,21 +307,25 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
                   className="w-full"
                 />
                 <div className="relative mt-2 h-6">
-                  {escalaAgua.map((litros) => (
-                    <button
-                      key={litros}
-                      type="button"
-                      aria-label={`Selecionar ${formatarLitros(litros)} L/dia`}
-                      onClick={() => set("consumoAgua", formatarLitrosAgua(litros))}
-                      className="absolute top-0 flex -translate-x-1/2 cursor-pointer flex-col items-center rounded-sm outline-none transition-colors hover:text-accent focus-visible:ring-2 focus-visible:ring-accent/40"
-                      style={{ left: `${(litros / AGUA_MAX) * 100}%` }}
-                    >
-                      <span className="h-1.5 w-px bg-line" />
-                      <span className="mt-1 font-mono text-[10px] leading-none text-ink-soft">
-                        {formatarLitros(litros)}
-                      </span>
-                    </button>
-                  ))}
+                  {escalaAgua.map((litros) => {
+                    // Compensa o raio do poleiro (16px): nos extremos a bolinha não encosta nas pontas.
+                    const pct = (litros / AGUA_MAX) * 100;
+                    return (
+                      <button
+                        key={litros}
+                        type="button"
+                        aria-label={`Selecionar ${formatarLitros(litros)} L/dia`}
+                        onClick={() => set("consumoAgua", formatarLitrosAgua(litros))}
+                        className="absolute top-0 flex -translate-x-1/2 cursor-pointer flex-col items-center rounded-sm outline-none transition-colors hover:text-accent focus-visible:ring-2 focus-visible:ring-accent/40"
+                        style={{ left: `calc(${pct}% + ${8 - pct * 0.16}px)` }}
+                      >
+                        <span className="h-1.5 w-px bg-line" />
+                        <span className="mt-1 font-mono text-[10px] leading-none text-ink-soft">
+                          {formatarLitros(litros)}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
               <span className="min-w-[5.5rem] text-right font-mono text-2xl font-medium tracking-tight tabular-nums text-accent">
