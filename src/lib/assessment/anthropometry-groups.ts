@@ -17,15 +17,20 @@ export function categoriaAntropometrica(i: Pick<IndicadorAntropometrico, "nome" 
 }
 
 /** Rótulo curto para exibição: abrevia "Dobra(s) cutânea(s)" para "DC" (ex.: "DC Abdominal"); o valor guardado permanece original. */
-export function rotuloIndicador(nome: string): string {
-  const abreviado = nome.replace(/dobras?\s+cut[âa]ne[oa]s?/gi, "DC");
+export function rotuloIndicador(nome: string, categoria?: CategoriaAntropometrica): string {
+  let abreviado = nome.trim().replace(/dobras?\s+cut[âa]ne[oa]s?/gi, "DC");
+  // Imported PDFs often contain only the body site, without the skinfold prefix.
+  if (categoria === "Dobras cutâneas" && !/^DC\b/i.test(abreviado)) abreviado = `DC ${abreviado}`;
   return abreviado.replace(/^(DC)(\s*)(\p{L})/u, (_, dc, espaco, letra) => `${dc}${espaco}${letra.toUpperCase()}`);
 }
 
-/** Exibe o valor já acompanhado da unidade, ex.: "1,60 m" ou "73,10 kg". */
+/** Round only the displayed measurement, preserving the original imported value. */
 export function valorComUnidade(i: Pick<IndicadorAntropometrico, "valor" | "unidade">): string {
-  const valor = i.valor.trim();
-  const unidade = i.unidade.trim();
+  const original = i.valor.trim();
+  const partes = original.match(/^([+-]?\d+(?:[.,]\d+)?)\s*([^\d.,].*)?$/u);
+  const numero = parseNumero(partes?.[1] ?? original);
+  const valor = numero === null ? original : numero.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1, useGrouping: false });
+  const unidade = i.unidade.trim() || partes?.[2]?.trim() || "";
   if (!valor) return unidade || "—";
   if (!unidade) return valor;
   return unidade.startsWith("%") ? `${valor}${unidade}` : `${valor} ${unidade}`;
