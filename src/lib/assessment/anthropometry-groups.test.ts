@@ -56,4 +56,10 @@ describe("valor com unidade", () => {
     expect(valorComUnidade({ valor: "16", unidade: "mm" })).toBe("16,0 mm");
     expect(valorComUnidade({ valor: "112.50 cm", unidade: "cm" })).toBe("112,5 cm");
   });
+  it("mantém duas casas decimais nas Medidas (altura e peso)", () => {
+    expect(valorComUnidade({ valor: "1,50", unidade: "m" }, "Medidas")).toBe("1,50 m");
+    expect(valorComUnidade({ valor: "63,58", unidade: "Kg" }, "Medidas")).toBe("63,58 Kg");
+    expect(valorComUnidade({ valor: "63,6 Kg", unidade: "" }, "Medidas")).toBe("63,60 Kg");
+    expect(valorComUnidade({ valor: "63,58", unidade: "Kg" }, "Circunferências")).toBe("63,6 Kg");
+  });
 });
