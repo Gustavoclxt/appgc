@@ -5,9 +5,9 @@ export const AGUA_PASSO = 0.25;
 
 // Lê litros a partir do valor armazenado (ex.: "1,5 L/dia"); texto livre não reconhecido volta a 0.
 export function lerLitrosAgua(valor: string): number {
-  const m = valor.trim().match(/^(\d+(?:[.,]\d+)?)\s*L/i);
-  if (!m) return 0;
-  return Math.min(AGUA_MAX, Math.max(AGUA_MIN, Number(m[1].replace(",", "."))));
+  const bruto = valor.trim().match(/^(\d+(?:[.,]\d+)?)\s*L/i)?.[1];
+  if (!bruto) return 0;
+  return Math.min(AGUA_MAX, Math.max(AGUA_MIN, Number(bruto.replace(",", "."))));
 }
 
 // Formata só o número: vírgula como separador e sem zeros à direita (1,5 / 0,25 / 2).
