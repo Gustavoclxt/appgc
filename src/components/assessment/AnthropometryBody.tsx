@@ -11,6 +11,16 @@ const imagens: Record<SexoSilhueta, Record<VistaSilhueta, string>> = {
   feminino: { front: femFrente.url, back: femCostas.url },
 };
 
+let contextoMedicao: CanvasRenderingContext2D | null | undefined;
+/** Largura do texto renderizado, medida no cliente; estimativa no SSR. */
+function larguraTexto(texto: string, fonte: string): number {
+  if (typeof document === "undefined") return texto.length * (fonte.includes("mono") ? 8.4 : 5.8);
+  contextoMedicao ??= document.createElement("canvas").getContext("2d");
+  if (!contextoMedicao) return texto.length * 6;
+  contextoMedicao.font = fonte;
+  return contextoMedicao.measureText(texto).width;
+}
+
 export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadores: IndicadorAntropometrico[]; categoria: CategoriaAntropometrica; sexo: SexoSilhueta }) {
   const measurements = bodyMeasurements(indicadores, categoria, sexo);
   const views = categoria === "Dobras cutâneas" ? (["front", "back"] as const) : (["front"] as const);
