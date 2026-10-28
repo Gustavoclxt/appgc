@@ -31,9 +31,16 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
           });
         });
         const silhueta = SILHUETAS[sexo][view];
+        // Trim each view to its used horizontal span so paired views sit close without rescaling.
+        const hasLeft = items.some(m => m.site.x <= 180);
+        const hasRight = items.some(m => m.site.x > 180);
+        const minX = Math.min(hasLeft ? 40 : Infinity, silhueta.x + 160) - 8;
+        const maxX = Math.max(hasRight ? 482 : -Infinity, silhueta.x + 160 + silhueta.width) + 8;
+        const boxWidth = maxX - minX;
+        const figWidth = Math.round(boxWidth * 0.92);
         return (
-          <figure key={view} className={ladoALado ? "w-[460px]" : "mx-auto w-full max-w-[460px]"}>
-            <svg viewBox="0 0 500 540" className="h-auto w-full overflow-visible" role="img" aria-label={categoria}>
+          <figure key={view} style={{ width: figWidth }} className={ladoALado ? undefined : "mx-auto w-full"}>
+            <svg viewBox={`${minX} 0 ${boxWidth} 540`} className="h-auto w-full overflow-visible" role="img" aria-label={categoria}>
               <image href={imagens[sexo][view]} x={silhueta.x + 160} y={silhueta.y} width={silhueta.width} height={silhueta.height} />
               {labels.map(({ indicador, site, labelY, left }) => (
                 <g key={indicador.id}>
