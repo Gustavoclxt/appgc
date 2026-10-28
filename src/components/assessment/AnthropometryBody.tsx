@@ -3,7 +3,7 @@ import femFrente from "@/assets/silhueta-feminina-frente.png.asset.json";
 import mascCostas from "@/assets/silhueta-masculina-costas.png.asset.json";
 import mascFrente from "@/assets/silhueta-masculina-frente.png.asset.json";
 import { bodyMeasurements, SILHUETAS, type SexoSilhueta, type VistaSilhueta } from "@/lib/assessment/anthropometry-body";
-import { valorComUnidade, type CategoriaAntropometrica } from "@/lib/assessment/anthropometry-groups";
+import { rotuloIndicador, valorComUnidade, type CategoriaAntropometrica } from "@/lib/assessment/anthropometry-groups";
 import type { IndicadorAntropometrico } from "@/lib/assessment/types";
 
 const imagens: Record<SexoSilhueta, Record<VistaSilhueta, string>> = {
@@ -37,12 +37,12 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
               <image href={imagens[sexo][view]} x={silhueta.x + 160} y={silhueta.y} width={silhueta.width} height={silhueta.height} />
               {labels.map(({ indicador, site, labelY, left }) => (
                 <g key={indicador.id}>
-                  <title>{`${indicador.nome}: ${valorComUnidade(indicador)}`}</title>
+                  <title>{`${rotuloIndicador(indicador.nome)}: ${valorComUnidade(indicador)}`}</title>
                   <path d={`M${site.x + 160} ${site.y} L${left ? 270 : 410} ${labelY} H${left ? 52 : 598}`} className="fill-none stroke-accent/50" strokeWidth="1" />
                   <circle cx={site.x + 160} cy={site.y} r="3" className="fill-accent" />
                   <rect x={left ? 40 : 480} y={labelY - 37} width="160" height="36" rx="3" className="fill-paper" />
                   <text x={left ? 48 : 632} y={labelY - 24} textAnchor={left ? "start" : "end"} className="fill-ink-soft text-[11px]">
-                    {indicador.nome}
+                    {rotuloIndicador(indicador.nome)}
                   </text>
                   <text x={left ? 48 : 632} y={labelY - 9} textAnchor={left ? "start" : "end"} className="fill-accent font-mono text-[14px] font-semibold">{valorComUnidade(indicador)}</text>
                 </g>

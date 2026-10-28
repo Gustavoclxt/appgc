@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { agruparAntropometria, categoriaAntropometrica, podeAnexarExames, valorComUnidade } from "./anthropometry-groups";
+import { agruparAntropometria, categoriaAntropometrica, podeAnexarExames, rotuloIndicador, valorComUnidade } from "./anthropometry-groups";
 
 describe("categorias da antropometria", () => {
   it("organiza altura e peso em Medidas", () => {
@@ -29,6 +29,15 @@ it("permite anexar exames somente com Sim", () => {
   expect(podeAnexarExames({ possuiExames: "sim" })).toBe(true);
   expect(podeAnexarExames({ possuiExames: "nao" })).toBe(false);
   expect(podeAnexarExames({ possuiExames: "" })).toBe(false);
+});
+
+describe("rótulo do indicador", () => {
+  it("abrevia Dobra cutânea para DC", () => {
+    expect(rotuloIndicador("Dobra cutânea abdominal")).toBe("DC Abdominal");
+    expect(rotuloIndicador("Dobra cutânea Suprailíaca")).toBe("DC Suprailíaca");
+    expect(rotuloIndicador("dobras cutâneas tricipital")).toBe("DC Tricipital");
+    expect(rotuloIndicador("Tríceps")).toBe("Tríceps");
+  });
 });
 
 describe("valor com unidade", () => {
