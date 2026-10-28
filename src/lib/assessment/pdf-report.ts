@@ -416,7 +416,7 @@ export const nomeArquivoPdf = (dataAvaliacao: string, nome: string) => {
     const mes = indiceMes >= 0 && indiceMes < 12 ? MESES_EXTENSO[indiceMes] : undefined;
     if (mes) {
       mesExt = mes;
-      ano = m[1];
+      ano = m[1] ?? "";
     }
   }
   if (!mesExt || !ano) {
@@ -426,7 +426,7 @@ export const nomeArquivoPdf = (dataAvaliacao: string, nome: string) => {
       month: "2-digit",
     }).format(new Date());
     const [aHj, mHj] = hoje.split("-");
-    const mes = MESES_EXTENSO[Number(mHj) - 1] ?? MESES_EXTENSO[0];
+    const mes = MESES_EXTENSO[Number(mHj) - 1] ?? "Janeiro";
     mesExt = mes;
     ano = aHj;
   }
