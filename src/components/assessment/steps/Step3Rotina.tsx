@@ -157,27 +157,36 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
               <TextInput type="time" value={a.saidaTrabalho} onChange={(v) => set("saidaTrabalho", v)} />
             </Field>
           </div>
-          <Field label="Intervalo para refeições?">
-            <div className="flex flex-wrap items-center gap-2">
+          <div>
+            <Field label="Intervalo para refeições?">
+              <div className="flex flex-wrap items-center gap-2">
+                <OptionRow
+                  value={a.intervaloRefeicoes}
+                  onChange={(v) => {
+                    set("intervaloRefeicoes", v as typeof a.intervaloRefeicoes);
+                    if (v !== "sim") set("intervaloRefeicoesHorarios", "");
+                  }}
+                  options={simNao}
+                />
+                {a.intervaloRefeicoes === "sim" && (
+                  <div className="w-[130px]">
+                    <TextInput
+                      value={a.intervaloRefeicoesHorarios}
+                      onChange={(v) => set("intervaloRefeicoesHorarios", v)}
+                      placeholder="Horário(s)"
+                    />
+                  </div>
+                )}
+              </div>
+            </Field>
+            <Field label="Pratica atividade física?" className="mt-5">
               <OptionRow
-                value={a.intervaloRefeicoes}
-                onChange={(v) => {
-                  set("intervaloRefeicoes", v as typeof a.intervaloRefeicoes);
-                  if (v !== "sim") set("intervaloRefeicoesHorarios", "");
-                }}
+                value={a.praticaAtividadeFisica}
+                onChange={(v) => set("praticaAtividadeFisica", v as typeof a.praticaAtividadeFisica)}
                 options={simNao}
               />
-              {a.intervaloRefeicoes === "sim" && (
-                <div className="w-[130px]">
-                  <TextInput
-                    value={a.intervaloRefeicoesHorarios}
-                    onChange={(v) => set("intervaloRefeicoesHorarios", v)}
-                    placeholder="Horário(s)"
-                  />
-                </div>
-              )}
-            </div>
-          </Field>
+            </Field>
+          </div>
           <Field label="Possui cozinha/copa no trabalho?">
             <OptionRow
               value={a.cozinhaTrabalho}

@@ -127,6 +127,7 @@ export interface Assessment {
   saidaTrabalho: string;
   intervaloRefeicoes: "sim" | "nao" | "";
   intervaloRefeicoesHorarios: string;
+  praticaAtividadeFisica: "sim" | "nao" | "";
   cozinhaTrabalho: "sim" | "nao" | "";
 
   modalidades: Modalidade[];
