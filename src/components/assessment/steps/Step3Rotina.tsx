@@ -926,21 +926,23 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
               ]}
             />
           </Field>
-          <Field label="Altura referida" className="w-full sm:w-[150px]">
-            <UnitInput
-              value={a.alturaReferida}
-              onChange={(v) => set("alturaReferida", v)}
-              unidade="m"
-              placeholder="1,75"
-              casas={2}
-            />
-          </Field>
-          <Field label="Peso referido" className="w-full sm:w-[150px]">
-            <UnitInput value={a.pesoReferido} onChange={(v) => set("pesoReferido", v)} unidade="kg" placeholder="78,4" />
-          </Field>
-          <Field label="Observações" className="sm:col-span-2">
-            <TextInput value={a.observacoesEvolucao} onChange={(v) => set("observacoesEvolucao", v)} />
-          </Field>
+          <div className="flex flex-col gap-5 sm:col-span-2 sm:flex-row sm:items-start">
+            <Field label="Altura referida" className="w-full sm:w-[150px] sm:shrink-0">
+              <UnitInput
+                value={a.alturaReferida}
+                onChange={(v) => set("alturaReferida", v)}
+                unidade="m"
+                placeholder="1,75"
+                casas={2}
+              />
+            </Field>
+            <Field label="Peso referido" className="w-full sm:w-[150px] sm:shrink-0">
+              <UnitInput value={a.pesoReferido} onChange={(v) => set("pesoReferido", v)} unidade="kg" placeholder="78,4" />
+            </Field>
+            <Field label="Observações" className="w-full sm:flex-1">
+              <TextInput value={a.observacoesEvolucao} onChange={(v) => set("observacoesEvolucao", v)} />
+            </Field>
+          </div>
         </div>
       </Panel>
     </div>
