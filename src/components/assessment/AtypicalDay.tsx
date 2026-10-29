@@ -65,7 +65,7 @@ export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCal
         </div>
       </div>
       <div className="mt-6 flex justify-center">
-        <Button disabled={calculando} onClick={onCalcular} className="h-auto whitespace-normal text-center text-[13px]">{calculando ? "Calculando…" : "Calcular Dia Atípico"}</Button>
+        <Button disabled={calculando} onClick={onCalcular} className="h-auto whitespace-normal text-center text-[13px]">{calculando ? "Calculando…" : "Calcular dia atípico"}</Button>
       </div>
       {(comp || r24h) && (
         <div className="mt-4 rounded-[14px] bg-accent p-5 text-white" aria-live="polite">
