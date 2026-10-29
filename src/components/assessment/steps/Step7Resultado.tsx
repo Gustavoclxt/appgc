@@ -30,6 +30,7 @@ import type { StepProps } from "./types";
 interface Props extends StepProps {
   analise: AnaliseIA | null;
   analisando: boolean;
+  progressoAnalise: number;
   onAnalisar: () => void;
   composicao: ComposicaoDiario | null;
   metas: MetasPesoResultado | null;
