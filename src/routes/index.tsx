@@ -301,6 +301,7 @@ function Index() {
               {...props}
               analise={analise}
               analisando={analisando}
+              progressoAnalise={progressoAnalise}
               onAnalisar={onAnalisar}
               composicao={composicao}
               metas={resultadoMetas}
