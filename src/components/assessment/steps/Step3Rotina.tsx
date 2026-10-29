@@ -882,16 +882,10 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           </RowButton>
           <RowButton
             className="ml-0 bg-accent text-white ring-accent/40 hover:bg-accent/90 sm:ml-3"
-            onClick={onAdicionarDiaAtipico}
-            disabled={diaAtipico !== null}
+            onClick={diaAtipico !== null ? onRemoverDiaAtipico : onAdicionarDiaAtipico}
           >
-            + Adicionar dia atípico
+            {diaAtipico !== null ? "- Remover dia atípico" : "+ Adicionar dia atípico"}
           </RowButton>
-          {diaAtipico !== null && (
-            <Button variant="outline" className="ml-0 sm:ml-3" onClick={onRemoverDiaAtipico}>
-              - Remover dia atípico
-            </Button>
-          )}
         </div>
 
         <div className="mt-6">
