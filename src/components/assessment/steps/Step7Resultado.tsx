@@ -54,7 +54,7 @@ function Bloco({ titulo, children }: { titulo: string; children: React.ReactNode
   );
 }
 
-export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composicao, metas }: Props) {
+export function Step7Resultado({ a, d, analise, analisando, progressoAnalise, onAnalisar, composicao, metas }: Props) {
   const relatorioRef = useRef<HTMLDivElement>(null);
   const vetFinalResumo = resumoVetFinal(
     d.caloriasSugeridas,
