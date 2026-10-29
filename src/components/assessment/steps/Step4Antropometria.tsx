@@ -36,6 +36,7 @@ function TabelaIndicadores({ categoria, indicadores }: { categoria: CategoriaAnt
 
 export function Step4Antropometria({ a, set, d }: StepProps) {
   const [lendo, setLendo] = useState(false);
+  const [progresso, setProgresso] = useState(0);
   const [lido, setLido] = useState(false);
   const [falhou, setFalhou] = useState(false);
   const [pendentes, setPendentes] = useState<string[]>([]);
@@ -51,14 +52,19 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
 
   async function processarArquivo(file: File) {
     setLendo(true);
+    setProgresso(0);
+    let timer: ReturnType<typeof setInterval> | undefined;
     try {
-      const texto = await extractPdfText(file);
+      const texto = await extractPdfText(file, (f) => setProgresso(Math.round(f * 40)));
       if (texto.trim().length < 20) {
         setFalhou(true);
         toast.error("Não foi possível ler texto neste PDF. Preencha os dados manualmente abaixo.");
         return;
       }
+      timer = setInterval(() => setProgresso((p) => (p < 95 ? p + Math.max(1, Math.round((95 - p) / 12)) : p)), 400);
       const r = await extrair({ data: { textoPdf: texto.slice(0, 60000) } });
+      clearInterval(timer);
+      setProgresso(100);
       if (r.altura && /^\d?(?:,\d{0,2})?$/.test(r.altura)) set("altura", r.altura);
       if (r.peso) set("peso", r.peso);
       if (r.percentualGordura) set("percentualGordura", r.percentualGordura);
@@ -80,6 +86,7 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
       setFalhou(true);
       toast.error(erro instanceof Error ? erro.message : "Falha ao ler o arquivo. Preencha manualmente abaixo.");
     } finally {
+      if (timer) clearInterval(timer);
       setLendo(false);
     }
   }
@@ -93,7 +100,7 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
             <button type="button" onClick={removerAvaliacao} className="mt-4 inline-flex cursor-pointer items-center rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90">Remover avaliação</button>
           ) : (
           <label className="mt-4 inline-flex cursor-pointer items-center rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90">
-            {lendo ? "Lendo antropometria…" : "Adicionar avaliação"}
+            {lendo ? `Lendo antropometria… ${progresso}%` : "Adicionar avaliação"}
             <input
               type="file"
               accept="application/pdf"

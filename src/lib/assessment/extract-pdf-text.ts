@@ -2,7 +2,7 @@
  * Extrai o texto de um PDF de exames no próprio navegador.
  * O arquivo nunca é armazenado — apenas lido em memória.
  */
-export async function extractPdfText(file: File): Promise<string> {
+export async function extractPdfText(file: File, onProgress?: (fracao: number) => void): Promise<string> {
   const pdfjs = await import("pdfjs-dist");
   const worker = await import("pdfjs-dist/build/pdf.worker.mjs?url");
   pdfjs.GlobalWorkerOptions.workerSrc = worker.default;
@@ -21,6 +21,7 @@ export async function extractPdfText(file: File): Promise<string> {
       .replace(/\s+/g, " ")
       .trim();
     if (linha) partes.push(linha);
+    onProgress?.(i / maxPaginas);
   }
   return partes.join("\n");
 }
