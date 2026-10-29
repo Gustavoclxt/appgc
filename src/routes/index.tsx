@@ -56,6 +56,7 @@ function Index() {
   const [dados, setDados] = useState<Assessment>(() => createEmptyAssessment());
   const [analise, setAnalise] = useState<AnaliseIA | null>(null);
   const [analisando, setAnalisando] = useState(false);
+  const [progressoAnalise, setProgressoAnalise] = useState(0);
 
   const analisar = useServerFn(analisarAvaliacao);
   const calcularDiarioServidor = useServerFn(calcularComposicaoDiario);
@@ -89,13 +90,20 @@ function Index() {
     if (analiseEmCursoRef.current) return;
     analiseEmCursoRef.current = true;
     setAnalisando(true);
+    setProgressoAnalise(0);
+    let timer: ReturnType<typeof setInterval> | undefined;
     try {
       const resumo = buildResumo(dados, derivados, composicao);
+      timer = setInterval(() => setProgressoAnalise((p) => (p < 95 ? p + Math.max(1, Math.round((95 - p) / 12)) : p)), 400);
       const resultado = await analisar({ data: { resumo } });
+      clearInterval(timer);
+      timer = undefined;
+      setProgressoAnalise(100);
       setAnalise(resultado);
     } catch (erro) {
       toast.error(erro instanceof Error ? erro.message : "Não foi possível gerar a análise.");
     } finally {
+      if (timer) clearInterval(timer);
       analiseEmCursoRef.current = false;
       setAnalisando(false);
     }
@@ -293,6 +301,7 @@ function Index() {
               {...props}
               analise={analise}
               analisando={analisando}
+              progressoAnalise={progressoAnalise}
               onAnalisar={onAnalisar}
               composicao={composicao}
               metas={resultadoMetas}

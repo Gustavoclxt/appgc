@@ -11,18 +11,25 @@ import type { StepProps } from "./steps/types";
 
 export function ExamUpload({ a, set }: Pick<StepProps, "a" | "set">) {
   const [lendo, setLendo] = useState(false);
+  const [progresso, setProgresso] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const extrair = useServerFn(extrairExames);
 
   async function processarArquivo(file: File) {
     setLendo(true);
+    setProgresso(0);
+    let timer: ReturnType<typeof setInterval> | undefined;
     try {
-      const texto = await extractPdfText(file);
+      const texto = await extractPdfText(file, (f) => setProgresso(Math.round(f * 40)));
       if (texto.trim().length < 20) {
         toast.error("Não foi possível ler texto neste PDF. Pode ser um laudo digitalizado como imagem.");
         return;
       }
+      timer = setInterval(() => setProgresso((p) => (p < 95 ? p + Math.max(1, Math.round((95 - p) / 12)) : p)), 400);
       const encontrados = await extrair({ data: { textoPdf: texto.slice(0, 60000) } });
+      clearInterval(timer);
+      timer = undefined;
+      setProgresso(100);
       if (!encontrados.length) {
         toast.error("Nenhum exame foi identificado no arquivo.");
         return;
@@ -32,6 +39,7 @@ export function ExamUpload({ a, set }: Pick<StepProps, "a" | "set">) {
     } catch (erro) {
       toast.error(erro instanceof Error ? erro.message : "Falha ao ler o arquivo.");
     } finally {
+      if (timer) clearInterval(timer);
       setLendo(false);
     }
   }
@@ -40,7 +48,7 @@ export function ExamUpload({ a, set }: Pick<StepProps, "a" | "set">) {
     <>
       <Button type="button" className="h-10 px-4" disabled={lendo} onClick={() => inputRef.current?.click()}>
         <Paperclip aria-hidden="true" />
-        {lendo ? "Lendo exames…" : "Anexar Exame"}
+        {lendo ? `Lendo exames… ${progresso}%` : "Anexar Exame"}
       </Button>
       <input
         ref={inputRef}

@@ -30,6 +30,7 @@ import type { StepProps } from "./types";
 interface Props extends StepProps {
   analise: AnaliseIA | null;
   analisando: boolean;
+  progressoAnalise: number;
   onAnalisar: () => void;
   composicao: ComposicaoDiario | null;
   metas: MetasPesoResultado | null;
@@ -53,7 +54,7 @@ function Bloco({ titulo, children }: { titulo: string; children: React.ReactNode
   );
 }
 
-export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composicao, metas }: Props) {
+export function Step7Resultado({ a, d, analise, analisando, progressoAnalise, onAnalisar, composicao, metas }: Props) {
   const relatorioRef = useRef<HTMLDivElement>(null);
   const vetFinalResumo = resumoVetFinal(
     d.caloriasSugeridas,
@@ -94,7 +95,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
           disabled={analisando}
           className="mt-6 rounded-[10px] bg-ink px-6 py-3 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-ink/90 disabled:opacity-60"
         >
-          {analisando ? "ANALISANDO…" : "ANALISAR AVALIAÇÃO"}
+          {analisando ? `ANALISANDO… ${progressoAnalise}%` : "ANALISAR AVALIAÇÃO"}
         </button>
         {metas && <WeightGoalsReport resultado={metas} />}
       </Panel>
@@ -127,7 +128,7 @@ export function Step7Resultado({ a, d, analise, analisando, onAnalisar, composic
           disabled={analisando}
           className="rounded-[10px] bg-white px-4 py-2 text-[13px] font-medium text-ink ring-1 ring-line transition-colors hover:bg-white/70 disabled:opacity-60 no-print"
         >
-          {analisando ? "Analisando…" : "Analisar novamente"}
+          {analisando ? `Analisando… ${progressoAnalise}%` : "Analisar novamente"}
         </button>
       </div>
 
