@@ -101,7 +101,7 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
             <button type="button" onClick={removerAvaliacao} className="mt-4 inline-flex cursor-pointer items-center rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90">Remover avaliação</button>
           ) : (
           <label className="mt-4 inline-flex cursor-pointer items-center rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90">
-            {lendo ? `Lendo antropometria… ${progresso}%` : <><Paperclip aria-hidden="true" />Adicionar avaliação</>}
+            {lendo ? `Lendo antropometria… ${progresso}%` : <><Paperclip aria-hidden="true" /> Anexar Antropometria</>}
             <input
               type="file"
               accept="application/pdf"
