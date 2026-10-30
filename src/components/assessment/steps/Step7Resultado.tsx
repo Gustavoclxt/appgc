@@ -1,5 +1,4 @@
 import { WeightGoalsReport } from "../WeightGoalsReport";
-import { observacoesExamesParaRelatorio } from "@/lib/assessment/anthropometry-groups";
 import type { MetasPesoResultado } from "@/lib/assessment/weight-goals";
 import {
   fmt2,
@@ -13,15 +12,11 @@ import { useRef } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CircleAlert, CircleCheck, Eye, RotateCcw, Target } from "lucide-react";
-import type { AnaliseIA } from "@/lib/assessment/types";
-import { anamneseParaRelatorio } from "@/lib/assessment/report-anamnesis";
-import { examesParaRelatorio } from "@/lib/assessment/report-exams";
-import { diarioParaRelatorio } from "@/lib/assessment/food-diary";
-import { composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
-import { alimentosRetirarPorGrupo } from "@/lib/assessment/food-preferences";
+import type { AnaliseIA, Refeicao } from "@/lib/assessment/types";
+import type { ComposicaoDiario } from "@/lib/assessment/diet-composition";
+import { relatorioEstruturado } from "@/lib/assessment/report-structure";
 import { relatorioParaCopia } from "@/lib/assessment/report-text";
 import { painelClinicoParaRelatorio } from "@/lib/assessment/clinical-dashboard";
-import { resumoVetFinal } from "@/lib/assessment/free-meal";
 
 import { ExamesTable } from "../ExamesTable";
 import { Panel } from "../fields";
@@ -33,6 +28,8 @@ interface Props extends StepProps {
   progressoAnalise: number;
   onAnalisar: () => void;
   composicao: ComposicaoDiario | null;
+  diaAtipico: Refeicao[] | null;
+  composicaoAtipica: ComposicaoDiario | null;
   metas: MetasPesoResultado | null;
 }
 
@@ -54,17 +51,12 @@ function Bloco({ titulo, children }: { titulo: string; children: React.ReactNode
   );
 }
 
-export function Step7Resultado({ a, d, analise, analisando, progressoAnalise, onAnalisar, composicao, metas }: Props) {
+export function Step7Resultado({ a, d, analise, analisando, progressoAnalise, onAnalisar, composicao, diaAtipico, composicaoAtipica, metas }: Props) {
   const relatorioRef = useRef<HTMLDivElement>(null);
-  const vetFinalResumo = resumoVetFinal(
-    d.caloriasSugeridas,
-    a.refeicoesLivresSemana,
-    a.vetRefeicoesLivres,
-  );
 
   async function copiarRelatorio() {
     if (!analise) return;
-    const { texto, html } = relatorioParaCopia(a, d, analise, composicao, metas);
+    const { texto, html } = relatorioParaCopia(a, d, analise, composicao, metas, diaAtipico, composicaoAtipica);
     try {
       if (typeof ClipboardItem !== "undefined" && navigator.clipboard.write) {
         await navigator.clipboard.write([
@@ -102,20 +94,7 @@ export function Step7Resultado({ a, d, analise, analisando, progressoAnalise, on
     );
   }
 
-  const examesDoRelatorio = examesParaRelatorio(a.exames);
-  const diarioDoRelatorio = diarioParaRelatorio(a.diarioAlimentar);
-  const anamneseDoRelatorio = anamneseParaRelatorio(a, d);
-  const indiceEvolucaoPeso = anamneseDoRelatorio.findIndex(
-    (section) => section.title === "Evolução do peso",
-  );
-  const anamneseAntesEvolucao =
-    indiceEvolucaoPeso >= 0
-      ? anamneseDoRelatorio.slice(0, indiceEvolucaoPeso)
-      : anamneseDoRelatorio;
-  const anamneseAPartirDaEvolucao =
-    indiceEvolucaoPeso >= 0 ? anamneseDoRelatorio.slice(indiceEvolucaoPeso) : [];
-  const retirar = alimentosRetirarPorGrupo(a);
-  const comp = composicaoParaRelatorio(composicao);
+  const blocosRelatorio = relatorioEstruturado(a, d, composicao, diaAtipico, composicaoAtipica, metas !== null);
   const painel = painelClinicoParaRelatorio(analise, a, d, composicao);
 
   return (
@@ -153,126 +132,41 @@ export function Step7Resultado({ a, d, analise, analisando, progressoAnalise, on
           </div>
         </div>
 
-        <div className="mt-5 grid grid-cols-1 gap-x-10 gap-y-2 sm:grid-cols-2">
-          <Dado label="Profissão" valor={a.profissao || "—"} />
-          <Dado label="Objetivos" valor={a.objetivos.join(", ") || "—"} />
-          <Dado label="IMC" valor={d.imc !== null ? `${fmt2(d.imc)} — ${d.classificacaoIMC}` : "—"} />
-          {d.pio !== null && <Dado label="PIO" valor={`${fmt2(d.pio)} kg`} />}
-          <Dado
-            label="% de gordura"
-            valor={d.percentualGordura !== null ? `${fmt2(d.percentualGordura)}%` : "não informado"}
-          />
-          <Dado label="Massa gorda" valor={d.massaGorda !== null ? `${fmt2(d.massaGorda)} kg` : "—"} />
-          <Dado
-            label="Massa livre de gordura"
-            valor={d.massaLivreGordura !== null ? `${fmt2(d.massaLivreGordura)} kg` : "—"}
-          />
-          <Dado label="Método de TMB" valor={(labelMetodo[a.metodoTMB] ?? "")} />
-          <Dado label="TMB" valor={d.tmb !== null ? `${fmtInt(d.tmb)} kcal/dia` : "—"} />
-          <Dado
-            label="Fator de atividade"
-            valor={d.fatorAtividade !== null ? fmt2(d.fatorAtividade) : "—"}
-          />
-          <Dado label="VET" valor={d.vet !== null ? `${fmtInt(d.vet)} kcal/dia` : "—"} />
-          <Dado
-            label="Hidratação"
-            valor={
-              d.aguaMin !== null
-                ? `${fmtInt(d.aguaMin)}–${fmtInt(d.aguaMax)} mL/dia (${fmtLitros(d.aguaMin)}–${fmtLitros(d.aguaMax)} L/dia)`
-                : "—"
-            }
-          />
-          <Dado label="Estratégia" valor={(labelEstrategia[a.estrategia] ?? "")} />
-          <Dado
-            label="Calorias sugeridas"
-            valor={d.caloriasSugeridas !== null ? `${fmtInt(d.caloriasSugeridas)} kcal/dia` : "—"}
-          />
-          {vetFinalResumo && (
-            <>
-              <Dado label="Refeições livres na semana" valor={vetFinalResumo.quantidade} />
-              <Dado label="VET da refeição livre" valor={vetFinalResumo.vetRefeicao} />
-              <Dado
-                label="VET final da dieta ajustado"
-                valor={
-                  vetFinalResumo.vetFinal !== null ? `${fmtInt(vetFinalResumo.vetFinal)} kcal/dia` : "—"
-                }
-              />
-            </>
-          )}
-        </div>
-
-        {anamneseAntesEvolucao.map((section) => (
-          <Bloco key={section.title} titulo={section.title}>
-            <div className="grid grid-cols-1 gap-x-10 gap-y-2 sm:grid-cols-2">
-              {section.fields.map((field) => (
-                <Dado key={`${section.title}-${field.label}`} label={field.label} valor={field.value} />
-              ))}
-            </div>
-          </Bloco>
-        ))}
-
-        {diarioDoRelatorio.length > 0 && (
-          <Bloco titulo="Recordatório 24h">
-            <div className="divide-y divide-line/70 border-y border-line/70">
-              {diarioDoRelatorio.map((refeicao) => (
-                <div key={refeicao.id} className="grid gap-1 py-3 sm:grid-cols-[150px_1fr] sm:gap-5">
-                  <div>
-                    <p className="font-medium">{refeicao.refeicao}</p>
-                    <p className="font-mono text-[11px] text-ink-soft">
-                      {[refeicao.horario, refeicao.local].filter(Boolean).join(" · ") || "—"}
-                    </p>
-                  </div>
-                  <ul className="space-y-1">
-                    {refeicao.alimentos.map((alimento, index) => (
-                      <li key={`${refeicao.id}-${index}`} className="text-[13px] text-ink">
-                        {alimento}
-                      </li>
-                    ))}
-                  </ul>
+        {blocosRelatorio.map((bloco) => {
+          if (bloco.tipo === "metas") return metas ? <WeightGoalsReport key={bloco.titulo} resultado={metas} /> : null;
+          return (
+            <Bloco key={bloco.titulo} titulo={bloco.titulo}>
+              {bloco.tipo === "campos" && (
+                <div className="grid grid-cols-1 gap-x-10 gap-y-2 sm:grid-cols-2">
+                  {bloco.campos.map((field) => (
+                    <Dado key={`${bloco.titulo}-${field.label}`} label={field.label} valor={field.value} />
+                  ))}
                 </div>
-              ))}
-            </div>
-          </Bloco>
-        )}
-
-        {comp && (
-          <Bloco titulo="Composição estimada do Recordatório 24h">
-            <div className="grid grid-cols-1 gap-x-10 gap-y-2 sm:grid-cols-2">
-              {comp.totais.map((t) => (
-                <Dado key={t.label} label={t.label} valor={t.valor} />
-              ))}
-            </div>
-          </Bloco>
-        )}
-
-        {anamneseAPartirDaEvolucao.map((section) => (
-          <Bloco key={section.title} titulo={section.title}>
-            <div className="grid grid-cols-1 gap-x-10 gap-y-2 sm:grid-cols-2">
-              {section.fields.map((field) => (
-                <Dado key={`${section.title}-${field.label}`} label={field.label} valor={field.value} />
-              ))}
-            </div>
-          </Bloco>
-        ))}
-
-        {retirar.length > 0 && (
-          <Bloco titulo="Alimentos não consumidos">
-            {retirar.map((g) => (
-              <p key={g.grupo}><span className="font-semibold">{g.grupo}:</span> {g.itens.join(", ")}</p>
-            ))}
-          </Bloco>
-        )}
-
-        {examesDoRelatorio.length > 0 && (
-          <Bloco titulo="Exames laboratoriais">
-            <ExamesTable exames={examesDoRelatorio} />
-            {observacoesExamesParaRelatorio(a) && (
-              <p className="mt-3 text-[13px] text-ink-soft">{observacoesExamesParaRelatorio(a)}</p>
-            )}
-          </Bloco>
-        )}
-
-        {metas && <WeightGoalsReport resultado={metas} />}
+              )}
+              {bloco.tipo === "lista" && bloco.itens.map((item) => <p key={item}>{item}</p>)}
+              {bloco.tipo === "exames" && <ExamesTable exames={bloco.exames} />}
+              {bloco.tipo === "refeicoes" && (
+                <div className="divide-y divide-line/70 border-y border-line/70">
+                  {bloco.refeicoes.map((refeicao) => (
+                    <div key={refeicao.id} className="grid gap-1 py-3 sm:grid-cols-[150px_1fr] sm:gap-5">
+                      <div>
+                        <p className="font-medium">{refeicao.refeicao}</p>
+                        <p className="font-mono text-[11px] text-ink-soft">
+                          {[refeicao.horario, refeicao.local].filter(Boolean).join(" · ") || "—"}
+                        </p>
+                      </div>
+                      <ul className="space-y-1">
+                        {refeicao.alimentos.map((alimento, index) => (
+                          <li key={`${refeicao.id}-${index}`} className="text-[13px] text-ink">{alimento}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Bloco>
+          );
+        })}
 
         <div className="mt-10 border-t-2 border-ink pt-7">
           <div className="flex items-end justify-between gap-4 border-b border-line pb-3">
