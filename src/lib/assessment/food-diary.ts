@@ -8,6 +8,8 @@ export const LOCAIS_REFEICAO = [
   "Restaurante",
   "Escola",
   "Lanchonete",
+  "Pizzaria",
+
   "Padaria",
   "Cafeteria",
   "Fast-food",
