@@ -363,6 +363,11 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           <Field label="Acorda" className="w-[120px]">
             <TextInput type="time" value={a.horaAcordar} onChange={(v) => set("horaAcordar", v)} />
           </Field>
+          {d.sono && (
+            <span className="pb-2 text-[13px] font-medium text-ink">
+              Tempo de sono: {d.sono.horas}h e {d.sono.restoMinutos}min
+            </span>
+          )}
         </div>
           <Field label="Qualidade do sono">
             <OptionRow
@@ -376,11 +381,6 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             />
           </Field>
         </div>
-        {d.sono && (
-          <p className="mt-4 rounded-[10px] bg-accent-soft/70 px-4 py-3 font-mono text-[12px] text-accent ring-1 ring-accent/15">
-            Você dorme aproximadamente {d.sono.horas} horas e {d.sono.restoMinutos} minutos.
-          </p>
-        )}
       </Panel>
     </div>
   );
