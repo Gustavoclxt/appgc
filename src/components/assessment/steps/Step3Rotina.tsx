@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { novoId } from "@/lib/assessment/initial-state";
 
@@ -27,7 +27,7 @@ import {
   proteinas,
   vegetais,
 } from "@/lib/assessment/food-preferences";
-import { chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
+import { agruparItensPorRefeicao, chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { opcoesDeLocal } from "@/lib/assessment/food-diary";
 import { DIAS_SEMANA, selecionarDias } from "@/lib/assessment/training-days";
 import { AtypicalDay } from "../AtypicalDay";
