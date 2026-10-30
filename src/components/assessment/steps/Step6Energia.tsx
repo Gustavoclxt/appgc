@@ -39,7 +39,7 @@ export function Step6Energia({
     <div className="space-y-6">
       <Panel titulo="Gasto energético">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <Field label="Equação para a TMB">
+          <Field label="Equação para GER">
             <OptionRow
               value={a.metodoTMB}
               onChange={(v) => v && set("metodoTMB", v as typeof a.metodoTMB)}
