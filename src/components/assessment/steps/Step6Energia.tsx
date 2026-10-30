@@ -72,7 +72,7 @@ export function Step6Energia({
             sub={`kcal/dia · ${(labelMetodo[a.metodoTMB] ?? "")}`}
           />
           <MetricCard
-            label="VET"
+            label="GET"
             valor={d.vet !== null ? fmtInt(d.vet) : "—"}
             sub={`kcal/dia · FA ${d.fatorAtividade !== null ? fmt2(d.fatorAtividade) : "—"}`}
           />
