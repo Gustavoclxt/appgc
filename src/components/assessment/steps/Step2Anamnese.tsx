@@ -57,29 +57,27 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               <UnitInput value={a.pesoDesejado} onChange={(v) => set("pesoDesejado", v)} unidade="kg" />
             </Field>
           )}
-          <Field label="Qual sua maior dificuldade relacionada ao seu objetivo?">
+          <Field label="Qual sua maior dificuldade relacionada ao seu objetivo?" className="sm:col-start-1">
             <TextInput value={a.maiorDificuldade} onChange={(v) => set("maiorDificuldade", v)} />
           </Field>
-          <div className="grid grid-cols-1 gap-5 sm:col-span-2 sm:grid-cols-[auto_1fr] sm:items-start">
-            <Field label="De 0 a 10, como está sua motivação?">
-              <div className="w-24">
-                <Select
-                  value={a.motivacao}
-                  placeholder=""
-                  onChange={(v) => {
-                    set("motivacao", v);
-                    if (v === "" || v === "10") set("faltaParaDez", "");
-                  }}
-                  options={Array.from({ length: 11 }, (_, i) => ({ value: String(i), label: String(i) }))}
-                />
-              </div>
+          <Field label="De 0 a 10, como está sua motivação?" className="sm:col-start-2">
+            <div className="w-24">
+              <Select
+                value={a.motivacao}
+                placeholder=""
+                onChange={(v) => {
+                  set("motivacao", v);
+                  if (v === "" || v === "10") set("faltaParaDez", "");
+                }}
+                options={Array.from({ length: 11 }, (_, i) => ({ value: String(i), label: String(i) }))}
+              />
+            </div>
+          </Field>
+          {a.motivacao !== "" && Number(a.motivacao) < 10 && (
+            <Field label="O que falta para chegar em 10?" className="sm:col-span-2">
+              <TextInput value={a.faltaParaDez} onChange={(v) => set("faltaParaDez", v)} />
             </Field>
-            {a.motivacao !== "" && Number(a.motivacao) < 10 && (
-              <Field label="O que falta para chegar em 10?">
-                <TextInput value={a.faltaParaDez} onChange={(v) => set("faltaParaDez", v)} />
-              </Field>
-            )}
-          </div>
+          )}
         </div>
       </Panel>
 
