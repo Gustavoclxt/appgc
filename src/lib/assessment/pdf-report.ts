@@ -11,7 +11,8 @@ import {
   labelMetodo,
   type DerivedResults,
 } from "./calculations";
-import type { AnaliseIA, Assessment } from "./types";
+import type { AnaliseIA, Assessment, Refeicao } from "./types";
+import { relatorioEstruturado } from "./report-structure";
 import { examesParaRelatorio } from "./report-exams";
 import { diarioParaRelatorio } from "./food-diary";
 import { anamneseParaRelatorio } from "./report-anamnesis";
@@ -41,21 +42,10 @@ export function generatePDF(
   composicao: ComposicaoDiario | null = null,
   metas: MetasPesoResultado | null = null,
   composicaoAtipica: ComposicaoDiario | null = null,
+  diaAtipico: Refeicao[] | null = null,
 ) {
   const doc = new jsPDF({ unit: "mm", format: "a4" });
   registerReportFonts(doc);
-  const examesDoRelatorio = examesParaRelatorio(a.exames);
-  const diarioDoRelatorio = diarioParaRelatorio(a.diarioAlimentar);
-  const anamneseDoRelatorio = anamneseParaRelatorio(a, d);
-  const indiceEvolucaoPeso = anamneseDoRelatorio.findIndex(
-    (section) => section.title === "Evolução do peso",
-  );
-  const anamneseAntesEvolucao =
-    indiceEvolucaoPeso >= 0
-      ? anamneseDoRelatorio.slice(0, indiceEvolucaoPeso)
-      : anamneseDoRelatorio;
-  const anamneseAPartirDaEvolucao =
-    indiceEvolucaoPeso >= 0 ? anamneseDoRelatorio.slice(indiceEvolucaoPeso) : [];
   let y = MARGEM;
 
   const quebra = (altura: number) => {
@@ -156,132 +146,10 @@ export function generatePDF(
   doc.text("RELATÓRIO DE AVALIAÇÃO NUTRICIONAL", LARGURA / 2, 13, { align: "center" });
   doc.setFont("ReportSans", "normal");
   doc.setFontSize(9);
-  doc.text("GC - Excelência em Nutrição", LARGURA / 2, 19.5, { align: "center" });
+  doc.text("GC - NUTRIÇÃO * PERFORMANCE * LONGEVIDADE", LARGURA / 2, 19.5, { align: "center" });
   y = 36;
 
-  titulo("Dados do paciente");
-  linhaPaciente("Data", fmtData(a.dataAvaliacao));
-  linhaPaciente("Nome", a.nome || "—");
-  linhaPaciente("Idade", d.idade !== null ? `${d.idade} anos` : "—");
-  linhaPaciente("Sexo", a.sexo ? (a.sexo === "masculino" ? "Masculino" : "Feminino") : "—");
-  linhaPaciente("Profissão", a.profissao || "—");
-
-  for (const section of anamneseAntesEvolucao) {
-    titulo(section.title);
-    for (const field of section.fields) {
-      campoAnamnese(field.label, field.value);
-    }
-  }
-
-  if (diarioDoRelatorio.length) {
-    titulo("Recordatório 24h");
-    for (const refeicao of diarioDoRelatorio) {
-      quebra(7);
-      doc.setFont("ReportSans", "bold");
-      doc.setFontSize(9.5);
-      doc.setTextColor(22, 32, 43);
-      const detalhes = [
-        refeicao.horario ? `- ${refeicao.horario}` : "",
-        refeicao.local ? `(${refeicao.local})` : "",
-      ]
-        .filter(Boolean)
-        .join(" ");
-      doc.text(detalhes ? `${refeicao.refeicao} ${detalhes}` : refeicao.refeicao, MARGEM, y);
-      y += 4.8;
-      for (const alimento of refeicao.alimentos) {
-        paragrafo(`• ${alimento}`);
-      }
-      y += 1;
-    }
-  }
-
-  const comp = composicaoParaRelatorio(composicao);
-  if (comp) {
-    titulo("Composição estimada do Recordatório 24h");
-    for (const t of comp.totais) linha(t.label, t.valor);
-  }
-
-  const compAtipica = composicaoParaRelatorio(composicaoAtipica);
-  if (compAtipica) {
-    titulo("Composição estimada do R24h — Dia atípico");
-    for (const t of compAtipica.totais) linha(t.label, t.valor);
-  }
-
-  for (const section of anamneseAPartirDaEvolucao) {
-    titulo(section.title);
-    for (const field of section.fields) {
-      campoAnamnese(field.label, field.value);
-    }
-  }
-
-  titulo("Antropometria");
-  linha("Peso", d.pesoKg !== null ? `${fmt2(d.pesoKg)} kg` : "—");
-  linha("Altura", d.alturaCm !== null ? `${fmt2(d.alturaCm)} cm` : "—");
-  linha("IMC", d.imc !== null ? `${fmt2(d.imc)} — ${d.classificacaoIMC}` : "—");
-  if (d.pio !== null) linha("PIO", `${fmt2(d.pio)} kg`);
-  if (d.percentualGordura !== null) {
-    linha("% de gordura", `${fmt2(d.percentualGordura)}%`);
-    linha("Método", a.metodoGordura || "—");
-    linha("Massa gorda", d.massaGorda !== null ? `${fmt2(d.massaGorda)} kg` : "—");
-    linha(
-      "Massa livre de gordura",
-      d.massaLivreGordura !== null ? `${fmt2(d.massaLivreGordura)} kg` : "—",
-    );
-  } else {
-    paragrafo("Percentual de gordura não informado.");
-  }
-
-  titulo("Gasto energético");
-  linha("Método", (labelMetodo[a.metodoTMB] ?? ""));
-  linha("TMB", d.tmb !== null ? `${fmtInt(d.tmb)} kcal/dia` : "—");
-  linha("Fator de atividade", d.fatorAtividade !== null ? fmt2(d.fatorAtividade) : "—");
-  linha("VET", d.vet !== null ? `${fmtInt(d.vet)} kcal/dia` : "—");
-
-  titulo("Hidratação");
-  linha(
-    "Faixa estimada",
-    d.aguaMin !== null
-      ? `${fmtInt(d.aguaMin)}–${fmtInt(d.aguaMax)} mL/dia (${fmtLitros(d.aguaMin)}–${fmtLitros(d.aguaMax)} L/dia)`
-      : "—",
-  );
-
-  titulo("Conduta energética");
-  linha("Estratégia", (labelEstrategia[a.estrategia] ?? ""));
-  linha(
-    "Ajuste",
-    d.ajusteKcal !== null
-      ? `${fmtInt(d.ajusteKcal)} kcal`
-      : d.percentualAjuste !== null
-        ? `${d.percentualAjuste}%`
-        : "—",
-  );
-  linha("VET", d.vet !== null ? `${fmtInt(d.vet)} kcal/dia` : "—");
-  linha(
-    "Calorias sugeridas",
-    d.caloriasSugeridas !== null ? `${fmtInt(d.caloriasSugeridas)} kcal/dia` : "—",
-  );
-  const vetFinalResumo = resumoVetFinal(
-    d.caloriasSugeridas,
-    a.refeicoesLivresSemana,
-    a.vetRefeicoesLivres,
-  );
-  if (vetFinalResumo) {
-    linha("Refeições livres na semana", vetFinalResumo.quantidade);
-    linha("VET da refeição livre", vetFinalResumo.vetRefeicao);
-    linha(
-      "VET final da dieta ajustado",
-      vetFinalResumo.vetFinal !== null ? `${fmtInt(vetFinalResumo.vetFinal)} kcal/dia` : "—",
-    );
-  }
-
-  const retirar = linhasAlimentosRetirar(a);
-  if (retirar.length) {
-    titulo("Alimentos não consumidos");
-    for (const linha of retirar) paragrafo(linha);
-  }
-
-  if (examesDoRelatorio.length) {
-    titulo("Exames laboratoriais");
+  const renderExames = (exames: ReturnType<typeof examesParaRelatorio>) => {
     const colunas = [
       { x: MARGEM, largura: 64 },
       { x: MARGEM + 64, largura: 36 },
@@ -315,14 +183,13 @@ export function generatePDF(
       }
     };
     linhaTabela(["Exame", "Resultado", "Referência", "Status"], true);
-    for (const e of examesDoRelatorio) {
+    for (const e of exames) {
       linhaTabela([e.exame, `${e.resultado} ${e.unidade}`.trim(), e.referencia || "—", statusLabel[e.status] ?? "—"]);
     }
     y += 2;
-  }
+    };
 
-  if (metas) {
-    titulo("Metas e Projeção de Peso");
+  const renderMetas = (metas: MetasPesoResultado) => {
     for (const secao of metasParaRelatorio(metas)) {
       titulo(secao.titulo);
       if (secao.colunas && secao.linhas) {
@@ -340,6 +207,32 @@ export function generatePDF(
         for (const valores of secao.linhas) desenharLinha(valores, false);
       }
       for (const item of secao.itens ?? []) paragrafo(`• ${item.replace(/→/g, ">")}`);
+    }
+    };
+
+  for (const bloco of relatorioEstruturado(a, d, composicao, diaAtipico, composicaoAtipica, metas !== null)) {
+    if (bloco.tipo === "metas") {
+      if (!metas) continue;
+      titulo(bloco.titulo);
+      renderMetas(metas);
+      continue;
+    }
+    titulo(bloco.titulo);
+    if (bloco.tipo === "campos") for (const f of bloco.campos) campoAnamnese(f.label, f.value);
+    else if (bloco.tipo === "lista") for (const item of bloco.itens) paragrafo(item);
+    else if (bloco.tipo === "exames") renderExames(bloco.exames);
+    else if (bloco.tipo === "refeicoes") {
+      for (const refeicao of bloco.refeicoes) {
+        quebra(7);
+        doc.setFont("ReportSans", "bold");
+        doc.setFontSize(9.5);
+        doc.setTextColor(22, 32, 43);
+        const detalhes = [refeicao.horario ? `- ${refeicao.horario}` : "", refeicao.local ? `(${refeicao.local})` : ""].filter(Boolean).join(" ");
+        doc.text(detalhes ? `${refeicao.refeicao} ${detalhes}` : refeicao.refeicao, MARGEM, y);
+        y += 4.8;
+        for (const alimento of refeicao.alimentos) paragrafo(`• ${alimento}`);
+        y += 1;
+      }
     }
   }
 

@@ -1,23 +1,9 @@
 import { metasParaRelatorio } from "./weight-goals-report";
-import { observacoesExamesParaRelatorio } from "./anthropometry-groups";
 import type { MetasPesoResultado } from "./weight-goals";
-import {
-  fmt2,
-  fmtData,
-  fmtInt,
-  fmtLitros,
-  labelEstrategia,
-  labelMetodo,
-  type DerivedResults,
-} from "./calculations";
+import type { DerivedResults } from "./calculations";
 import type { AnaliseIA, Assessment, Refeicao } from "./types";
 import { relatorioEstruturado } from "./report-structure";
-import { anamneseParaRelatorio } from "./report-anamnesis";
-import { diarioParaRelatorio } from "./food-diary";
-import { examesParaRelatorio } from "./report-exams";
-import { composicaoParaRelatorio, type ComposicaoDiario } from "./diet-composition";
-import { linhasAlimentosRetirar } from "./food-preferences";
-import { resumoVetFinal } from "./free-meal";
+import type { ComposicaoDiario } from "./diet-composition";
 import { painelClinicoParaRelatorio } from "./clinical-dashboard";
 
 interface Linha {
