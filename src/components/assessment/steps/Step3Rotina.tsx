@@ -149,13 +149,18 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
       <Panel titulo="Rotina de trabalho/faculdade">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div className="flex flex-col items-start gap-5">
-            <div className="flex items-start gap-1">
+            <div className="flex items-end gap-1">
               <Field label="Entrada" className="w-[120px]">
                 <TextInput type="time" value={a.entradaTrabalho} onChange={(v) => set("entradaTrabalho", v)} />
               </Field>
               <Field label="Saída" className="w-[120px]">
                 <TextInput type="time" value={a.saidaTrabalho} onChange={(v) => set("saidaTrabalho", v)} />
               </Field>
+              {d.jornada && (
+                <span className="pb-2 text-[13px] font-medium text-ink">
+                  Tempo de trabalho: {d.jornada.horas}h{d.jornada.restoMinutos > 0 ? ` e ${d.jornada.restoMinutos}min` : ""}
+                </span>
+              )}
             </div>
             <Field label="Possui cozinha/copa no trabalho?">
               <OptionRow
@@ -196,11 +201,6 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
             </Field>
           </div>
         </div>
-        {d.jornada && (
-          <p className="mt-4 rounded-[10px] bg-accent-soft/70 px-4 py-3 font-mono text-[12px] text-accent ring-1 ring-accent/15">
-            Tempo de trabalho: {d.jornada.horas} horas e {d.jornada.restoMinutos} minutos.
-          </p>
-        )}
         <h2 className="mb-3 mt-7 font-display text-base font-semibold tracking-tight">Rotina de treinamento/atividades físicas</h2>
         <div className="space-y-4">
           {a.modalidades.map((m, i) => (
