@@ -3,10 +3,6 @@ import type { MetasPesoResultado } from "@/lib/assessment/weight-goals";
 import {
   fmt2,
   fmtData,
-  fmtInt,
-  fmtLitros,
-  labelEstrategia,
-  labelMetodo,
 } from "@/lib/assessment/calculations";
 import { useRef } from "react";
 import { toast } from "sonner";
