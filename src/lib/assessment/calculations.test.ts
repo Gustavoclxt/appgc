@@ -21,9 +21,9 @@ describe("Tinsley energy equations", () => {
   it("keeps full precision through TMB, VET and energy adjustment", () => {
     const d = deriveResults({ ...createEmptyAssessment(), peso: "78,43", percentualGordura: "22,37", metodoTMB: "tinsley-mlg", fatorAtividade: "1.7", estrategia: "deficit", tipoAjuste: "percentual", percentualAjuste: "15" });
     expect(d.massaLivreGordura).toBeCloseTo(60.885209, 10);
-    expect(d.tmb).toBeCloseTo(1860.9279131, 10);
-    expect(d.vet).toBeCloseTo(3163.57745227, 10);
-    expect(d.caloriasSugeridas).toBeCloseTo(2689.0408344295, 10);
+    expect(d.tmb).toBeCloseTo(1860.9269131, 10);
+    expect(d.vet).toBeCloseTo(3163.57575227, 10);
+    expect(d.caloriasSugeridas).toBeCloseTo(2689.0393894295, 10);
   });
   it.each(["tinsley-pc", "tinsley-mlg"] as const)("does not fabricate a result for %s without weight", metodoTMB => {
     const d = deriveResults({ ...createEmptyAssessment(), metodoTMB });
