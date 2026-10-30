@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { novoId } from "@/lib/assessment/initial-state";
-import { chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
+import { agruparItensPorRefeicao, chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { opcoesDeLocal } from "@/lib/assessment/food-diary";
 import type { Refeicao } from "@/lib/assessment/types";
 import { Select, TextInput } from "./fields";
@@ -23,6 +23,18 @@ interface Props {
 export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCalcular, onCopiarR24h, r24h }: Props) {
   const comp = composicaoParaRelatorio(composicao);
   const [foco, setFoco] = useState<string | null>(null);
+  const [progresso, setProgresso] = useState(0);
+  useEffect(() => {
+    if (!calculando) {
+      setProgresso(0);
+      return;
+    }
+    const timer = setInterval(
+      () => setProgresso((p) => (p < 95 ? p + Math.max(1, Math.round((95 - p) / 12)) : p)),
+      400,
+    );
+    return () => clearInterval(timer);
+  }, [calculando]);
   const refs = useRef(new Map<string, HTMLInputElement>());
   useEffect(() => {
     if (!foco) return;
