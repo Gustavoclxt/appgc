@@ -90,7 +90,7 @@ export function Step7Resultado({ a, d, analise, analisando, progressoAnalise, on
     );
   }
 
-  const blocosRelatorio = relatorioEstruturado(a, d, composicao, diaAtipico, composicaoAtipica, metas !== null);
+  const blocosRelatorio = relatorioEstruturado(a, d, composicao, diaAtipico, composicaoAtipica, metas !== null, false);
   const painel = painelClinicoParaRelatorio(analise, a, d, composicao);
 
   return (
