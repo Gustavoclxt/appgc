@@ -36,6 +36,7 @@ export function relatorioEstruturado(
   diaAtipico: Refeicao[] | null = null,
   composicaoAtipica: ComposicaoDiario | null = null,
   temMetas = false,
+  incluirAntropometria = true,
 ): BlocoRelatorio[] {
   const blocos: BlocoRelatorio[] = [];
   const push = (b: BlocoRelatorio) => {
