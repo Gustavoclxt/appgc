@@ -97,13 +97,15 @@ export function Step7Resultado({ a, d, analise, analisando, erroAnalise, progres
             </div>
           </div>
         ) : (
-          <button
-            type="button"
-            onClick={onAnalisar}
-            className="mt-6 rounded-[10px] bg-ink px-6 py-3 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-ink/90"
-          >
-            ANALISAR AVALIAÇÃO
-          </button>
+          erroAnalise && (
+            <button
+              type="button"
+              onClick={onAnalisar}
+              className="mt-6 rounded-[10px] bg-ink px-6 py-3 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-ink/90"
+            >
+              TENTAR NOVAMENTE
+            </button>
+          )
         )}
         {metas && <WeightGoalsReport resultado={metas} />}
       </Panel>
