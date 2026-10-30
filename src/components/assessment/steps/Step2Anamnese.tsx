@@ -57,6 +57,9 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               <UnitInput value={a.pesoDesejado} onChange={(v) => set("pesoDesejado", v)} unidade="kg" />
             </Field>
           )}
+          <Field label="Qual sua maior dificuldade relacionada ao seu objetivo?">
+            <TextInput value={a.maiorDificuldade} onChange={(v) => set("maiorDificuldade", v)} />
+          </Field>
           <Field label="De 0 a 10, como está sua motivação?" className="sm:col-start-2">
             <div className="w-24">
               <Select
@@ -69,9 +72,6 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
                 options={Array.from({ length: 11 }, (_, i) => ({ value: String(i), label: String(i) }))}
               />
             </div>
-          </Field>
-          <Field label="Qual sua maior dificuldade relacionada ao seu objetivo?">
-            <TextInput value={a.maiorDificuldade} onChange={(v) => set("maiorDificuldade", v)} />
           </Field>
           {a.motivacao !== "" && Number(a.motivacao) < 10 && (
             <Field label="O que falta para chegar em 10?" className="sm:col-span-2">
