@@ -180,7 +180,7 @@ export function Step6Energia({
         )}
 
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <MetricCard label="VET" valor={d.vet !== null ? fmtInt(d.vet) : "—"} sub="kcal/dia" />
+          <MetricCard label="GET" valor={d.vet !== null ? fmtInt(d.vet) : "—"} sub="kcal/dia" />
           <MetricCard
             label="Ajuste"
             valor={
