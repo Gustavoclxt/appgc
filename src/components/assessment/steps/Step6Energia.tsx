@@ -87,7 +87,7 @@ export function Step6Energia({
             {a.metodoTMB === "tinsley-pc"
               ? "Informe um peso corporal válido na Avaliação para calcular a TMB."
               : a.metodoTMB === "tinsley-mlg"
-                ? "Informe peso e percentual de gordura válidos na Avaliação para calcular a massa livre de gordura e a TMB."
+                ? "Informe peso e percentual de gordura válidos na Avaliação para calcular a massa livre de gordura e o GER."
                 : "Informe sexo, data de nascimento, peso e altura para calcular o GER."}
           </p>
         )}
