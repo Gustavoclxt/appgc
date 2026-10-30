@@ -3,9 +3,46 @@ import {
   calculateAdjustedWeight,
   calculateCardioRange,
   calculateMaxHeartRate,
+  calculateTMB,
   deriveResults,
 } from "./calculations";
 import { createEmptyAssessment } from "./initial-state";
+
+describe("Tinsley energy equations", () => {
+  it("calculates PC as 24.8 × body weight in kg + 10 without unrelated inputs", () => {
+    const d = deriveResults({ ...createEmptyAssessment(), peso: "80", metodoTMB: "tinsley-pc" });
+    expect(d.tmb).toBe(1994);
+  });
+  it("calculates MLG as 25.9 × fat-free mass in kg + 284", () => {
+    const d = deriveResults({ ...createEmptyAssessment(), peso: "80", percentualGordura: "25", metodoTMB: "tinsley-mlg" });
+    expect(d.massaLivreGordura).toBe(60);
+    expect(d.tmb).toBe(1838);
+  });
+  it("keeps full precision through TMB, VET and energy adjustment", () => {
+    const d = deriveResults({ ...createEmptyAssessment(), peso: "78,43", percentualGordura: "22,37", metodoTMB: "tinsley-mlg", fatorAtividade: "1.7", estrategia: "deficit", tipoAjuste: "percentual", percentualAjuste: "15" });
+    expect(d.massaLivreGordura).toBeCloseTo(60.885209, 10);
+    expect(d.tmb).toBeCloseTo(1860.9279131, 10);
+    expect(d.vet).toBeCloseTo(3163.57745227, 10);
+    expect(d.caloriasSugeridas).toBeCloseTo(2689.0408344295, 10);
+  });
+  it.each(["tinsley-pc", "tinsley-mlg"] as const)("does not fabricate a result for %s without weight", metodoTMB => {
+    const d = deriveResults({ ...createEmptyAssessment(), metodoTMB });
+    expect(d.tmb).toBeNull();
+    expect(d.vet).toBeNull();
+  });
+  it.each(["", "-5", "100", "105"])("does not fall back to another equation when MLG is missing or invalid (%s%%)", percentualGordura => {
+    const d = deriveResults({ ...createEmptyAssessment(), peso: "80", percentualGordura, metodoTMB: "tinsley-mlg", sexo: "masculino", altura: "1,80", dataNascimento: "1990-01-01" });
+    expect(d.tmb).toBeNull();
+  });
+  it.each(["tinsley-pc", "tinsley-mlg"] as const)("uses the same %s equation for either sex", metodo => {
+    expect(calculateTMB(metodo, "feminino", 80, 170, 30, 60)).toBe(calculateTMB(metodo, "masculino", 80, 170, 30, 60));
+  });
+  it("preserves Harris-Benedict and Mifflin calculations", () => {
+    expect(calculateTMB("harris-benedict", "masculino", 80, 180, 30)).toBeCloseTo(1864.36, 10);
+    expect(calculateTMB("mifflin", "feminino", 80, 180, 30)).toBe(1614);
+    expect(calculateTMB("mifflin", "", 80, null, null)).toBeNull();
+  });
+});
 
 describe("PIO and hydration", () => {
   it("uses the specified ideal-weight and 0.25 adjustment formula", () => {

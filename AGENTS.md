@@ -19,6 +19,7 @@
 - Resolve the summary's measured weight through anthropometry-groups and consume the existing derived cardio range in clinical-dashboard so screen, copy and PDF agree without changing energy calculations.
 - Preserve a cópia do relatório em formatos HTML semântico e texto puro para compatibilidade com editores ricos e simples.
 - Keep adjusted-weight and hydration decisions in deriveResults so all displays and exports consume the same unrounded result.
+- Keep TMB equation dispatch and required-input validation in calculateTMB, using deriveResults body weight and fat-free mass, so energy, reports and exports share unrounded estimates without fallback to a different equation.
 - Keep training-day global selection transitions in training-days.ts so training and rest controls remain consistent and testable.
 - Keep PDF branding colors in report-theme.ts so print presentation uses centralized tokens.
 - Keep decimal-place limiting of numeric inputs in numeric.ts so every decimal field enforces the same precision.

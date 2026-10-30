@@ -61,7 +61,7 @@ export interface IndicadorAntropometrico {
   data: string;
 }
 
-export type MetodoTMB = "harris-benedict" | "mifflin";
+export type MetodoTMB = "harris-benedict" | "mifflin" | "tinsley-pc" | "tinsley-mlg";
 export type EstrategiaEnergetica = "deficit" | "normocalorica" | "superavit";
 
 export interface Assessment {

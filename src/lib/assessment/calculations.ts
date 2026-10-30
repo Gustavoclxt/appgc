@@ -74,11 +74,22 @@ export function calculateMifflin(
 
 export function calculateTMB(
   metodo: MetodoTMB,
-  sexo: Sexo,
-  pesoKg: number,
-  alturaCm: number,
-  idade: number,
-): number {
+  sexo: Sexo | "",
+  pesoKg: number | null,
+  alturaCm: number | null,
+  idade: number | null,
+  massaLivreGordura: number | null = null,
+): number | null {
+  if (pesoKg === null || !Number.isFinite(pesoKg) || pesoKg <= 0) return null;
+  // Tinsley et al. (2019), doi:10.1139/apnm-2018-0412; kg → kcal/dia.
+  // Both equations apply to the mixed-sex study population.
+  if (metodo === "tinsley-pc") return 24.8 * pesoKg + 10;
+  if (metodo === "tinsley-mlg") {
+    if (massaLivreGordura === null || !Number.isFinite(massaLivreGordura) ||
+      massaLivreGordura <= 0 || massaLivreGordura > pesoKg) return null;
+    return 25.9 * massaLivreGordura + 284;
+  }
+  if (sexo === "" || alturaCm === null || idade === null) return null;
   return metodo === "harris-benedict"
     ? calculateHarrisBenedict(sexo, pesoKg, alturaCm, idade)
     : calculateMifflin(sexo, pesoKg, alturaCm, idade);
@@ -191,10 +202,7 @@ export function deriveResults(a: Assessment): DerivedResults {
   const massaLivreGordura =
     pesoKg !== null && massaGorda !== null ? calculateLeanMass(pesoKg, massaGorda) : null;
 
-  const tmb =
-    pesoKg !== null && alturaCm !== null && idade !== null && a.sexo !== ""
-      ? calculateTMB(a.metodoTMB, a.sexo, pesoKg, alturaCm, idade)
-      : null;
+  const tmb = calculateTMB(a.metodoTMB, a.sexo, pesoKg, alturaCm, idade, massaLivreGordura);
 
   const fatorAtividade = parseNumero(a.fatorAtividade);
   const vet = tmb !== null && fatorAtividade !== null ? calculateVET(tmb, fatorAtividade) : null;
@@ -276,7 +284,9 @@ export const labelEstrategia: Record<string, string> = {
   superavit: "Superávit calórico",
 };
 
-export const labelMetodo: Record<string, string> = {
+export const labelMetodo: Record<MetodoTMB, string> = {
   "harris-benedict": "Harris-Benedict",
   mifflin: "Mifflin-St Jeor",
+  "tinsley-pc": "Tinsley (PC)",
+  "tinsley-mlg": "Tinsley (MLG)",
 };
