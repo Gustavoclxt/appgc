@@ -146,7 +146,7 @@ export function generatePDF(
   doc.text("RELATÓRIO DE AVALIAÇÃO NUTRICIONAL", LARGURA / 2, 13, { align: "center" });
   doc.setFont("ReportSans", "normal");
   doc.setFontSize(9);
-  doc.text("GC - NUTRIÇÃO * PERFORMANCE * LONGEVIDADE", LARGURA / 2, 19.5, { align: "center" });
+  doc.text("GC - Excelência em Nutrição", LARGURA / 2, 19.5, { align: "center" });
   y = 36;
 
   const renderExames = (exames: ReturnType<typeof examesParaRelatorio>) => {
