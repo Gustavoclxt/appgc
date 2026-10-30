@@ -294,7 +294,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               ]}
             />
           </Field>
-          <Field label="Consumo diário de água">
+          <Field label="Consumo hídrico diário">
             <div className="flex items-center gap-4">
               <div className="min-w-0 flex-1">
                 <Slider
