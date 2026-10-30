@@ -24,8 +24,8 @@ function TabelaIndicadores({ categoria, indicadores }: { categoria: CategoriaAnt
           <tbody>
             {indicadores.map((i) => (
               <tr key={i.id} className="border-t border-line/70">
-                <td className="py-2 pr-4 text-ink">{rotuloIndicador(i.nome)}</td>
-                <td className="py-2 pl-6 font-mono">{valorComUnidade(i, categoria)}</td>
+                <td className={cn("py-2 pr-4 text-ink", categoria === "Resultados" && /massa\s+magra/i.test(i.nome) && "font-semibold")}>{rotuloIndicador(i.nome)}</td>
+                <td className={cn("py-2 pl-6 font-mono", categoria === "Resultados" && /massa\s+magra/i.test(i.nome) && "font-semibold")}>{valorComUnidade(i, categoria)}</td>
               </tr>
             ))}
           </tbody>
