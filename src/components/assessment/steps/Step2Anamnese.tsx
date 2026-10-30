@@ -363,6 +363,11 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           <Field label="Acorda" className="w-[120px]">
             <TextInput type="time" value={a.horaAcordar} onChange={(v) => set("horaAcordar", v)} />
           </Field>
+          {d.sono && (
+            <span className="pb-2 text-[13px] font-medium text-ink">
+              Tempo de sono: {d.sono.horas}h e {d.sono.restoMinutos}min
+            </span>
+          )}
         </div>
           <Field label="Qualidade do sono">
             <OptionRow
