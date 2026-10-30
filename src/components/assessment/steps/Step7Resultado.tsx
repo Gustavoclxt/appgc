@@ -77,14 +77,33 @@ export function Step7Resultado({ a, d, analise, analisando, progressoAnalise, on
           Ao analisar a avaliação, os dados preenchidos e os cálculos realizados são reunidos em um
           relatório técnico objetivo.
         </p>
-        <button
-          type="button"
-          onClick={onAnalisar}
-          disabled={analisando}
-          className="mt-6 rounded-[10px] bg-ink px-6 py-3 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-ink/90 disabled:opacity-60"
-        >
-          {analisando ? `ANALISANDO… ${progressoAnalise}%` : "ANALISAR AVALIAÇÃO"}
-        </button>
+        {analisando ? (
+          <div className="mt-6 flex flex-col items-center gap-2" role="status" aria-live="polite">
+            <span className="font-mono text-[12px] font-semibold uppercase tracking-[0.14em] text-ink">
+              Analisando · {progressoAnalise}%
+            </span>
+            <div
+              className="h-2 w-full max-w-xs overflow-hidden rounded-full bg-line"
+              role="progressbar"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={progressoAnalise}
+            >
+              <div
+                className="h-full rounded-full bg-accent transition-[width] duration-300 ease-out"
+                style={{ width: `${progressoAnalise}%` }}
+              />
+            </div>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={onAnalisar}
+            className="mt-6 rounded-[10px] bg-ink px-6 py-3 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-ink/90"
+          >
+            ANALISAR AVALIAÇÃO
+          </button>
+        )}
         {metas && <WeightGoalsReport resultado={metas} />}
       </Panel>
     );
