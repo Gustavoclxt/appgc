@@ -70,6 +70,18 @@ const MODALIDADES = [
 
 export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, diaAtipico, onAdicionarDiaAtipico, onRemoverDiaAtipico, onAlterarDiaAtipico, onCopiarR24h, composicaoAtipica, calculandoAtipico, onCalcularAtipico }: Props) {
   const comp = composicaoParaRelatorio(composicao);
+  const [progressoCalculo, setProgressoCalculo] = useState(0);
+  useEffect(() => {
+    if (!calculando) {
+      setProgressoCalculo(0);
+      return;
+    }
+    const timer = setInterval(
+      () => setProgressoCalculo((p) => (p < 95 ? p + Math.max(1, Math.round((95 - p) / 12)) : p)),
+      400,
+    );
+    return () => clearInterval(timer);
+  }, [calculando]);
   const desatualizada = composicao !== null && composicao.chave !== chaveDiario(a.diarioAlimentar);
   const [focoId, setFocoId] = useState<string | null>(null);
   const alimentoRefs = useRef(new Map<string, HTMLInputElement>());
