@@ -103,7 +103,7 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Função estomacal/intestinal", lista(a.funcaoEstomacal)),
       campo("Frequência de evacuação", a.frequenciaEvacuacao),
       campo("Escala de Bristol", bristol[a.bristol] ?? a.bristol),
-      campo("Consumo hídrico diário", a.consumoAgua ? `${a.consumoAgua.replace(".", ",")} L/dia` : ""),
+      campo("Consumo hídrico diário", a.consumoAgua),
       campo("Escala de Armstrong", armstrong[a.armstrong] ?? a.armstrong),
       campo("Dorme", a.horaDormir),
       campo("Acorda", a.horaAcordar),
