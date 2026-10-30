@@ -233,7 +233,7 @@ function Index() {
               <br />
               Idade: <span className="text-ink">{derivados.idade !== null ? `${derivados.idade} anos` : "—"}</span>
               {" · "}
-              Avaliação: <span className="text-ink">{fmtData(dados.dataAvaliacao)}</span>
+              Data: <span className="text-ink">{fmtData(dados.dataAvaliacao)}</span>
             </span>
           </div>
         </div>
