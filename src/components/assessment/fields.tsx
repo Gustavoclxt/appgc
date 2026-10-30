@@ -199,6 +199,105 @@ export function Select({
   );
 }
 
+const ARMSTRONG_OPCOES: { value: string; label: string; cor: string }[] = [
+  { value: "A1", label: "A1 - Normal", cor: "#fafad4" },
+  { value: "A2", label: "A2 - Normal", cor: "#f7f6be" },
+  { value: "A3", label: "A3 - Normal", cor: "#f5f190" },
+  { value: "A4", label: "A4 - Má hidratação", cor: "#f2ec62" },
+  { value: "A5", label: "A5 - Má hidratação", cor: "#f1ea21" },
+  { value: "A6", label: "A6 - Má hidratação", cor: "#eac80e" },
+  { value: "A7", label: "A7 - Desidratação severa", cor: "#deab14" },
+  { value: "A8", label: "A8 - Desidratação severa", cor: "#c58929" },
+];
+
+function BolinhaArmstrong({ cor }: { cor: string }) {
+  return (
+    <span
+      aria-hidden
+      className="inline-block h-3 w-3 shrink-0 rounded-full ring-1 ring-ink/15"
+      style={{ backgroundColor: cor }}
+    />
+  );
+}
+
+export function ArmstrongSelect({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const [aberto, setAberto] = useState(false);
+  const raiz = useRef<HTMLDivElement>(null);
+  const selecionada = ARMSTRONG_OPCOES.find((o) => o.value === value);
+
+  useEffect(() => {
+    if (!aberto) return;
+    const fecharFora = (e: MouseEvent) => {
+      if (raiz.current && !raiz.current.contains(e.target as Node)) setAberto(false);
+    };
+    const fecharEsc = (e: globalThis.KeyboardEvent) => {
+      if (e.key === "Escape") setAberto(false);
+    };
+    document.addEventListener("mousedown", fecharFora);
+    document.addEventListener("keydown", fecharEsc);
+    return () => {
+      document.removeEventListener("mousedown", fecharFora);
+      document.removeEventListener("keydown", fecharEsc);
+    };
+  }, [aberto]);
+
+  return (
+    <div ref={raiz} className="relative">
+      <button
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={aberto}
+        onClick={() => setAberto((v) => !v)}
+        className={cn(inputBase, "flex items-center justify-between gap-2 text-left")}
+      >
+        {selecionada ? (
+          <span className="flex items-center gap-2">
+            <BolinhaArmstrong cor={selecionada.cor} />
+            {selecionada.label}
+          </span>
+        ) : (
+          <span className="text-ink-soft/60">Selecione</span>
+        )}
+        <ChevronDown aria-hidden size={16} strokeWidth={2} className="shrink-0 text-ink-soft" />
+      </button>
+      {aberto && (
+        <ul
+          role="listbox"
+          aria-label="Escala de Armstrong"
+          className="absolute z-30 mt-1 w-full overflow-hidden rounded-[10px] bg-white py-1 shadow-lg ring-1 ring-line"
+        >
+          {ARMSTRONG_OPCOES.map((o) => (
+            <li key={o.value}>
+              <button
+                type="button"
+                role="option"
+                aria-selected={o.value === value}
+                onClick={() => {
+                  onChange(o.value);
+                  setAberto(false);
+                }}
+                className={cn(
+                  "flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-ink transition-colors hover:bg-accent/10",
+                  o.value === value && "bg-accent/5 font-medium",
+                )}
+              >
+                <BolinhaArmstrong cor={o.cor} />
+                {o.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 export function OptionRow({
   value,
   onChange,
