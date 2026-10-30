@@ -46,6 +46,8 @@ export function Step6Energia({
               options={[
                 { value: "harris-benedict", label: "Harris-Benedict" },
                 { value: "mifflin", label: "Mifflin-St Jeor" },
+                { value: "tinsley-pc", label: "Tinsley (PC)" },
+                { value: "tinsley-mlg", label: "Tinsley (MLG)" },
               ]}
             />
           </Field>
@@ -82,7 +84,11 @@ export function Step6Energia({
         </div>
         {d.tmb === null && (
           <p className="mt-4 font-mono text-[11px] text-ink-soft">
-            Informe sexo, data de nascimento, peso e altura para calcular a TMB.
+            {a.metodoTMB === "tinsley-pc"
+              ? "Informe um peso corporal válido na Avaliação para calcular a TMB."
+              : a.metodoTMB === "tinsley-mlg"
+                ? "Informe peso e percentual de gordura válidos na Avaliação para calcular a massa livre de gordura e a TMB."
+                : "Informe sexo, data de nascimento, peso e altura para calcular a TMB."}
           </p>
         )}
       </Panel>
