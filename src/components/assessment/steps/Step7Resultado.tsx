@@ -21,6 +21,7 @@ import type { StepProps } from "./types";
 interface Props extends StepProps {
   analise: AnaliseIA | null;
   analisando: boolean;
+  erroAnalise: boolean;
   progressoAnalise: number;
   onAnalisar: () => void;
   composicao: ComposicaoDiario | null;
@@ -47,7 +48,7 @@ function Bloco({ titulo, children }: { titulo: string; children: React.ReactNode
   );
 }
 
-export function Step7Resultado({ a, d, analise, analisando, progressoAnalise, onAnalisar, composicao, diaAtipico, composicaoAtipica, metas }: Props) {
+export function Step7Resultado({ a, d, analise, analisando, erroAnalise, progressoAnalise, onAnalisar, composicao, diaAtipico, composicaoAtipica, metas }: Props) {
   const relatorioRef = useRef<HTMLDivElement>(null);
 
   async function copiarRelatorio() {
