@@ -37,7 +37,7 @@ export function Step6Energia({
 
   return (
     <div className="space-y-6">
-      <Panel titulo="Gasto energético">
+      <Panel titulo="Determinação do GET">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label="Equação para GER">
             <OptionRow
