@@ -57,7 +57,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               <UnitInput value={a.pesoDesejado} onChange={(v) => set("pesoDesejado", v)} unidade="kg" />
             </Field>
           )}
-          <Field label="Qual sua maior dificuldade relacionada ao seu objetivo?">
+          <Field label="Qual sua maior dificuldade relacionada ao seu objetivo?" className="sm:col-start-1">
             <TextInput value={a.maiorDificuldade} onChange={(v) => set("maiorDificuldade", v)} />
           </Field>
           <Field label="De 0 a 10, como está sua motivação?" className="sm:col-start-2">
