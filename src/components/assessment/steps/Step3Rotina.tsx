@@ -149,13 +149,18 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
       <Panel titulo="Rotina de trabalho/faculdade">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div className="flex flex-col items-start gap-5">
-            <div className="flex items-start gap-1">
+            <div className="flex items-end gap-1">
               <Field label="Entrada" className="w-[120px]">
                 <TextInput type="time" value={a.entradaTrabalho} onChange={(v) => set("entradaTrabalho", v)} />
               </Field>
               <Field label="Saída" className="w-[120px]">
                 <TextInput type="time" value={a.saidaTrabalho} onChange={(v) => set("saidaTrabalho", v)} />
               </Field>
+              {d.jornada && (
+                <span className="pb-2 text-[13px] font-medium text-ink">
+                  Tempo de trabalho: {d.jornada.horas}h{d.jornada.restoMinutos > 0 ? ` e ${d.jornada.restoMinutos}min` : ""}
+                </span>
+              )}
             </div>
             <Field label="Possui cozinha/copa no trabalho?">
               <OptionRow
