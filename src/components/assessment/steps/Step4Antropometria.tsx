@@ -2,6 +2,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { Paperclip } from "lucide-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 import { extrairAntropometria } from "@/lib/assessment/analysis.functions";
 import { fmt2, fmtData } from "@/lib/assessment/calculations";
