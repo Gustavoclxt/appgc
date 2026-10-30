@@ -6,6 +6,9 @@ export const AGUA_PASSO = 0.1;
 // Marcação da régua abaixo da trilha: um tick a cada 1 L (0, 1, 2 … 6), clicável.
 export const escalaAgua: number[] = Array.from({ length: AGUA_MAX + 1 }, (_, i) => i);
 
+// Pontos intermediários da régua: meio litro entre cada marca (0,5; 1,5 … 5,5), clicáveis.
+export const escalaAguaMeio: number[] = Array.from({ length: AGUA_MAX }, (_, i) => i + 0.5);
+
 // Lê litros a partir do valor armazenado (ex.: "1,5 L/dia"); texto livre não reconhecido volta a 0.
 export function lerLitrosAgua(valor: string): number {
   const bruto = valor.trim().match(/^(\d+(?:[.,]\d+)?)\s*L/i)?.[1];
