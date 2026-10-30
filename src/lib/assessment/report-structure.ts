@@ -69,13 +69,13 @@ export function relatorioEstruturado(
 
   push({ tipo: "refeicoes", titulo: "Recordatório 24 horas", refeicoes: diarioParaRelatorio(a.diarioAlimentar) });
   const comp = composicaoParaRelatorio(composicao);
-  if (comp) push({ tipo: "campos", titulo: "Composição estimada do Recordatório 24h", campos: comp.totais });
+  if (comp) push({ tipo: "campos", titulo: "Composição estimada do Recordatório 24h", campos: comp.totais.map((t) => ({ label: t.label, value: t.valor })) });
   const obsR24 = observacoesRecordatorioParaRelatorio(a);
   if (obsR24) push({ tipo: "campos", titulo: obsR24.title, campos: obsR24.fields });
 
   if (diaAtipico) push({ tipo: "refeicoes", titulo: "Recordatório 24 horas — Dia atípico", refeicoes: diarioParaRelatorio(diaAtipico) });
   const compAtipica = composicaoParaRelatorio(composicaoAtipica);
-  if (compAtipica) push({ tipo: "campos", titulo: "Composição estimada do R24h — Dia atípico", campos: compAtipica.totais });
+  if (compAtipica) push({ tipo: "campos", titulo: "Composição estimada do R24h — Dia atípico", campos: compAtipica.totais.map((t) => ({ label: t.label, value: t.valor })) });
 
   secao("evolucao");
 
