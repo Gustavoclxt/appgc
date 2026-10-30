@@ -381,11 +381,6 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             />
           </Field>
         </div>
-        {d.sono && (
-          <p className="mt-4 rounded-[10px] bg-accent-soft/70 px-4 py-3 font-mono text-[12px] text-accent ring-1 ring-accent/15">
-            Você dorme aproximadamente {d.sono.horas} horas e {d.sono.restoMinutos} minutos.
-          </p>
-        )}
       </Panel>
     </div>
   );
