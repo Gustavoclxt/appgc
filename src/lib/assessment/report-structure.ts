@@ -80,27 +80,29 @@ export function relatorioEstruturado(
 
   secao("evolucao");
 
-  push({
-    tipo: "campos",
-    titulo: "Avaliação antropométrica",
-    campos: preenchidos([
-      ["Data da avaliação antropométrica", a.dataAvaliacaoAntropometrica ? fmtData(a.dataAvaliacaoAntropometrica) : ""],
-      ["Altura", d.alturaCm !== null ? `${fmt2(d.alturaCm)} cm` : ""],
-      ["Peso atual", d.pesoKg !== null ? `${fmt2(d.pesoKg)} kg` : ""],
-      ["IMC", d.imc !== null ? `${fmt2(d.imc)} — ${d.classificacaoIMC}` : ""],
-      ["PIO", d.pio !== null ? `${fmt2(d.pio)} kg` : ""],
-      ["Percentual de gordura", d.percentualGordura !== null ? `${fmt2(d.percentualGordura)}%` : ""],
-      ["Método do percentual de gordura", d.percentualGordura !== null ? a.metodoGordura : ""],
-      ["Massa gorda", d.massaGorda !== null ? `${fmt2(d.massaGorda)} kg` : ""],
-      ["Massa livre de gordura", d.massaLivreGordura !== null ? `${fmt2(d.massaLivreGordura)} kg` : ""],
-    ]),
-  });
-  for (const g of agruparAntropometria(a.indicadoresAntropometricos, a.dataAvaliacaoAntropometrica)) {
+  if (incluirAntropometria) {
     push({
       tipo: "campos",
-      titulo: `Antropometria — ${g.categoria}${g.data ? ` (${fmtData(g.data)})` : ""}`,
-      campos: g.indicadores.map((i) => ({ label: rotuloIndicador(i.nome, g.categoria), value: valorComUnidade(i, g.categoria) })),
+      titulo: "Avaliação antropométrica",
+      campos: preenchidos([
+        ["Data da avaliação antropométrica", a.dataAvaliacaoAntropometrica ? fmtData(a.dataAvaliacaoAntropometrica) : ""],
+        ["Altura", d.alturaCm !== null ? `${fmt2(d.alturaCm)} cm` : ""],
+        ["Peso atual", d.pesoKg !== null ? `${fmt2(d.pesoKg)} kg` : ""],
+        ["IMC", d.imc !== null ? `${fmt2(d.imc)} — ${d.classificacaoIMC}` : ""],
+        ["PIO", d.pio !== null ? `${fmt2(d.pio)} kg` : ""],
+        ["Percentual de gordura", d.percentualGordura !== null ? `${fmt2(d.percentualGordura)}%` : ""],
+        ["Método do percentual de gordura", d.percentualGordura !== null ? a.metodoGordura : ""],
+        ["Massa gorda", d.massaGorda !== null ? `${fmt2(d.massaGorda)} kg` : ""],
+        ["Massa livre de gordura", d.massaLivreGordura !== null ? `${fmt2(d.massaLivreGordura)} kg` : ""],
+      ]),
     });
+    for (const g of agruparAntropometria(a.indicadoresAntropometricos, a.dataAvaliacaoAntropometrica)) {
+      push({
+        tipo: "campos",
+        titulo: `Antropometria — ${g.categoria}${g.data ? ` (${fmtData(g.data)})` : ""}`,
+        campos: g.indicadores.map((i) => ({ label: rotuloIndicador(i.nome, g.categoria), value: valorComUnidade(i, g.categoria) })),
+      });
+    }
   }
 
   push({ tipo: "exames", titulo: "Exames laboratoriais", exames: examesParaRelatorio(a.exames) });
