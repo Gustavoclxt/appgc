@@ -224,7 +224,7 @@ function Index() {
               Avaliação Clínica Nutricional
             </p>
             <p className="font-mono text-xs uppercase tracking-[0.12em] text-ink-soft">
-              GC - Excelência em Nutrição
+              GC - NUTRIÇÃO * PERFORMANCE * LONGEVIDADE
             </p>
           </div>
           <div className="flex items-center gap-3 justify-self-end">
