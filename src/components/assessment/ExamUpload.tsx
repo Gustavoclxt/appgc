@@ -46,10 +46,16 @@ export function ExamUpload({ a, set }: Pick<StepProps, "a" | "set">) {
 
   return (
     <>
-      <Button type="button" className="h-10 px-4" disabled={lendo} onClick={() => inputRef.current?.click()}>
-        <Paperclip aria-hidden="true" />
-        {lendo ? `Lendo exames… ${progresso}%` : "Anexar Exame"}
-      </Button>
+      {a.exames.length > 0 && !lendo ? (
+        <Button type="button" className="h-10 px-4" onClick={() => set("exames", [])}>
+          - Remover Exame
+        </Button>
+      ) : (
+        <Button type="button" className="h-10 px-4" disabled={lendo} onClick={() => inputRef.current?.click()}>
+          <Paperclip aria-hidden="true" />
+          {lendo ? `Lendo exames… ${progresso}%` : "Anexar Exame"}
+        </Button>
+      )}
       <input
         ref={inputRef}
         type="file"
