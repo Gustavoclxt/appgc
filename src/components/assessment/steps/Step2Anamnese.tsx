@@ -1,6 +1,6 @@
 import { novoId } from "@/lib/assessment/initial-state";
 import { podeAnexarExames } from "@/lib/assessment/anthropometry-groups";
-import { AGUA_MAX, AGUA_MIN, AGUA_PASSO, escalaAgua, formatarLitros, formatarLitrosAgua, lerLitrosAgua } from "@/lib/assessment/hydration";
+import { AGUA_MAX, AGUA_MIN, AGUA_PASSO, escalaAgua, escalaAguaMeio, formatarLitros, formatarLitrosAgua, lerLitrosAgua } from "@/lib/assessment/hydration";
 import { Slider } from "@/components/ui/slider";
 import { ExamUpload } from "../ExamUpload";
 
@@ -324,6 +324,22 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
                         <span className="mt-1 font-mono text-[10px] leading-none text-ink-soft">
                           {formatarLitros(litros)}
                         </span>
+                      </button>
+                    );
+                  })}
+                  {escalaAguaMeio.map((litros) => {
+                    // Mesmo deslocamento dos ticks: compensa o raio do poleiro nos extremos.
+                    const pct = (litros / AGUA_MAX) * 100;
+                    return (
+                      <button
+                        key={litros}
+                        type="button"
+                        aria-label={`Selecionar ${formatarLitros(litros)} L/dia`}
+                        onClick={() => set("consumoAgua", formatarLitrosAgua(litros))}
+                        className="absolute top-0 flex h-1.5 w-3 -translate-x-1/2 cursor-pointer items-center justify-center rounded-full outline-none transition-colors hover:bg-accent/30 focus-visible:ring-2 focus-visible:ring-accent/40"
+                        style={{ left: `calc(${pct}% + ${8 - pct * 0.16}px)` }}
+                      >
+                        <span className="h-1.5 w-1.5 rounded-full bg-line" />
                       </button>
                     );
                   })}

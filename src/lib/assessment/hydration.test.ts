@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { AGUA_MAX, escalaAgua, formatarLitros, formatarLitrosAgua, lerLitrosAgua } from "./hydration";
+import { AGUA_MAX, escalaAgua, escalaAguaMeio, formatarLitros, formatarLitrosAgua, lerLitrosAgua } from "./hydration";
 
 describe("slider de hidratação", () => {
   it("lê litros a partir do valor armazenado na sessão", () => {
@@ -35,5 +35,13 @@ describe("slider de hidratação", () => {
     expect(escalaAgua[0]).toBe(0);
     expect(escalaAgua[3]).toBe(3);
     expect(escalaAgua[escalaAgua.length - 1]).toBe(AGUA_MAX);
+  });
+
+  it("marca os pontos de meio litro entre os números da régua", () => {
+    expect(escalaAguaMeio).toHaveLength(6);
+    expect(escalaAguaMeio[0]).toBe(0.5);
+    expect(escalaAguaMeio[1]).toBe(1.5);
+    expect(escalaAguaMeio[2]).toBe(2.5);
+    expect(escalaAguaMeio[5]).toBe(5.5);
   });
 });
