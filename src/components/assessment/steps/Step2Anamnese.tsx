@@ -316,7 +316,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
                         key={litros}
                         type="button"
                         aria-label={`Selecionar ${formatarLitros(litros)} L/dia`}
-                        onClick={() => { console.log("DEBUG tick", litros, formatarLitrosAgua(litros)); set("consumoAgua", formatarLitrosAgua(litros)); }}
+                        onClick={() => set("consumoAgua", formatarLitrosAgua(litros))}
                         className="absolute top-0 flex -translate-x-1/2 cursor-pointer flex-col items-center rounded-sm outline-none transition-colors hover:text-accent focus-visible:ring-2 focus-visible:ring-accent/40"
                         style={{ left: `calc(${pct}% + ${8 - pct * 0.16}px)` }}
                       >
@@ -335,7 +335,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
                         key={litros}
                         type="button"
                         aria-label={`Selecionar ${formatarLitros(litros)} L/dia`}
-                        onClick={() => { console.log("DEBUG dot", litros, formatarLitrosAgua(litros)); set("consumoAgua", formatarLitrosAgua(litros)); }}
+                        onClick={() => set("consumoAgua", formatarLitrosAgua(litros))}
                         className="absolute top-0 flex h-1.5 w-3 -translate-x-1/2 cursor-pointer items-center justify-center rounded-full outline-none transition-colors hover:bg-accent/30 focus-visible:ring-2 focus-visible:ring-accent/40"
                         style={{ left: `calc(${pct}% + ${8 - pct * 0.16}px)` }}
                       >
