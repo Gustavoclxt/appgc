@@ -1,22 +1,9 @@
 import { metasParaRelatorio } from "./weight-goals-report";
-import { observacoesExamesParaRelatorio } from "./anthropometry-groups";
 import type { MetasPesoResultado } from "./weight-goals";
-import {
-  fmt2,
-  fmtData,
-  fmtInt,
-  fmtLitros,
-  labelEstrategia,
-  labelMetodo,
-  type DerivedResults,
-} from "./calculations";
-import type { AnaliseIA, Assessment } from "./types";
-import { anamneseParaRelatorio } from "./report-anamnesis";
-import { diarioParaRelatorio } from "./food-diary";
-import { examesParaRelatorio } from "./report-exams";
-import { composicaoParaRelatorio, type ComposicaoDiario } from "./diet-composition";
-import { linhasAlimentosRetirar } from "./food-preferences";
-import { resumoVetFinal } from "./free-meal";
+import type { DerivedResults } from "./calculations";
+import type { AnaliseIA, Assessment, Refeicao } from "./types";
+import { relatorioEstruturado } from "./report-structure";
+import type { ComposicaoDiario } from "./diet-composition";
 import { painelClinicoParaRelatorio } from "./clinical-dashboard";
 
 interface Linha {
@@ -48,6 +35,8 @@ function montar(
   analise: AnaliseIA,
   composicao: ComposicaoDiario | null,
   metas: MetasPesoResultado | null = null,
+  diaAtipico: Refeicao[] | null = null,
+  composicaoAtipica: ComposicaoDiario | null = null,
 ): Bloco[] {
   const kv = (l: string, v: string): Linha => ({
     texto: `${l}: ${v || "—"}`,
@@ -55,118 +44,35 @@ function montar(
     valor: v || "—",
   });
   const blocos: Bloco[] = [];
-  const vetFinalResumo = resumoVetFinal(
-    d.caloriasSugeridas,
-    a.refeicoesLivresSemana,
-    a.vetRefeicoesLivres,
-  );
-  blocos.push({
-    titulo: "Dados do paciente",
-    linhas: [
-      kv("Data da avaliação", fmtData(a.dataAvaliacao)),
-      kv("Nome", a.nome),
-      kv("Idade", d.idade !== null ? `${d.idade} anos` : ""),
-      kv("Sexo", a.sexo ? (a.sexo === "masculino" ? "Masculino" : "Feminino") : ""),
-      kv("Altura", d.alturaCm !== null ? `${fmt2(d.alturaCm)} cm` : ""),
-      kv("Peso", d.pesoKg !== null ? `${fmt2(d.pesoKg)} kg` : ""),
-      kv("Profissão", a.profissao),
-      kv("Objetivos", a.objetivos.join(", ")),
-      kv("IMC", d.imc !== null ? `${fmt2(d.imc)} — ${d.classificacaoIMC}` : ""),
-      ...(d.pio !== null ? [kv("PIO", `${fmt2(d.pio)} kg`)] : []),
-      kv(
-        "% de gordura",
-        d.percentualGordura !== null ? `${fmt2(d.percentualGordura)}%` : "não informado",
-      ),
-      kv("Massa gorda", d.massaGorda !== null ? `${fmt2(d.massaGorda)} kg` : ""),
-      kv(
-        "Massa livre de gordura",
-        d.massaLivreGordura !== null ? `${fmt2(d.massaLivreGordura)} kg` : "",
-      ),
-      kv("Método de TMB", labelMetodo[a.metodoTMB] ?? ""),
-      kv("TMB", d.tmb !== null ? `${fmtInt(d.tmb)} kcal/dia` : ""),
-      kv("Fator de atividade", d.fatorAtividade !== null ? fmt2(d.fatorAtividade) : ""),
-      kv("VET", d.vet !== null ? `${fmtInt(d.vet)} kcal/dia` : ""),
-      kv(
-        "Hidratação",
-        d.aguaMin !== null
-          ? `${fmtInt(d.aguaMin)}–${fmtInt(d.aguaMax)} mL/dia (${fmtLitros(d.aguaMin)}–${fmtLitros(d.aguaMax)} L/dia)`
-          : "",
-      ),
-      kv("Estratégia", labelEstrategia[a.estrategia] ?? ""),
-      kv(
-        "Calorias sugeridas",
-        d.caloriasSugeridas !== null ? `${fmtInt(d.caloriasSugeridas)} kcal/dia` : "",
-      ),
-      ...(vetFinalResumo
-        ? [
-            kv("Refeições livres na semana", vetFinalResumo.quantidade),
-            kv("VET da refeição livre", vetFinalResumo.vetRefeicao),
-            kv(
-              "VET final da dieta ajustado",
-              vetFinalResumo.vetFinal !== null ? `${fmtInt(vetFinalResumo.vetFinal)} kcal/dia` : "",
-            ),
-          ]
-        : []),
-    ],
-    formato: "tabela",
-  });
-  for (const s of anamneseParaRelatorio(a, d))
-    blocos.push({
-      titulo: s.title,
-      linhas: s.fields.map((f) => kv(f.label, f.value)),
-      formato: "tabela",
-    });
-  const retirar = linhasAlimentosRetirar(a);
-  if (retirar.length)
-    blocos.push({
-      titulo: "Alimentos não consumidos",
-      linhas: retirar.map((texto) => ({ texto })),
-      formato: "lista",
-    });
-
-  const diario = diarioParaRelatorio(a.diarioAlimentar);
-  if (diario.length) {
-    const linhas: Bloco["linhas"] = [];
-    for (const r of diario) {
-      linhas.push({
-        texto: [r.refeicao, r.horario, r.local].filter(Boolean).join(" · "),
-        negrito: true,
-      });
-      for (const al of r.alimentos) linhas.push({ texto: al, nivel: 1 });
-    }
-    blocos.push({ titulo: "Recordatório 24h", linhas, formato: "grupos" });
-  }
-  const comp = composicaoParaRelatorio(composicao);
-  if (comp) {
-    blocos.push({
-      titulo: "Composição estimada do Recordatório 24h",
-      linhas: comp.totais.map((t) => kv(t.label, t.valor)),
-      formato: "tabela",
-    });
-  }
-  const exames = examesParaRelatorio(a.exames);
-  if (exames.length) {
-    blocos.push({
-      titulo: "Exames laboratoriais",
-      linhas: [
-        ...exames.map((e) => ({
+  for (const b of relatorioEstruturado(a, d, composicao, diaAtipico, composicaoAtipica, metas !== null)) {
+    if (b.tipo === "campos") blocos.push({ titulo: b.titulo, linhas: b.campos.map((f) => kv(f.label, f.value)), formato: "tabela" });
+    else if (b.tipo === "lista") blocos.push({ titulo: b.titulo, linhas: b.itens.map((texto) => ({ texto })), formato: "lista" });
+    else if (b.tipo === "refeicoes") {
+      const linhas: Bloco["linhas"] = [];
+      for (const r of b.refeicoes) {
+        linhas.push({ texto: [r.refeicao, r.horario, r.local].filter(Boolean).join(" · "), negrito: true });
+        for (const al of r.alimentos) linhas.push({ texto: al, nivel: 1 });
+      }
+      blocos.push({ titulo: b.titulo, linhas, formato: "grupos" });
+    } else if (b.tipo === "exames") {
+      blocos.push({
+        titulo: b.titulo,
+        linhas: b.exames.map((e) => ({
           texto: `${e.exame}: ${e.resultado} ${e.unidade} (ref.: ${e.referencia || "—"}) — ${statusLabel[e.status] ?? e.status}`,
           nivel: 1 as const,
         })),
-        ...(observacoesExamesParaRelatorio(a) ? [{ texto: `Observações: ${observacoesExamesParaRelatorio(a)}` }] : []),
-      ],
-      formato: "lista",
-    });
-  }
-  if (metas) {
-    blocos.push({ titulo: "Metas e Projeção de Peso", linhas: [] });
-    for (const secao of metasParaRelatorio(metas)) {
-      if (secao.colunas && secao.linhas) blocos.push({
-        titulo: secao.titulo, formato: "tabela",
-        colunas: secao.colunas, celulas: secao.linhas,
-        linhas: secao.linhas.map(l => ({ texto: l.join(" | ") })),
+        formato: "lista",
       });
-      if (secao.itens?.length) blocos.push({ titulo: secao.colunas ? `${secao.titulo} — observações` : secao.titulo, formato: "lista", linhas: secao.itens.map(texto => ({ texto })) });
+    } else if (b.tipo === "metas" && metas) {
+      blocos.push({ titulo: "Metas e Projeção de Peso", linhas: [] });
+      for (const secao of metasParaRelatorio(metas)) {
+        if (secao.colunas && secao.linhas) blocos.push({
+          titulo: secao.titulo, formato: "tabela",
+          colunas: secao.colunas, celulas: secao.linhas,
+          linhas: secao.linhas.map(l => ({ texto: l.join(" | ") })),
+        });
+        if (secao.itens?.length) blocos.push({ titulo: secao.colunas ? `${secao.titulo} — observações` : secao.titulo, formato: "lista", linhas: secao.itens.map(texto => ({ texto })) });
+      }
     }
   }
   const painel = painelClinicoParaRelatorio(analise, a, d, composicao);
@@ -294,8 +200,10 @@ export function relatorioParaCopia(
   analise: AnaliseIA,
   composicao: ComposicaoDiario | null,
   metas: MetasPesoResultado | null = null,
+  diaAtipico: Refeicao[] | null = null,
+  composicaoAtipica: ComposicaoDiario | null = null,
 ) {
-  const blocos = montar(a, d, analise, composicao, metas);
+  const blocos = montar(a, d, analise, composicao, metas, diaAtipico, composicaoAtipica);
   const cab = "RELATÓRIO DE AVALIAÇÃO NUTRICIONAL";
   const recuo = ["", "  - ", "      "];
   const texto =

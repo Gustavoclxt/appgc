@@ -22,6 +22,7 @@ export interface ReportField {
 }
 
 export interface ReportSection {
+  id: string;
   title: string;
   fields: ReportField[];
 }
@@ -33,9 +34,9 @@ const campo = (label: string, value: string | undefined): ReportField | null => 
   return normalized ? { label, value: normalized } : null;
 };
 
-const secao = (title: string, values: Array<ReportField | null>): ReportSection | null => {
+const secao = (id: string, title: string, values: Array<ReportField | null>): ReportSection | null => {
   const fields = values.filter((value): value is ReportField => value !== null);
-  return fields.length ? { title, fields } : null;
+  return fields.length ? { id, title, fields } : null;
 };
 
 const historicoPreenchido = (value: string) => {
@@ -70,7 +71,7 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
     .map((item) => [item.nome, item.dose, item.horario, item.frequencia, item.observacoes.trim() && `Obs: ${item.observacoes.trim()}`].filter(Boolean).join(" · "));
 
   return [
-    secao("Objetivo e anamnese", [
+    secao("objetivo", "Informações gerais e Objetivo", [
       campo("Já fez dieta ou consultou nutricionista", simNao(a.jaFezDieta)),
       campo("Objetivos", lista(a.objetivos)),
       campo("Peso desejado", a.pesoDesejado ? `${a.pesoDesejado} kg` : ""),
@@ -79,14 +80,14 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Motivação", a.motivacao ? `${a.motivacao}/10` : ""),
       campo("O que falta para chegar em 10", a.faltaParaDez),
     ]),
-    secao("Histórico clínico", [
+    secao("historia", "História clínica", [
       campo("Histórico do peso", historicoPreenchido(a.historicoPeso)),
       campo("HMA", a.hma),
       campo("HMP", a.hmp),
       campo("HMF", a.hmf),
       campo("Medicamentos", medicamentos.join("; ")),
     ]),
-    secao("Exames bioquímicos, alergias e hábitos", [
+    secao("exames-habitos", "Exames bioquímicos, Alergias e Hábitos", [
       campo("Possui exames bioquímicos recentes", simNao(a.possuiExames)),
       campo("Tem plano de saúde", a.planoSaude === "sim" ? "Sim · Fazer solicitação médica." : simNao(a.planoSaude)),
       campo("Alergia ou intolerância", a.alergia === "sim" ? `Sim${a.alergiaDescricao ? ` · ${a.alergiaDescricao}` : ""}` : simNao(a.alergia)),
@@ -98,28 +99,27 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Drogas", a.habitosSociais.includes("Drogas") ? a.drogasDescricao : ""),
       campo("Observações sobre os exames", observacoesExamesParaRelatorio(a)),
     ]),
-    secao("Revisão de sistemas", [
+    secao("sistemas-sono", "Revisão de Sistemas e Sono", [
       campo("Função estomacal/intestinal", lista(a.funcaoEstomacal)),
       campo("Frequência de evacuação", a.frequenciaEvacuacao),
       campo("Escala de Bristol", bristol[a.bristol] ?? a.bristol),
-      campo("Consumo de água / líquidos", a.consumoAgua),
-      campo("Escala Armstrong", armstrong[a.armstrong] ?? a.armstrong),
-    ]),
-    secao("Sono", [
-      campo("Horário que dorme", a.horaDormir),
-      campo("Horário que acorda", a.horaAcordar),
+      campo("Consumo hídrico diário", a.consumoAgua),
+      campo("Escala de Armstrong", armstrong[a.armstrong] ?? a.armstrong),
+      campo("Dorme", a.horaDormir),
+      campo("Acorda", a.horaAcordar),
       campo("Duração calculada", d.sono ? `${d.sono.horas}h ${d.sono.restoMinutos}min` : ""),
       campo("Qualidade", a.qualidadeSono),
     ]),
-    secao("Rotina de trabalho/faculdade e treino", [
-      campo("Entrada no trabalho", a.entradaTrabalho),
-      campo("Saída do trabalho", a.saidaTrabalho),
+    secao("rotina", "Rotina de trabalho/faculdade", [
+      campo("Entrada", a.entradaTrabalho),
+      campo("Saída", a.saidaTrabalho),
       campo("Jornada calculada", d.jornada ? `${d.jornada.horas}h ${d.jornada.restoMinutos}min` : ""),
-      campo("Intervalo para refeições", a.intervaloRefeicoes === "sim" ? `Sim${a.intervaloRefeicoesHorarios ? ` · ${a.intervaloRefeicoesHorarios}` : ""}` : simNao(a.intervaloRefeicoes)),
-      campo("Cozinha/copa no trabalho", simNao(a.cozinhaTrabalho)),
-      campo("Treino e rotina", modalidades.join("; ")),
+      campo("Possui cozinha/copa no trabalho?", simNao(a.cozinhaTrabalho)),
+      campo("Intervalo para refeições?", a.intervaloRefeicoes === "sim" ? `Sim${a.intervaloRefeicoesHorarios ? ` · ${a.intervaloRefeicoesHorarios}` : ""}` : simNao(a.intervaloRefeicoes)),
+      campo("Pratica atividade física?", simNao(a.praticaAtividadeFisica)),
+      campo("Modalidade(s)", modalidades.join("; ")),
     ]),
-    secao("Rotina alimentar e suplementação", [
+    secao("habitos-alimentares", "Hábitos alimentares", [
       campo("Quem prepara os alimentos", a.quemPrepara === "propria" ? "Própria pessoa" : a.quemPrepara === "outra" ? a.quemPreparaOutra || "Outra pessoa" : ""),
       campo("Come fora", a.comeFora === "sim" ? ["Sim", a.comeForaFrequencia, a.comeForaDias].filter(Boolean).join(" · ") : simNao(a.comeFora)),
       campo("Consome fritos", a.consomeFritos ? [{ sim: "Sim", "as-vezes": "Às vezes", nao: "Não" }[a.consomeFritos], a.consomeFritos !== "nao" ? a.fritosFrequencia : ""].filter(Boolean).join(" · ") : ""),
@@ -127,12 +127,14 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Observações sobre fome/apetite", a.observacoesFome),
       campo("Hábito de beliscar ao longo do dia?", simNao(a.habitoBeliscar)),
       campo("O que?", a.habitoBeliscar === "sim" ? a.beliscarDescricao : ""),
+    ]),
+    secao("suplementacao", "Suplementação", [
       campo("Utiliza suplemento", simNao(a.usaSuplemento)),
       campo("Observação sobre suplementação", a.observacaoSuplemento),
       campo("Suplementos", suplementos.join("; ")),
       campo("Aceita Whey Protein", simNao(a.aceitaWhey)),
     ]),
-    secao("Preferências e aversões alimentares", [
+    secao("preferencias", "Preferências e aversões alimentares", [
       campo("Carboidratos", comObs(formatarPreferencia(a.prefCarboidratos, carboidratos, "Todos"), a.observacoesPreferencias["carboidratos"])),
       campo("Proteínas", comObs(formatarPreferencia(a.prefProteinas, proteinas, "Todas"), a.observacoesPreferencias["proteinas"])),
       campo("Gorduras", comObs(formatarPreferencia(a.prefGorduras, gorduras, "Todas"), a.observacoesPreferencias["gorduras"])),
@@ -145,9 +147,8 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Bebidas", comObs(formatarPreferencia(a.prefCafeCha, cafeCha, "Todas"), a.observacoesPreferencias["cafeCha"])),
       campo("Açúcar ou adoçante", comObs(a.acucarAdocante, a.observacoesPreferencias["acucar"])),
       campo("Aversões alimentares", a.aversoes),
-      campo("Observações do recordatório 24h", a.observacoesRecordatorio),
     ]),
-    secao("Evolução do peso", [
+    secao("evolucao", "Evolução do peso", [
       campo("Tempo da alimentação atual", a.tempoAlimentacaoAtual),
       campo("Evolução atual", a.evolucaoPeso),
       campo("Altura referida", a.alturaReferida),
@@ -155,4 +156,8 @@ export function anamneseParaRelatorio(a: Assessment, d: DerivedResults): ReportS
       campo("Observações", a.observacoesEvolucao),
     ]),
   ].filter((section): section is ReportSection => section !== null);
+}
+/** Observações do Recordatório 24h, exibidas logo após as refeições, como no formulário. */
+export function observacoesRecordatorioParaRelatorio(a: Assessment): ReportSection | null {
+  return secao("observacoes-r24h", "Observações do Recordatório 24h", [campo("Observações", a.observacoesRecordatorio)]);
 }

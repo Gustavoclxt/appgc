@@ -189,7 +189,7 @@ function Index() {
   async function onGerarPdf() {
     try {
       const { generatePDF } = await import("@/lib/assessment/pdf-report");
-      generatePDF(dados, derivados, analise, composicao, resultadoMetas, diaAtipico ? composicaoAtipica : null);
+      generatePDF(dados, derivados, analise, composicao, resultadoMetas, diaAtipico ? composicaoAtipica : null, diaAtipico);
     } catch {
       toast.error("Não foi possível gerar o PDF.");
     }
@@ -304,6 +304,8 @@ function Index() {
               progressoAnalise={progressoAnalise}
               onAnalisar={onAnalisar}
               composicao={composicao}
+              diaAtipico={diaAtipico}
+              composicaoAtipica={diaAtipico ? composicaoAtipica : null}
               metas={resultadoMetas}
             />
             <Step8Pdf onGerar={onGerarPdf} temAnalise={analise !== null} />
