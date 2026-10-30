@@ -80,6 +80,24 @@ export function somarTotais(itens: ItemComposicao[]) {
   );
 }
 
+/** Agrupa os itens calculados por refeição, na ordem do diário, com o horário de cada refeição. */
+export function agruparItensPorRefeicao(itens: ItemComposicao[], refeicoes: Refeicao[]) {
+  const horarios = new Map(
+    refeicoes.map((r) => [r.refeicao.trim().toLocaleLowerCase("pt-BR") || "refeição", r.horario]),
+  );
+  const grupos: { nome: string; horario: string; itens: ItemComposicao[] }[] = [];
+  for (const i of itens) {
+    const chave = i.refeicao.trim().toLocaleLowerCase("pt-BR") || "refeição";
+    const atual = grupos[grupos.length - 1];
+    if (atual && atual.nome.toLocaleLowerCase("pt-BR") === chave) {
+      atual.itens.push(i);
+    } else {
+      grupos.push({ nome: i.refeicao || "Refeição", horario: horarios.get(chave) ?? "", itens: [i] });
+    }
+  }
+  return grupos;
+}
+
 /** Linhas de texto padronizadas (prévia, PDF e cópia). */
 export function composicaoParaRelatorio(c: ComposicaoDiario | null) {
   if (!c || !c.itens.length) return null;
