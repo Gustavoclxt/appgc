@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { novoId } from "@/lib/assessment/initial-state";
-import { chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
+import { agruparItensPorRefeicao, chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { opcoesDeLocal } from "@/lib/assessment/food-diary";
 import type { Refeicao } from "@/lib/assessment/types";
 import { Select, TextInput } from "./fields";
@@ -23,6 +23,18 @@ interface Props {
 export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCalcular, onCopiarR24h, r24h }: Props) {
   const comp = composicaoParaRelatorio(composicao);
   const [foco, setFoco] = useState<string | null>(null);
+  const [progresso, setProgresso] = useState(0);
+  useEffect(() => {
+    if (!calculando) {
+      setProgresso(0);
+      return;
+    }
+    const timer = setInterval(
+      () => setProgresso((p) => (p < 95 ? p + Math.max(1, Math.round((95 - p) / 12)) : p)),
+      400,
+    );
+    return () => clearInterval(timer);
+  }, [calculando]);
   const refs = useRef(new Map<string, HTMLInputElement>());
   useEffect(() => {
     if (!foco) return;
@@ -65,7 +77,7 @@ export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCal
         </div>
       </div>
       <div className="mt-6 flex justify-center">
-        <Button disabled={calculando} onClick={onCalcular} className="h-auto whitespace-normal text-center text-[13px]">{calculando ? "Calculando…" : "Calcular R24h + dia atípico"}</Button>
+        <Button disabled={calculando} onClick={onCalcular} className="h-auto whitespace-normal text-center text-[13px]">{calculando ? `Calculando… ${progresso}%` : "Calcular R24h + dia atípico"}</Button>
       </div>
       {(comp || r24h) && (
         <div className="mt-4 rounded-[14px] bg-accent p-5 text-white" aria-live="polite">
@@ -81,9 +93,31 @@ export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCal
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {comp.totais.map(t => <div key={t.label}><p className="text-[11px] opacity-70">{t.label}</p><p className="mt-1 font-mono text-sm tabular-nums">{t.valor}</p></div>)}
           </div>
-          <ul className="mt-4 space-y-2">
-            {composicao?.itens.map((item, i) => <li key={i} className="text-xs"><strong>{item.refeicao}</strong> — {comp.itens[i]?.texto}<span className="block font-mono text-[11px] opacity-70">{comp.itens[i]?.valores}</span></li>)}
-          </ul>
+          {(() => {
+            const grupos = agruparItensPorRefeicao(composicao?.itens ?? [], refeicoes);
+            const fmt1 = (v: number) => v.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
+            return grupos.map((g, n) => (
+              <div key={n} className="mt-3 first:mt-0">
+                <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/70">
+                  {g.nome}
+                  {g.horario ? ` · ${g.horario}` : ""}
+                </p>
+                <ul className="mt-1.5 space-y-1.5">
+                  {g.itens.map((i, m) => (
+                    <li key={m} className="text-[12px] leading-snug">
+                      <span className="text-white">
+                        {[i.alimento, i.quantidade].filter(Boolean).join(" — ")}
+                      </span>
+                      <span className="block font-mono text-[11px] text-white/60">
+                        {`${Math.round(i.kcal)} kcal · CHO ${fmt1(i.carboidratos)} g · PTN ${fmt1(i.proteinas)} g · LIP ${fmt1(i.lipidios)} g`}
+                        {i.fonte ? ` · ${i.fonte}` : ""}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ));
+          })()}
           <p className="mt-3 text-[11px] opacity-70">{comp.nota}</p>
           </>}
         </div>

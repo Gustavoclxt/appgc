@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { novoId } from "@/lib/assessment/initial-state";
 
@@ -27,7 +27,7 @@ import {
   proteinas,
   vegetais,
 } from "@/lib/assessment/food-preferences";
-import { chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
+import { agruparItensPorRefeicao, chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { opcoesDeLocal } from "@/lib/assessment/food-diary";
 import { DIAS_SEMANA, selecionarDias } from "@/lib/assessment/training-days";
 import { AtypicalDay } from "../AtypicalDay";
@@ -70,6 +70,18 @@ const MODALIDADES = [
 
 export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, diaAtipico, onAdicionarDiaAtipico, onRemoverDiaAtipico, onAlterarDiaAtipico, onCopiarR24h, composicaoAtipica, calculandoAtipico, onCalcularAtipico }: Props) {
   const comp = composicaoParaRelatorio(composicao);
+  const [progressoCalculo, setProgressoCalculo] = useState(0);
+  useEffect(() => {
+    if (!calculando) {
+      setProgressoCalculo(0);
+      return;
+    }
+    const timer = setInterval(
+      () => setProgressoCalculo((p) => (p < 95 ? p + Math.max(1, Math.round((95 - p) / 12)) : p)),
+      400,
+    );
+    return () => clearInterval(timer);
+  }, [calculando]);
   const desatualizada = composicao !== null && composicao.chave !== chaveDiario(a.diarioAlimentar);
   const [focoId, setFocoId] = useState<string | null>(null);
   const alimentoRefs = useRef(new Map<string, HTMLInputElement>());
@@ -105,19 +117,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                 ))}
               </div>
               {(() => {
-                const horarios = new Map(
-                  a.diarioAlimentar.map((r) => [r.refeicao.trim().toLocaleLowerCase("pt-BR") || "refeição", r.horario]),
-                );
-                const grupos: { nome: string; horario: string; itens: NonNullable<typeof composicao>["itens"] }[] = [];
-                for (const i of composicao?.itens ?? []) {
-                  const chave = i.refeicao.trim().toLocaleLowerCase("pt-BR") || "refeição";
-                  const atual = grupos[grupos.length - 1];
-                  if (atual && atual.nome.toLocaleLowerCase("pt-BR") === chave) {
-                    atual.itens.push(i);
-                  } else {
-                    grupos.push({ nome: i.refeicao || "Refeição", horario: horarios.get(chave) ?? "", itens: [i] });
-                  }
-                }
+                const grupos = agruparItensPorRefeicao(composicao?.itens ?? [], a.diarioAlimentar);
                 const fmt1 = (v: number) => v.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
                 return grupos.map((g, n) => (
                   <div key={n} className="mt-3 first:mt-0">
@@ -900,7 +900,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
               disabled={calculando}
               className="rounded-[10px] bg-accent px-4 py-2 text-[13px] font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90 disabled:opacity-60"
             >
-              {calculando ? "Calculando…" : comp ? "Recalcular" : "Calcular R24h"}
+              {calculando ? `Calculando… ${progressoCalculo}%` : comp ? "Recalcular" : "Calcular R24h"}
             </button>
         </div>
         )}
