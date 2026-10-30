@@ -56,6 +56,7 @@ function Index() {
   const [dados, setDados] = useState<Assessment>(() => createEmptyAssessment());
   const [analise, setAnalise] = useState<AnaliseIA | null>(null);
   const [analisando, setAnalisando] = useState(false);
+  const [erroAnalise, setErroAnalise] = useState(false);
   const [progressoAnalise, setProgressoAnalise] = useState(0);
 
   const analisar = useServerFn(analisarAvaliacao);
@@ -89,6 +90,7 @@ function Index() {
   const onAnalisar = useCallback(async () => {
     if (analiseEmCursoRef.current) return;
     analiseEmCursoRef.current = true;
+    setErroAnalise(false);
     setAnalisando(true);
     setProgressoAnalise(0);
     let timer: ReturnType<typeof setInterval> | undefined;
@@ -101,6 +103,7 @@ function Index() {
       setProgressoAnalise(100);
       setAnalise(resultado);
     } catch (erro) {
+      setErroAnalise(true);
       toast.error(erro instanceof Error ? erro.message : "Não foi possível gerar a análise.");
     } finally {
       if (timer) clearInterval(timer);
@@ -301,6 +304,7 @@ function Index() {
               {...props}
               analise={analise}
               analisando={analisando}
+              erroAnalise={erroAnalise}
               progressoAnalise={progressoAnalise}
               onAnalisar={onAnalisar}
               composicao={composicao}

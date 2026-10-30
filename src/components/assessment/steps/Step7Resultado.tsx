@@ -21,6 +21,7 @@ import type { StepProps } from "./types";
 interface Props extends StepProps {
   analise: AnaliseIA | null;
   analisando: boolean;
+  erroAnalise: boolean;
   progressoAnalise: number;
   onAnalisar: () => void;
   composicao: ComposicaoDiario | null;
@@ -47,7 +48,7 @@ function Bloco({ titulo, children }: { titulo: string; children: React.ReactNode
   );
 }
 
-export function Step7Resultado({ a, d, analise, analisando, progressoAnalise, onAnalisar, composicao, diaAtipico, composicaoAtipica, metas }: Props) {
+export function Step7Resultado({ a, d, analise, analisando, erroAnalise, progressoAnalise, onAnalisar, composicao, diaAtipico, composicaoAtipica, metas }: Props) {
   const relatorioRef = useRef<HTMLDivElement>(null);
 
   async function copiarRelatorio() {
@@ -96,13 +97,15 @@ export function Step7Resultado({ a, d, analise, analisando, progressoAnalise, on
             </div>
           </div>
         ) : (
-          <button
-            type="button"
-            onClick={onAnalisar}
-            className="mt-6 rounded-[10px] bg-ink px-6 py-3 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-ink/90"
-          >
-            ANALISAR AVALIAÇÃO
-          </button>
+          erroAnalise && (
+            <button
+              type="button"
+              onClick={onAnalisar}
+              className="mt-6 rounded-[10px] bg-ink px-6 py-3 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-ink/90"
+            >
+              TENTAR NOVAMENTE
+            </button>
+          )
         )}
         {metas && <WeightGoalsReport resultado={metas} />}
       </Panel>
