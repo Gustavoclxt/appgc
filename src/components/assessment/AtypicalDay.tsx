@@ -61,7 +61,7 @@ export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCal
         ))}
         <div className="flex flex-wrap gap-3">
           <Button variant="outline" onClick={() => onChange([...refeicoes, novaRefeicaoAtipica()])}>+ Adicionar refeição</Button>
-          <Button variant="outline" onClick={onCopiarR24h}>Copiar R24h</Button>
+          <Button onClick={onCopiarR24h} className="h-auto whitespace-normal text-center text-[13px]">Copiar R24h</Button>
         </div>
       </div>
       <div className="mt-6 flex justify-center">
