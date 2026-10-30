@@ -20,4 +20,13 @@ describe("Relatório na ordem do formulário", () => {
     const titulos = relatorioEstruturado(a, deriveResults(a), null, null, null).map((b) => b.titulo);
     expect(titulos).not.toContain("Recordatório 24 horas — Dia atípico");
   });
+
+  it("omite os blocos de antropometria na exibição do aplicativo", () => {
+    const titulos = relatorioEstruturado(a, deriveResults(a), null, null, null, false, false).map((b) => b.titulo);
+    expect(titulos).not.toContain("Avaliação antropométrica");
+    expect(titulos.some((t) => t.startsWith("Antropometria —"))).toBe(false);
+    expect(titulos).toContain("Determinação do GET");
+    const comAntropometria = relatorioEstruturado(a, deriveResults(a), null, null, null, false).map((b) => b.titulo);
+    expect(comAntropometria).toContain("Avaliação antropométrica");
+  });
 });
