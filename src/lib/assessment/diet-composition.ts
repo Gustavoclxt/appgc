@@ -85,14 +85,15 @@ export function agruparItensPorRefeicao(itens: ItemComposicao[], refeicoes: Refe
   const horarios = new Map(
     refeicoes.map((r) => [r.refeicao.trim().toLocaleLowerCase("pt-BR") || "refeição", r.horario]),
   );
-  const grupos: { nome: string; horario: string; itens: ItemComposicao[] }[] = [];
+  const grupos: { nome: string; horario: string; kcal: number; itens: ItemComposicao[] }[] = [];
   for (const i of itens) {
     const chave = i.refeicao.trim().toLocaleLowerCase("pt-BR") || "refeição";
     const atual = grupos[grupos.length - 1];
     if (atual && atual.nome.toLocaleLowerCase("pt-BR") === chave) {
       atual.itens.push(i);
+      atual.kcal += i.kcal;
     } else {
-      grupos.push({ nome: i.refeicao || "Refeição", horario: horarios.get(chave) ?? "", itens: [i] });
+      grupos.push({ nome: i.refeicao || "Refeição", horario: horarios.get(chave) ?? "", kcal: i.kcal, itens: [i] });
     }
   }
   return grupos;
