@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { calcularComposicaoDasRefeicoes, chaveDiario } from "./diet-composition";
-import type { Refeicao } from "./types";
+import { agruparItensPorRefeicao, calcularComposicaoDasRefeicoes, chaveDiario } from "./diet-composition";
+import type { ItemComposicao, Refeicao } from "./types";
 
 const refeicao = (alimento: string): Refeicao => ({
   id: alimento, refeicao: "Almoço", horario: "12:00", local: "Casa",
