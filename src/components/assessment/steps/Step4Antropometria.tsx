@@ -45,7 +45,6 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
   const extrair = useServerFn(extrairAntropometria);
   const mostrarConferencia = lido || falhou || Boolean(a.altura || a.peso);
 
-  const temAvaliacao = lido && a.indicadoresAntropometricos.length > 0;
   function removerAvaliacao() {
     set("indicadoresAntropometricos", []);
     set("altura", ""); set("peso", ""); set("percentualGordura", ""); set("metodoGordura", ""); set("dataAvaliacaoAntropometrica", "");
@@ -95,32 +94,42 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
 
   return (
     <div className="space-y-6">
-      <Panel titulo="Anexar Antropometria">
-        <div className="rounded-[10px] border border-dashed border-line bg-white/50 px-5 py-8 text-center">
-          <p className="text-[13px] font-semibold text-ink">Selecione uma avaliação antropométrica em PDF:</p>
-          {temAvaliacao ? (
-            <button type="button" onClick={removerAvaliacao} className="mt-4 inline-flex cursor-pointer items-center rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90">Remover avaliação</button>
-          ) : (
-          <label className="mt-4 inline-flex cursor-pointer items-center rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90">
-            {lendo ? `Lendo antropometria… ${progresso}%` : <><Paperclip aria-hidden="true" /> Anexar Antropometria</>}
-            <input
-              type="file"
-              accept="application/pdf"
-              className="hidden"
-              disabled={lendo}
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                e.target.value = "";
-                if (file) void processarArquivo(file);
-              }}
-            />
-          </label>
-          )}
-        </div>
-      </Panel>
+      {a.indicadoresAntropometricos.length === 0 && (
+        <Panel titulo="Anexar Antropometria">
+          <div className="rounded-[10px] border border-dashed border-line bg-white/50 px-5 py-8 text-center">
+            <p className="text-[13px] font-semibold text-ink">Selecione uma avaliação antropométrica em PDF:</p>
+            <label className="mt-4 inline-flex cursor-pointer items-center rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90">
+              {lendo ? `Lendo antropometria… ${progresso}%` : <><Paperclip aria-hidden="true" /> Anexar Antropometria</>}
+              <input
+                type="file"
+                accept="application/pdf"
+                className="hidden"
+                disabled={lendo}
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  e.target.value = "";
+                  if (file) void processarArquivo(file);
+                }}
+              />
+            </label>
+          </div>
+        </Panel>
+      )}
 
       {a.indicadoresAntropometricos.length > 0 && (
-        <Panel titulo="Dados extraídos do PDF" meta={(() => { const g = agruparAntropometria(a.indicadoresAntropometricos, a.dataAvaliacaoAntropometrica); const datas = [...new Set(g.map(x => x.data))]; const f = (x: string) => /^\d{4}-\d{2}-\d{2}$/.test(x) ? fmtData(x) : x || "Não informada"; return `Data da avaliação: ${datas.map(f).join(", ")}`; })()}>
+        <Panel
+          titulo="Dados extraídos do PDF"
+          extra={
+            <button
+              type="button"
+              onClick={removerAvaliacao}
+              className="inline-flex cursor-pointer items-center rounded-[10px] bg-accent px-5 py-2 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90"
+            >
+              Remover avaliação
+            </button>
+          }
+          meta={(() => { const g = agruparAntropometria(a.indicadoresAntropometricos, a.dataAvaliacaoAntropometrica); const datas = [...new Set(g.map(x => x.data))]; const f = (x: string) => /^\d{4}-\d{2}-\d{2}$/.test(x) ? fmtData(x) : x || "Não informada"; return `Data da avaliação: ${datas.map(f).join(", ")}`; })()}
+        >
           <div className="space-y-6">
           {(() => {
             const grupos = agruparAntropometria(a.indicadoresAntropometricos, a.dataAvaliacaoAntropometrica);

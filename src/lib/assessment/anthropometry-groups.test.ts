@@ -11,6 +11,12 @@ describe("categorias da antropometria", () => {
   it("organiza todas as dobras solicitadas", () => {
     for (const nome of ["Bíceps", "tríceps", "axilar média", "tórax", "panturrilha medial", "abdominal", "suprailíaca", "subescapular", "coxa"]) expect(categoriaAntropometrica({ nome, unidade: "mm" })).toBe("Dobras cutâneas");
   });
+  it("classifica região com unidade cm como circunferência, mesmo com nome de dobra", () => {
+    // Dobras são sempre em mm; "Abdominal: 90,1 cm" em um PDF é circunferência.
+    expect(categoriaAntropometrica({ nome: "Abdominal", unidade: "cm" })).toBe("Circunferências");
+    expect(categoriaAntropometrica({ nome: "Abdominal", unidade: "cm" })).not.toBe("Dobras cutâneas");
+    expect(categoriaAntropometrica({ nome: "Dobra abdominal", unidade: "cm" })).toBe("Dobras cutâneas");
+  });
   it("organiza todos os resultados solicitados", () => {
     for (const nome of ["IMC", "% massa gorda", "% massa magra", "massa gorda", "massa magra", "soma de dobras", "razão cintura/quadril", "área muscular do braço (AMB)", "área de gordura do braço (AGB)"]) expect(categoriaAntropometrica({ nome, unidade: "" })).toBe("Resultados");
   });
