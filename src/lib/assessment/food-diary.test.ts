@@ -11,6 +11,7 @@ describe("locais do recordatório 24h", () => {
       "Escola",
       "Lanchonete",
       "Pizzaria",
+      "Hamburgueria",
 
       "Padaria",
       "Cafeteria",
