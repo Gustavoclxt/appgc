@@ -53,8 +53,10 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             <TextInput value={a.incomodoFisico} onChange={(v) => set("incomodoFisico", v)} />
           </Field>
           {a.objetivos.includes("Emagrecimento") && (
-            <Field label="Peso desejado (Opcional - em caso de emagrecimento)" className="w-[120px]">
-              <UnitInput value={a.pesoDesejado} onChange={(v) => set("pesoDesejado", v)} unidade="kg" />
+            <Field label="Peso desejado (Opcional - em caso de emagrecimento)">
+              <div className="w-[120px]">
+                <UnitInput value={a.pesoDesejado} onChange={(v) => set("pesoDesejado", v)} unidade="kg" />
+              </div>
             </Field>
           )}
           <Field label="Qual sua maior dificuldade relacionada ao seu objetivo?" className="sm:col-start-1">
