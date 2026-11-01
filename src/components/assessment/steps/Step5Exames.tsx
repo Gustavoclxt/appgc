@@ -43,15 +43,25 @@ export function Step5Exames({ a, set }: StepProps) {
         <>
           <Panel titulo="Exames identificados" meta={`${a.exames.length} resultado(s)`}>
             <ExamesTable exames={a.exames} />
-            <div className="mt-4">
+            <div className="mt-4 flex flex-wrap items-center gap-2">
               <RowButton onClick={() => set("exames", [])}>Limpar exames</RowButton>
+              <RowButton
+                onClick={() => {
+                  if (mostrarManual) {
+                    adicionarExameManual();
+                    setMostrarManual(false);
+                  } else {
+                    setMostrarManual(true);
+                  }
+                }}
+              >
+                + Adicionar resultado
+              </RowButton>
             </div>
           </Panel>
 
+          {mostrarManual && (
           <Panel titulo="Adicionar resultado manualmente">
-            {!mostrarManual ? (
-              <RowButton onClick={() => setMostrarManual(true)}>Adicionar resultado</RowButton>
-            ) : (
             <>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
               <Field label="Exame">
