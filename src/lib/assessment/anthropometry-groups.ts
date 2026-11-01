@@ -14,7 +14,7 @@ export function categoriaAntropometrica(i: Pick<IndicadorAntropometrico, "nome" 
   if (/\bdobras?\b/.test(n) || normalizar(i.unidade) === "mm") return "Dobras cutâneas";
   // A mesma região pode aparecer em ambos os grupos; dobras são sempre em mm, então "cm" indica circunferência.
   if (/\b(biceps|triceps|axilar|torax|medial|abdominal|suprailiaca|subescapular)\b/.test(n) && normalizar(i.unidade) !== "cm") return "Dobras cutâneas";
-  if (/\b(circunferencia|perimetro|ombro|ombros|cintura|quadril|coxa|panturrilha|braco|peitoral|abdomen)\b/.test(n)) return "Circunferências";
+  if (/\b(circunferencia|perimetro|ombro|ombros|cintura|quadril|coxa|panturrilha|braco|peitoral|abdomen|abdominal|biceps|triceps|axilar|torax|medial|suprailiaca|subescapular)\b/.test(n)) return "Circunferências";
   return "Outros indicadores";
 }
 
