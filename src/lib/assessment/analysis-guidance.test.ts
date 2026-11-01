@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { orientacoesParaAnalise } from "./analysis-guidance";
+import { DIRETRIZES_ANALISE_COMPLETA, orientacoesParaAnalise } from "./analysis-guidance";
 import { createEmptyAssessment } from "./initial-state";
 import type { Assessment } from "./types";
 
