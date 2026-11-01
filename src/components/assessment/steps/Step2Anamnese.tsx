@@ -61,16 +61,46 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             <TextInput value={a.maiorDificuldade} onChange={(v) => set("maiorDificuldade", v)} />
           </Field>
           <Field label="De 0 a 10, como está sua motivação?" className="sm:col-start-2">
-            <div className="w-24">
-              <Select
-                value={a.motivacao}
-                placeholder=""
-                onChange={(v) => {
-                  set("motivacao", v);
-                  if (v === "" || v === "10") set("faltaParaDez", "");
-                }}
-                options={Array.from({ length: 11 }, (_, i) => ({ value: String(i), label: String(i) }))}
-              />
+            <div className="flex items-center gap-4">
+              <div className="min-w-0 flex-1">
+                <Slider
+                  value={[Number.isFinite(Number(a.motivacao)) && a.motivacao !== "" ? Number(a.motivacao) : 0]}
+                  min={0}
+                  max={10}
+                  step={1}
+                  aria-label="Motivação de 0 a 10"
+                  onValueChange={([v]) => {
+                    const valor = String(v ?? 0);
+                    set("motivacao", valor);
+                    if (valor === "10") set("faltaParaDez", "");
+                  }}
+                  className="w-full"
+                />
+                <div className="relative mt-2 h-5">
+                  {Array.from({ length: 11 }, (_, i) => {
+                    // Compensa o raio do poleiro (16px): nos extremos a bolinha não encosta nas pontas.
+                    const pct = (i / 10) * 100;
+                    return (
+                      <button
+                        key={i}
+                        type="button"
+                        aria-label={`Selecionar motivação ${i}`}
+                        onClick={() => {
+                          set("motivacao", String(i));
+                          if (i === 10) set("faltaParaDez", "");
+                        }}
+                        className="absolute top-0 -translate-x-1/2 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+                        style={{ left: `calc(${pct}% + ${8 - pct * 0.16}px)` }}
+                      >
+                        <span className="font-mono text-[10px] leading-none text-ink-soft">{i}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+              <span className="min-w-[2rem] text-right font-mono text-2xl font-medium tracking-tight tabular-nums text-accent">
+                {a.motivacao === "" ? "—" : a.motivacao}
+              </span>
             </div>
           </Field>
           {a.motivacao !== "" && Number(a.motivacao) < 10 && (
