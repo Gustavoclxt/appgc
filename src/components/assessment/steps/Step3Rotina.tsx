@@ -203,6 +203,8 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
             </Field>
           </div>
         </div>
+        {a.praticaAtividadeFisica === "sim" && (
+        <>
         <h2 className="mb-3 mt-7 font-display text-base font-semibold tracking-tight">Rotina de treinamento/atividades físicas</h2>
         <div className="space-y-4">
           {a.modalidades.map((m, i) => (
