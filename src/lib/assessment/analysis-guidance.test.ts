@@ -28,3 +28,10 @@ describe("revisão condicional das respostas", () => {
     expect(orientacoesParaAnalise(a)).toHaveLength(0);
   });
 });
+
+describe("diretrizes da análise completa", () => {
+  it("proíbe comentar divergência entre peso e altura referidos e aferidos", () => {
+    expect(DIRETRIZES_ANALISE_COMPLETA).toContain("Peso e altura referidos x aferidos");
+    expect(DIRETRIZES_ANALISE_COMPLETA).toContain("não deve ser comentada no relatório");
+  });
+});
