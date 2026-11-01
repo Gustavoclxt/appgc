@@ -23,7 +23,7 @@ export function createExampleAssessment(): Assessment {
     incomodoFisico: "Acúmulo de gordura abdominal",
     pesoDesejado: "68",
     maiorDificuldade: "Beliscar à tarde e excessos no fim de semana",
-    motivacao: "Melhorar saúde e disposição",
+    motivacao: "8",
     faltaParaDez: "Organização da rotina alimentar",
     historicoPeso: "Infância: peso adequado\nAdolescência: leve sobrepeso\nVida adulta: ganho de 12 kg após os 30 anos",
     hma: "Cansaço frequente e distensão abdominal",
