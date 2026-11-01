@@ -195,13 +195,13 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             <div className="flex items-end gap-2">
               <OptionRow value={a.eaas} onChange={(v) => set("eaas", v as typeof a.eaas)} options={simNao} />
               {a.eaas === "sim" && (
-                <Field label="Hormônio(s)" className="min-w-0 flex-1">
+                <div className="min-w-0 flex-1">
                   <TextInput
                     value={a.eaasDescricao}
                     onChange={(v) => set("eaasDescricao", v)}
-                    placeholder="Dose; Frequência"
+                    placeholder="Hormônio(s); Dose; Frequência"
                   />
-                </Field>
+                </div>
               )}
             </div>
           </Field>
