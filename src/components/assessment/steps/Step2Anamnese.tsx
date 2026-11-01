@@ -192,7 +192,18 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             />
           </Field>
           <Field label="Usa ou já usou EAAs?" className="sm:col-start-1">
-            <OptionRow value={a.eaas} onChange={(v) => set("eaas", v as typeof a.eaas)} options={simNao} />
+            <div className="flex items-end gap-2">
+              <OptionRow value={a.eaas} onChange={(v) => set("eaas", v as typeof a.eaas)} options={simNao} />
+              {a.eaas === "sim" && (
+                <Field label="Hormônio(s)" className="min-w-0 flex-1">
+                  <TextInput
+                    value={a.eaasDescricao}
+                    onChange={(v) => set("eaasDescricao", v)}
+                    placeholder="Dose; Frequência"
+                  />
+                </Field>
+              )}
+            </div>
           </Field>
           <Field label="Hábitos sociais" className="sm:col-start-2">
             <MultiOptionRow
