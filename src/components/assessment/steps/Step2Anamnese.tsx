@@ -220,11 +220,6 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               ]}
             />
           </Field>
-          {a.eaas === "sim" && (
-            <Field label="Hormônio(s), dose e frequência de uso" className="sm:col-span-2">
-              <TextInput value={a.eaasDescricao} onChange={(v) => set("eaasDescricao", v)} />
-            </Field>
-          )}
           {a.habitosSociais.includes("Etilista") && (
             <>
               <Field label="Álcool - Quantidade">
