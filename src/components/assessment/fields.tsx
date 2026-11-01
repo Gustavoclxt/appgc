@@ -8,11 +8,13 @@ import { comIntervalo } from "@/lib/assessment/selection-range";
 export function Panel({
   titulo,
   meta,
+  extra,
   children,
   className,
 }: {
   titulo?: string;
   meta?: string;
+  extra?: ReactNode;
   children: ReactNode;
   className?: string;
 }) {
@@ -20,7 +22,10 @@ export function Panel({
     <section className={cn("panel", className)}>
       {(titulo || meta) && (
         <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
-          {titulo && <h2 className="font-display text-base font-semibold tracking-tight">{titulo}</h2>}
+          <div className="flex flex-wrap items-center gap-3">
+            {titulo && <h2 className="font-display text-base font-semibold tracking-tight">{titulo}</h2>}
+            {extra}
+          </div>
           {meta && <span className="eyebrow">{meta}</span>}
         </div>
       )}
