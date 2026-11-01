@@ -104,8 +104,8 @@ export function Step5Exames({ a, set }: StepProps) {
               </Field>
             </div>
             </>
-            )}
           </Panel>
+          )}
         </>
       )}
 
