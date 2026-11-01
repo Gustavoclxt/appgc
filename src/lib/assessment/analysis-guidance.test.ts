@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { orientacoesParaAnalise } from "./analysis-guidance";
+import { DIRETRIZES_ANALISE_COMPLETA, orientacoesParaAnalise } from "./analysis-guidance";
 import { createEmptyAssessment } from "./initial-state";
 import type { Assessment } from "./types";
 
@@ -26,5 +26,12 @@ describe("revisão condicional das respostas", () => {
     expect(orientacoesParaAnalise({ ...a, ...regra.ativa })).toHaveLength(1);
     expect(orientacoesParaAnalise({ ...a, ...regra.inativa })).toHaveLength(0);
     expect(orientacoesParaAnalise(a)).toHaveLength(0);
+  });
+});
+
+describe("diretrizes da análise completa", () => {
+  it("proíbe comentar divergência entre peso e altura referidos e aferidos", () => {
+    expect(DIRETRIZES_ANALISE_COMPLETA).toContain("Peso e altura referidos x aferidos");
+    expect(DIRETRIZES_ANALISE_COMPLETA).toContain("não deve ser comentada no relatório");
   });
 });
