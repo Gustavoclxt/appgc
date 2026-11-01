@@ -45,7 +45,6 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
   const extrair = useServerFn(extrairAntropometria);
   const mostrarConferencia = lido || falhou || Boolean(a.altura || a.peso);
 
-  const temAvaliacao = lido && a.indicadoresAntropometricos.length > 0;
   function removerAvaliacao() {
     set("indicadoresAntropometricos", []);
     set("altura", ""); set("peso", ""); set("percentualGordura", ""); set("metodoGordura", ""); set("dataAvaliacaoAntropometrica", "");
