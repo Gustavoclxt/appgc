@@ -103,9 +103,6 @@ export function Step5Exames({ a, set }: StepProps) {
                 />
               </Field>
             </div>
-            <div className="mt-4">
-              <RowButton onClick={adicionarExameManual}>+ Adicionar resultado</RowButton>
-            </div>
             </>
             )}
           </Panel>
