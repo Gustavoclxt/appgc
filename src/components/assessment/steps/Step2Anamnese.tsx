@@ -293,6 +293,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
                 { value: "Normal", label: "Normal" },
                 { value: "Azia", label: "Azia" },
                 { value: "Eructação excessiva", label: "Eructação excessiva" },
+                { value: "Refluxo", label: "Refluxo" },
                 { value: "Flatulência excessiva", label: "Flatulência excessiva" },
               ]}
             />
