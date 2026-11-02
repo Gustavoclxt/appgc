@@ -404,7 +404,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           </Field>
           {d.sono && (
             <span className="pb-2 text-[13px] font-medium text-ink">
-              Tempo de sono: {d.sono.horas}h e {d.sono.restoMinutos}min
+              Tempo de sono: {d.sono.horas}h{d.sono.restoMinutos > 0 ? ` e ${d.sono.restoMinutos}min` : ""}
             </span>
           )}
         </div>
