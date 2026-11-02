@@ -203,32 +203,37 @@ export function Step6Energia({
               </>
             ) : (
               <>
-                <Field label={a.estrategia === "deficit" ? "Déficit" : "Superávit"}>
-                  <OptionRow
-                    value={mostrarPercentualPersonalizado ? "outro" : a.percentualAjuste}
-                    onChange={(v) => {
-                      if (v === "outro") {
-                        setOutroPercentual(true);
-                        if (percentuais.some((p) => p.value === a.percentualAjuste)) set("percentualAjuste", "");
-                      } else {
-                        setOutroPercentual(false);
-                        set("percentualAjuste", v);
-                      }
-                    }}
-                    options={[...percentuais, { value: "outro", label: "Outro" }]}
-                  />
-                </Field>
-                {mostrarPercentualPersonalizado && (
-                  <div className="max-w-xs">
-                    <Field label="Percentual personalizado">
-                      <UnitInput
-                        value={a.percentualAjuste}
-                        onChange={(v) => set("percentualAjuste", v)}
-                        unidade="%"
+                <div className="flex flex-wrap items-end gap-3">
+                  <Field label={a.estrategia === "deficit" ? "Déficit" : "Superávit"}>
+                    <div className="w-40">
+                      <Select
+                        value={mostrarPercentualPersonalizado ? "outro" : a.percentualAjuste}
+                        onChange={(v) => {
+                          if (v === "outro") {
+                            setOutroPercentual(true);
+                            if (percentuais.some((p) => p.value === a.percentualAjuste)) set("percentualAjuste", "");
+                          } else if (v) {
+                            setOutroPercentual(false);
+                            set("percentualAjuste", v);
+                          }
+                        }}
+                        options={[...percentuais, { value: "outro", label: "Outro" }]}
+                        placeholder="Selecione"
                       />
+                    </div>
+                  </Field>
+                  {mostrarPercentualPersonalizado && (
+                    <Field label="Percentual personalizado">
+                      <div className="w-28">
+                        <UnitInput
+                          value={a.percentualAjuste}
+                          onChange={(v) => set("percentualAjuste", v)}
+                          unidade="%"
+                        />
+                      </div>
                     </Field>
-                  </div>
-                )}
+                  )}
+                </div>
               </>
             )}
           </div>
