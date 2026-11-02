@@ -253,12 +253,16 @@ export function Step6Energia({
               </Field>
               {corrigirRefeicaoLivre === "sim" && (
                 <>
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="flex flex-wrap items-end gap-3">
                     <Field label="Nº de ref. livres/semana">
-                      <UnitInput value={a.refeicoesLivresSemana} onChange={(v) => set("refeicoesLivresSemana", v.replace(/\D/g, ""))} unidade="ref." placeholder="1" />
+                      <div className="w-24">
+                        <UnitInput value={a.refeicoesLivresSemana} onChange={(v) => set("refeicoesLivresSemana", v.replace(/\D/g, ""))} unidade="ref." placeholder="1" />
+                      </div>
                     </Field>
                     <Field label="VET das ref. livres">
-                      <UnitInput value={a.vetRefeicoesLivres} onChange={(v) => set("vetRefeicoesLivres", v)} unidade="kcal" placeholder="1600" />
+                      <div className="w-28">
+                        <UnitInput value={a.vetRefeicoesLivres} onChange={(v) => set("vetRefeicoesLivres", v)} unidade="kcal" placeholder="1600" />
+                      </div>
                     </Field>
                   </div>
                 </>
