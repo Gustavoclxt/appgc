@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { fmt2, fmtInt, labelMetodo } from "@/lib/assessment/calculations";
 import type { ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { calcularVetCorrigido } from "@/lib/assessment/free-meal";
@@ -35,6 +37,8 @@ export function Step6Energia({
     a.fatorAtividade !== "" && !fatores.some((f) => f.value === a.fatorAtividade);
   const kcalPersonalizado =
     a.kcalAjuste !== "" && !kcalPresets.some((k) => k.value === a.kcalAjuste);
+  const [outroKcal, setOutroKcal] = useState(false);
+  const mostrarKcalPersonalizado = outroKcal || kcalPersonalizado;
 
   return (
     <div className="space-y-6">
