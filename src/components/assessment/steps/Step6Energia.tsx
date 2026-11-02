@@ -170,19 +170,22 @@ export function Step6Energia({
             {a.tipoAjuste === "kcal" ? (
               <>
                 <Field label={a.estrategia === "deficit" ? "Déficit" : "Superávit"}>
-                  <OptionRow
-                    value={mostrarKcalPersonalizado ? "outro" : a.kcalAjuste}
-                    onChange={(v) => {
-                      if (v === "outro") {
-                        setOutroKcal(true);
-                        if (kcalPresets.some((k) => k.value === a.kcalAjuste)) set("kcalAjuste", "");
-                      } else {
-                        setOutroKcal(false);
-                        set("kcalAjuste", v);
-                      }
-                    }}
-                    options={[...kcalPresets, { value: "outro", label: "Outro" }]}
-                  />
+                  <div className="max-w-xs">
+                    <Select
+                      value={mostrarKcalPersonalizado ? "outro" : a.kcalAjuste}
+                      onChange={(v) => {
+                        if (v === "outro") {
+                          setOutroKcal(true);
+                          if (kcalPresets.some((k) => k.value === a.kcalAjuste)) set("kcalAjuste", "");
+                        } else if (v) {
+                          setOutroKcal(false);
+                          set("kcalAjuste", v);
+                        }
+                      }}
+                      options={[...kcalPresets, { value: "outro", label: "Outro" }]}
+                      placeholder="Selecione o valor"
+                    />
+                  </div>
                 </Field>
                 {mostrarKcalPersonalizado && (
                   <div className="max-w-xs">
