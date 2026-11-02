@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { fmt2, fmtInt, labelMetodo } from "@/lib/assessment/calculations";
 import type { ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { calcularVetCorrigido } from "@/lib/assessment/free-meal";
@@ -35,6 +37,8 @@ export function Step6Energia({
     a.fatorAtividade !== "" && !fatores.some((f) => f.value === a.fatorAtividade);
   const kcalPersonalizado =
     a.kcalAjuste !== "" && !kcalPresets.some((k) => k.value === a.kcalAjuste);
+  const [outroKcal, setOutroKcal] = useState(false);
+  const mostrarKcalPersonalizado = outroKcal || kcalPersonalizado;
 
   return (
     <div className="space-y-6">
@@ -154,21 +158,31 @@ export function Step6Energia({
               <>
                 <Field label={a.estrategia === "deficit" ? "Déficit" : "Superávit"}>
                   <OptionRow
-                    value={kcalPersonalizado ? "" : a.kcalAjuste}
-                    onChange={(v) => set("kcalAjuste", v)}
-                    options={kcalPresets}
+                    value={mostrarKcalPersonalizado ? "outro" : a.kcalAjuste}
+                    onChange={(v) => {
+                      if (v === "outro") {
+                        setOutroKcal(true);
+                        if (kcalPresets.some((k) => k.value === a.kcalAjuste)) set("kcalAjuste", "");
+                      } else {
+                        setOutroKcal(false);
+                        set("kcalAjuste", v);
+                      }
+                    }}
+                    options={[...kcalPresets, { value: "outro", label: "Outro" }]}
                   />
                 </Field>
-                <div className="max-w-xs">
-                  <Field label="Valor personalizado" hint="Informe o valor desejado em kcal.">
-                    <UnitInput
-                      value={a.kcalAjuste}
-                      onChange={(v) => set("kcalAjuste", v)}
-                      unidade="kcal"
-                      placeholder="Ex.: 600"
-                    />
-                  </Field>
-                </div>
+                {mostrarKcalPersonalizado && (
+                  <div className="max-w-xs">
+                    <Field label="Valor personalizado" hint="Informe o valor desejado em kcal.">
+                      <UnitInput
+                        value={a.kcalAjuste}
+                        onChange={(v) => set("kcalAjuste", v)}
+                        unidade="kcal"
+                        placeholder="Ex.: 600"
+                      />
+                    </Field>
+                  </div>
+                )}
               </>
             ) : (
               <>
