@@ -50,6 +50,12 @@ export function Step6Energia({
     set("refeicoesLivresSemana", "");
     set("vetRefeicoesLivres", "");
   };
+  const vetCorrigido = (() => {
+    const quantidade = a.refeicoesLivresSemana === "" ? NaN : Number(a.refeicoesLivresSemana.replace(",", "."));
+    const kcal = a.vetRefeicoesLivres === "" ? NaN : Number(a.vetRefeicoesLivres.replace(",", "."));
+    return calcularVetCorrigido(d.caloriasSugeridas, quantidade, kcal);
+  })();
+  const mostrarVetCorrigido = a.estrategia === "deficit" && corrigirRefeicaoLivre === "sim";
 
   return (
     <div className="space-y-6">
@@ -244,16 +250,6 @@ export function Step6Energia({
                       <UnitInput value={a.vetRefeicoesLivres} onChange={(v) => set("vetRefeicoesLivres", v)} unidade="kcal" placeholder="1600" />
                     </Field>
                   </div>
-                  <MetricCard
-                    label="VET Corrigido"
-                    valor={(() => {
-                      const quantidade = a.refeicoesLivresSemana === "" ? NaN : Number(a.refeicoesLivresSemana.replace(",", "."));
-                      const kcal = a.vetRefeicoesLivres === "" ? NaN : Number(a.vetRefeicoesLivres.replace(",", "."));
-                      const corrigido = calcularVetCorrigido(d.caloriasSugeridas, quantidade, kcal);
-                      return corrigido !== null ? fmtInt(corrigido) : "—";
-                    })()}
-                    sub="kcal/dia"
-                  />
                 </>
               )}
             </div>
