@@ -141,7 +141,9 @@ export function Step6Energia({
               onChange={(v) => {
                 if (!v) return;
                 set("estrategia", v as typeof a.estrategia);
-                if (v !== "deficit") {
+                if (v === "deficit") {
+                  set("tipoAjuste", "kcal");
+                } else {
                   setCorrigirRefeicaoLivre("nao");
                   limparRefeicoesLivres();
                 }
@@ -159,8 +161,8 @@ export function Step6Energia({
                 value={a.tipoAjuste}
                 onChange={(v) => v && set("tipoAjuste", v as typeof a.tipoAjuste)}
                 options={[
-                  { value: "percentual", label: "Percentual do VET" },
                   { value: "kcal", label: "Valor fixo em kcal" },
+                  { value: "percentual", label: "Percentual do VET" },
                 ]}
               />
             </Field>
