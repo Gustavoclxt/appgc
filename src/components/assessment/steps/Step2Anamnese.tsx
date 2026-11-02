@@ -135,7 +135,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               </Field>
             </div>
             <p className="mt-1 text-[11px] text-ink-soft">
-              DM, HAS, DRC, Dislipidemia, Obesidade, Hipotireoidismo, Hipertireoidismo, problemas cardiovasculares, Osteoporose, SOP etc.
+              DM, HAS, DRC, Dislipidemia, Obesidade, Hipotireoidismo, Hipertireoidismo, DRGE, problemas cardiovasculares, Osteoporose, SOP etc.
             </p>
           </div>
         </div>
