@@ -29,7 +29,8 @@ export function Step6Energia({
   set,
   d,
   composicao,
-}: StepProps & { composicao: ComposicaoDiario | null }) {
+  composicaoAtipica,
+}: StepProps & { composicao: ComposicaoDiario | null; composicaoAtipica?: ComposicaoDiario | null }) {
   const fatorPersonalizado =
     a.fatorAtividade !== "" && !fatores.some((f) => f.value === a.fatorAtividade);
   const kcalPersonalizado =
@@ -80,6 +81,19 @@ export function Step6Energia({
             label="Consumindo"
             valor={composicao ? fmtInt(composicao.totais.kcal) : "—"}
             sub={composicao ? "kcal · Recordatório 24 horas" : "Calcule o Recordatório 24 horas"}
+            extra={
+              composicao && composicaoAtipica ? (
+                <div className="mt-2 border-t border-accent/15 pt-2">
+                  <p className="font-mono text-[11px] tabular-nums text-ink">
+                    Dia atípico: {fmtInt(composicaoAtipica.totais.kcal)} kcal
+                  </p>
+                  <p className="font-mono text-[11px] tabular-nums text-ink-soft">
+                    Diferença: {composicaoAtipica.totais.kcal - composicao.totais.kcal >= 0 ? "+" : "−"}
+                    {fmtInt(Math.abs(composicaoAtipica.totais.kcal - composicao.totais.kcal))} kcal
+                  </p>
+                </div>
+              ) : undefined
+            }
           />
         </div>
         {d.tmb === null && (

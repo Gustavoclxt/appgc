@@ -291,7 +291,7 @@ function Index() {
         )}
         {etapa === 4 && (
           <div className="space-y-6">
-            <Step6Energia {...props} composicao={composicao} />
+            <Step6Energia {...props} composicao={composicao} composicaoAtipica={diaAtipico ? composicaoAtipica : null} />
             {MODULO_METAS_ATIVO(dados) && (
               <WeightGoals {...props} metas={metasPeso} onChange={setMetasPeso} />
             )}
