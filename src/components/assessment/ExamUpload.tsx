@@ -53,7 +53,7 @@ export function ExamUpload({ a, set }: Pick<StepProps, "a" | "set">) {
       ) : (
         <Button type="button" className="h-10 px-4" disabled={lendo} onClick={() => inputRef.current?.click()}>
           <Paperclip aria-hidden="true" />
-          {lendo ? `Lendo exames… ${progresso}%` : "Anexar Exame"}
+          {lendo ? `Lendo exames… ${progresso}%` : "Anexar Exames"}
         </Button>
       )}
       <input
