@@ -2,7 +2,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { novoId } from "@/lib/assessment/initial-state";
-import { podeAnexarExames } from "@/lib/assessment/anthropometry-groups";
 
 import { ExamesTable } from "../ExamesTable";
 import { Field, Panel, RowButton, Select, TextInput } from "../fields";
