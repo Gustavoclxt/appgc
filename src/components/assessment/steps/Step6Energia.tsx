@@ -271,27 +271,17 @@ export function Step6Energia({
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
           <MetricCard label="GET" valor={d.vet !== null ? fmtInt(d.vet) : "—"} sub="kcal/dia" />
           <MetricCard
-            label="Ajuste"
-            valor={
-              d.ajusteKcal !== null
-                ? `${fmtInt(d.ajusteKcal)} kcal`
-                : d.percentualAjuste !== null
-                  ? `${d.percentualAjuste}%`
-                  : "—"
-            }
-            sub={
-              a.estrategia === "normocalorica"
-                ? "normocalórica"
-                : a.tipoAjuste === "kcal"
-                  ? "valor fixo aplicado"
-                  : "percentual aplicado"
-            }
-          />
-          <MetricCard
             label="Prescrição"
             valor={d.caloriasSugeridas !== null ? fmtInt(d.caloriasSugeridas) : "—"}
             sub="kcal/dia sugeridas"
           />
+          {mostrarVetCorrigido && (
+            <MetricCard
+              label="VET Corrigido"
+              valor={vetCorrigido !== null ? fmtInt(vetCorrigido) : "—"}
+              sub="kcal/dia"
+            />
+          )}
         </div>
       </Panel>
 
