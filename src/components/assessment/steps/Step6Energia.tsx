@@ -195,10 +195,6 @@ export function Step6Energia({
               </Field>
             </div>
           )}
-        </div>
-
-        {a.estrategia !== "normocalorica" && (
-          <div className="mt-5 space-y-4">
             <Field label="Forma do ajuste">
               <OptionRow
                 value={a.tipoAjuste}
