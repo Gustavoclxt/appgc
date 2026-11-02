@@ -45,6 +45,7 @@ export function Step5Exames({ a, set }: StepProps) {
             <div className="mt-4 flex flex-wrap items-center gap-2">
               <RowButton onClick={() => set("exames", [])}>Limpar exames</RowButton>
               <RowButton
+                className="bg-accent text-white ring-accent/40 hover:bg-accent/90"
                 onClick={() => {
                   if (mostrarManual) {
                     adicionarExameManual();
