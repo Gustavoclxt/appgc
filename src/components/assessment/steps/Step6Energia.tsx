@@ -43,6 +43,13 @@ export function Step6Energia({
     a.percentualAjuste !== "" && !percentuais.some((p) => p.value === a.percentualAjuste);
   const [outroPercentual, setOutroPercentual] = useState(false);
   const mostrarPercentualPersonalizado = outroPercentual || percentualPersonalizado;
+  const [corrigirRefeicaoLivre, setCorrigirRefeicaoLivre] = useState(
+    a.estrategia === "deficit" && (a.refeicoesLivresSemana !== "" || a.vetRefeicoesLivres !== "") ? "sim" : "nao",
+  );
+  const limparRefeicoesLivres = () => {
+    set("refeicoesLivresSemana", "");
+    set("vetRefeicoesLivres", "");
+  };
 
   return (
     <div className="space-y-6">
@@ -119,18 +126,61 @@ export function Step6Energia({
         <div
           className={cn(
             "grid grid-cols-1 items-start gap-5",
-            a.estrategia === "normocalorica" && "sm:grid-cols-2",
+            a.estrategia !== "superavit" && "sm:grid-cols-2",
           )}
         >
           <OptionRow
             value={a.estrategia}
-            onChange={(v) => v && set("estrategia", v as typeof a.estrategia)}
+            onChange={(v) => {
+              if (!v) return;
+              set("estrategia", v as typeof a.estrategia);
+              if (v !== "deficit") {
+                setCorrigirRefeicaoLivre("nao");
+                limparRefeicoesLivres();
+              }
+            }}
             options={[
               { value: "deficit", label: "Déficit calórico" },
               { value: "normocalorica", label: "Normocalórica" },
               { value: "superavit", label: "Superávit calórico" },
             ]}
           />
+          {a.estrategia === "deficit" && (
+            <div className="min-w-0 space-y-4">
+              <Field label="Corrigir VET por refeição livre?">
+                <OptionRow
+                  value={corrigirRefeicaoLivre}
+                  onChange={(v) => {
+                    setCorrigirRefeicaoLivre(v);
+                    if (v !== "sim") limparRefeicoesLivres();
+                  }}
+                  options={[{ value: "sim", label: "Sim" }, { value: "nao", label: "Não" }]}
+                />
+              </Field>
+              {corrigirRefeicaoLivre === "sim" && (
+                <>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <Field label="Nº de ref. livres/semana">
+                      <UnitInput value={a.refeicoesLivresSemana} onChange={(v) => set("refeicoesLivresSemana", v.replace(/\D/g, ""))} unidade="ref." placeholder="1" />
+                    </Field>
+                    <Field label="VET das ref. livres">
+                      <UnitInput value={a.vetRefeicoesLivres} onChange={(v) => set("vetRefeicoesLivres", v)} unidade="kcal" placeholder="1600" />
+                    </Field>
+                  </div>
+                  <MetricCard
+                    label="VET Corrigido"
+                    valor={(() => {
+                      const quantidade = a.refeicoesLivresSemana === "" ? NaN : Number(a.refeicoesLivresSemana.replace(",", "."));
+                      const kcal = a.vetRefeicoesLivres === "" ? NaN : Number(a.vetRefeicoesLivres.replace(",", "."));
+                      const corrigido = calcularVetCorrigido(d.caloriasSugeridas, quantidade, kcal);
+                      return corrigido !== null ? fmtInt(corrigido) : "—";
+                    })()}
+                    sub="kcal/dia"
+                  />
+                </>
+              )}
+            </div>
+          )}
           {a.estrategia === "normocalorica" && (
             <div className="max-w-xs">
               <Field label="Ajuste manual das calorias" hint="Em branco mantém a prescrição igual ao VET.">
@@ -248,30 +298,6 @@ export function Step6Energia({
         </div>
       </Panel>
 
-      <Panel titulo="Cálculo do VET corrigido">
-        {(() => {
-          const num = (s: string) => Number(s.replace(",", "."));
-          const qtd = a.refeicoesLivresSemana === "" ? NaN : num(a.refeicoesLivresSemana);
-          const kcal = a.vetRefeicoesLivres === "" ? NaN : num(a.vetRefeicoesLivres);
-          const corrigido = calcularVetCorrigido(d.caloriasSugeridas, qtd, kcal);
-          return (
-            <>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <Field label="Nº de ref. livres/semana">
-                  <UnitInput value={a.refeicoesLivresSemana} onChange={(v) => set("refeicoesLivresSemana", v.replace(/\D/g, ""))} unidade="ref." placeholder="1" />
-                </Field>
-                <Field label="VET das ref. livres">
-                  <UnitInput value={a.vetRefeicoesLivres} onChange={(v) => set("vetRefeicoesLivres", v)} unidade="kcal" placeholder="1600" />
-                </Field>
-              </div>
-              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <MetricCard label="VET diário semanal (com déficit)" valor={d.caloriasSugeridas !== null ? fmtInt(d.caloriasSugeridas) : "—"} sub="kcal/dia" />
-                <MetricCard label="VET corrigido (com déficit)" valor={corrigido !== null ? fmtInt(corrigido) : "—"} sub="kcal/dia" />
-              </div>
-            </>
-          );
-        })()}
-      </Panel>
     </div>
   );
 
