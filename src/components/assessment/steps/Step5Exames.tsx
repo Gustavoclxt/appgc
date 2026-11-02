@@ -109,7 +109,7 @@ export function Step5Exames({ a, set }: StepProps) {
         </>
       )}
 
-      {podeAnexarExames(a) && (
+      {a.exames.length > 0 && (
         <Panel titulo="Observações sobre os Exames Laboratoriais">
           <TextInput value={a.observacoesExames} onChange={(v) => set("observacoesExames", v)} />
         </Panel>
