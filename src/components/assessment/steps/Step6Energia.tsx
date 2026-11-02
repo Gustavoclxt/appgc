@@ -148,53 +148,6 @@ export function Step6Energia({
             />
           {a.estrategia !== "normocalorica" && (
           <div className="space-y-4">
-            <div className="min-w-0 space-y-4">
-              <Field label="Corrigir VET por refeição livre?">
-                <OptionRow
-                  value={corrigirRefeicaoLivre}
-                  onChange={(v) => {
-                    setCorrigirRefeicaoLivre(v);
-                    if (v !== "sim") limparRefeicoesLivres();
-                  }}
-                  options={[{ value: "sim", label: "Sim" }, { value: "nao", label: "Não" }]}
-                />
-              </Field>
-              {corrigirRefeicaoLivre === "sim" && (
-                <>
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <Field label="Nº de ref. livres/semana">
-                      <UnitInput value={a.refeicoesLivresSemana} onChange={(v) => set("refeicoesLivresSemana", v.replace(/\D/g, ""))} unidade="ref." placeholder="1" />
-                    </Field>
-                    <Field label="VET das ref. livres">
-                      <UnitInput value={a.vetRefeicoesLivres} onChange={(v) => set("vetRefeicoesLivres", v)} unidade="kcal" placeholder="1600" />
-                    </Field>
-                  </div>
-                  <MetricCard
-                    label="VET Corrigido"
-                    valor={(() => {
-                      const quantidade = a.refeicoesLivresSemana === "" ? NaN : Number(a.refeicoesLivresSemana.replace(",", "."));
-                      const kcal = a.vetRefeicoesLivres === "" ? NaN : Number(a.vetRefeicoesLivres.replace(",", "."));
-                      const corrigido = calcularVetCorrigido(d.caloriasSugeridas, quantidade, kcal);
-                      return corrigido !== null ? fmtInt(corrigido) : "—";
-                    })()}
-                    sub="kcal/dia"
-                  />
-                </>
-              )}
-            </div>
-          )}
-          {a.estrategia === "normocalorica" && (
-            <div className="max-w-xs">
-              <Field label="Ajuste manual das calorias" hint="Em branco mantém a prescrição igual ao VET.">
-                <TextInput
-                  value={a.caloriasManuais}
-                  onChange={(v) => set("caloriasManuais", v)}
-                  placeholder={d.vet !== null ? fmtInt(d.vet) : "kcal/dia"}
-                  mono
-                />
-              </Field>
-            </div>
-          )}
             <Field label="Forma do ajuste">
               <OptionRow
                 value={a.tipoAjuste}
