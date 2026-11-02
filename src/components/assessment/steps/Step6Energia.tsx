@@ -23,7 +23,7 @@ const percentuais = ["5", "10", "15", "20", "25", "30"].map((p) => ({ value: p, 
 
 const kcalPresets = ["250", "500", "750", "1000"].map((k) => ({
   value: k,
-  label: `${k} kcal`,
+  label: `${k === "1000" ? "1.000" : k} kcal`,
 }));
 
 export function Step6Energia({
