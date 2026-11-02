@@ -39,6 +39,10 @@ export function Step6Energia({
     a.kcalAjuste !== "" && !kcalPresets.some((k) => k.value === a.kcalAjuste);
   const [outroKcal, setOutroKcal] = useState(false);
   const mostrarKcalPersonalizado = outroKcal || kcalPersonalizado;
+  const percentualPersonalizado =
+    a.percentualAjuste !== "" && !percentuais.some((p) => p.value === a.percentualAjuste);
+  const [outroPercentual, setOutroPercentual] = useState(false);
+  const mostrarPercentualPersonalizado = outroPercentual || percentualPersonalizado;
 
   return (
     <div className="space-y-6">
@@ -188,20 +192,30 @@ export function Step6Energia({
               <>
                 <Field label={a.estrategia === "deficit" ? "Déficit" : "Superávit"}>
                   <OptionRow
-                    value={a.percentualAjuste}
-                    onChange={(v) => set("percentualAjuste", v)}
-                    options={percentuais}
+                    value={mostrarPercentualPersonalizado ? "outro" : a.percentualAjuste}
+                    onChange={(v) => {
+                      if (v === "outro") {
+                        setOutroPercentual(true);
+                        if (percentuais.some((p) => p.value === a.percentualAjuste)) set("percentualAjuste", "");
+                      } else {
+                        setOutroPercentual(false);
+                        set("percentualAjuste", v);
+                      }
+                    }}
+                    options={[...percentuais, { value: "outro", label: "Outro" }]}
                   />
                 </Field>
-                <div className="max-w-xs">
-                  <Field label="Percentual personalizado">
-                    <UnitInput
-                      value={a.percentualAjuste}
-                      onChange={(v) => set("percentualAjuste", v)}
-                      unidade="%"
-                    />
-                  </Field>
-                </div>
+                {mostrarPercentualPersonalizado && (
+                  <div className="max-w-xs">
+                    <Field label="Percentual personalizado">
+                      <UnitInput
+                        value={a.percentualAjuste}
+                        onChange={(v) => set("percentualAjuste", v)}
+                        unidade="%"
+                      />
+                    </Field>
+                  </div>
+                )}
               </>
             )}
           </div>
