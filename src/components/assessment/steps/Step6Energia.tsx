@@ -195,7 +195,6 @@ export function Step6Energia({
                           value={a.kcalAjuste}
                           onChange={(v) => set("kcalAjuste", v)}
                           unidade="kcal"
-                          placeholder="Ex.: 600"
                         />
                       </div>
                     </Field>
