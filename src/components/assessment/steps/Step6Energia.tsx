@@ -50,6 +50,12 @@ export function Step6Energia({
     set("refeicoesLivresSemana", "");
     set("vetRefeicoesLivres", "");
   };
+  const vetCorrigido = (() => {
+    const quantidade = a.refeicoesLivresSemana === "" ? NaN : Number(a.refeicoesLivresSemana.replace(",", "."));
+    const kcal = a.vetRefeicoesLivres === "" ? NaN : Number(a.vetRefeicoesLivres.replace(",", "."));
+    return calcularVetCorrigido(d.caloriasSugeridas, quantidade, kcal);
+  })();
+  const mostrarVetCorrigido = a.estrategia === "deficit" && corrigirRefeicaoLivre === "sim";
 
   return (
     <div className="space-y-6">
@@ -244,16 +250,6 @@ export function Step6Energia({
                       <UnitInput value={a.vetRefeicoesLivres} onChange={(v) => set("vetRefeicoesLivres", v)} unidade="kcal" placeholder="1600" />
                     </Field>
                   </div>
-                  <MetricCard
-                    label="VET Corrigido"
-                    valor={(() => {
-                      const quantidade = a.refeicoesLivresSemana === "" ? NaN : Number(a.refeicoesLivresSemana.replace(",", "."));
-                      const kcal = a.vetRefeicoesLivres === "" ? NaN : Number(a.vetRefeicoesLivres.replace(",", "."));
-                      const corrigido = calcularVetCorrigido(d.caloriasSugeridas, quantidade, kcal);
-                      return corrigido !== null ? fmtInt(corrigido) : "—";
-                    })()}
-                    sub="kcal/dia"
-                  />
                 </>
               )}
             </div>
@@ -275,27 +271,17 @@ export function Step6Energia({
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
           <MetricCard label="GET" valor={d.vet !== null ? fmtInt(d.vet) : "—"} sub="kcal/dia" />
           <MetricCard
-            label="Ajuste"
-            valor={
-              d.ajusteKcal !== null
-                ? `${fmtInt(d.ajusteKcal)} kcal`
-                : d.percentualAjuste !== null
-                  ? `${d.percentualAjuste}%`
-                  : "—"
-            }
-            sub={
-              a.estrategia === "normocalorica"
-                ? "normocalórica"
-                : a.tipoAjuste === "kcal"
-                  ? "valor fixo aplicado"
-                  : "percentual aplicado"
-            }
-          />
-          <MetricCard
             label="Prescrição"
             valor={d.caloriasSugeridas !== null ? fmtInt(d.caloriasSugeridas) : "—"}
             sub="kcal/dia sugeridas"
           />
+          {mostrarVetCorrigido && (
+            <MetricCard
+              label="VET Corrigido"
+              valor={vetCorrigido !== null ? fmtInt(vetCorrigido) : "—"}
+              sub="kcal/dia"
+            />
+          )}
         </div>
       </Panel>
 
