@@ -2,7 +2,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { novoId } from "@/lib/assessment/initial-state";
-import { podeAnexarExames } from "@/lib/assessment/anthropometry-groups";
 
 import { ExamesTable } from "../ExamesTable";
 import { Field, Panel, RowButton, Select, TextInput } from "../fields";
@@ -109,7 +108,7 @@ export function Step5Exames({ a, set }: StepProps) {
         </>
       )}
 
-      {podeAnexarExames(a) && (
+      {a.exames.length > 0 && (
         <Panel titulo="Observações sobre os Exames Laboratoriais">
           <TextInput value={a.observacoesExames} onChange={(v) => set("observacoesExames", v)} />
         </Panel>
