@@ -416,12 +416,13 @@ export function Readout({
   );
 }
 
-export function MetricCard({ label, valor, sub }: { label: string; valor: string; sub: string }) {
+export function MetricCard({ label, valor, sub, extra }: { label: string; valor: string; sub: string; extra?: ReactNode }) {
   return (
     <div className="rounded-[10px] bg-accent-soft/70 p-4 ring-1 ring-accent/15">
       <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-accent">{label}</p>
       <p className="mt-1 font-mono text-2xl font-medium tracking-tight tabular-nums text-ink">{valor}</p>
       <p className="text-[11px] text-ink-soft">{sub}</p>
+      {extra}
     </div>
   );
 }
