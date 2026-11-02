@@ -273,7 +273,7 @@ export function Step6Energia({
           <MetricCard
             label="Prescrição"
             valor={d.caloriasSugeridas !== null ? fmtInt(d.caloriasSugeridas) : "—"}
-            sub="kcal/dia sugeridas"
+            sub="kcal/dia"
           />
           {mostrarVetCorrigido && (
             <MetricCard
