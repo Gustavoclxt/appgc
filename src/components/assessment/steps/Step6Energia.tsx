@@ -129,23 +129,25 @@ export function Step6Energia({
             a.estrategia !== "superavit" && "sm:grid-cols-2",
           )}
         >
-          <OptionRow
-            value={a.estrategia}
-            onChange={(v) => {
-              if (!v) return;
-              set("estrategia", v as typeof a.estrategia);
-              if (v !== "deficit") {
-                setCorrigirRefeicaoLivre("nao");
-                limparRefeicoesLivres();
-              }
-            }}
-            options={[
-              { value: "deficit", label: "Déficit calórico" },
-              { value: "normocalorica", label: "Normocalórica" },
-              { value: "superavit", label: "Superávit calórico" },
-            ]}
-          />
-          {a.estrategia === "deficit" && (
+          <div className="min-w-0 space-y-5">
+            <OptionRow
+              value={a.estrategia}
+              onChange={(v) => {
+                if (!v) return;
+                set("estrategia", v as typeof a.estrategia);
+                if (v !== "deficit") {
+                  setCorrigirRefeicaoLivre("nao");
+                  limparRefeicoesLivres();
+                }
+              }}
+              options={[
+                { value: "deficit", label: "Déficit calórico" },
+                { value: "normocalorica", label: "Normocalórica" },
+                { value: "superavit", label: "Superávit calórico" },
+              ]}
+            />
+          {a.estrategia !== "normocalorica" && (
+          <div className="space-y-4">
             <div className="min-w-0 space-y-4">
               <Field label="Corrigir VET por refeição livre?">
                 <OptionRow
