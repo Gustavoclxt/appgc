@@ -169,36 +169,38 @@ export function Step6Energia({
 
             {a.tipoAjuste === "kcal" ? (
               <>
-                <Field label={a.estrategia === "deficit" ? "Déficit" : "Superávit"}>
-                  <div className="max-w-xs">
-                    <Select
-                      value={mostrarKcalPersonalizado ? "outro" : a.kcalAjuste}
-                      onChange={(v) => {
-                        if (v === "outro") {
-                          setOutroKcal(true);
-                          if (kcalPresets.some((k) => k.value === a.kcalAjuste)) set("kcalAjuste", "");
-                        } else if (v) {
-                          setOutroKcal(false);
-                          set("kcalAjuste", v);
-                        }
-                      }}
-                      options={[...kcalPresets, { value: "outro", label: "Outro" }]}
-                      placeholder="Selecione o valor"
-                    />
-                  </div>
-                </Field>
-                {mostrarKcalPersonalizado && (
-                  <div className="max-w-xs">
-                    <Field label="Valor personalizado" hint="Informe o valor desejado em kcal.">
-                      <UnitInput
-                        value={a.kcalAjuste}
-                        onChange={(v) => set("kcalAjuste", v)}
-                        unidade="kcal"
-                        placeholder="Ex.: 600"
+                <div className="flex flex-wrap items-end gap-3">
+                  <Field label={a.estrategia === "deficit" ? "Déficit" : "Superávit"}>
+                    <div className="w-40">
+                      <Select
+                        value={mostrarKcalPersonalizado ? "outro" : a.kcalAjuste}
+                        onChange={(v) => {
+                          if (v === "outro") {
+                            setOutroKcal(true);
+                            if (kcalPresets.some((k) => k.value === a.kcalAjuste)) set("kcalAjuste", "");
+                          } else if (v) {
+                            setOutroKcal(false);
+                            set("kcalAjuste", v);
+                          }
+                        }}
+                        options={[...kcalPresets, { value: "outro", label: "Outro" }]}
+                        placeholder="Selecione"
                       />
+                    </div>
+                  </Field>
+                  {mostrarKcalPersonalizado && (
+                    <Field label="Valor personalizado">
+                      <div className="w-28">
+                        <UnitInput
+                          value={a.kcalAjuste}
+                          onChange={(v) => set("kcalAjuste", v)}
+                          unidade="kcal"
+                          placeholder="Ex.: 600"
+                        />
+                      </div>
                     </Field>
-                  </div>
-                )}
+                  )}
+                </div>
               </>
             ) : (
               <>
