@@ -85,7 +85,7 @@ export function generatePatientPDF(a: Assessment, d: DerivedResults, metas: Meta
   })();
   doc.setDrawColor(...REPORT_HEADER_COLOR);
   doc.setLineWidth(1.2);
-  doc.line(xs[0], yLinha, xs[xs.length - 1], yLinha);
+  doc.line(xs[0], yLinha, xs[xs.length - 1]!, yLinha);
 
   const minGap = marcos.length > 1 ? xs[1] - xs[0] : 999;
   const fonteValor = larg >= 30 ? 11 : larg >= 24 ? 10 : larg >= 18 ? 9 : 8;
