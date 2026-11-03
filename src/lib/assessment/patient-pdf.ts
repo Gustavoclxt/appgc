@@ -45,27 +45,65 @@ export function generatePatientPDF(a: Assessment, d: DerivedResults, metas: Meta
   }
 
   const yLinha = 80;
-  const x0 = M + 22;
-  const x1 = W - M - 22;
-  const passo = marcos.length > 1 ? (x1 - x0) / (marcos.length - 1) : 0;
-  const cx = (i: number) => (marcos.length > 1 ? x0 + passo * i : W / 2);
+  // Espaçamento proporcional ao tempo real entre os marcos: 1, 2 e 3 meses
+  // ficam com o mesmo intervalo mensal e 6/12 meses ficam proporcionalmente
+  // mais afastados. As caixas se ajustam ao menor intervalo sem se sobrepor.
+  const diasMax = Math.max(...marcos.map((m) => m.dias), 1);
+  const menorIntervalo = Math.min(...marcos.slice(1).map((m, i) => m.dias - marcos[i]!.dias));
+  const MARGEM_CAIXA = 4;
+  let larg = 40;
+  let escala = 0;
+  for (let k = 0; k < 8; k++) {
+    const x0k = M + MARGEM_CAIXA + larg / 2;
+    const x1k = W - M - MARGEM_CAIXA - larg / 2;
+    escala = (x1k - x0k) / diasMax;
+    const passoUniforme = marcos.length > 1 ? (x1k - x0k) / (marcos.length - 1) : x1k - x0k;
+    larg = Math.max(16, Math.min(44, passoUniforme - 3, escala * menorIntervalo - 3));
+  }
+  const x0 = M + MARGEM_CAIXA + larg / 2;
+  const x1 = W - M - MARGEM_CAIXA - larg / 2;
+  const span = x1 - x0;
+  const xs = ((): number[] => {
+    if (marcos.length <= 1) return [W / 2];
+    const lacunasDias = marcos.slice(1).map((m, i) => m.dias - marcos[i]!.dias);
+    const lacunas = lacunasDias.map((d) => escala * d);
+    const piso = larg + 3;
+    for (let k = 0; k < 3; k++) {
+      const apertadas = lacunas.map((g, i) => (g < piso - 0.01 ? i : -1)).filter((i) => i >= 0);
+      if (apertadas.length === 0) break;
+      const resto = span - apertadas.length * piso;
+      const pesoLivre = lacunasDias.reduce((s, d, i) => (apertadas.includes(i) ? s : s + d), 0);
+      if (pesoLivre <= 0) break;
+      apertadas.forEach((i) => (lacunas[i] = piso));
+      lacunas.forEach((_, i) => {
+        if (!apertadas.includes(i)) lacunas[i] = (resto * lacunasDias[i]!) / pesoLivre;
+      });
+    }
+    const pts = [x0];
+    lacunas.forEach((g) => pts.push(pts[pts.length - 1]! + g));
+    return pts;
+  })();
   doc.setDrawColor(...REPORT_HEADER_COLOR);
   doc.setLineWidth(1.2);
-  if (marcos.length > 1) doc.line(x0, yLinha, x1, yLinha);
+  doc.line(xs[0]!, yLinha, xs[xs.length - 1]!, yLinha);
 
-  const larg = Math.min(44, marcos.length > 1 ? passo - 3 : 60);
+  const minGap = marcos.length > 1 ? xs[1]! - xs[0]! : 999;
+  const fonteValor = larg >= 30 ? 11 : larg >= 24 ? 10 : larg >= 18 ? 9 : 8;
+  const fonteRotulo = minGap >= 26 ? 11 : 8;
+  const fonteData = minGap >= 26 ? 8.5 : 7;
+
   marcos.forEach((m, i) => {
-    const x = cx(i);
+    const x = xs[i]!;
     const destaque = i === 0 || m.metaAtingida;
     doc.setFillColor(...(destaque ? REPORT_HEADER_COLOR : ([255, 255, 255] as [number, number, number])));
     doc.circle(x, yLinha, 3.2, "FD");
 
     doc.setFont("ReportSans", "bold");
-    doc.setFontSize(11);
+    doc.setFontSize(fonteRotulo);
     doc.setTextColor(22, 32, 43);
     doc.text(m.rotulo, x, yLinha - 12, { align: "center" });
     doc.setFont("ReportSans", "normal");
-    doc.setFontSize(8.5);
+    doc.setFontSize(fonteData);
     doc.setTextColor(91, 102, 114);
     const dt = somarDias(data, m.dias);
     if (dt) doc.text(dt, x, yLinha - 7, { align: "center" });
@@ -87,7 +125,7 @@ export function generatePatientPDF(a: Assessment, d: DerivedResults, metas: Meta
       doc.setTextColor(91, 102, 114);
       doc.text(l, x, yy, { align: "center" });
       doc.setFont("ReportSans", "bold");
-      doc.setFontSize(11);
+      doc.setFontSize(fonteValor);
       doc.setTextColor(22, 32, 43);
       doc.text(v, x, yy + 5, { align: "center" });
     });
