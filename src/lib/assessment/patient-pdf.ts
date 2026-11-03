@@ -80,7 +80,7 @@ export function generatePatientPDF(a: Assessment, d: DerivedResults, metas: Meta
       });
     }
     const pts = [x0];
-    lacunas.forEach((g) => pts.push(pts[pts.length - 1] + g));
+    lacunas.forEach((g) => pts.push(pts[pts.length - 1]! + g));
     return pts;
   })();
   doc.setDrawColor(...REPORT_HEADER_COLOR);
