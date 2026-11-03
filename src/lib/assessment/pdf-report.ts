@@ -138,18 +138,18 @@ export function generatePDF(
     paragrafo(valor);
   };
 
-  // Cabeçalho centralizado: logotipo, título e subtítulo empilhados no centro
+  // Cabeçalho
   doc.setFillColor(...REPORT_HEADER_COLOR);
-  doc.rect(0, 0, LARGURA, 36, "F");
-  doc.addImage(LOGO_BRANCO_PNG, "PNG", (LARGURA - 14 * LOGO_PROPORCAO) / 2, 3.5, 14 * LOGO_PROPORCAO, 14);
+  doc.rect(0, 0, LARGURA, 26, "F");
+  doc.addImage(LOGO_BRANCO_PNG, "PNG", MARGEM, 5, 16 * LOGO_PROPORCAO, 16);
   doc.setTextColor(255, 255, 255);
   doc.setFont("ReportSans", "bold");
   doc.setFontSize(14);
-  doc.text("RELATÓRIO DE AVALIAÇÃO NUTRICIONAL", LARGURA / 2, 25, { align: "center" });
+  doc.text("RELATÓRIO DE AVALIAÇÃO NUTRICIONAL", LARGURA / 2, 13, { align: "center" });
   doc.setFont("ReportSans", "normal");
   doc.setFontSize(9);
-  doc.text("GC - Excelência em Nutrição", LARGURA / 2, 31, { align: "center" });
-  y = 44;
+  doc.text("GC - Excelência em Nutrição", LARGURA / 2, 19.5, { align: "center" });
+  y = 36;
 
   const renderExames = (exames: ReturnType<typeof examesParaRelatorio>) => {
     const colunas = [
