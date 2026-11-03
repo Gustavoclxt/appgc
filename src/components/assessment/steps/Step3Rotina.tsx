@@ -242,37 +242,43 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                   />
                 </Field>
                 <Field label="Horário">
-                  <TextInput
-                    type="time"
-                    value={m.horario}
-                    onChange={(v) =>
-                      set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, horario: v } : x)))
-                    }
-                  />
+                  <div className="w-[110px]">
+                    <TextInput
+                      type="time"
+                      value={m.horario}
+                      onChange={(v) =>
+                        set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, horario: v } : x)))
+                      }
+                    />
+                  </div>
                 </Field>
                 <Field label="Duração">
-                  <TextInput
-                    value={m.duracao}
-                    placeholder="60 minutos"
-                    onChange={(v) =>
-                      set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, duracao: v } : x)))
-                    }
-                  />
+                  <div className="w-[130px]">
+                    <TextInput
+                      value={m.duracao}
+                      placeholder="60 minutos"
+                      onChange={(v) =>
+                        set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, duracao: v } : x)))
+                      }
+                    />
+                  </div>
                 </Field>
                 <Field label="Frequência semanal">
-                  <Select
-                    value={m.frequenciaSemanal}
-                    onChange={(v) =>
-                      set(
-                        "modalidades",
-                        a.modalidades.map((x, j) => (j === i ? { ...x, frequenciaSemanal: v } : x)),
-                      )
-                    }
-                    options={Array.from({ length: 7 }, (_, index) => ({
-                      value: `${index + 1} ${index === 0 ? "vez" : "vezes"}`,
-                      label: `${index + 1} ${index === 0 ? "vez" : "vezes"}`,
-                    }))}
-                  />
+                  <div className="w-[140px]">
+                    <Select
+                      value={m.frequenciaSemanal}
+                      onChange={(v) =>
+                        set(
+                          "modalidades",
+                          a.modalidades.map((x, j) => (j === i ? { ...x, frequenciaSemanal: v } : x)),
+                        )
+                      }
+                      options={Array.from({ length: 7 }, (_, index) => ({
+                        value: `${index + 1} ${index === 0 ? "vez" : "vezes"}`,
+                        label: `${index + 1} ${index === 0 ? "vez" : "vezes"}`,
+                      }))}
+                    />
+                  </div>
                 </Field>
                 <Field label="Dias da semana">
                   <MultiOptionRow
