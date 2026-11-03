@@ -32,7 +32,7 @@ describe("scratch", () => {
   it("renderiza svg", () => {
     const a = { ...createExampleAssessment(), objetivos: ["Emagrecimento"] };
     const d = deriveResults(a);
-    const metas = calcularMetasPeso(a, d, { modo: "peso", pesoDesejado: "78", kgPerder: "", prazoMeses: "", meta1: "", meta3: "", meta6Min: "", meta6Max: "", deficitKcal: "250" });
+    const metas = calcularMetasPeso(a, d, { modo: "peso", pesoDesejado: "70", kgPerder: "", prazoMeses: "", meta1: "", meta3: "", meta6Min: "", meta6Max: "", deficitKcal: "250" });
     generatePatientPDF(a, d, metas);
     const mm = (v: number) => v * 4;
     const parts: string[] = [`<svg xmlns="http://www.w3.org/2000/svg" width="${297 * 4}" height="${210 * 4}" viewBox="0 0 ${297 * 4} ${210 * 4}"><rect width="100%" height="100%" fill="white"/>`];
