@@ -16,6 +16,7 @@ const rotuloDias = (dias: number) => {
   if (dias === 0) return "Hoje";
   const meses = dias / DIAS_POR_MES;
   if (dias === 365) return "12 meses";
+  if (dias % 30 === 0) return dias === 30 ? "1 mês" : `${dias / 30} meses`;
   if (Math.abs(meses - Math.round(meses)) < 0.05) {
     const m = Math.round(meses);
     return m === 1 ? "1 mês" : `${m} meses`;
