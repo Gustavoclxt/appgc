@@ -5,6 +5,7 @@ import type { MetasPesoResultado } from "./weight-goals";
 import { linhaDoTempoPaciente } from "./patient-timeline";
 import { REPORT_HEADER_COLOR } from "./report-theme";
 import { registerReportFonts } from "./pdf-font";
+import { LOGO_BRANCO_PNG, LOGO_PROPORCAO } from "./pdf-logo";
 import { nomeArquivoPdf } from "./pdf-report";
 
 const fmt1 = (v: number | null) =>
