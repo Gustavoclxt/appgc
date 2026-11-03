@@ -69,7 +69,7 @@ const MODALIDADES = [
   "Futebol", "Futsal", "Vôlei", "Vôlei de praia", "Basquete", "Handebol", "Futevôlei", "Beach tennis",
   "Rugby", "Caminhada", "Caminhada em esteira", "Escada", "Elíptico", "Corrida de rua", "Corrida em esteira",
   "Corrida em trilha", "Corrida de montanha", "Marcha atlética", "Musculação", "Treinamento funcional",
-  "CrossFit", "Pilates", "Ginástica aeróbica", "Spinning", "Ciclismo indoor", "Calistenia", "HIIT",
+  "CrossFit", "Hyrox", "Pilates", "Ginástica aeróbica", "Spinning", "Ciclismo indoor", "Calistenia", "HIIT",
   "Levantamento de peso", "Ciclismo", "Patinação", "Skate", "Natação", "Hidroginástica", "Surf",
   "Canoagem", "Caiaque", "Remo", "Mergulho", "Windsurf", "Kitesurf", "Wakeboard", "Esqui aquático",
   "Polo aquático", "Tênis", "Padel", "Badminton", "Tênis de mesa", "Squash", "Golfe", "Boliche",
