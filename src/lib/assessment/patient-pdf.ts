@@ -45,8 +45,6 @@ export function generatePatientPDF(a: Assessment, d: DerivedResults, metas: Meta
   }
 
   const yLinha = 80;
-  const x0 = M + 22;
-  const x1 = W - M - 22;
   // Espaçamento proporcional ao tempo real entre os marcos: 1, 2 e 3 meses
   // ficam com o mesmo intervalo mensal e 6/12 meses ficam proporcionalmente
   // mais afastados. As caixas se ajustam ao menor intervalo sem se sobrepor.
