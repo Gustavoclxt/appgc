@@ -58,6 +58,8 @@ export interface EntradaModelo {
 export interface PontoTrajetoria {
   dia: number;
   peso: number;
+  /** Massa gorda (kg) no dia, do mesmo modelo. */
+  gordura?: number;
 }
 
 export interface ResultadoModelo {
@@ -95,7 +97,7 @@ export function simularHall(e: EntradaModelo, dias = 365 * 3): ResultadoModelo {
   let f = f0;
   let l = l0;
   let at = 0;
-  const serie: PontoTrajetoria[] = [{ dia: 0, peso: e.pesoKg }];
+  const serie: PontoTrajetoria[] = [{ dia: 0, peso: e.pesoKg, gordura: f0 }];
   for (let dia = 1; dia <= dias; dia++) {
     const bw = f + l;
     const p = C_FORBES / (C_FORBES + f);
@@ -109,7 +111,7 @@ export function simularHall(e: EntradaModelo, dias = 365 * 3): ResultadoModelo {
     const balanco = ei - ee;
     f = Math.max(0.5, f + ((1 - p) * balanco) / RHO_F);
     l = l + (p * balanco) / RHO_L;
-    serie.push({ dia, peso: f + l });
+    serie.push({ dia, peso: f + l, gordura: f });
   }
   return { serie, ingestaoBasal: ei0, ingestaoAlvo: ei, massaGordaInicial: f0, gorduraEstimada };
 }
