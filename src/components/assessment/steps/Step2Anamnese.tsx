@@ -63,9 +63,8 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             <TextInput value={a.maiorDificuldade} onChange={(v) => set("maiorDificuldade", v)} />
           </Field>
           <Field label="De 0 a 10, como está sua motivação?" className="sm:col-start-2">
-            <div className="flex items-center gap-4">
-              <div className="min-w-0 flex-1">
-                <Slider
+            <div>
+              <Slider
                   value={[Number.isFinite(Number(a.motivacao)) && a.motivacao !== "" ? Number(a.motivacao) : 0]}
                   min={0}
                   max={10}
@@ -94,15 +93,11 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
                         className="absolute top-0 -translate-x-1/2 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
                         style={{ left: `calc(${pct}% + ${8 - pct * 0.16}px)` }}
                       >
-                        <span className="font-mono text-[10px] leading-none text-ink-soft">{i}</span>
+                        <span className={`font-mono text-[10px] leading-none ${a.motivacao === String(i) ? "font-semibold text-accent" : "text-ink-soft"}`}>{i}</span>
                       </button>
                     );
                   })}
                 </div>
-              </div>
-              <span className="min-w-[2rem] text-right font-mono text-2xl font-medium tracking-tight tabular-nums text-accent">
-                {a.motivacao === "" ? "—" : a.motivacao}
-              </span>
             </div>
           </Field>
           {a.motivacao !== "" && Number(a.motivacao) < 10 && (
