@@ -190,11 +190,12 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
         </Panel>
       )}
 
+      {a.indicadoresAntropometricos.length > 0 && (
       <section className="panel-ink">
         <div className="mb-5 flex items-center justify-between">
           <h2 className="font-display text-base font-semibold tracking-tight">Resultados calculados</h2>
         </div>
-        <div className="flex flex-wrap items-start gap-y-4">
+        <div className="flex flex-wrap items-start gap-x-10 gap-y-6">
           <ResultadoHorizontal
             label="Peso"
             valor={d.pesoKg !== null ? fmt2(d.pesoKg) : "—"}
@@ -241,6 +242,7 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
           </button>
         </div>
       </section>
+      )}
 
       {conferenciaAberta && (
         <Panel titulo="Conferência e correção">
