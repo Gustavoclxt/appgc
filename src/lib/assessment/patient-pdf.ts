@@ -5,6 +5,7 @@ import type { MetasPesoResultado } from "./weight-goals";
 import { linhaDoTempoPaciente } from "./patient-timeline";
 import { REPORT_HEADER_COLOR } from "./report-theme";
 import { registerReportFonts } from "./pdf-font";
+import { LOGO_BRANCO_PNG, LOGO_PROPORCAO } from "./pdf-logo";
 import { nomeArquivoPdf } from "./pdf-report";
 
 const fmt1 = (v: number | null) =>
@@ -33,7 +34,7 @@ export function generatePatientPDF(a: Assessment, d: DerivedResults, metas: Meta
   doc.setFont("ReportSans", "normal");
   doc.setFontSize(10);
   doc.text(`${a.nome.trim() || "Paciente"} · Consulta: ${fmtData(data)}`, M, 21);
-  doc.text("GC - NUTRIÇÃO • PERFORMANCE • LONGEVIDADE", W - M, 21, { align: "right" });
+  doc.addImage(LOGO_BRANCO_PNG, "PNG", W - M - 16 * LOGO_PROPORCAO, 6, 16 * LOGO_PROPORCAO, 16);
 
   const marcos = linhaDoTempoPaciente(a, d, metas);
   doc.setTextColor(22, 32, 43);

@@ -22,6 +22,7 @@ import { painelClinicoParaRelatorio } from "./clinical-dashboard";
 import { resumoVetFinal } from "./free-meal";
 import { REPORT_HEADER_COLOR } from "./report-theme";
 import { registerReportFonts } from "./pdf-font";
+import { LOGO_BRANCO_PNG, LOGO_PROPORCAO } from "./pdf-logo";
 
 const MARGEM = 16;
 const LARGURA = 210;
@@ -140,6 +141,7 @@ export function generatePDF(
   // Cabeçalho
   doc.setFillColor(...REPORT_HEADER_COLOR);
   doc.rect(0, 0, LARGURA, 26, "F");
+  doc.addImage(LOGO_BRANCO_PNG, "PNG", MARGEM, 5, 16 * LOGO_PROPORCAO, 16);
   doc.setTextColor(255, 255, 255);
   doc.setFont("ReportSans", "bold");
   doc.setFontSize(14);
