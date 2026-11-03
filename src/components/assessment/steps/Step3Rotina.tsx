@@ -30,6 +30,7 @@ import {
 import { agruparItensPorRefeicao, chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { opcoesDeLocal } from "@/lib/assessment/food-diary";
 import { DIAS_SEMANA, selecionarDias } from "@/lib/assessment/training-days";
+import { Slider } from "@/components/ui/slider";
 
 /** Botões redondos de dias exibem apenas a inicial: S T Q Q S S D. */
 const LETRA_DIA: Record<string, string> = {
@@ -316,13 +317,39 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                   />
                 </Field>
                 <Field label="Nota">
-                  <Select
-                    value={m.nota}
-                    onChange={(v) =>
-                      set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, nota: v } : x)))
-                    }
-                    options={Array.from({ length: 11 }, (_, index) => ({ value: String(index), label: String(index) }))}
-                  />
+                  <div>
+                    <Slider
+                      value={[Number.isFinite(Number(m.nota)) && m.nota !== "" ? Number(m.nota) : 0]}
+                      min={0}
+                      max={10}
+                      step={1}
+                      aria-label="Nota de 0 a 10"
+                      onValueChange={([v]) =>
+                        set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, nota: String(v ?? 0) } : x)))
+                      }
+                      className="w-full"
+                    />
+                    <div className="relative mt-2 h-5">
+                      {Array.from({ length: 11 }, (_, n) => {
+                        // Compensa o raio do poleiro (16px): nos extremos a bolinha não encosta nas pontas.
+                        const pct = (n / 10) * 100;
+                        return (
+                          <button
+                            key={n}
+                            type="button"
+                            aria-label={`Selecionar nota ${n}`}
+                            onClick={() =>
+                              set("modalidades", a.modalidades.map((x, j) => (j === i ? { ...x, nota: String(n) } : x)))
+                            }
+                            className="absolute top-0 -translate-x-1/2 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+                            style={{ left: `calc(${pct}% + ${8 - pct * 0.16}px)` }}
+                          >
+                            <span className={`font-mono text-[10px] leading-none ${m.nota === String(n) ? "font-semibold text-accent" : "text-ink-soft"}`}>{n}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </Field>
                 <Field label="Justificativa">
                   <TextInput
