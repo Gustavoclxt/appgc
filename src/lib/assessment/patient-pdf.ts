@@ -103,7 +103,7 @@ export function generatePatientPDF(a: Assessment, d: DerivedResults, metas: Meta
     doc.setTextColor(22, 32, 43);
     doc.text(m.rotulo, x, yLinha - 12, { align: "center" });
     doc.setFont("ReportSans", "normal");
-    doc.setFontSize(8.5);
+    doc.setFontSize(fonteData);
     doc.setTextColor(91, 102, 114);
     const dt = somarDias(data, m.dias);
     if (dt) doc.text(dt, x, yLinha - 7, { align: "center" });
