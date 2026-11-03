@@ -76,13 +76,6 @@ function montar(
     }
   }
   const painel = painelClinicoParaRelatorio(analise, a, d, composicao);
-  if (painel.resumo.length) {
-    blocos.push({
-      titulo: "Resumo clínico",
-      linhas: painel.resumo.map((item) => kv(item.label, item.valor)),
-      formato: "tabela",
-    });
-  }
   if (painel.achados.length) {
     blocos.push({
       titulo: "Principais achados",

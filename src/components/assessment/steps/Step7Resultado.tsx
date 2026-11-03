@@ -194,17 +194,6 @@ export function Step7Resultado({ a, d, analise, analisando, erroAnalise, progres
             </div>
           </div>
 
-          {painel.resumo.length > 0 && (
-            <div className="grid grid-cols-1 gap-x-8 border-b border-line py-4 sm:grid-cols-2">
-              {painel.resumo.map((item) => (
-                <div key={`${item.label}-${item.valor}`} className="grid grid-cols-[minmax(105px,0.42fr)_1fr] gap-3 border-b border-line/60 py-2 last:border-b-0 sm:[&:nth-last-child(-n+2)]:border-b-0">
-                  <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-ink-soft">{item.label}</span>
-                  <span className="text-[13px] font-semibold leading-snug text-ink">{item.valor}</span>
-                </div>
-              ))}
-            </div>
-          )}
-
           {painel.achados.length > 0 && (
             <div className="py-6">
               <h3 className="font-display text-base font-semibold">Principais achados</h3>
