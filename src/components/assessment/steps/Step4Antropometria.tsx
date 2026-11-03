@@ -11,10 +11,27 @@ import { extractPdfText } from "@/lib/assessment/extract-pdf-text";
 import { novoId } from "@/lib/assessment/initial-state";
 import { AnthropometryBody } from "../AnthropometryBody";
 
-import { Field, Panel, Readout, Select, TextInput, UnitInput } from "../fields";
+import { Field, Panel, Select, TextInput, UnitInput } from "../fields";
 import type { StepProps } from "./types";
 
 type GrupoAntropometrico = ReturnType<typeof agruparAntropometria>[number];
+
+function ResultadoHorizontal({ label, valor, sub, destaque }: { label: string; valor: string; sub: string; destaque?: string | undefined }) {
+  return (
+    <div className="border-l border-white/10 pl-6 first:border-l-0 first:pl-0">
+      <p className="text-[12px] text-white">{label}</p>
+      <p className="mt-1 font-mono text-2xl font-medium tracking-tight tabular-nums text-white">{valor}</p>
+      <div className="mt-1 flex flex-wrap items-center gap-2">
+        <span className="text-[11px] text-white/80">{sub}</span>
+        {destaque && (
+          <span className="rounded-full bg-white/15 px-2 py-0.5 font-mono text-[10px] text-white">
+            {destaque}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
 
 function TabelaIndicadores({ categoria, indicadores }: { categoria: CategoriaAntropometrica; indicadores: GrupoAntropometrico["indicadores"] }) {
   return (
@@ -42,8 +59,8 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
   const [lido, setLido] = useState(false);
   const [falhou, setFalhou] = useState(false);
   const [pendentes, setPendentes] = useState<string[]>([]);
+  const [conferenciaAberta, setConferenciaAberta] = useState(false);
   const extrair = useServerFn(extrairAntropometria);
-  const mostrarConferencia = lido || falhou || Boolean(a.altura || a.peso);
 
   function removerAvaliacao() {
     set("indicadoresAntropometricos", []);
@@ -59,6 +76,7 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
       const texto = await extractPdfText(file, (f) => setProgresso(Math.round(f * 40)));
       if (texto.trim().length < 20) {
         setFalhou(true);
+        setConferenciaAberta(true);
         toast.error("Não foi possível ler texto neste PDF. Preencha os dados manualmente abaixo.");
         return;
       }
@@ -81,10 +99,13 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
       setPendentes(faltam);
       setLido(true);
       setFalhou(false);
-      if (faltam.length) toast.warning(`Não identificado com segurança: ${faltam.join(", ")}. Confira abaixo.`);
-      else toast.success("Antropometria importada. Confira os dados abaixo.");
+      if (faltam.length) {
+        setConferenciaAberta(true);
+        toast.warning(`Não identificado com segurança: ${faltam.join(", ")}. Confira abaixo.`);
+      } else toast.success("Antropometria importada. Confira os dados abaixo.");
     } catch (erro) {
       setFalhou(true);
+      setConferenciaAberta(true);
       toast.error(erro instanceof Error ? erro.message : "Falha ao ler o arquivo. Preencha manualmente abaixo.");
     } finally {
       if (timer) clearInterval(timer);
@@ -169,98 +190,34 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
         </Panel>
       )}
 
-      {mostrarConferencia && (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-      <Panel titulo="Conferência e correção" className="lg:col-span-7">
-        {(falhou || pendentes.length > 0) && (
-          <p className="mb-4 rounded-[10px] bg-warn-soft px-3 py-2 text-[12px] text-ink">
-            {falhou
-              ? "Não foi possível ler o PDF. Preencha os dados manualmente."
-              : `Não identificado com segurança: ${pendentes.join(", ")}. Confira ou preencha manualmente.`}
-          </p>
-        )}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <Field label="Altura">
-            <UnitInput
-              value={a.altura}
-              onChange={(v) => {
-                if (/^\d?(?:,\d{0,2})?$/.test(v) && (v.match(/\d/g)?.length ?? 0) <= 3) set("altura", v);
-              }}
-              unidade="m"
-              placeholder="1,75"
-            />
-          </Field>
-          <Field label="Peso atual">
-            <UnitInput value={a.peso} onChange={(v) => set("peso", v)} unidade="kg" placeholder="78,4" />
-          </Field>
-          <Field label="Percentual de gordura">
-            <UnitInput
-              value={a.percentualGordura}
-              onChange={(v) => set("percentualGordura", v)}
-              unidade="%"
-              placeholder="18,5"
-            />
-          </Field>
-          <Field label="Método utilizado para avaliação do percentual de gordura">
-            <Select
-              value={a.metodoGordura}
-              onChange={(v) => set("metodoGordura", v)}
-              options={[
-                "Bioimpedância",
-                "DEXA",
-                "Dobras cutâneas",
-                "Estimativa",
-                "Outro",
-              ].map((x) => ({ value: x, label: x }))}
-            />
-          </Field>
-          <Field label="Data da avaliação antropométrica">
-            <TextInput
-              type="date"
-              value={a.dataAvaliacaoAntropometrica}
-              onChange={(v) => set("dataAvaliacaoAntropometrica", v)}
-            />
-          </Field>
-        </div>
-      </Panel>
-
-      <section className="panel-ink lg:col-span-5">
+      <section className="panel-ink">
         <div className="mb-5 flex items-center justify-between">
           <h2 className="font-display text-base font-semibold tracking-tight">Resultados calculados</h2>
         </div>
-        <div className="space-y-4">
-          <Readout
+        <div className="flex flex-wrap items-start gap-y-4">
+          <ResultadoHorizontal
             label="Peso"
             valor={d.pesoKg !== null ? fmt2(d.pesoKg) : "—"}
             sub="kg"
           />
-          <div className="h-px bg-white/10" />
-          <Readout
+          <ResultadoHorizontal
             label="IMC"
             valor={d.imc !== null ? fmt2(d.imc) : "—"}
             sub="kg/m²"
             destaque={d.classificacaoIMC ?? undefined}
           />
-          {d.pio !== null && (
-            <>
-              <div className="h-px bg-white/10" />
-              <Readout label="PIO" valor={fmt2(d.pio)} sub="kg" />
-            </>
-          )}
-          <div className="h-px bg-white/10" />
-          <Readout
+          {d.pio !== null && <ResultadoHorizontal label="PIO" valor={fmt2(d.pio)} sub="kg" />}
+          <ResultadoHorizontal
             label="Gordura corporal"
             valor={d.percentualGordura !== null ? `${fmt2(d.percentualGordura)}%` : "—"}
             sub={a.metodoGordura || "método não informado"}
           />
-          <div className="h-px bg-white/10" />
-          <Readout
+          <ResultadoHorizontal
             label="Massa gorda"
             valor={d.massaGorda !== null ? fmt2(d.massaGorda) : "—"}
             sub="kg"
           />
-          <div className="h-px bg-white/10" />
-          <Readout
+          <ResultadoHorizontal
             label="Massa livre de gordura"
             valor={d.massaLivreGordura !== null ? fmt2(d.massaLivreGordura) : "—"}
             sub="kg"
@@ -274,8 +231,70 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
             </p>
           </div>
         )}
+        <div className="mt-5">
+          <button
+            type="button"
+            onClick={() => setConferenciaAberta((v) => !v)}
+            className="inline-flex cursor-pointer items-center rounded-[10px] bg-white px-4 py-2 text-[13px] font-medium text-ink ring-1 ring-line transition-colors hover:bg-white/70"
+          >
+            {conferenciaAberta ? "Fechar" : "Corrigir"}
+          </button>
+        </div>
       </section>
-    </div>
+
+      {conferenciaAberta && (
+        <Panel titulo="Conferência e correção">
+          {(falhou || pendentes.length > 0) && (
+            <p className="mb-4 rounded-[10px] bg-warn-soft px-3 py-2 text-[12px] text-ink">
+              {falhou
+                ? "Não foi possível ler o PDF. Preencha os dados manualmente."
+                : `Não identificado com segurança: ${pendentes.join(", ")}. Confira ou preencha manualmente.`}
+            </p>
+          )}
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <Field label="Altura">
+              <UnitInput
+                value={a.altura}
+                onChange={(v) => {
+                  if (/^\d?(?:,\d{0,2})?$/.test(v) && (v.match(/\d/g)?.length ?? 0) <= 3) set("altura", v);
+                }}
+                unidade="m"
+                placeholder="1,75"
+              />
+            </Field>
+            <Field label="Peso atual">
+              <UnitInput value={a.peso} onChange={(v) => set("peso", v)} unidade="kg" placeholder="78,4" />
+            </Field>
+            <Field label="Percentual de gordura">
+              <UnitInput
+                value={a.percentualGordura}
+                onChange={(v) => set("percentualGordura", v)}
+                unidade="%"
+                placeholder="18,5"
+              />
+            </Field>
+            <Field label="Método utilizado para avaliação do percentual de gordura">
+              <Select
+                value={a.metodoGordura}
+                onChange={(v) => set("metodoGordura", v)}
+                options={[
+                  "Bioimpedância",
+                  "DEXA",
+                  "Dobras cutâneas",
+                  "Estimativa",
+                  "Outro",
+                ].map((x) => ({ value: x, label: x }))}
+              />
+            </Field>
+            <Field label="Data da avaliação antropométrica">
+              <TextInput
+                type="date"
+                value={a.dataAvaliacaoAntropometrica}
+                onChange={(v) => set("dataAvaliacaoAntropometrica", v)}
+              />
+            </Field>
+          </div>
+        </Panel>
       )}
     </div>
   );
