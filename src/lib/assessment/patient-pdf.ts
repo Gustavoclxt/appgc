@@ -90,9 +90,9 @@ export function generatePatientPDF(a: Assessment, d: DerivedResults, metas: Meta
   doc.setLineWidth(1.2);
   doc.line(xs[0], yLinha, xs[xs.length - 1], yLinha);
 
-  const larg = Math.min(44, marcos.length > 1 ? passo - 3 : 60);
+  const fonteValor = larg >= 30 ? 11 : larg >= 26 ? 10 : 9;
   marcos.forEach((m, i) => {
-    const x = cx(i);
+    const x = xs[i];
     const destaque = i === 0 || m.metaAtingida;
     doc.setFillColor(...(destaque ? REPORT_HEADER_COLOR : ([255, 255, 255] as [number, number, number])));
     doc.circle(x, yLinha, 3.2, "FD");
@@ -124,7 +124,7 @@ export function generatePatientPDF(a: Assessment, d: DerivedResults, metas: Meta
       doc.setTextColor(91, 102, 114);
       doc.text(l, x, yy, { align: "center" });
       doc.setFont("ReportSans", "bold");
-      doc.setFontSize(11);
+      doc.setFontSize(fonteValor);
       doc.setTextColor(22, 32, 43);
       doc.text(v, x, yy + 5, { align: "center" });
     });
