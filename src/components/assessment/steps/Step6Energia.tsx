@@ -5,7 +5,7 @@ import type { ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { calcularVetCorrigido } from "@/lib/assessment/free-meal";
 import { cn } from "@/lib/utils";
 
-import { Field, MetricCard, OptionRow, Panel, Select, TextInput, UnitInput } from "../fields";
+import { Field, MetricCard, OptionRow, Panel, Select, UnitInput } from "../fields";
 import type { StepProps } from "./types";
 
 const fatores = [
@@ -267,18 +267,6 @@ export function Step6Energia({
                   </div>
                 </>
               )}
-            </div>
-          )}
-          {a.estrategia === "normocalorica" && (
-            <div className="max-w-xs">
-              <Field label="Ajuste manual das calorias" hint="Em branco mantém a prescrição igual ao VET.">
-                <TextInput
-                  value={a.caloriasManuais}
-                  onChange={(v) => set("caloriasManuais", v)}
-                  placeholder={d.vet !== null ? fmtInt(d.vet) : "kcal/dia"}
-                  mono
-                />
-              </Field>
             </div>
           )}
         </div>
