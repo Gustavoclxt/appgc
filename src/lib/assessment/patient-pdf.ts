@@ -93,7 +93,7 @@ export function generatePatientPDF(a: Assessment, d: DerivedResults, metas: Meta
   const fonteData = minGap >= 26 ? 8.5 : 7;
 
   marcos.forEach((m, i) => {
-    const x = xs[i];
+    const x = xs[i]!;
     const destaque = i === 0 || m.metaAtingida;
     doc.setFillColor(...(destaque ? REPORT_HEADER_COLOR : ([255, 255, 255] as [number, number, number])));
     doc.circle(x, yLinha, 3.2, "FD");
