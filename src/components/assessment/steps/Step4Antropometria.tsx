@@ -11,10 +11,27 @@ import { extractPdfText } from "@/lib/assessment/extract-pdf-text";
 import { novoId } from "@/lib/assessment/initial-state";
 import { AnthropometryBody } from "../AnthropometryBody";
 
-import { Field, Panel, Readout, Select, TextInput, UnitInput } from "../fields";
+import { Field, Panel, Select, TextInput, UnitInput } from "../fields";
 import type { StepProps } from "./types";
 
 type GrupoAntropometrico = ReturnType<typeof agruparAntropometria>[number];
+
+function ResultadoHorizontal({ label, valor, sub, destaque }: { label: string; valor: string; sub: string; destaque?: string | undefined }) {
+  return (
+    <div className="border-l border-white/10 pl-6 first:border-l-0 first:pl-0">
+      <p className="text-[12px] text-white">{label}</p>
+      <p className="mt-1 font-mono text-2xl font-medium tracking-tight tabular-nums text-white">{valor}</p>
+      <div className="mt-1 flex flex-wrap items-center gap-2">
+        <span className="text-[11px] text-white/80">{sub}</span>
+        {destaque && (
+          <span className="rounded-full bg-white/15 px-2 py-0.5 font-mono text-[10px] text-white">
+            {destaque}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
 
 function TabelaIndicadores({ categoria, indicadores }: { categoria: CategoriaAntropometrica; indicadores: GrupoAntropometrico["indicadores"] }) {
   return (
@@ -42,8 +59,8 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
   const [lido, setLido] = useState(false);
   const [falhou, setFalhou] = useState(false);
   const [pendentes, setPendentes] = useState<string[]>([]);
+  const [conferenciaAberta, setConferenciaAberta] = useState(false);
   const extrair = useServerFn(extrairAntropometria);
-  const mostrarConferencia = lido || falhou || Boolean(a.altura || a.peso);
 
   function removerAvaliacao() {
     set("indicadoresAntropometricos", []);
