@@ -55,13 +55,6 @@ export function WeightGoals({ a, d, metas, onChange }: Props) {
           <UnitInput value={metas.prazoMeses} onChange={(v) => up("prazoMeses", v)} unidade="meses" casas={1} />
         </Field>
       </div>
-      <SubTitle className="mt-7">Metas clínicas de referência (ajustáveis)</SubTitle>
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <Field label="1 mês"><UnitInput value={metas.meta1} onChange={(v) => up("meta1", v)} unidade="%" casas={1} /></Field>
-        <Field label="3 meses"><UnitInput value={metas.meta3} onChange={(v) => up("meta3", v)} unidade="%" casas={1} /></Field>
-        <Field label="6 meses (mín.)"><UnitInput value={metas.meta6Min} onChange={(v) => up("meta6Min", v)} unidade="%" casas={1} /></Field>
-        <Field label="6 meses (máx.)"><UnitInput value={metas.meta6Max} onChange={(v) => up("meta6Max", v)} unidade="%" casas={1} /></Field>
-      </div>
       <WeightReferenceCards resultado={r} />
       <SubTitle className="mt-7">Modelo dinâmico de perda de peso (Hall/NIH)</SubTitle>
       <div className="max-w-xs">
