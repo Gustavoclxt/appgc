@@ -30,6 +30,18 @@ import {
 import { agruparItensPorRefeicao, chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
 import { opcoesDeLocal } from "@/lib/assessment/food-diary";
 import { DIAS_SEMANA, selecionarDias } from "@/lib/assessment/training-days";
+
+/** Botões redondos de dias exibem apenas a inicial: S T Q Q S S D. */
+const LETRA_DIA: Record<string, string> = {
+  Segunda: "S",
+  Terça: "T",
+  Quarta: "Q",
+  Quinta: "Q",
+  Sexta: "S",
+  Sábado: "S",
+  Domingo: "D",
+};
+const CLASSE_BOTAO_DIA = "h-8 w-8 rounded-full px-0 py-0";
 import { AtypicalDay } from "../AtypicalDay";
 import type { Refeicao } from "@/lib/assessment/types";
 
@@ -277,7 +289,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                       );
                     }}
                     options={[
-                      ...DIAS_SEMANA.map((d) => ({ value: d, label: d })),
+                      ...DIAS_SEMANA.map((d) => ({ value: d, label: LETRA_DIA[d] ?? d, className: CLASSE_BOTAO_DIA })),
                       { value: "Todos", label: "Todos" },
                     ]}
                   />
@@ -298,7 +310,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                       );
                     }}
                     options={[
-                      ...DIAS_SEMANA.map((d) => ({ value: d, label: d })),
+                      ...DIAS_SEMANA.map((d) => ({ value: d, label: LETRA_DIA[d] ?? d, className: CLASSE_BOTAO_DIA })),
                       { value: "Nenhum", label: "Nenhum" },
                     ]}
                   />
