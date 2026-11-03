@@ -47,48 +47,52 @@ export function generatePatientPDF(a: Assessment, d: DerivedResults, metas: Meta
   const yLinha = 80;
   const x0 = M + 22;
   const x1 = W - M - 22;
-  // Posições proporcionais ao tempo real entre os marcos: 1, 2 e 3 meses
-  // ficam com o mesmo intervalo mensal; 6 e 12 meses ficam proporcionalmente
-  // mais afastados. Caixas se ajustam ao menor intervalo sem se sobrepor.
-  const larguraTotal = x1 - x0;
-  const passoUniforme = marcos.length > 1 ? larguraTotal / (marcos.length - 1) : larguraTotal;
-  let larg = marcos.length > 1 ? Math.min(44, passoUniforme - 3) : 60;
+  // Espaçamento proporcional ao tempo real entre os marcos: 1, 2 e 3 meses
+  // ficam com o mesmo intervalo mensal e 6/12 meses ficam proporcionalmente
+  // mais afastados. As caixas se ajustam ao menor intervalo sem se sobrepor.
+  const diasMax = Math.max(...marcos.map((m) => m.dias), 1);
+  const menorIntervalo = Math.min(...marcos.slice(1).map((m, i) => m.dias - marcos[i].dias));
+  const MARGEM_CAIXA = 4;
+  let larg = 40;
+  let escala = 0;
+  for (let k = 0; k < 8; k++) {
+    const x0k = M + MARGEM_CAIXA + larg / 2;
+    const x1k = W - M - MARGEM_CAIXA - larg / 2;
+    escala = (x1k - x0k) / diasMax;
+    const passoUniforme = marcos.length > 1 ? (x1k - x0k) / (marcos.length - 1) : x1k - x0k;
+    larg = Math.max(16, Math.min(44, passoUniforme - 3, escala * menorIntervalo - 3));
+  }
+  const x0 = M + MARGEM_CAIXA + larg / 2;
+  const x1 = W - M - MARGEM_CAIXA - larg / 2;
+  const span = x1 - x0;
   const xs = ((): number[] => {
     if (marcos.length <= 1) return [W / 2];
-    const diasMax = Math.max(...marcos.map((m) => m.dias), 1);
-    const escalaMax = larguraTotal / diasMax;
-    const menorIntervalo = Math.min(...marcos.slice(1).map((m, i) => m.dias - marcos[i].dias));
-    larg = Math.max(24, Math.min(larg, escalaMax * menorIntervalo - 3));
-    const posEm = (escala: number) => {
-      const pts = [x0];
-      for (let i = 1; i < marcos.length; i++) {
-        pts.push(Math.max(pts[i - 1] + larg + 3, x0 + escala * marcos[i].dias));
-      }
-      return pts;
-    };
-    let escala = escalaMax;
-    let pts = posEm(escala);
-    if (pts[pts.length - 1] > x1) {
-      let lo = 0;
-      let hi = escalaMax;
-      for (let k = 0; k < 48; k++) {
-        const meio = (lo + hi) / 2;
-        const t = posEm(meio);
-        if (t[t.length - 1] <= x1) {
-          escala = meio;
-          pts = t;
-          lo = meio;
-        } else {
-          hi = meio;
-        }
-      }
-      pts = posEm(escala);
+    const lacunasDias = marcos.slice(1).map((m, i) => m.dias - marcos[i].dias);
+    const lacunas = lacunasDias.map((d) => escala * d);
+    const piso = larg + 3;
+    for (let k = 0; k < 3; k++) {
+      const apertadas = lacunas.map((g, i) => (g < piso - 0.01 ? i : -1)).filter((i) => i >= 0);
+      if (apertadas.length === 0) break;
+      const resto = span - apertadas.length * piso;
+      const pesoLivre = lacunasDias.reduce((s, d, i) => (apertadas.includes(i) ? s : s + d), 0);
+      if (pesoLivre <= 0) break;
+      apertadas.forEach((i) => (lacunas[i] = piso));
+      lacunas.forEach((_, i) => {
+        if (!apertadas.includes(i)) lacunas[i] = (resto * lacunasDias[i]) / pesoLivre;
+      });
     }
+    const pts = [x0];
+    lacunas.forEach((g) => pts.push(pts[pts.length - 1] + g));
     return pts;
   })();
   doc.setDrawColor(...REPORT_HEADER_COLOR);
   doc.setLineWidth(1.2);
   doc.line(xs[0], yLinha, xs[xs.length - 1], yLinha);
+
+  const minGap = marcos.length > 1 ? xs[1] - xs[0] : 999;
+  const fonteValor = larg >= 30 ? 11 : larg >= 24 ? 10 : larg >= 18 ? 9 : 8;
+  const fonteRotulo = minGap >= 26 ? 11 : 8;
+  const fonteData = minGap >= 26 ? 8.5 : 7;
 
   const fonteValor = larg >= 30 ? 11 : larg >= 26 ? 10 : 9;
   marcos.forEach((m, i) => {
