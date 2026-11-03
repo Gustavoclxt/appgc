@@ -198,6 +198,15 @@ function Index() {
     }
   }
 
+  async function onGerarPdfPaciente() {
+    try {
+      const { generatePatientPDF } = await import("@/lib/assessment/patient-pdf");
+      generatePatientPDF(dados, derivados, resultadoMetas);
+    } catch {
+      toast.error("Não foi possível gerar o relatório do paciente.");
+    }
+  }
+
   function avancar() {
     setEtapa((e) => Math.min(ETAPAS.length, e + 1));
     // Subida imediata: a animação suave demora em páginas longas (especialmente no mobile).
@@ -312,7 +321,7 @@ function Index() {
               composicaoAtipica={diaAtipico ? composicaoAtipica : null}
               metas={resultadoMetas}
             />
-            <Step8Pdf onGerar={onGerarPdf} temAnalise={analise !== null} />
+            <Step8Pdf onGerar={onGerarPdf} onGerarPaciente={onGerarPdfPaciente} temAnalise={analise !== null} />
           </div>
         )}
 
