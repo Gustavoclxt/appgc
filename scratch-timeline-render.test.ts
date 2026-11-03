@@ -45,7 +45,7 @@ describe("scratch", () => {
       else if (o.op === "text") {
         const anchor = (a2[3] as { align?: string })?.align === "center" ? "middle" : "start";
         const texto = String(a2[0]);
-        parts.push(`<text x="${mm(a2[1])}" y="${mm(a2[2])}" text-anchor="${anchor}" font-family="DejaVu Sans" font-size="${o.size! * 4}" font-weight="${o.font?.includes("bold") ? "bold" : "normal"}" fill="#222">${texto.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</text>`);
+        parts.push(`<text x="${mm(a2[1])}" y="${mm(a2[2])}" text-anchor="${anchor}" font-family="DejaVu Sans" font-size="${(o.size! * 0.3528 * 4).toFixed(1)}" font-weight="${o.font?.includes("bold") ? "bold" : "normal"}" fill="#222">${texto.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</text>`);
       }
     }
     parts.push("</svg>");
