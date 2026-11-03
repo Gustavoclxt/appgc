@@ -47,11 +47,48 @@ export function generatePatientPDF(a: Assessment, d: DerivedResults, metas: Meta
   const yLinha = 80;
   const x0 = M + 22;
   const x1 = W - M - 22;
-  const passo = marcos.length > 1 ? (x1 - x0) / (marcos.length - 1) : 0;
-  const cx = (i: number) => (marcos.length > 1 ? x0 + passo * i : W / 2);
+  // Posições proporcionais ao tempo real entre os marcos: 1, 2 e 3 meses
+  // ficam com o mesmo intervalo mensal; 6 e 12 meses ficam proporcionalmente
+  // mais afastados. Caixas se ajustam ao menor intervalo sem se sobrepor.
+  const larguraTotal = x1 - x0;
+  const passoUniforme = marcos.length > 1 ? larguraTotal / (marcos.length - 1) : larguraTotal;
+  let larg = marcos.length > 1 ? Math.min(44, passoUniforme - 3) : 60;
+  const xs = ((): number[] => {
+    if (marcos.length <= 1) return [W / 2];
+    const diasMax = Math.max(...marcos.map((m) => m.dias), 1);
+    const escalaMax = larguraTotal / diasMax;
+    const menorIntervalo = Math.min(...marcos.slice(1).map((m, i) => m.dias - marcos[i].dias));
+    larg = Math.max(24, Math.min(larg, escalaMax * menorIntervalo - 3));
+    const posEm = (escala: number) => {
+      const pts = [x0];
+      for (let i = 1; i < marcos.length; i++) {
+        pts.push(Math.max(pts[i - 1] + larg + 3, x0 + escala * marcos[i].dias));
+      }
+      return pts;
+    };
+    let escala = escalaMax;
+    let pts = posEm(escala);
+    if (pts[pts.length - 1] > x1) {
+      let lo = 0;
+      let hi = escalaMax;
+      for (let k = 0; k < 48; k++) {
+        const meio = (lo + hi) / 2;
+        const t = posEm(meio);
+        if (t[t.length - 1] <= x1) {
+          escala = meio;
+          pts = t;
+          lo = meio;
+        } else {
+          hi = meio;
+        }
+      }
+      pts = posEm(escala);
+    }
+    return pts;
+  })();
   doc.setDrawColor(...REPORT_HEADER_COLOR);
   doc.setLineWidth(1.2);
-  if (marcos.length > 1) doc.line(x0, yLinha, x1, yLinha);
+  doc.line(xs[0], yLinha, xs[xs.length - 1], yLinha);
 
   const larg = Math.min(44, marcos.length > 1 ? passo - 3 : 60);
   marcos.forEach((m, i) => {
