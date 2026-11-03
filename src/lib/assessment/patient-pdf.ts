@@ -49,7 +49,7 @@ export function generatePatientPDF(a: Assessment, d: DerivedResults, metas: Meta
   // ficam com o mesmo intervalo mensal e 6/12 meses ficam proporcionalmente
   // mais afastados. As caixas se ajustam ao menor intervalo sem se sobrepor.
   const diasMax = Math.max(...marcos.map((m) => m.dias), 1);
-  const menorIntervalo = Math.min(...marcos.slice(1).map((m, i) => m.dias - marcos[i].dias));
+  const menorIntervalo = Math.min(...marcos.slice(1).map((m, i) => m.dias - marcos[i]!.dias));
   const MARGEM_CAIXA = 4;
   let larg = 40;
   let escala = 0;
@@ -65,7 +65,7 @@ export function generatePatientPDF(a: Assessment, d: DerivedResults, metas: Meta
   const span = x1 - x0;
   const xs = ((): number[] => {
     if (marcos.length <= 1) return [W / 2];
-    const lacunasDias = marcos.slice(1).map((m, i) => m.dias - marcos[i].dias);
+    const lacunasDias = marcos.slice(1).map((m, i) => m.dias - marcos[i]!.dias);
     const lacunas = lacunasDias.map((d) => escala * d);
     const piso = larg + 3;
     for (let k = 0; k < 3; k++) {
@@ -76,7 +76,7 @@ export function generatePatientPDF(a: Assessment, d: DerivedResults, metas: Meta
       if (pesoLivre <= 0) break;
       apertadas.forEach((i) => (lacunas[i] = piso));
       lacunas.forEach((_, i) => {
-        if (!apertadas.includes(i)) lacunas[i] = (resto * lacunasDias[i]) / pesoLivre;
+        if (!apertadas.includes(i)) lacunas[i] = (resto * lacunasDias[i]!) / pesoLivre;
       });
     }
     const pts = [x0];
@@ -85,9 +85,9 @@ export function generatePatientPDF(a: Assessment, d: DerivedResults, metas: Meta
   })();
   doc.setDrawColor(...REPORT_HEADER_COLOR);
   doc.setLineWidth(1.2);
-  doc.line(xs[0], yLinha, xs[xs.length - 1]!, yLinha);
+  doc.line(xs[0]!, yLinha, xs[xs.length - 1]!, yLinha);
 
-  const minGap = marcos.length > 1 ? xs[1] - xs[0] : 999;
+  const minGap = marcos.length > 1 ? xs[1]! - xs[0]! : 999;
   const fonteValor = larg >= 30 ? 11 : larg >= 24 ? 10 : larg >= 18 ? 9 : 8;
   const fonteRotulo = minGap >= 26 ? 11 : 8;
   const fonteData = minGap >= 26 ? 8.5 : 7;

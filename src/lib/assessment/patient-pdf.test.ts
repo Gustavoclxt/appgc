@@ -41,7 +41,7 @@ import { generatePatientPDF } from "./patient-pdf";
 const xDe = (rotulo: string) => {
   const alvo = rotulos.filter((r) => r.texto === rotulo);
   if (alvo.length === 0) throw new Error(`marco ausente: ${rotulo}`);
-  return alvo[0].x;
+  return alvo[0]!.x;
 };
 
 describe("Espaçamento das bolinhas da linha do tempo", () => {
