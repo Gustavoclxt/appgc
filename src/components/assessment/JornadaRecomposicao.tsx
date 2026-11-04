@@ -19,17 +19,17 @@ function IconeTom({ tom, seta }: { tom?: Tom | undefined; seta?: Seta | undefine
   const direcao = seta === "up" || seta === "down" ? seta : null;
   if (direcao) {
     const C = direcao === "up" ? CircleArrowUp : CircleArrowDown;
-    return <C className={cn("h-4 w-4 shrink-0", cor)} aria-hidden />;
+    return <C className={cn("h-5 w-5 shrink-0", cor)} aria-hidden />;
   }
-  if (tom === "ok") return <CircleCheck className={cn("h-4 w-4 shrink-0", cor)} aria-hidden />;
-  return <CircleAlert className={cn("h-4 w-4 shrink-0", cor)} aria-hidden />;
+  if (tom === "ok") return <CircleCheck className={cn("h-5 w-5 shrink-0", cor)} aria-hidden />;
+  return <CircleAlert className={cn("h-5 w-5 shrink-0", cor)} aria-hidden />;
 }
 
 function IconeSeta({ seta, tom }: { seta?: Seta | undefined; tom?: Tom | undefined }) {
   // Com tom definido, a direção já está no ícone de status; seta só permanece nas linhas neutras (tendência).
   if (!seta || (tom && tom !== "neutro")) return null;
   const C = seta === "up" ? ArrowUp : seta === "down" ? ArrowDown : ArrowRight;
-  return <C className="h-3.5 w-3.5 shrink-0 text-accent" aria-hidden />;
+  return <C className="h-4 w-4 shrink-0 text-accent" aria-hidden />;
 }
 
 function Card({ card }: { card: CardJornada }) {
@@ -38,7 +38,7 @@ function Card({ card }: { card: CardJornada }) {
       <h4 className="mb-3 text-sm font-semibold tracking-tight text-ink">{card.titulo}</h4>
       <ul className="divide-y divide-line/70">
         {card.linhas.map((l, i) => (
-          <li key={i} className="flex items-start justify-between gap-4 py-2">
+          <li key={i} className="flex items-start justify-between gap-4 py-2.5">
             <span className="flex items-center gap-2 text-[12px] text-ink-soft">
               {l.tom === "neutro" ? (
                 <span className={cn("h-2 w-2 shrink-0 rounded-full", pontoClasse[l.tom])} />
@@ -48,11 +48,11 @@ function Card({ card }: { card: CardJornada }) {
               {l.rotulo}
             </span>
             <span className="text-right">
-              <span className={cn("inline-flex items-center gap-1 text-[13px] font-semibold", tomClasse[l.tom ?? "neutro"])}>
+              <span className={cn("inline-flex items-center gap-1 text-[15px] font-semibold", tomClasse[l.tom ?? "neutro"])}>
                 <IconeSeta seta={l.seta} tom={l.tom} />
                 {l.valor}
               </span>
-              {l.detalhe && <span className="block text-[11px] text-ink-soft">{l.detalhe}</span>}
+              {l.detalhe && <span className="block text-[12px] text-ink-soft">{l.detalhe}</span>}
             </span>
           </li>
         ))}
@@ -72,9 +72,9 @@ function CardExames({ exames, destino, mensagem }: { exames: ExameJornada[]; des
         <p className="text-[12px] text-ink-soft">{mensagem}</p>
       ) : (
       <div className="overflow-x-auto">
-        <table className="w-full text-[12px]">
+        <table className="w-full text-[13px]">
           <thead>
-            <tr className="text-left text-[11px] text-ink-soft">
+            <tr className="text-left text-[11.5px] text-ink-soft">
               <th className="py-1.5 pr-3 font-medium">Marcador</th>
               <th className="py-1.5 pr-3 font-medium">{destino ? "Inicial" : "Resultado"}</th>
               {destino ? (
