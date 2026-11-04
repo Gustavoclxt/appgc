@@ -781,7 +781,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                     set("diarioAlimentar", a.diarioAlimentar.map((x, j) => (j === i ? { ...x, local: v } : x)))
                   }
                 />
-                <RowButton onClick={() => set("diarioAlimentar", a.diarioAlimentar.filter((_, j) => j !== i))}>
+                <RowButton className="bg-[color-mix(in_oklch,white_70%,var(--paper))] hover:bg-[color-mix(in_oklch,white_85%,var(--paper))]" onClick={() => set("diarioAlimentar", a.diarioAlimentar.filter((_, j) => j !== i))}>
                   Remover refeição
                 </RowButton>
               </div>
@@ -892,7 +892,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                         )
                       }
                     />
-                    <RowButton
+                    <RowButton className="bg-[color-mix(in_oklch,white_70%,var(--paper))] hover:bg-[color-mix(in_oklch,white_85%,var(--paper))]"
                       onClick={() =>
                         set(
                           "diarioAlimentar",
@@ -908,7 +908,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                     </RowButton>
                   </div>
                 ))}
-                <RowButton onClick={() => adicionarAlimento(i)}>
+                <RowButton className="bg-[color-mix(in_oklch,white_70%,var(--paper))] hover:bg-[color-mix(in_oklch,white_85%,var(--paper))]" onClick={() => adicionarAlimento(i)}>
                   + Adicionar alimento
                 </RowButton>
               </div>
