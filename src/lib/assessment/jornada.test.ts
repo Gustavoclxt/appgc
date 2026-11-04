@@ -10,11 +10,24 @@ describe("Jornada de Recomposição Corporal", () => {
     expect(j.titulo).toBe(`Jornada de Recomposição Corporal — ${a.nome}`);
   });
 
-  it("mostra 'Não informado' para exames ausentes e lista os 14 marcadores", () => {
+  it("exames: sem resultado, lista vazia e não avaliado; alterados são os únicos listados", () => {
     const a = { ...createExampleAssessment(), exames: [] };
     const j = construirJornada(a, deriveResults(a), null);
-    expect(j.hoje.exames).toHaveLength(14);
-    expect(j.hoje.exames.every((e) => e.inicial === "Não informado")).toBe(true);
+    expect(j.hoje.exames).toHaveLength(0);
+    expect(j.examesAvaliados).toBe(false);
+    expect(j.examesOk).toBe(false);
+
+    const glicose = { id: "1", exame: "Glicose", resultado: "85", unidade: "mg/dL", referencia: "70 a 99", status: "dentro" as const };
+    const dentro = { ...createExampleAssessment(), exames: [glicose] };
+    const jDentro = construirJornada(dentro, deriveResults(dentro), null);
+    expect(jDentro.examesOk).toBe(true);
+    expect(jDentro.examesAvaliados).toBe(true);
+    expect(jDentro.hoje.exames).toHaveLength(0);
+
+    const comAcima = { ...createExampleAssessment(), exames: [glicose, { id: "2", exame: "LDL", resultado: "160", unidade: "mg/dL", referencia: "< 130", status: "acima" as const }] };
+    const jAcima = construirJornada(comAcima, deriveResults(comAcima), null);
+    expect(jAcima.examesOk).toBe(false);
+    expect(jAcima.hoje.exames.map((e) => e.marcador)).toEqual(["LDL"]);
   });
 
   it("meta hídrica usa 30 mL/kg/dia", () => {

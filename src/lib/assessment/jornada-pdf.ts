@@ -113,6 +113,26 @@ export function generateJornadaPDF(a: Assessment, d: DerivedResults, metas: Meta
   };
 
   const exames = (lista: ExameJornada[], destino: boolean) => {
+    if (lista.length === 0) {
+      const mensagem = j.examesAvaliados
+        ? "Todos os exames avaliados estão de acordo com os valores de referência."
+        : "Exames laboratoriais ainda não informados.";
+      const h = 14;
+      garantir(h);
+      doc.setDrawColor(...LINE);
+      doc.setFillColor(255, 255, 255);
+      doc.roundedRect(M, y, LARG, h, 2.5, 2.5, "FD");
+      doc.setFont("ReportSans", "bold");
+      doc.setFontSize(10.5);
+      doc.setTextColor(...INK);
+      doc.text(destino ? "Exames laboratoriais — metas desejáveis" : "Exames laboratoriais", M + 4, y + 7);
+      doc.setFont("ReportSans", "normal");
+      doc.setFontSize(8.5);
+      doc.setTextColor(...SOFT);
+      doc.text(mensagem, M + 4, y + 11.5);
+      y += h + 5;
+      return;
+    }
     const cols = destino ? ["Marcador", "Inicial", "Alvo desejável", "Diferença esperada"] : ["Marcador", "Resultado", "Referência"];
     const xs = destino ? [M + 8, M + 50, M + 92, M + 134] : [M + 8, M + 60, M + 110];
     const largs = destino ? [40, 40, 40, 44] : [50, 48, 70];

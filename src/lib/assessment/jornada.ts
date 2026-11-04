@@ -45,6 +45,10 @@ export interface Jornada {
   titulo: string;
   nome: string;
   data: string;
+  // Tabela de exames mostra apenas marcadores alterados (acima/abaixo da referência).
+  // examesOk/examesAvaliados orientam a mensagem quando a lista vem vazia.
+  examesOk: boolean;
+  examesAvaliados: boolean;
   hoje: { composicao: CardJornada; exames: ExameJornada[]; habitos: CardJornada; atividade: CardJornada };
   caminho: { projecao: CardJornada; habitos: CardJornada; atividade: CardJornada };
   destino: { composicao: CardJornada; exames: ExameJornada[]; habitos: CardJornada };
@@ -280,7 +284,10 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
     ],
   };
 
-  const examesHoje = MARCADORES_JORNADA.map((m) => exameJornada(encontrarExame(a.exames, m.aliases, m.excluir), m.rotulo));
+  const examesTodos = MARCADORES_JORNADA.map((m) => exameJornada(encontrarExame(a.exames, m.aliases, m.excluir), m.rotulo));
+  const examesAvaliados = examesTodos.some((e) => e.inicial !== NI);
+  const examesOk = examesAvaliados && examesTodos.every((e) => e.tom !== "atencao");
+  const examesHoje = examesTodos.filter((e) => e.tom === "atencao");
 
   const achados = indicadoresAlimentares(a);
   const temR24 = a.diarioAlimentar.some((r) => r.alimentos.some((x) => x.alimento.trim()));
@@ -455,6 +462,8 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
     titulo: `Jornada de Recomposição Corporal — ${nome}`,
     nome,
     data: fmtData(a.dataAvaliacaoAntropometrica || a.dataAvaliacao),
+    examesOk,
+    examesAvaliados,
     hoje: { composicao, exames: examesHoje, habitos, atividade },
     caminho: { projecao, habitos: habitosMelhora, atividade: atividadeMelhora },
     destino: { composicao: destinoComp, exames: examesHoje, habitos: destinoHabitos },

@@ -41,12 +41,15 @@ function Card({ card }: { card: CardJornada }) {
   );
 }
 
-function CardExames({ exames, destino }: { exames: ExameJornada[]; destino?: boolean }) {
+function CardExames({ exames, destino, mensagem }: { exames: ExameJornada[]; destino?: boolean; mensagem: string }) {
   return (
     <div className="rounded-[14px] bg-white p-5 ring-1 ring-line">
       <h4 className="mb-3 text-sm font-semibold tracking-tight text-ink">
         {destino ? "Exames laboratoriais — metas desejáveis" : "Exames laboratoriais"}
       </h4>
+      {exames.length === 0 ? (
+        <p className="text-[12px] text-ink-soft">{mensagem}</p>
+      ) : (
       <div className="overflow-x-auto">
         <table className="w-full text-[12px]">
           <thead>
@@ -91,7 +94,8 @@ function CardExames({ exames, destino }: { exames: ExameJornada[]; destino?: boo
           </tbody>
         </table>
       </div>
-      {destino && (
+      )}
+      {destino && exames.length > 0 && (
         <p className="mt-3 text-[11px] italic text-ink-soft">
           Metas desejáveis, condicionadas à evolução clínica. Não há garantia de normalização em 90 dias.
         </p>
@@ -116,6 +120,10 @@ function Etapa({ numero, titulo, children }: { numero: number; titulo: string; c
 
 export function JornadaRecomposicao({ jornada, onExportar }: { jornada: Jornada; onExportar: () => void }) {
   const j = jornada;
+  const msgExames =
+    j.examesAvaliados
+      ? "Todos os exames avaliados estão de acordo com os valores de referência."
+      : "Exames laboratoriais ainda não informados.";
   return (
     <div className="panel space-y-8">
       <div className="flex flex-wrap items-start justify-between gap-4 rounded-[14px] bg-accent px-6 py-5 text-white">
@@ -135,7 +143,7 @@ export function JornadaRecomposicao({ jornada, onExportar }: { jornada: Jornada;
       <Etapa numero={1} titulo="Como você está hoje">
         <div className="grid gap-4 md:grid-cols-2">
           <Card card={j.hoje.composicao} />
-          <CardExames exames={j.hoje.exames} />
+          <CardExames exames={j.hoje.exames} mensagem={msgExames} />
           <Card card={j.hoje.habitos} />
           <Card card={j.hoje.atividade} />
         </div>
@@ -154,7 +162,7 @@ export function JornadaRecomposicao({ jornada, onExportar }: { jornada: Jornada;
           <Card card={j.destino.composicao} />
           <Card card={j.destino.habitos} />
         </div>
-        <CardExames exames={j.destino.exames} destino />
+        <CardExames exames={j.destino.exames} destino mensagem={msgExames} />
       </Etapa>
 
       <p className="rounded-[10px] bg-paper px-4 py-3 text-[11px] text-ink-soft">{j.aviso}</p>
