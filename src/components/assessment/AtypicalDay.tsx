@@ -57,17 +57,17 @@ export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCal
               <TextInput value={r.refeicao} placeholder="Refeição" onChange={v => atualizar(r.id, { refeicao: v })} />
               <TextInput type="time" value={r.horario} onChange={v => atualizar(r.id, { horario: v })} />
               <Select value={r.local} placeholder="Local" options={opcoesDeLocal(r.local)} onChange={v => atualizar(r.id, { local: v })} />
-              <RowButton className="bg-[color-mix(in_oklch,white_70%,var(--paper))] hover:bg-[color-mix(in_oklch,white_85%,var(--paper))] h-auto whitespace-normal" onClick={() => onChange(refeicoes.filter(x => x.id !== r.id))}>Remover refeição</RowButton>
+              <RowButton className="bg-paper hover:bg-line/60 h-auto whitespace-normal" onClick={() => onChange(refeicoes.filter(x => x.id !== r.id))}>Remover refeição</RowButton>
             </div>
             <div className="mt-4 space-y-2 border-t border-line/70 pt-4">
               {r.alimentos.map((item, i) => (
                 <div key={item.id} className="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_1fr_auto]">
                   <TextInput value={item.alimento} placeholder="Alimento" inputRef={el => { if (el) refs.current.set(item.id, el); else refs.current.delete(item.id); }} onChange={v => atualizar(r.id, { alimentos: r.alimentos.map(x => x.id === item.id ? { ...x, alimento: v } : x) })} />
                   <TextInput value={item.quantidade} placeholder="Quantidade" onChange={v => atualizar(r.id, { alimentos: r.alimentos.map(x => x.id === item.id ? { ...x, quantidade: v } : x) })} onKeyDown={e => { if (e.key === "Tab" && !e.shiftKey && i === r.alimentos.length - 1) { e.preventDefault(); setFoco(adicionarAlimento(r)); } }} />
-                  <RowButton className="bg-[color-mix(in_oklch,white_70%,var(--paper))] hover:bg-[color-mix(in_oklch,white_85%,var(--paper))] h-auto whitespace-normal" onClick={() => atualizar(r.id, { alimentos: r.alimentos.filter(x => x.id !== item.id) })}>Remover alimento</RowButton>
+                  <RowButton className="bg-paper hover:bg-line/60 h-auto whitespace-normal" onClick={() => atualizar(r.id, { alimentos: r.alimentos.filter(x => x.id !== item.id) })}>Remover alimento</RowButton>
                 </div>
               ))}
-              <RowButton className="bg-[color-mix(in_oklch,white_70%,var(--paper))] hover:bg-[color-mix(in_oklch,white_85%,var(--paper))]" onClick={() => adicionarAlimento(r)}>+ Adicionar alimento</RowButton>
+              <RowButton className="bg-paper hover:bg-line/60" onClick={() => adicionarAlimento(r)}>+ Adicionar alimento</RowButton>
             </div>
           </div>
         ))}
