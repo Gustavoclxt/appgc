@@ -16,8 +16,6 @@ import { Step6Energia } from "@/components/assessment/steps/Step6Energia";
 import { Step6Cardio } from "@/components/assessment/steps/Step6Cardio";
 import { Step7Resultado } from "@/components/assessment/steps/Step7Resultado";
 import { Step8Pdf } from "@/components/assessment/steps/Step8Pdf";
-import { JornadaRecomposicao } from "@/components/assessment/JornadaRecomposicao";
-import { construirJornada } from "@/lib/assessment/jornada";
 import { WeightGoals } from "@/components/assessment/WeightGoals";
 import { MODULO_METAS_ATIVO, calcularMetasPeso } from "@/lib/assessment/weight-goals";
 import { metasPesoIniciais, type MetasPesoEstado } from "@/lib/assessment/weight-projection";
@@ -77,7 +75,6 @@ function Index() {
   const calculoAtipicoEmCursoRef = useRef(false);
   const [metasPeso, setMetasPeso] = useState<MetasPesoEstado>(() => metasPesoIniciais());
   const derivados = useMemo(() => deriveResults(dados), [dados]);
-  const [jornadaAberta, setJornadaAberta] = useState(false);
   const resultadoMetas = useMemo(() => MODULO_METAS_ATIVO(dados) ? calcularMetasPeso(dados, derivados, metasPeso) : null, [dados, derivados, metasPeso]);
 
   const set = useCallback(
@@ -210,15 +207,6 @@ function Index() {
     }
   }
 
-  async function onGerarJornadaPdf() {
-    try {
-      const { generateJornadaPDF } = await import("@/lib/assessment/jornada-pdf");
-      generateJornadaPDF(dados, derivados, resultadoMetas);
-    } catch {
-      toast.error("Não foi possível gerar a Jornada em PDF.");
-    }
-  }
-
   function avancar() {
     setEtapa((e) => Math.min(ETAPAS.length, e + 1));
     // Subida imediata: a animação suave demora em páginas longas (especialmente no mobile).
@@ -333,10 +321,7 @@ function Index() {
               composicaoAtipica={diaAtipico ? composicaoAtipica : null}
               metas={resultadoMetas}
             />
-            <Step8Pdf onGerar={onGerarPdf} onGerarPaciente={onGerarPdfPaciente} onJornada={() => setJornadaAberta((v) => !v)} temAnalise={analise !== null} />
-            {jornadaAberta && (
-              <JornadaRecomposicao jornada={construirJornada(dados, derivados, resultadoMetas)} onExportar={() => void onGerarJornadaPdf()} />
-            )}
+            <Step8Pdf onGerar={onGerarPdf} onGerarPaciente={onGerarPdfPaciente} temAnalise={analise !== null} />
           </div>
         )}
 

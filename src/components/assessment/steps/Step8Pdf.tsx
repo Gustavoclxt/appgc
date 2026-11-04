@@ -6,12 +6,10 @@ const btn =
 export function Step8Pdf({
   onGerar,
   onGerarPaciente,
-  onJornada,
   temAnalise,
 }: {
   onGerar: () => void;
   onGerarPaciente: () => void;
-  onJornada: () => void;
   temAnalise: boolean;
 }) {
   return (
@@ -32,9 +30,6 @@ export function Step8Pdf({
         </button>
         <button type="button" onClick={onGerarPaciente} className={btn}>
           Relatório Paciente
-        </button>
-        <button type="button" onClick={onJornada} className={btn}>
-          Jornada de Recomposição Corporal
         </button>
       </div>
     </Panel>
