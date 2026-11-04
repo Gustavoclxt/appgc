@@ -130,14 +130,6 @@ export function exameJornada(e: ExameLaboratorial | null, rotulo: string): Exame
   let seta: Seta = null;
   let tom: Tom = "ok";
   if (e.status === "dentro") {
-    // Dentro da referência, porém próximo ao limite: moderado.
-    if (valor !== null) {
-      if (min !== null && max !== null && max > min) {
-        const pos = (valor - min) / (max - min);
-        if (pos <= 0.2 || pos >= 0.8) tom = "moderado";
-      } else if (max !== null && max > 0 && valor >= max * 0.9) tom = "moderado";
-      else if (min !== null && min > 0 && valor <= min * 1.1) tom = "moderado";
-    }
     alvo = "Manter dentro da referência";
     diferenca = "Manter";
     seta = "igual";
@@ -300,7 +292,8 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
   const examesTodos = MARCADORES_JORNADA.map((m) => exameJornada(encontrarExame(a.exames, m.aliases, m.excluir), m.rotulo));
   const examesAvaliados = examesTodos.some((e) => e.inicial !== NI);
   const examesOk = examesAvaliados && examesTodos.every((e) => e.tom !== "atencao");
-  const examesHoje = examesTodos.filter((e) => e.tom === "atencao" || e.tom === "moderado");
+  // Apenas exames alterados (acima ou abaixo da referência) entram na lista; não há "moderados".
+  const examesHoje = examesTodos.filter((e) => e.tom === "atencao");
 
   const achados = indicadoresAlimentares(a);
   const temR24 = a.diarioAlimentar.some((r) => r.alimentos.some((x) => x.alimento.trim()));

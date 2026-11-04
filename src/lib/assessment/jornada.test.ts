@@ -38,13 +38,12 @@ describe("Jornada de Recomposição Corporal", () => {
     expect(agua.valor).toContain(((d.pesoKg! * 30) / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 }).split(",")[0]);
   });
 
-  it("exame dentro da referência, mas próximo ao limite, é moderado e aparece na lista", () => {
-    const moderado = { id: "1", exame: "Glicose", resultado: "74", unidade: "mg/dL", referencia: "70 a 99", status: "dentro" as const };
-    expect(exameJornada(moderado, "Glicose").tom).toBe("moderado");
-    const a = { ...createExampleAssessment(), exames: [moderado] };
+  it("exames não têm status moderado: dentro da referência fica ok e não entra na lista", () => {
+    const limite = { id: "1", exame: "Glicose", resultado: "74", unidade: "mg/dL", referencia: "70 a 99", status: "dentro" as const };
+    expect(exameJornada(limite, "Glicose").tom).toBe("ok");
+    const a = { ...createExampleAssessment(), exames: [limite] };
     const j = construirJornada(a, deriveResults(a), null);
-    expect(j.hoje.exames.map((e) => e.marcador)).toEqual(["Glicose em jejum"]);
-    expect(j.hoje.exames[0]!.tom).toBe("moderado");
+    expect(j.hoje.exames).toHaveLength(0);
     expect(j.examesOk).toBe(true);
   });
 
