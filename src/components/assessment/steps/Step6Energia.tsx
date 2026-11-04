@@ -30,7 +30,7 @@ export function Step6Energia({
   composicao,
   composicaoAtipica,
 }: StepProps & { composicao: ComposicaoDiario | null; composicaoAtipica?: ComposicaoDiario | null }) {
-  const sinalAjuste = a.estrategia === "deficit" ? "-" : "";
+  const sinalAjuste = a.estrategia === "deficit" ? "-" : a.estrategia === "superavit" ? "+" : "";
   const percentuais = percentuaisBase.map((p) => ({ value: p, label: `${sinalAjuste}${p}%` }));
   const kcalPresets = kcalBase.map((k) => ({
     value: k,
