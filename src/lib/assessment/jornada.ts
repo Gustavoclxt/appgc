@@ -13,7 +13,7 @@ import { pesoNoDia } from "./weight-projection";
  */
 
 export const NI = "Não informado";
-export type Tom = "ok" | "atencao" | "neutro";
+export type Tom = "ok" | "moderado" | "atencao" | "neutro";
 export type Seta = "up" | "down" | "igual" | null;
 
 export interface LinhaJornada {
@@ -128,17 +128,28 @@ export function exameJornada(e: ExameLaboratorial | null, rotulo: string): Exame
   let alvo = referencia === NI ? NI : `Dentro de ${referencia}`;
   let diferenca = "Conforme evolução clínica";
   let seta: Seta = null;
+  let tom: Tom = "ok";
   if (e.status === "dentro") {
+    // Dentro da referência, porém próximo ao limite: moderado.
+    if (valor !== null) {
+      if (min !== null && max !== null && max > min) {
+        const pos = (valor - min) / (max - min);
+        if (pos <= 0.2 || pos >= 0.8) tom = "moderado";
+      } else if (max !== null && max > 0 && valor >= max * 0.9) tom = "moderado";
+      else if (min !== null && min > 0 && valor <= min * 1.1) tom = "moderado";
+    }
     alvo = "Manter dentro da referência";
     diferenca = "Manter";
     seta = "igual";
   } else if (e.status === "acima") {
+    tom = "atencao";
     seta = "down";
     if (max !== null) {
       alvo = `≤ ${fN(max)}${un}`;
       if (valor !== null) diferenca = `Reduzir ≈ ${fN(valor - max)}${un}`;
     }
   } else if (e.status === "abaixo") {
+    tom = "atencao";
     seta = "up";
     if (min !== null) {
       alvo = `≥ ${fN(min)}${un}`;
@@ -149,7 +160,7 @@ export function exameJornada(e: ExameLaboratorial | null, rotulo: string): Exame
     marcador: rotulo,
     inicial: `${e.resultado}${un}`,
     referencia,
-    tom: e.status === "dentro" ? "ok" : e.status === "indeterminado" ? "neutro" : "atencao",
+    tom,
     status: statusTexto[e.status],
     alvo,
     diferenca,
@@ -287,7 +298,7 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
   const examesTodos = MARCADORES_JORNADA.map((m) => exameJornada(encontrarExame(a.exames, m.aliases, m.excluir), m.rotulo));
   const examesAvaliados = examesTodos.some((e) => e.inicial !== NI);
   const examesOk = examesAvaliados && examesTodos.every((e) => e.tom !== "atencao");
-  const examesHoje = examesTodos.filter((e) => e.tom === "atencao");
+  const examesHoje = examesTodos.filter((e) => e.tom === "atencao" || e.tom === "moderado");
 
   const achados = indicadoresAlimentares(a);
   const temR24 = a.diarioAlimentar.some((r) => r.alimentos.some((x) => x.alimento.trim()));
@@ -307,7 +318,7 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
         rotulo: "Sono",
         valor: a.qualidadeSono || NI,
         detalhe: d.sono ? `${d.sono.horas}h${d.sono.restoMinutos ? `${String(d.sono.restoMinutos).padStart(2, "0")}` : ""} por noite` : undefined,
-        tom: !a.qualidadeSono ? "neutro" : a.qualidadeSono === "Boa" ? "ok" : "atencao",
+        tom: !a.qualidadeSono ? "neutro" : a.qualidadeSono === "Boa" ? "ok" : a.qualidadeSono === "Moderada" ? "moderado" : "atencao",
       },
       {
         rotulo: "Intestino",
@@ -319,7 +330,7 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
         rotulo: "Ingestão de água",
         valor: litros !== null ? `${formatarLitros(litros)} por dia` : NI,
         detalhe: arm !== null ? `Cor da urina: nível ${arm} de 8 (Armstrong)` : "Armstrong: não informado",
-        tom: arm === null ? "neutro" : arm <= 3 ? "ok" : "atencao",
+        tom: arm === null ? "neutro" : arm <= 3 ? "ok" : arm <= 5 ? "moderado" : "atencao",
       },
       {
         rotulo: "Bebida alcoólica",

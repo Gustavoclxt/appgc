@@ -38,6 +38,25 @@ describe("Jornada de Recomposição Corporal", () => {
     expect(agua.valor).toContain(((d.pesoKg! * 30) / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 }).split(",")[0]);
   });
 
+  it("exame dentro da referência, mas próximo ao limite, é moderado e aparece na lista", () => {
+    const moderado = { id: "1", exame: "Glicose", resultado: "74", unidade: "mg/dL", referencia: "70 a 99", status: "dentro" as const };
+    expect(exameJornada(moderado, "Glicose").tom).toBe("moderado");
+    const a = { ...createExampleAssessment(), exames: [moderado] };
+    const j = construirJornada(a, deriveResults(a), null);
+    expect(j.hoje.exames.map((e) => e.marcador)).toEqual(["Glicose em jejum"]);
+    expect(j.hoje.exames[0]!.tom).toBe("moderado");
+    expect(j.examesOk).toBe(true);
+  });
+
+  it("hábitos moderados: sono Moderada e Armstrong níveis 4 a 5", () => {
+    const a = { ...createExampleAssessment(), qualidadeSono: "Moderada", armstrong: "A5" };
+    const j = construirJornada(a, deriveResults(a), null);
+    expect(j.hoje.habitos.linhas.find((l) => l.rotulo === "Sono")!.tom).toBe("moderado");
+    expect(j.hoje.habitos.linhas.find((l) => l.rotulo === "Ingestão de água")!.tom).toBe("moderado");
+    const alta = { ...createExampleAssessment(), armstrong: "A7" };
+    expect(construirJornada(alta, deriveResults(alta), null).hoje.habitos.linhas.find((l) => l.rotulo === "Ingestão de água")!.tom).toBe("atencao");
+  });
+
   it("exame acima da referência aponta redução até o limite", () => {
     const e = exameJornada({ id: "1", exame: "LDL", resultado: "160", unidade: "mg/dL", referencia: "< 130", status: "acima" }, "LDL");
     expect(e.alvo).toBe("≤ 130 mg/dL");

@@ -1,16 +1,53 @@
+import { CircleAlert, CircleArrowDown, CircleArrowUp, CircleCheck } from "lucide-react";
 import { ArrowDown, ArrowRight, ArrowUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { CardJornada, ExameJornada, Jornada, Seta, Tom } from "@/lib/assessment/jornada";
 
 const tomClasse: Record<Tom, string> = {
   ok: "text-accent",
+  moderado: "text-warn",
   atencao: "text-warn",
   neutro: "text-ink",
 };
-const pontoClasse: Record<Tom, string> = { ok: "bg-accent", atencao: "bg-warn", neutro: "bg-line" };
+const pontoClasse: Record<Tom, string> = { ok: "bg-accent", moderado: "bg-warn", atencao: "bg-warn", neutro: "bg-line" };
 
-function IconeSeta({ seta }: { seta?: Seta | undefined }) {
-  if (!seta) return null;
+// Ícone "moderadamente dentro do intervalo": círculo com onda (~), criado a partir dos círculos de seta.
+function IconeTil({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <path d="M7.5 13.4c1.4-2 2.9-2 4.5-.3s3.1 1.7 4.5-.3" />
+    </svg>
+  );
+}
+
+// Padrão de cores e setas do relatório: verde = dentro/adequado/bom; laranja = acima/abaixo/inadequado/ruim;
+// laranja com onda = moderadamente dentro do intervalo.
+function IconeTom({ tom, seta }: { tom?: Tom | undefined; seta?: Seta | undefined }) {
+  if (!tom || tom === "neutro") return null;
+  const cor = tom === "ok" ? "text-accent" : "text-warn";
+  if (tom === "moderado") return <IconeTil className={cn("h-4 w-4 shrink-0", cor)} />;
+  const direcao = seta === "up" || seta === "down" ? seta : null;
+  if (direcao) {
+    const C = direcao === "up" ? CircleArrowUp : CircleArrowDown;
+    return <C className={cn("h-4 w-4 shrink-0", cor)} aria-hidden />;
+  }
+  if (tom === "ok") return <CircleCheck className={cn("h-4 w-4 shrink-0", cor)} aria-hidden />;
+  return <CircleAlert className={cn("h-4 w-4 shrink-0", cor)} aria-hidden />;
+}
+
+function IconeSeta({ seta, tom }: { seta?: Seta | undefined; tom?: Tom | undefined }) {
+  // Com tom definido, a direção já está no ícone de status; seta só permanece nas linhas neutras (tendência).
+  if (!seta || (tom && tom !== "neutro")) return null;
   const C = seta === "up" ? ArrowUp : seta === "down" ? ArrowDown : ArrowRight;
   return <C className="h-3.5 w-3.5 shrink-0 text-accent" aria-hidden />;
 }
@@ -23,12 +60,16 @@ function Card({ card }: { card: CardJornada }) {
         {card.linhas.map((l, i) => (
           <li key={i} className="flex items-start justify-between gap-4 py-2">
             <span className="flex items-center gap-2 text-[12px] text-ink-soft">
-              {l.tom && <span className={cn("h-2 w-2 shrink-0 rounded-full", pontoClasse[l.tom])} />}
+              {l.tom === "neutro" ? (
+                <span className={cn("h-2 w-2 shrink-0 rounded-full", pontoClasse[l.tom])} />
+              ) : (
+                <IconeTom tom={l.tom} seta={l.seta} />
+              )}
               {l.rotulo}
             </span>
             <span className="text-right">
               <span className={cn("inline-flex items-center gap-1 text-[13px] font-semibold", tomClasse[l.tom ?? "neutro"])}>
-                <IconeSeta seta={l.seta} />
+                <IconeSeta seta={l.seta} tom={l.tom} />
                 {l.valor}
               </span>
               {l.detalhe && <span className="block text-[11px] text-ink-soft">{l.detalhe}</span>}
@@ -71,7 +112,11 @@ function CardExames({ exames, destino, mensagem }: { exames: ExameJornada[]; des
               <tr key={e.marcador}>
                 <td className="py-2 pr-3 text-ink">
                   <span className="inline-flex items-center gap-2">
-                    <span className={cn("h-2 w-2 shrink-0 rounded-full", pontoClasse[e.tom])} />
+                    {/* Seta do ícone segue o desvio em relação à referência (acima = ↑, abaixo = ↓). */}
+                    <IconeTom
+                      tom={e.tom}
+                      seta={e.tom === "atencao" ? ((e.seta === "down" ? "up" : e.seta === "up" ? "down" : null) as Seta) : undefined}
+                    />
                     {e.marcador}
                   </span>
                 </td>
@@ -81,7 +126,7 @@ function CardExames({ exames, destino, mensagem }: { exames: ExameJornada[]; des
                     <td className="py-2 pr-3 text-ink">{e.alvo}</td>
                     <td className="py-2 text-ink">
                       <span className="inline-flex items-center gap-1">
-                        <IconeSeta seta={e.seta} />
+                        <IconeSeta seta={e.seta} tom={e.tom} />
                         {e.diferenca}
                       </span>
                     </td>

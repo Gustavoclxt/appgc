@@ -13,7 +13,7 @@ const INK: RGB = [22, 32, 43];
 const SOFT: RGB = [91, 102, 114];
 const LINE: RGB = [220, 226, 232];
 const WARN: RGB = [176, 110, 20];
-const TOM: Record<Tom, RGB> = { ok: REPORT_HEADER_COLOR, atencao: WARN, neutro: INK };
+const TOM: Record<Tom, RGB> = { ok: REPORT_HEADER_COLOR, moderado: WARN, atencao: WARN, neutro: INK };
 const SETA: Record<Exclude<Seta, null>, string> = { up: "↑ ", down: "↓ ", igual: "→ " };
 
 export function generateJornadaPDF(a: Assessment, d: DerivedResults, metas: MetasPesoResultado | null) {
@@ -62,11 +62,45 @@ export function generateJornadaPDF(a: Assessment, d: DerivedResults, metas: Meta
   };
 
   const LARG = W - 2 * M;
+  // Ícones de status (mesmo padrão da tela): círculo verde com ✓ = dentro/adequado/bom;
+  // círculo laranja com ↑/↓ = acima/abaixo da referência; círculo laranja com ~ = moderadamente dentro.
+  const icone = (x: number, cy: number, tom: Tom, direcao: "up" | "down" | null) => {
+    if (tom === "neutro") {
+      doc.setFillColor(...LINE);
+      doc.circle(x, cy, 1, "F");
+      return;
+    }
+    const cor = tom === "ok" ? REPORT_HEADER_COLOR : WARN;
+    doc.setDrawColor(...cor);
+    doc.setLineWidth(0.45);
+    doc.setLineCap("round");
+    doc.circle(x, cy, 1.7, "S");
+    if (tom === "moderado") {
+      doc.setFont("ReportSans", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(...cor);
+      doc.text("~", x, cy + 0.95, { align: "center" });
+    } else if (direcao) {
+      const s = direcao === "up" ? 1 : -1;
+      doc.line(x, cy + 0.85 * s, x, cy - 0.85 * s);
+      doc.line(x - 0.55, cy - 0.2 * s, x, cy - 0.85 * s);
+      doc.line(x + 0.55, cy - 0.2 * s, x, cy - 0.85 * s);
+    } else if (tom === "ok") {
+      doc.line(x - 0.75, cy + 0.05, x - 0.2, cy + 0.6);
+      doc.line(x - 0.2, cy + 0.6, x + 0.75, cy - 0.55);
+    } else {
+      doc.line(x, cy - 0.7, x, cy + 0.2);
+      doc.setFillColor(...cor);
+      doc.circle(x, cy + 0.65, 0.18, "F");
+    }
+    doc.setLineWidth(0.3);
+  };
   const card = (c: CardJornada) => {
     doc.setFontSize(9);
     const linhas = c.linhas.map((l) => {
       const det = l.detalhe ? (doc.splitTextToSize(l.detalhe, LARG / 2 - 6) as string[]) : [];
-      const val = doc.splitTextToSize(`${l.seta ? SETA[l.seta] : ""}${l.valor}`, LARG / 2 - 6) as string[];
+      const prefixo = !l.tom || l.tom === "neutro" ? (l.seta ? SETA[l.seta] : "") : "";
+      const val = doc.splitTextToSize(`${prefixo}${l.valor}`, LARG / 2 - 6) as string[];
       return { l, det, val, h: 4.6 * val.length + 3.8 * det.length + 2.6 };
     });
     const nota = c.nota ? (doc.splitTextToSize(c.nota, LARG - 8) as string[]) : [];
@@ -87,8 +121,7 @@ export function generateJornadaPDF(a: Assessment, d: DerivedResults, metas: Meta
         doc.line(M + 4, yy - 4.4, W - M - 4, yy - 4.4);
       }
       if (l.tom) {
-        doc.setFillColor(...(l.tom === "neutro" ? LINE : TOM[l.tom]));
-        doc.circle(M + 5, yy - 1.2, 1, "F");
+        icone(M + 5.5, yy - 1.2, l.tom, l.tom !== "neutro" && (l.seta === "up" || l.seta === "down") ? l.seta : null);
       }
       doc.setFont("ReportSans", "normal");
       doc.setFontSize(9);
@@ -138,7 +171,7 @@ export function generateJornadaPDF(a: Assessment, d: DerivedResults, metas: Meta
     const largs = destino ? [40, 40, 40, 44] : [50, 48, 70];
     const rows = lista.map((e) => {
       const cel = destino
-        ? [e.marcador, e.inicial, e.alvo, `${e.seta ? SETA[e.seta] : ""}${e.diferenca}`]
+        ? [e.marcador, e.inicial, e.alvo, `${e.tom === "neutro" && e.seta ? SETA[e.seta] : ""}${e.diferenca}`]
         : [e.marcador, e.inicial, e.referencia];
       doc.setFontSize(8.5);
       const partes = cel.map((c, i) => doc.splitTextToSize(c, largs[i]!) as string[]);
@@ -160,8 +193,9 @@ export function generateJornadaPDF(a: Assessment, d: DerivedResults, metas: Meta
     cols.forEach((c, i) => doc.text(c, xs[i]!, y + 13));
     let yy = y + 18;
     for (const r of rows) {
-      doc.setFillColor(...(r.e.tom === "neutro" ? LINE : TOM[r.e.tom]));
-      doc.circle(M + 5, yy - 1.2, 1, "F");
+      // Seta do ícone segue o desvio em relação à referência (acima = ↑, abaixo = ↓).
+      const desvio = r.e.tom === "atencao" ? (r.e.seta === "down" ? "up" : r.e.seta === "up" ? "down" : null) : null;
+      icone(M + 5.5, yy - 1.2, r.e.tom, desvio);
       doc.setFontSize(8.5);
       r.partes.forEach((p, i) => {
         doc.setFont("ReportSans", i === 1 ? "bold" : "normal");
