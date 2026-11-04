@@ -295,7 +295,7 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
   const litros = a.consumoAgua ? lerLitrosAgua(a.consumoAgua) : null;
   const arm = armstrongNivel(a.armstrong);
   const habitos: CardJornada = {
-    titulo: "Hábitos",
+    titulo: "Saúde e Estilo de Vida",
     linhas: [
       {
         rotulo: "Qualidade alimentar",
