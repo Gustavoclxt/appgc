@@ -313,6 +313,7 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
         valor: !temR24 && achados.length === 0 ? NI : achados.length === 0 ? "Boa" : "Ruim",
         detalhe: achados.length > 0 ? `Principal ponto: ${achados[0]!.toLowerCase()}` : undefined,
         tom: !temR24 && achados.length === 0 ? "neutro" : achados.length === 0 ? "ok" : "atencao",
+        seta: achados.length > 0 ? ("down" as Seta) : null,
       },
       {
         rotulo: "Sono",
