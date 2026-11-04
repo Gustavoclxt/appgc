@@ -29,7 +29,7 @@ export function Step8Pdf({
           Salvar PDF
         </button>
         <button type="button" onClick={onJornada} className={btn}>
-          Jornada de Recomposição Corporal
+          Gerar Relatório de Jornada de Recomposição Corporal
         </button>
       </div>
     </Panel>
