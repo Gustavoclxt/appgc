@@ -271,7 +271,9 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
       { rotulo: "IMC", valor: d.imc !== null ? `${fmt2(d.imc)} kg/m²` : NI, detalhe: d.classificacaoIMC ?? undefined, tom: d.imc === null ? "neutro" : d.imc >= 18.5 && d.imc < 25 ? "ok" : "atencao" },
       { rotulo: "Gordura corporal", valor: d.percentualGordura !== null ? `${fmt2(d.percentualGordura)}%` : NI },
       { rotulo: "Gordura em kg", valor: d.massaGorda !== null ? `${fmt2(d.massaGorda)} kg` : NI },
-      { rotulo: "Gordura visceral", valor: visceral ? `${visceral.valor}${visceral.unidade ? ` ${visceral.unidade}` : ""}` : NI },
+      ...(visceral
+        ? [{ rotulo: "Gordura visceral", valor: `${visceral.valor}${visceral.unidade ? ` ${visceral.unidade}` : ""}` }]
+        : []),
       { rotulo: "Massa magra", valor: magraAtual !== null ? `${fmt2(magraAtual)} kg` : NI },
       { rotulo: "Circunferência de cintura", valor: mostrar(cintura) },
       { rotulo: "Circunferência de abdômen", valor: mostrar(abdomen) },
@@ -430,7 +432,7 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
       { rotulo: "IMC-alvo", valor: imc90 !== null ? `≈ ${fmt2(imc90)} kg/m²` : NI, detalhe: comp(d.imc, imc90, ""), seta: imc90 !== null ? "down" : null },
       { rotulo: "Gordura corporal", valor: pct90 !== null ? `≈ ${fmt2(pct90)}%` : NI, detalhe: comp(d.percentualGordura, pct90, "%"), seta: pct90 !== null ? "down" : null },
       { rotulo: "Gordura em kg", valor: gord90 !== null ? `≈ ${fmt2(gord90)} kg` : NI, detalhe: comp(d.massaGorda, gord90, " kg"), seta: gord90 !== null ? "down" : null },
-      { rotulo: "Gordura visceral", valor: visceral ? "Tendência de redução" : NI, seta: visceral && p90 ? "down" : null },
+      ...(visceral ? [{ rotulo: "Gordura visceral", valor: "Tendência de redução", seta: (visceral && p90 ? "down" : null) as Seta }] : []),
       { rotulo: "Massa magra", valor: magra90 !== null ? `≈ ${fmt2(magra90)} kg` : NI, detalhe: magra90 !== null ? "Preservar com treino de força e proteína" : undefined, seta: magra90 !== null ? "igual" : null },
       { rotulo: "Cintura", valor: cin !== null && perda !== null && perda > 0 ? `≈ −${f1(perda)} cm` : NI, detalhe: cin !== null && perda !== null && perda > 0 ? `Hoje ${f1(cin)} cm → ≈ ${f1(cin - perda)} cm` : undefined, seta: cin !== null && perda ? "down" : null },
       { rotulo: "Abdômen", valor: abd !== null && perda !== null && perda > 0 ? `≈ −${f1(perda)} cm` : NI, detalhe: abd !== null && perda !== null && perda > 0 ? `Hoje ${f1(abd)} cm → ≈ ${f1(abd - perda)} cm` : undefined, seta: abd !== null && perda ? "down" : null },

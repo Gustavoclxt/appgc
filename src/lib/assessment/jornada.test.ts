@@ -30,4 +30,21 @@ describe("Jornada de Recomposição Corporal", () => {
     expect(e.alvo).toBe("≤ 130 mg/dL");
     expect(e.diferenca).toBe("Reduzir ≈ 30 mg/dL");
   });
+
+  it("mostra Gordura visceral somente quando a antropometria traz esse indicador", () => {
+    const sem = construirJornada(createExampleAssessment(), deriveResults(createExampleAssessment()), null);
+    expect(sem.hoje.composicao.linhas.some((l) => l.rotulo === "Gordura visceral")).toBe(false);
+    expect(sem.destino.composicao.linhas.some((l) => l.rotulo === "Gordura visceral")).toBe(false);
+
+    const com = {
+      ...createExampleAssessment(),
+      indicadoresAntropometricos: [
+        { id: "1", nome: "Gordura visceral", valor: "3", unidade: "", data: "2026-11-01" },
+      ],
+    };
+    const j = construirJornada(com, deriveResults(com), null);
+    const hoje = j.hoje.composicao.linhas.find((l) => l.rotulo === "Gordura visceral")!;
+    expect(hoje.valor).toBe("3");
+    expect(j.destino.composicao.linhas.find((l) => l.rotulo === "Gordura visceral")!.valor).toBe("Tendência de redução");
+  });
 });
