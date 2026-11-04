@@ -293,7 +293,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               ]}
             />
           </Field>
-          <Field label="Frequência de evacuação">
+          <Field label="Frequência de evacuação" className="w-[190px]">
             <Select
               value={a.frequenciaEvacuacao}
               onChange={(v) => set("frequenciaEvacuacao", v)}
@@ -312,7 +312,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               ].map((opcao) => ({ value: opcao, label: opcao }))}
             />
           </Field>
-          <Field label="Escala de Bristol">
+          <Field label="Escala de Bristol" className="w-[235px]">
             <Select
               value={a.bristol}
               onChange={(v) => set("bristol", v)}
@@ -383,7 +383,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               </span>
             </div>
           </Field>
-          <Field label="Escala de Armstrong">
+          <Field label="Escala de Armstrong" className="w-[242px]">
             <ArmstrongSelect value={a.armstrong} onChange={(v) => set("armstrong", v)} />
           </Field>
         </div>
