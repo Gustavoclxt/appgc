@@ -273,8 +273,8 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
       { rotulo: "Gordura em kg", valor: d.massaGorda !== null ? `${fmt2(d.massaGorda)} kg` : NI },
       { rotulo: "Gordura visceral", valor: visceral ? `${visceral.valor}${visceral.unidade ? ` ${visceral.unidade}` : ""}` : NI },
       { rotulo: "Massa magra", valor: magraAtual !== null ? `${fmt2(magraAtual)} kg` : NI },
-      { rotulo: "Cintura", valor: mostrar(cintura) },
-      { rotulo: "Abdômen", valor: mostrar(abdomen) },
+      { rotulo: "Circunferência de cintura", valor: mostrar(cintura) },
+      { rotulo: "Circunferência de abdômen", valor: mostrar(abdomen) },
     ],
   };
 
