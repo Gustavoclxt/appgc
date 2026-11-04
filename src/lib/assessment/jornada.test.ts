@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { construirJornada, exameJornada } from "./jornada";
 import { createExampleAssessment } from "./example-patient";
-import { deriveResults } from "./calculations";
+import { deriveResults, fmt2 } from "./calculations";
 
 describe("Jornada de Recomposição Corporal", () => {
   it("usa o nome cadastrado no título", () => {
@@ -60,6 +60,20 @@ describe("Jornada de Recomposição Corporal", () => {
     const e = exameJornada({ id: "1", exame: "LDL", resultado: "160", unidade: "mg/dL", referencia: "< 130", status: "acima" }, "LDL");
     expect(e.alvo).toBe("≤ 130 mg/dL");
     expect(e.diferenca).toBe("Reduzir ≈ 30 mg/dL");
+  });
+
+  it("peso-alvo usa o peso desejado da anamnese e, sem ele, o PIO", () => {
+    const a = createExampleAssessment();
+    const d = deriveResults(a);
+    const j = construirJornada(a, d, null);
+    const linha = j.destino.composicao.linhas.find((l) => l.rotulo === "Peso-alvo")!;
+    expect(linha.valor).toBe(`${fmt2(Number(a.pesoDesejado))} kg`);
+
+    const semDesejado = { ...a, pesoDesejado: "" };
+    const d2 = deriveResults(semDesejado);
+    const j2 = construirJornada(semDesejado, d2, null);
+    const linha2 = j2.destino.composicao.linhas.find((l) => l.rotulo === "Peso-alvo")!;
+    expect(linha2.valor).toBe(d2.pio !== null ? `${fmt2(d2.pio)} kg` : "Não informado");
   });
 
   it("mostra Gordura visceral somente quando a antropometria traz esse indicador", () => {

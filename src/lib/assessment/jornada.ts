@@ -440,10 +440,12 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
   const abd = numInd(abdomen);
   const comp = (antes: number | null, depois: number | null, un: string, casas = fmt2): LinhaJornada["detalhe"] =>
     antes !== null && depois !== null ? `Hoje ${casas(antes)}${un} → ${casas(depois)}${un}` : undefined;
+  // Peso-alvo é sempre o peso desejado informado pelo paciente na anamnese; sem esse valor, usa o PIO.
+  const desejado = exp?.pesoAlvo ?? (parseNumero(a.pesoDesejado) ?? d.pio);
   const destinoComp: CardJornada = {
     titulo: "Composição corporal em 90 dias",
     linhas: [
-      { rotulo: "Peso-alvo", valor: p90 ? `≈ ${fmt2(p90.peso)} kg` : NI, detalhe: comp(d.pesoKg, p90?.peso ?? null, " kg"), seta: p90 ? "down" : null, tom: p90 ? "ok" : "neutro" },
+      { rotulo: "Peso-alvo", valor: desejado !== null ? `${fmt2(desejado)} kg` : NI, detalhe: comp(d.pesoKg, desejado, " kg"), seta: desejado !== null && d.pesoKg !== null && desejado < d.pesoKg ? ("down" as Seta) : null, tom: desejado !== null ? "ok" : "neutro" },
       { rotulo: "IMC-alvo", valor: imc90 !== null ? `≈ ${fmt2(imc90)} kg/m²` : NI, detalhe: comp(d.imc, imc90, ""), seta: imc90 !== null ? "down" : null },
       { rotulo: "Gordura corporal", valor: pct90 !== null ? `≈ ${fmt2(pct90)}%` : NI, detalhe: comp(d.percentualGordura, pct90, "%"), seta: pct90 !== null ? "down" : null },
       { rotulo: "Gordura em kg", valor: gord90 !== null ? `≈ ${fmt2(gord90)} kg` : NI, detalhe: comp(d.massaGorda, gord90, " kg"), seta: gord90 !== null ? "down" : null },
