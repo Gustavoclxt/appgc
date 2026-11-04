@@ -5,12 +5,10 @@ const btn =
 
 export function Step8Pdf({
   onGerar,
-  onGerarPaciente,
   onJornada,
   temAnalise,
 }: {
   onGerar: () => void;
-  onGerarPaciente: () => void;
   onJornada: () => void;
   temAnalise: boolean;
 }) {
@@ -29,9 +27,6 @@ export function Step8Pdf({
       <div className="mt-6 flex flex-wrap justify-center gap-3">
         <button type="button" onClick={onGerar} className={btn}>
           Salvar PDF
-        </button>
-        <button type="button" onClick={onGerarPaciente} className={btn}>
-          Relatório Paciente
         </button>
         <button type="button" onClick={onJornada} className={btn}>
           Jornada de Recomposição Corporal

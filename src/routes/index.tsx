@@ -201,15 +201,6 @@ function Index() {
     }
   }
 
-  async function onGerarPdfPaciente() {
-    try {
-      const { generatePatientPDF } = await import("@/lib/assessment/patient-pdf");
-      generatePatientPDF(dados, derivados, resultadoMetas);
-    } catch {
-      toast.error("Não foi possível gerar o relatório do paciente.");
-    }
-  }
-
   async function onGerarJornadaPdf() {
     try {
       const { generateJornadaPDF } = await import("@/lib/assessment/jornada-pdf");
@@ -333,7 +324,7 @@ function Index() {
               composicaoAtipica={diaAtipico ? composicaoAtipica : null}
               metas={resultadoMetas}
             />
-            <Step8Pdf onGerar={onGerarPdf} onGerarPaciente={onGerarPdfPaciente} onJornada={() => setJornadaAberta((v) => !v)} temAnalise={analise !== null} />
+            <Step8Pdf onGerar={onGerarPdf} onJornada={() => setJornadaAberta((v) => !v)} temAnalise={analise !== null} />
             {jornadaAberta && (
               <JornadaRecomposicao jornada={construirJornada(dados, derivados, resultadoMetas)} onExportar={() => void onGerarJornadaPdf()} />
             )}
