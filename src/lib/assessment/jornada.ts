@@ -279,7 +279,7 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
       { rotulo: "Peso atual", valor: d.pesoKg !== null ? `${fmt2(d.pesoKg)} kg` : NI },
       { rotulo: "IMC", valor: d.imc !== null ? `${fmt2(d.imc)} kg/m²` : NI, detalhe: d.classificacaoIMC ?? undefined, tom: d.imc === null ? "neutro" : d.imc >= 18.5 && d.imc < 25 ? "ok" : "atencao" },
       { rotulo: "Gordura corporal", valor: d.percentualGordura !== null ? `${fmt2(d.percentualGordura)}%` : NI, tom: gorduraAlta ? "atencao" : undefined, seta: gorduraAlta ? ("up" as Seta) : null },
-      { rotulo: "Gordura em kg", valor: d.massaGorda !== null ? `${fmt2(d.massaGorda)} kg` : NI },
+      { rotulo: "Gordura em kg", valor: d.massaGorda !== null ? `${fmt2(d.massaGorda)} kg` : NI, tom: gorduraAlta ? "atencao" : undefined, seta: gorduraAlta ? ("up" as Seta) : null },
       ...(visceral
         ? [{ rotulo: "Gordura visceral", valor: `${visceral.valor}${visceral.unidade ? ` ${visceral.unidade}` : ""}` }]
         : []),
