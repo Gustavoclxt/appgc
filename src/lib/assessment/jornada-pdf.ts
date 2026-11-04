@@ -13,7 +13,8 @@ const INK: RGB = [22, 32, 43];
 const SOFT: RGB = [91, 102, 114];
 const LINE: RGB = [220, 226, 232];
 const WARN: RGB = [176, 110, 20];
-const TOM: Record<Tom, RGB> = { ok: REPORT_HEADER_COLOR, moderado: WARN, atencao: WARN, neutro: INK };
+const RED: RGB = [178, 50, 45];
+const TOM: Record<Tom, RGB> = { ok: REPORT_HEADER_COLOR, moderado: WARN, atencao: RED, neutro: INK };
 const SETA: Record<Exclude<Seta, null>, string> = { up: "↑ ", down: "↓ ", igual: "→ " };
 
 export function generateJornadaPDF(a: Assessment, d: DerivedResults, metas: MetasPesoResultado | null) {
@@ -63,24 +64,19 @@ export function generateJornadaPDF(a: Assessment, d: DerivedResults, metas: Meta
 
   const LARG = W - 2 * M;
   // Ícones de status (mesmo padrão da tela): círculo verde com ✓ = dentro/adequado/bom;
-  // círculo laranja com ↑/↓ = acima/abaixo da referência; círculo laranja com ~ = moderadamente dentro.
+  // círculo vermelho vivo com ↑/↓ = acima/abaixo da referência; círculo laranja com (!) = moderadamente dentro.
   const icone = (x: number, cy: number, tom: Tom, direcao: "up" | "down" | null) => {
     if (tom === "neutro") {
       doc.setFillColor(...LINE);
       doc.circle(x, cy, 1, "F");
       return;
     }
-    const cor = tom === "ok" ? REPORT_HEADER_COLOR : WARN;
+    const cor = tom === "ok" ? REPORT_HEADER_COLOR : tom === "moderado" ? WARN : RED;
     doc.setDrawColor(...cor);
     doc.setLineWidth(0.45);
     doc.setLineCap("round");
     doc.circle(x, cy, 1.7, "S");
-    if (tom === "moderado") {
-      doc.setFont("ReportSans", "normal");
-      doc.setFontSize(9);
-      doc.setTextColor(...cor);
-      doc.text("~", x, cy + 0.95, { align: "center" });
-    } else if (direcao) {
+    if (direcao) {
       const s = direcao === "up" ? 1 : -1;
       doc.line(x, cy + 0.85 * s, x, cy - 0.85 * s);
       doc.line(x - 0.55, cy - 0.2 * s, x, cy - 0.85 * s);
@@ -89,6 +85,7 @@ export function generateJornadaPDF(a: Assessment, d: DerivedResults, metas: Meta
       doc.line(x - 0.75, cy + 0.05, x - 0.2, cy + 0.6);
       doc.line(x - 0.2, cy + 0.6, x + 0.75, cy - 0.55);
     } else {
+      // (!): moderado em laranja; ruim/inadequado sem direção em vermelho.
       doc.line(x, cy - 0.7, x, cy + 0.2);
       doc.setFillColor(...cor);
       doc.circle(x, cy + 0.65, 0.18, "F");

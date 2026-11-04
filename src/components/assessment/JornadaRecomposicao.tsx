@@ -6,36 +6,16 @@ import type { CardJornada, ExameJornada, Jornada, Seta, Tom } from "@/lib/assess
 const tomClasse: Record<Tom, string> = {
   ok: "text-accent",
   moderado: "text-warn",
-  atencao: "text-warn",
+  atencao: "text-destructive",
   neutro: "text-ink",
 };
-const pontoClasse: Record<Tom, string> = { ok: "bg-accent", moderado: "bg-warn", atencao: "bg-warn", neutro: "bg-line" };
+const pontoClasse: Record<Tom, string> = { ok: "bg-accent", moderado: "bg-warn", atencao: "bg-destructive", neutro: "bg-line" };
 
-// Ícone "moderadamente dentro do intervalo": círculo com onda (~), criado a partir dos círculos de seta.
-function IconeTil({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="M7.5 13.4c1.4-2 2.9-2 4.5-.3s3.1 1.7 4.5-.3" />
-    </svg>
-  );
-}
-
-// Padrão de cores e setas do relatório: verde = dentro/adequado/bom; laranja = acima/abaixo/inadequado/ruim;
-// laranja com onda = moderadamente dentro do intervalo.
+// Padrão de cores e setas do relatório: verde vivo com ✓ = dentro/adequado/bom; vermelho vivo com ↑/↓ =
+// acima/abaixo do intervalo; laranja com (!) = moderadamente dentro do intervalo.
 function IconeTom({ tom, seta }: { tom?: Tom | undefined; seta?: Seta | undefined }) {
   if (!tom || tom === "neutro") return null;
-  const cor = tom === "ok" ? "text-accent" : "text-warn";
-  if (tom === "moderado") return <IconeTil className={cn("h-4 w-4 shrink-0", cor)} />;
+  const cor = tom === "ok" ? "text-accent" : tom === "moderado" ? "text-warn" : "text-destructive";
   const direcao = seta === "up" || seta === "down" ? seta : null;
   if (direcao) {
     const C = direcao === "up" ? CircleArrowUp : CircleArrowDown;
