@@ -19,12 +19,9 @@ const fatores = [
   { value: "2.0", label: "Atividade intensa — 2,0 ou superior" },
 ];
 
-const percentuais = ["5", "10", "15", "20", "25", "30"].map((p) => ({ value: p, label: `${p}%` }));
+const percentuaisBase = ["5", "10", "15", "20", "25", "30"];
 
-const kcalPresets = ["250", "500", "750", "1000"].map((k) => ({
-  value: k,
-  label: `${k === "1000" ? "1.000" : k} kcal`,
-}));
+const kcalBase = ["250", "500", "750", "1000"];
 
 export function Step6Energia({
   a,
@@ -33,6 +30,12 @@ export function Step6Energia({
   composicao,
   composicaoAtipica,
 }: StepProps & { composicao: ComposicaoDiario | null; composicaoAtipica?: ComposicaoDiario | null }) {
+  const sinalAjuste = a.estrategia === "deficit" ? "-" : "";
+  const percentuais = percentuaisBase.map((p) => ({ value: p, label: `${sinalAjuste}${p}%` }));
+  const kcalPresets = kcalBase.map((k) => ({
+    value: k,
+    label: `${sinalAjuste}${k === "1000" ? "1.000" : k} kcal`,
+  }));
   const fatorPersonalizado =
     a.fatorAtividade !== "" && !fatores.some((f) => f.value === a.fatorAtividade);
   const kcalPersonalizado =
