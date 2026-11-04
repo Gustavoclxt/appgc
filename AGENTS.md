@@ -40,3 +40,4 @@
 - Keep anthropometric body-site mapping in anthropometry-body and render each dated group's original measurements through AnthropometryBody; diagrams are presentation-only and never calculate or infer values. Silhouettes are per-sex CDN image assets chosen by the assessment sex, with landmark coordinates calibrated per figure.
 - Build the report's block order once in report-structure.ts (form order, including the atypical-day recall) so screen, copy and PDF render identical sections.
 - Build the patient-facing timeline PDF from patient-timeline.ts using the existing weight-goal results, so it never recomputes projections differently from the clinical report.
+- Build the Jornada de Recomposição Corporal once in jornada.ts (screen component and jornada-pdf.ts only render it) so screen and PDF never diverge.

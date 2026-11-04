@@ -1,0 +1,33 @@
+import { describe, expect, it } from "vitest";
+import { construirJornada, exameJornada } from "./jornada";
+import { createExampleAssessment } from "./example-patient";
+import { deriveResults } from "./calculations";
+
+describe("Jornada de Recomposição Corporal", () => {
+  it("usa o nome cadastrado no título", () => {
+    const a = createExampleAssessment();
+    const j = construirJornada(a, deriveResults(a), null);
+    expect(j.titulo).toBe(`Jornada de Recomposição Corporal — ${a.nome}`);
+  });
+
+  it("mostra 'Não informado' para exames ausentes e lista os 14 marcadores", () => {
+    const a = { ...createExampleAssessment(), exames: [] };
+    const j = construirJornada(a, deriveResults(a), null);
+    expect(j.hoje.exames).toHaveLength(14);
+    expect(j.hoje.exames.every((e) => e.inicial === "Não informado")).toBe(true);
+  });
+
+  it("meta hídrica usa 30 mL/kg/dia", () => {
+    const a = createExampleAssessment();
+    const d = deriveResults(a);
+    const j = construirJornada(a, d, null);
+    const agua = j.destino.habitos.linhas.find((l) => l.rotulo === "Água")!;
+    expect(agua.valor).toContain(((d.pesoKg! * 30) / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 }).split(",")[0]);
+  });
+
+  it("exame acima da referência aponta redução até o limite", () => {
+    const e = exameJornada({ id: "1", exame: "LDL", resultado: "160", unidade: "mg/dL", referencia: "< 130", status: "acima" }, "LDL");
+    expect(e.alvo).toBe("≤ 130 mg/dL");
+    expect(e.diferenca).toBe("Reduzir ≈ 30 mg/dL");
+  });
+});
