@@ -279,12 +279,14 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
   const magraAtual = d.massaLivreGordura;
 
   // ===== Hoje =====
+  // Referência do usuário: para mulheres, gordura corporal acima de 15% recebe seta vermelha para cima.
+  const gorduraAlta = a.sexo === "feminino" && d.percentualGordura !== null && d.percentualGordura > 15;
   const composicao: CardJornada = {
     titulo: "Composição corporal",
     linhas: [
       { rotulo: "Peso atual", valor: d.pesoKg !== null ? `${fmt2(d.pesoKg)} kg` : NI },
       { rotulo: "IMC", valor: d.imc !== null ? `${fmt2(d.imc)} kg/m²` : NI, detalhe: d.classificacaoIMC ?? undefined, tom: d.imc === null ? "neutro" : d.imc >= 18.5 && d.imc < 25 ? "ok" : "atencao" },
-      { rotulo: "Gordura corporal", valor: d.percentualGordura !== null ? `${fmt2(d.percentualGordura)}%` : NI },
+      { rotulo: "Gordura corporal", valor: d.percentualGordura !== null ? `${fmt2(d.percentualGordura)}%` : NI, tom: gorduraAlta ? "atencao" : undefined, seta: gorduraAlta ? ("up" as Seta) : null },
       { rotulo: "Gordura em kg", valor: d.massaGorda !== null ? `${fmt2(d.massaGorda)} kg` : NI },
       ...(visceral
         ? [{ rotulo: "Gordura visceral", valor: `${visceral.valor}${visceral.unidade ? ` ${visceral.unidade}` : ""}` }]
