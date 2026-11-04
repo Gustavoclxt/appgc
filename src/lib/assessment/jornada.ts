@@ -362,6 +362,7 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
               valor: at.aerobicas.length ? `${fmtInt(at.aerobicoVezes)}× · ${fmtInt(at.aerobicoMin)} min/semana` : "Não pratica",
               detalhe: `Meta mínima: 150 min/semana${at.aerobicas.length ? ` · ${at.aerobicas.map((m) => m.modalidade).join(", ")}` : ""}`,
               tom: (at.aerobicoMin >= 150 ? "ok" : "atencao") as Tom,
+              seta: at.aerobicas.length === 0 ? ("down" as Seta) : null,
             },
           ]
         : []),
