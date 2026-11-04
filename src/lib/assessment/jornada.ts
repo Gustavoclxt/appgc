@@ -222,6 +222,15 @@ export function estimativaAlcool(a: Assessment): { kcalSemana: number; detalhe: 
 const bristolAdequado = (b: string) => b === "B3" || b === "B4";
 const armstrongNivel = (s: string) => parseNumero(s.replace(/\D/g, "")) ;
 
+// Consumo diário (ou quase) de álcool é vermelho; consumo ocasional é moderado, em laranja.
+const etilismoDiario = (a: Assessment) => {
+  const f = norm(a.etilismoFrequencia);
+  if (/diari|todo dia|todos os dias/.test(f)) return true;
+  const m = f.match(/(\d+)\s*(x|vez|vezes)?\s*(por|na|\/)?\s*semana/) ?? f.match(/(\d+)\s*x/);
+  const vezes = m ? Number(m[1]) : null;
+  return vezes !== null && vezes >= 5;
+};
+
 // ---------- Atividade física ----------
 const FORCA = ["musculacao", "crossfit", "hyrox", "treinamento funcional", "calistenia", "pilates", "levantamento", "powerlifting"];
 const minutos = (s: string) => {
@@ -332,7 +341,7 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
         rotulo: "Bebida alcoólica",
         valor: ehEtilista(a) ? [a.etilismoQuantidade, a.etilismoFrequencia].filter(Boolean).join(" · ") || "Consome" : a.habitosSociais.length ? "Não consome" : NI,
         detalhe: ehEtilista(a) ? (alcool ? `Estimativa: ≈ ${fmtInt(alcool.kcalSemana)} kcal por semana` : "Estimativa calórica: não informado") : undefined,
-        tom: ehEtilista(a) ? "atencao" : a.habitosSociais.length ? "ok" : "neutro",
+        tom: !ehEtilista(a) ? (a.habitosSociais.length ? "ok" : "neutro") : etilismoDiario(a) ? "atencao" : "moderado",
       },
     ],
   };

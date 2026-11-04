@@ -56,6 +56,15 @@ describe("Jornada de Recomposição Corporal", () => {
     expect(construirJornada(alta, deriveResults(alta), null).hoje.habitos.linhas.find((l) => l.rotulo === "Ingestão de água")!.tom).toBe("atencao");
   });
 
+  it("álcool ocasional fica laranja (moderado); consumo diário fica vermelho", () => {
+    const ocasional = createExampleAssessment();
+    const jo = construirJornada(ocasional, deriveResults(ocasional), null);
+    expect(jo.hoje.habitos.linhas.find((l) => l.rotulo === "Bebida alcoólica")!.tom).toBe("moderado");
+    const diario = { ...createExampleAssessment(), etilismoFrequencia: "diariamente" };
+    const jd = construirJornada(diario, deriveResults(diario), null);
+    expect(jd.hoje.habitos.linhas.find((l) => l.rotulo === "Bebida alcoólica")!.tom).toBe("atencao");
+  });
+
   it("exame acima da referência aponta redução até o limite", () => {
     const e = exameJornada({ id: "1", exame: "LDL", resultado: "160", unidade: "mg/dL", referencia: "< 130", status: "acima" }, "LDL");
     expect(e.alvo).toBe("≤ 130 mg/dL");
