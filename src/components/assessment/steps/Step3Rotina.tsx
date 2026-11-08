@@ -133,7 +133,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                 const grupos = agruparItensPorRefeicao(composicao?.itens ?? [], a.diarioAlimentar);
                 const fmt1 = (v: number) => v.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
                 return grupos.map((g, n) => (
-                  <div key={n} className="mt-3 first:mt-0">
+                  <div key={n} className="mt-3 border-t border-white/20 pt-3 first:mt-0 first:border-t-0 first:pt-0">
                     <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-white/70">
                       {g.horario ? `${g.horario} - ` : ""}
                       {g.nome}
