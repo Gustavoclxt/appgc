@@ -125,7 +125,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                 {comp!.totais.map((t) => (
                   <div key={t.label}>
                     <p className="text-[11px] text-white/60">{t.label}</p>
-                    <p className="mt-1 font-mono text-sm tabular-nums">{t.valor}</p>
+                    <p className={`mt-1 font-mono text-sm tabular-nums ${t.label === "Calorias totais" ? "font-bold" : ""}`}>{t.valor}</p>
                   </div>
                 ))}
               </div>
@@ -134,7 +134,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                 const fmt1 = (v: number) => v.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
                 return grupos.map((g, n) => (
                   <div key={n} className="mt-3 first:mt-0">
-                    <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/70">
+                    <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-white/70">
                       {g.horario ? `${g.horario} - ` : ""}
                       {g.nome}
                       {" • "}
@@ -156,7 +156,6 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                   </div>
                 ));
               })()}
-              <p className="mt-3 text-[11px] text-white/50">{comp!.nota}</p>
             </>
   );
   return (

@@ -118,6 +118,5 @@ export function composicaoParaRelatorio(c: ComposicaoDiario | null) {
       valores: `${Math.round(i.kcal)} kcal · CHO ${g(i.carboidratos)} g · PTN ${g(i.proteinas)} g · LIP ${g(i.lipidios)} g`,
       fonte: i.fonte,
     })),
-    nota: "Valores estimados com base na TACO, na tabela de Sônia Tucunduva Philippi e, na ausência do alimento, em fontes complementares.",
   };
 }

@@ -91,14 +91,14 @@ export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCal
           <h3 className="mb-2 font-display text-sm font-semibold">Dia atípico</h3>
           {composicao?.chave !== chaveDiario(refeicoes) && <p className="mb-3 text-xs">O dia atípico foi alterado. Recalcule para atualizar.</p>}
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {comp.totais.map(t => <div key={t.label}><p className="text-[11px] opacity-70">{t.label}</p><p className="mt-1 font-mono text-sm tabular-nums">{t.valor}</p></div>)}
+            {comp.totais.map(t => <div key={t.label}><p className="text-[11px] opacity-70">{t.label}</p><p className={`mt-1 font-mono text-sm tabular-nums ${t.label === "Calorias totais" ? "font-bold" : ""}`}>{t.valor}</p></div>)}
           </div>
           {(() => {
             const grupos = agruparItensPorRefeicao(composicao?.itens ?? [], refeicoes);
             const fmt1 = (v: number) => v.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
             return grupos.map((g, n) => (
               <div key={n} className="mt-3 first:mt-0">
-                <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/70">
+                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-white/70">
                   {g.horario ? `${g.horario} - ` : ""}
                   {g.nome}
                   {" • "}
@@ -120,7 +120,6 @@ export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCal
               </div>
             ));
           })()}
-          <p className="mt-3 text-[11px] opacity-70">{comp.nota}</p>
           </>}
         </div>
       )}
