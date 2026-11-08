@@ -48,8 +48,9 @@ export function generateJornadaPDF(a: Assessment, d: DerivedResults, metas: Meta
       cabecalho();
     }
   };
-  const etapa = (n: number, t: string) => {
-    garantir(16);
+  const etapa = (n: number, t: string, primeiroCard: CardJornada) => {
+    // Reserva o título junto com o primeiro card, usando a mesma medição da impressão.
+    garantir(10 + medirCard(primeiroCard).h);
     doc.setFillColor(...REPORT_HEADER_COLOR);
     doc.circle(M + 4, y + 1, 4, "F");
     doc.setTextColor(255, 255, 255);
@@ -92,7 +93,8 @@ export function generateJornadaPDF(a: Assessment, d: DerivedResults, metas: Meta
     }
     doc.setLineWidth(0.3);
   };
-  const card = (c: CardJornada) => {
+  const medirCard = (c: CardJornada) => {
+    doc.setFont("ReportSans", "normal");
     doc.setFontSize(9);
     const linhas = c.linhas.map((l) => {
       const det = l.detalhe ? (doc.splitTextToSize(l.detalhe, LARG / 2 - 6) as string[]) : [];
@@ -102,6 +104,10 @@ export function generateJornadaPDF(a: Assessment, d: DerivedResults, metas: Meta
     });
     const nota = c.nota ? (doc.splitTextToSize(c.nota, LARG - 8) as string[]) : [];
     const h = 11 + linhas.reduce((s, x) => s + x.h, 0) + nota.length * 3.8 + 3;
+    return { linhas, nota, h };
+  };
+  const card = (c: CardJornada) => {
+    const { linhas, nota, h } = medirCard(c);
     garantir(h);
     doc.setDrawColor(...LINE);
     doc.setFillColor(255, 255, 255);
@@ -211,16 +217,16 @@ export function generateJornadaPDF(a: Assessment, d: DerivedResults, metas: Meta
   };
 
   cabecalho();
-  etapa(1, "Como você está hoje");
+  etapa(1, "Como você está hoje", j.hoje.composicao);
   card(j.hoje.composicao);
   exames(j.hoje.exames, false);
   card(j.hoje.habitos);
   card(j.hoje.atividade);
-  etapa(2, "Como vamos chegar lá");
+  etapa(2, "Como vamos chegar lá", j.caminho.projecao);
   card(j.caminho.projecao);
   card(j.caminho.habitos);
   card(j.caminho.atividade);
-  etapa(3, "Onde vamos chegar");
+  etapa(3, "Onde vamos chegar", j.destino.composicao);
   card(j.destino.composicao);
   exames(j.destino.exames, true);
   card(j.destino.habitos);
