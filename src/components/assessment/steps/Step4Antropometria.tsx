@@ -18,10 +18,10 @@ type GrupoAntropometrico = ReturnType<typeof agruparAntropometria>[number];
 
 function ResultadoHorizontal({ label, valor, sub, destaque }: { label: string; valor: string; sub: string; destaque?: string | undefined }) {
   return (
-    <div className="border-l border-white/10 pl-6 first:border-l-0 first:pl-0">
+    <div className="border-l border-white/10 pl-6 text-center first:border-l-0 first:pl-0">
       <p className="text-[12px] text-white">{label}</p>
       <p className="mt-1 font-mono text-2xl font-medium tracking-tight tabular-nums text-white">{valor}</p>
-      <div className="mt-1 flex flex-wrap items-center gap-2">
+      <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
         <span className="text-[11px] text-white/80">{sub}</span>
         {destaque && (
           <span className="rounded-full bg-white/15 px-2 py-0.5 font-mono text-[10px] text-white">
@@ -195,7 +195,7 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
         <div className="mb-5 flex items-center justify-between">
           <h2 className="font-display text-base font-semibold tracking-tight">Resultados calculados</h2>
         </div>
-        <div className="flex flex-wrap items-start gap-x-10 gap-y-6">
+        <div className="flex flex-wrap items-start justify-center gap-x-10 gap-y-6">
           <ResultadoHorizontal
             label="Peso"
             valor={d.pesoKg !== null ? fmt2(d.pesoKg) : "—"}
