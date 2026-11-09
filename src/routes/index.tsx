@@ -27,7 +27,7 @@ import { alimentosDoDiario, calcularComposicaoDasRefeicoes, chaveDiario, comCach
 import { novaRefeicaoAtipica } from "@/components/assessment/AtypicalDay";
 import { deriveResults, fmtData } from "@/lib/assessment/calculations";
 import { createEmptyAssessment, ETAPAS, novoId } from "@/lib/assessment/initial-state";
-import { createExampleAssessment } from "@/lib/assessment/example-patient";
+import { createExampleAssessment, createExampleAtypicalDay } from "@/lib/assessment/example-patient";
 import { buildResumo } from "@/lib/assessment/summary";
 import type { AnaliseIA, Assessment, Refeicao } from "@/lib/assessment/types";
 import logoGc from "@/assets/logo-gc.png.asset.json";
@@ -273,6 +273,8 @@ function Index() {
                 type="button"
                 onClick={() => {
                   setDados(createExampleAssessment());
+                  setDiaAtipico(createExampleAtypicalDay());
+                  setComposicaoAtipica(null);
                   setAnalise(null);
                   setComposicao(null);
                   toast.success("Formulário preenchido com paciente fictício.");

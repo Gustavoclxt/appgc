@@ -14,10 +14,10 @@ export function createExampleAssessment(): Assessment {
   const base = createEmptyAssessment();
   return {
     ...base,
-    nome: "Mariana Souza Lima (exemplo)",
+    nome: "Kamilla Cristina Salgado Bilinski",
     dataNascimento: "1988-05-12",
     sexo: "feminino",
-    profissao: "Analista administrativa",
+    profissao: "Professora",
     jaFezDieta: "sim",
     objetivos: ["Emagrecimento"],
     incomodoFisico: "Acúmulo de gordura abdominal",
@@ -52,6 +52,7 @@ export function createExampleAssessment(): Assessment {
     intervaloRefeicoes: "sim",
     intervaloRefeicoesHorarios: "12:00 às 13:00",
     cozinhaTrabalho: "sim",
+    praticaAtividadeFisica: "sim",
     modalidades: [{
       id: novoId(), modalidade: "Musculação", tempoPratica: "6 meses", horario: "18:30", duracao: "60 min",
       frequenciaSemanal: "3", diasSemana: "Segunda, Quarta, Sexta", diasDescanso: "Terça, Quinta, Sábado, Domingo",
@@ -91,8 +92,8 @@ export function createExampleAssessment(): Assessment {
       refeicao("Ceia", "22:00", "Casa", [["Iogurte natural", "170 g"]]),
     ],
     tempoAlimentacaoAtual: "2 anos",
-    alturaReferida: "1,65",
-    pesoReferido: "80",
+    alturaReferida: "1,60",
+    pesoReferido: "74",
     evolucaoPeso: "Ganhando peso",
     altura: "1.65",
     alturaUnidade: "m",
@@ -105,4 +106,13 @@ export function createExampleAssessment(): Assessment {
     percentualAjuste: "20",
     refeicoesLivresSemana: "1",
   };
+}
+
+/** Recordatório independente para o dia atípico da paciente de exemplo. */
+export function createExampleAtypicalDay(): Refeicao[] {
+  return createExampleAssessment().diarioAlimentar.map((meal) =>
+    meal.refeicao === "Jantar"
+      ? refeicao("Jantar", meal.horario, meal.local, [["Pizza", "3 fatias"]])
+      : meal,
+  );
 }
