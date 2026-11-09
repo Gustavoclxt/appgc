@@ -119,8 +119,15 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
         <Panel titulo="Anexar Antropometria">
           <div className="rounded-[10px] border border-dashed border-line bg-white/50 px-5 py-8 text-center">
             <p className="text-[13px] font-semibold text-ink">Selecione uma avaliação antropométrica em PDF:</p>
-            <label className="mt-4 inline-flex cursor-pointer items-center rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90">
-              {lendo ? `Lendo antropometria… ${progresso}%` : <><Paperclip aria-hidden="true" /> Anexar Antropometria</>}
+            <label
+              className={cn(
+                "mt-4 inline-flex items-center rounded-[10px] bg-accent px-5 py-2.5 text-sm font-medium text-white ring-1 ring-accent/40 transition-colors",
+                lendo
+                  ? "cursor-not-allowed opacity-50 pointer-events-none"
+                  : "cursor-pointer hover:bg-accent/90",
+              )}
+            >
+              {lendo ? `Lendo antropometria… ${progresso}%` : <><Paperclip aria-hidden="true" /> Anexar Antropometria</>}
               <input
                 type="file"
                 accept="application/pdf"
