@@ -88,3 +88,6 @@
 - [x] Mover "Data da avaliação" para a área do título da etapa 1, entre o título e "Preencher Exemplo".
 
 - [x] Substituir as silhuetas em SVG pelas imagens enviadas (masculina/feminina, frente e costas), escolhidas pela opção "Sexo".
+- [x] Criar o cálculo compartilhado de Potencial de Hipertrofia, com interpretação do tempo de Musculação e projeção anual por estágios.
+- [x] Exibir o card condicional na etapa Energia e incluir exatamente os mesmos resultados na prévia, cópia e PDF do relatório final.
+- [x] Testar limites de experiência, elegibilidade, dados ausentes e projeções; validar o fluxo no preview e o PDF.

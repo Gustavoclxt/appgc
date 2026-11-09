@@ -47,6 +47,26 @@ describe("Composições independentes no PDF", () => {
   });
 });
 
+describe("Potencial de Hipertrofia no PDF", () => {
+  it("exporta o mesmo resultado derivado exibido na etapa Energia", () => {
+    textos.length = 0;
+    const a = {
+      ...createEmptyAssessment(),
+      sexo: "masculino" as const,
+      peso: "82",
+      objetivos: ["Hipertrofia"],
+      modalidades: [{
+        id: "musculacao", modalidade: "Musculação", tempoPratica: "6 meses", horario: "", duracao: "",
+        frequenciaSemanal: "", diasSemana: "", diasDescanso: "", nota: "", justificativa: "",
+      }],
+    };
+    generatePDF(a, deriveResults(a), null, null);
+    expect(textos).toContain("POTENCIAL DE HIPERTROFIA");
+    expect(textos).toContain("750,00 a 958,33 g/mês");
+    expect(textos).toContain("Ganho muscular acumulado: 6,75 a 8,50 kg · Peso teórico: 88,75 a 90,50 kg");
+  });
+});
+
 describe("Nome do arquivo do PDF", () => {
   it("usa mês por extenso, ano e nome completo do paciente", () => {
     arquivos.length = 0;

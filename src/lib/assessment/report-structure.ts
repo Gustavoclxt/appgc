@@ -15,6 +15,7 @@ import { linhasAlimentosRetirar } from "./food-preferences";
 import { examesParaRelatorio } from "./report-exams";
 import { resumoVetFinal } from "./free-meal";
 import { agruparAntropometria, rotuloIndicador, valorComUnidade } from "./anthropometry-groups";
+import { faixaEmGramas, faixaEmKg, faixaPeso, formatarMeses } from "./hypertrophy-potential";
 
 export type BlocoRelatorio =
   | { tipo: "campos"; titulo: string; campos: ReportField[] }
@@ -146,6 +147,25 @@ export function relatorioEstruturado(
         ["VET corrigido", vetFinal.vetFinal !== null ? `${fmtInt(vetFinal.vetFinal)} kcal/dia` : ""],
       ]),
     });
+
+  const potencial = d.potencialHipertrofia;
+  if (potencial) {
+    push({
+      tipo: "campos",
+      titulo: "Potencial de Hipertrofia",
+      campos: preenchidos([
+        ["Potencial mensal de ganho muscular", `${faixaEmGramas(potencial.mensal)}/mês`],
+        ["Estágio de treinamento", `${potencial.estagio} · ${formatarMeses(potencial.tempoMeses)} de Musculação`],
+        ...potencial.projecoes.map((projecao): [string, string] => [
+          `Projeção para ${projecao.dias} dias`,
+          `Ganho muscular: ${faixaEmGramas(projecao.ganho)} · Peso teórico: ${faixaPeso(projecao.peso)}`,
+        ]),
+        ["Projeção para 1 ano", `Ganho muscular acumulado: ${faixaEmKg(potencial.anual.ganho)} · Peso teórico: ${faixaPeso(potencial.anual.peso)}`],
+        ["Natureza dos resultados", "Estimativas teóricas de massa muscular pelo modelo de Lyle McDonald, não previsões individuais garantidas. Ganho muscular não é sinônimo de ganho de peso corporal."],
+        ["Leitura na recomposição corporal", potencial.recomposicao ? "O peso corporal real pode permanecer estável ou até diminuir, mesmo com ganho de massa muscular." : ""],
+      ]),
+    });
+  }
 
   if (temMetas) blocos.push({ tipo: "metas", titulo: "Metas e Projeção de Peso" });
 

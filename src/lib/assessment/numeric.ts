@@ -1,3 +1,11 @@
+export function parseNumero(valor: string): number | null {
+  if (valor === undefined || valor === null) return null;
+  const normalizado = String(valor).trim().replace(",", ".");
+  if (normalizado === "") return null;
+  const n = Number(normalizado);
+  return Number.isFinite(n) ? n : null;
+}
+
 // Mantém apenas números com, no máximo, a quantidade informada de casas decimais.
 // Aceita vírgula ou ponto como separador e descarta qualquer outro caractere.
 export function limitarCasasDecimais(valor: string, casas = 2): string {

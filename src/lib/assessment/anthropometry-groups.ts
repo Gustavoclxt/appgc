@@ -1,5 +1,5 @@
 import type { Assessment, IndicadorAntropometrico } from "./types";
-import { parseNumero } from "./calculations";
+import { parseNumero } from "./numeric";
 
 const normalizar = (nome: string) => nome.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9%]+/g, " ").trim();
 

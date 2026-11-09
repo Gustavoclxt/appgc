@@ -1,4 +1,9 @@
 import type { Assessment, MetodoTMB, Sexo } from "./types";
+import { calcularPotencialHipertrofia, type PotencialHipertrofia } from "./hypertrophy-potential";
+import { pesoAntropometricoParaResumo } from "./anthropometry-groups";
+import { parseNumero } from "./numeric";
+
+export { parseNumero } from "./numeric";
 
 /** Idade em anos completos entre nascimento e a data de referência. */
 export function calculateAge(dataNascimento: string, dataReferencia: string): number | null {
@@ -18,14 +23,6 @@ export function alturaEmCm(valor: string, unidade: "cm" | "m"): number | null {
   if (n === null) return null;
   const cm = unidade === "m" ? n * 100 : n;
   return cm > 0 ? cm : null;
-}
-
-export function parseNumero(valor: string): number | null {
-  if (valor === undefined || valor === null) return null;
-  const normalizado = String(valor).trim().replace(",", ".");
-  if (normalizado === "") return null;
-  const n = Number(normalizado);
-  return Number.isFinite(n) ? n : null;
 }
 
 export function calculateBMI(pesoKg: number, alturaCm: number): number | null {
@@ -182,6 +179,7 @@ export interface DerivedResults {
   fcMax: number | null;
   cardioMin: number | null;
   cardioMax: number | null;
+  potencialHipertrofia: PotencialHipertrofia | null;
   sono: { horas: number; restoMinutos: number } | null;
   jornada: { horas: number; restoMinutos: number } | null;
 }
@@ -251,6 +249,7 @@ export function deriveResults(a: Assessment): DerivedResults {
     fcMax,
     cardioMin: cardio?.min ?? null,
     cardioMax: cardio?.max ?? null,
+    potencialHipertrofia: calcularPotencialHipertrofia(a, pesoAntropometricoParaResumo(a)),
     sono: calculateSleepDuration(a.horaDormir, a.horaAcordar),
     jornada: calculateWorkDuration(a.entradaTrabalho, a.saidaTrabalho),
   };
