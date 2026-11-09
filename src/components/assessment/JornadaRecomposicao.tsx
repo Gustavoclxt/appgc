@@ -190,7 +190,6 @@ export function JornadaRecomposicao({ jornada, onExportar }: { jornada: Jornada;
         <CardExames exames={j.destino.exames} destino mensagem={msgExames} />
       </Etapa>
 
-      <p className="rounded-[10px] bg-paper px-4 py-3 text-[11px] text-ink-soft">{j.aviso}</p>
     </div>
   );
 }
