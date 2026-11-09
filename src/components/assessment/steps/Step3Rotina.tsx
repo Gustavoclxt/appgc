@@ -349,7 +349,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
                             className="absolute top-0 -translate-x-1/2 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
                             style={{ left: `calc(${pct}% + ${8 - pct * 0.16}px)` }}
                           >
-                            <span className={`font-mono text-[10px] leading-none ${m.nota === String(n) ? "font-semibold text-accent" : "text-ink-soft"}`}>{n}</span>
+                            <span className={`font-mono leading-none ${m.nota === String(n) ? "text-[13px] font-semibold text-accent" : "text-[10px] text-ink-soft"}`}>{n}</span>
                           </button>
                         );
                       })}
