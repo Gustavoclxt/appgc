@@ -93,7 +93,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
                         className="absolute top-0 -translate-x-1/2 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
                         style={{ left: `calc(${pct}% + ${8 - pct * 0.16}px)` }}
                       >
-                        <span className={`font-mono text-[10px] leading-none ${a.motivacao === String(i) ? "font-semibold text-accent" : "text-ink-soft"}`}>{i}</span>
+                        <span className={`font-mono leading-none ${a.motivacao === String(i) ? "text-[13px] font-semibold text-accent" : "text-[10px] text-ink-soft"}`}>{i}</span>
                       </button>
                     );
                   })}
