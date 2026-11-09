@@ -66,9 +66,6 @@ export function Step6Hipertrofia({ a, d }: Pick<StepProps, "a" | "d">) {
           </div>
 
           <div className="mt-4 space-y-2 text-[11px] leading-relaxed text-ink-soft">
-            <p>
-              Estimativas teóricas de massa muscular, não previsões individuais garantidas. O peso teórico apenas soma o ganho muscular estimado ao peso atual; ganho muscular não é sinônimo de ganho de peso corporal.
-            </p>
             {potencial.recomposicao && (
               <p className="rounded-[8px] bg-warn-soft px-3 py-2 text-ink">
                 Na recomposição corporal, o peso corporal real pode permanecer estável ou até diminuir, mesmo com ganho de massa muscular.
