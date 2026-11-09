@@ -1,5 +1,6 @@
 import { calculateBMI, fmt2, fmtData, fmtInt, parseNumero, type DerivedResults } from "./calculations";
 import { valorComUnidade } from "./anthropometry-groups";
+import { resumoVetFinal } from "./free-meal";
 import { lerLitrosAgua, formatarLitros as litrosBase } from "./hydration";
 const formatarLitros = (l: number) => `${litrosBase(l).replace(/\s*L$/i, "")} L`;
 import type { Assessment, ExameLaboratorial, IndicadorAntropometrico } from "./types";
@@ -374,6 +375,9 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
   // ===== Caminho =====
   const exp = metas?.expectativa ?? null;
   const deficit = metas?.deficitUsado ?? (d.ajusteKcal !== null && d.ajusteKcal < 0 ? Math.abs(d.ajusteKcal) : null);
+  // Meta calórica = VET corrigido quando a correção por refeição livre está ativa (Sim) e tem valor;
+  // as duas campos são limpos ao escolher "Não", então vetFinal presente equivale a "Sim" selecionado.
+  const metaCalorica = resumoVetFinal(d.caloriasSugeridas, a.refeicoesLivresSemana, a.vetRefeicoesLivres)?.vetFinal ?? d.caloriasSugeridas;
   const prazo =
     metas?.diasMeta != null
       ? `≈ ${f1(metas.diasMeta / 30.4375)} meses (${fmtInt(metas.diasMeta)} dias)`
@@ -396,7 +400,7 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
       { rotulo: "Prazo estimado", valor: prazo },
       ...checkpoints,
       { rotulo: "Déficit calórico diário", valor: deficit !== null ? `${fmtInt(deficit)} kcal` : NI },
-      { rotulo: "Meta calórica diária", valor: d.caloriasSugeridas !== null ? `${fmtInt(d.caloriasSugeridas)} kcal` : NI, tom: "ok" },
+      { rotulo: "Meta calórica diária", valor: metaCalorica !== null ? `${fmtInt(metaCalorica)} kcal` : NI, tom: "ok" },
     ],
     nota: metas ? "Estimativas que dependem da adesão e da resposta individual." : "Projeção disponível quando o objetivo inclui emagrecimento.",
   };

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { construirJornada, exameJornada } from "./jornada";
 import { createExampleAssessment } from "./example-patient";
-import { deriveResults, fmt2 } from "./calculations";
+import { deriveResults, fmt2, fmtInt } from "./calculations";
 
 describe("Jornada de Recomposição Corporal", () => {
   it("usa o nome cadastrado no título", () => {
@@ -100,5 +100,22 @@ describe("Jornada de Recomposição Corporal", () => {
     const hoje = j.hoje.composicao.linhas.find((l) => l.rotulo === "Gordura visceral")!;
     expect(hoje.valor).toBe("3");
     expect(j.destino.composicao.linhas.find((l) => l.rotulo === "Gordura visceral")!.valor).toBe("Tendência de redução");
+  });
+
+  it("meta calórica diária usa o VET corrigido quando a correção por refeição livre está preenchida", () => {
+    const a = { ...createExampleAssessment(), estrategia: "deficit" as const, refeicoesLivresSemana: "1", vetRefeicoesLivres: "1600" };
+    const d = deriveResults(a);
+    const j = construirJornada(a, d, null);
+    const corrigido = ((d.caloriasSugeridas as number) * 7 - 1 * 1600) / 7;
+    const linha = j.caminho.projecao.linhas.find((l) => l.rotulo === "Meta calórica diária")!;
+    expect(linha.valor).toBe(`${fmtInt(corrigido)} kcal`);
+    expect(linha.valor).not.toBe(`${fmtInt(d.caloriasSugeridas as number)} kcal`);
+  });
+
+  it("meta calórica diária usa a prescrição quando não há VET corrigido", () => {
+    const a = { ...createExampleAssessment(), refeicoesLivresSemana: "", vetRefeicoesLivres: "" };
+    const d = deriveResults(a);
+    const linha = construirJornada(a, d, null).caminho.projecao.linhas.find((l) => l.rotulo === "Meta calórica diária")!;
+    expect(linha.valor).toBe(`${fmtInt(d.caloriasSugeridas as number)} kcal`);
   });
 });
