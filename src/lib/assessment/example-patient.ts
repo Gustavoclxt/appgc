@@ -21,7 +21,7 @@ export function createExampleAssessment(): Assessment {
     jaFezDieta: "sim",
     objetivos: ["Emagrecimento"],
     incomodoFisico: "Acúmulo de gordura abdominal",
-    pesoDesejado: "68",
+    pesoDesejado: "63",
     maiorDificuldade: "Beliscar à tarde e excessos no fim de semana",
     motivacao: "8",
     faltaParaDez: "Organização da rotina alimentar",
@@ -38,7 +38,7 @@ export function createExampleAssessment(): Assessment {
     eaas: "nao",
     habitosSociais: ["Etilista"],
     etilismoQuantidade: "2 taças de vinho",
-    etilismoFrequencia: "1x/semana",
+    etilismoFrequencia: "1x/mês",
     funcaoEstomacal: ["Flatulência excessiva"],
     frequenciaEvacuacao: "1 vez por dia",
     bristol: "B3",
@@ -112,7 +112,7 @@ export function createExampleAssessment(): Assessment {
 export function createExampleAtypicalDay(): Refeicao[] {
   return createExampleAssessment().diarioAlimentar.map((meal) =>
     meal.refeicao === "Jantar"
-      ? refeicao("Jantar", meal.horario, meal.local, [["Pizza", "3 fatias"]])
+      ? refeicao("Jantar", meal.horario, meal.local, [["Pizza", "3 fatias"], ["Coca Cola", "1 lata"]])
       : meal,
   );
 }

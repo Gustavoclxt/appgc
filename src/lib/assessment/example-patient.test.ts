@@ -17,10 +17,20 @@ describe("Paciente de exemplo", () => {
   it("informa profissão Professora", () => {
     expect(createExampleAssessment().profissao).toBe("Professora");
   });
+  it("informa peso desejado de 63 kg", () => {
+    expect(createExampleAssessment().pesoDesejado).toBe("63");
+  });
+  it("informa frequência de álcool de 1x/mês", () => {
+    expect(createExampleAssessment().etilismoFrequencia).toBe("1x/mês");
+  });
+  it("inclui uma lata de Coca Cola no jantar atípico", () => {
+    const jantar = createExampleAtypicalDay().find(meal => meal.refeicao === "Jantar");
+    expect(jantar?.alimentos.find(item => item.alimento === "Coca Cola")?.quantidade).toBe("1 lata");
+  });
   it("inclui pizza no jantar atípico sem alterar o jantar habitual", () => {
     const habitual = createExampleAssessment();
     const atipico = createExampleAtypicalDay();
-    expect(atipico.find(meal => meal.refeicao === "Jantar")?.alimentos.map(item => item.alimento)).toEqual(["Pizza"]);
+    expect(atipico.find(meal => meal.refeicao === "Jantar")?.alimentos.map(item => item.alimento)).toEqual(["Pizza", "Coca Cola"]);
     expect(habitual.diarioAlimentar.find(meal => meal.refeicao === "Jantar")?.alimentos.map(item => item.alimento)).not.toContain("Pizza");
     expect(atipico.some(meal => habitual.diarioAlimentar.some(original => original.id === meal.id))).toBe(false);
   });
