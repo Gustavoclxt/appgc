@@ -26,7 +26,7 @@ export function Step8Pdf({
       )}
       <div className="mt-6 flex flex-wrap justify-center gap-3">
         <button type="button" onClick={onGerar} className={btn}>
-          Salvar PDF
+          Exportar PDF
         </button>
         <button type="button" onClick={onJornada} className={btn}>
           Gerar Relatório do Paciente
