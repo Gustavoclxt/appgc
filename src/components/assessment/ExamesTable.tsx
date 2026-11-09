@@ -39,10 +39,7 @@ export function ExamesTable({ exames }: { exames: ExameLaboratorial[] }) {
         <tbody className="text-sm">
           {exames.map((e) => (
             <tr key={e.id} className="border-b border-line/60 last:border-0">
-              <td className="py-2.5 pr-4">
-                {e.exame}
-                {e.data && <span className="ml-2 font-mono text-[10px] text-ink-soft">{e.data}</span>}
-              </td>
+              <td className="py-2.5 pr-4">{e.exame}</td>
               <td className="py-2.5 pr-4 font-mono tabular-nums">{e.resultado || "—"}</td>
               <td className="py-2.5 pr-4 font-mono text-ink-soft">{e.unidade || "—"}</td>
               <td className="py-2.5 pr-4 font-mono text-ink-soft">{e.referencia || "—"}</td>

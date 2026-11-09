@@ -41,3 +41,4 @@
 - Build the report's block order once in report-structure.ts (form order, including the atypical-day recall) so screen, copy and PDF render identical sections.
 - Build the patient-facing timeline PDF from patient-timeline.ts using the existing weight-goal results, so it never recomputes projections differently from the clinical report.
 - Build the Jornada de Recomposição Corporal once in jornada.ts (screen component and jornada-pdf.ts only render it) so screen and PDF never diverge.
+- Keep exam-date aggregation in exam-dates.ts so the Exames identificados header shows each collection date once instead of repeating it on every table row.

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { novoId } from "@/lib/assessment/initial-state";
+import { metaExamesIdentificados } from "@/lib/assessment/exam-dates";
 
 import { ExamesTable } from "../ExamesTable";
 import { Field, Panel, RowButton, Select, TextInput } from "../fields";
@@ -40,7 +41,7 @@ export function Step5Exames({ a, set }: StepProps) {
     <div className="space-y-6">
       {a.exames.length > 0 && (
         <>
-          <Panel titulo="Exames identificados" meta={`${a.exames.length} resultado(s)`}>
+          <Panel titulo="Exames identificados" meta={metaExamesIdentificados(a.exames)}>
             <ExamesTable exames={a.exames} />
             <div className="mt-4 flex flex-wrap items-center gap-2">
               <RowButton onClick={() => set("exames", [])}>Limpar exames</RowButton>
