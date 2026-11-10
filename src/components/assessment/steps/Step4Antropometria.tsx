@@ -127,7 +127,7 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
                   : "cursor-pointer hover:bg-accent/90",
               )}
             >
-              {lendo ? `Lendo antropometria… ${progresso}%` : <><Paperclip aria-hidden="true" />{"\u00a0"}Anexar Antropometria</>}
+              {lendo ? `Lendo antropometria… ${progresso}%` : <><Paperclip aria-hidden="true" />{"\u00a0"}Importar{"\u00a0"}Antropometria</>}
               <input
                 type="file"
                 accept="application/pdf"
