@@ -1,10 +1,12 @@
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
 
+// Oculta até o mouse passar por cima; a zona de hover é um pouco maior que o botão.
+const ZONA = "fixed z-40 p-2 no-print group";
 const BOTAO =
-  "inline-flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-white ring-1 ring-accent/40 transition-colors hover:bg-accent/90";
+  "inline-flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-white opacity-0 ring-1 ring-accent/40 group-hover:opacity-100 focus:opacity-100 hover:bg-accent/90";
 
-// A seta só aparece na faixa inicial/final da página.
+// A seta só existe na faixa inicial/final da página.
 const FAIXA = 0.25;
 
 type Estado = { pertoDoInicio: boolean; pertoDoFim: boolean };
@@ -58,7 +60,7 @@ export function ScrollNav() {
   return (
     <>
       {estado.pertoDoInicio && (
-        <div className="fixed right-4 top-4 z-40 no-print">
+        <div className={`${ZONA} right-2 top-2`}>
           <button
             type="button"
             onClick={irParaFim}
@@ -71,7 +73,7 @@ export function ScrollNav() {
         </div>
       )}
       {estado.pertoDoFim && (
-        <div className="fixed bottom-4 right-4 z-40 no-print">
+        <div className={`${ZONA} bottom-2 right-2`}>
           <button
             type="button"
             onClick={irParaTopo}
