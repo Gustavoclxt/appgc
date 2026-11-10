@@ -258,7 +258,7 @@ function Index() {
 
       <StepRail etapaAtual={etapa} onSelecionar={setEtapa} />
 
-      <main className="mx-auto max-w-6xl px-6 pt-8 pb-24">
+      <main className="mx-auto max-w-6xl px-6 pt-8 pb-16">
         <div className="mb-6 flex flex-wrap items-end justify-between gap-4 no-print">
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">

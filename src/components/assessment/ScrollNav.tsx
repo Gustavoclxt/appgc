@@ -2,7 +2,7 @@ import { ArrowDown, ArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
 
 // Oculta até o mouse passar por cima; a zona de hover é um pouco maior que o botão.
-const ZONA = "fixed z-40 p-2 no-print group";
+const ZONA = "fixed z-40 p-1 no-print group";
 const BOTAO =
   "inline-flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-white opacity-0 ring-1 ring-accent/40 group-hover:opacity-100 focus:opacity-100 hover:bg-accent/90";
 
