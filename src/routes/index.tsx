@@ -7,6 +7,7 @@ import { Field, TextInput } from "@/components/assessment/fields";
 
 
 import { StepRail } from "@/components/assessment/StepRail";
+import { ScrollNav } from "@/components/assessment/ScrollNav";
 import { Step1Dados } from "@/components/assessment/steps/Step1Dados";
 import { Step2Anamnese } from "@/components/assessment/steps/Step2Anamnese";
 import { Step3Rotina } from "@/components/assessment/steps/Step3Rotina";
@@ -257,7 +258,7 @@ function Index() {
 
       <StepRail etapaAtual={etapa} onSelecionar={setEtapa} />
 
-      <main className="mx-auto max-w-6xl px-6 py-8">
+      <main className="mx-auto max-w-6xl px-6 pt-8 pb-24">
         <div className="mb-6 flex flex-wrap items-end justify-between gap-4 no-print">
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
@@ -356,6 +357,8 @@ function Index() {
         </div>
 
       </main>
+
+      <ScrollNav />
     </div>
   );
 }
