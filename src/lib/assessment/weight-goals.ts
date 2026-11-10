@@ -1,3 +1,4 @@
+import { resumoVetFinal } from "./free-meal";
 import type { DerivedResults } from "./calculations";
 import { fmt2, fmtInt, parseNumero } from "./calculations";
 import type { Assessment } from "./types";
@@ -96,15 +97,19 @@ export function calcularMetasPeso(a: Assessment, d: DerivedResults, m: MetasPeso
     classificacao = classificarExpectativa(expectativa.percentual, percentualReferencia);
   }
 
+  const vetCorrigido = resumoVetFinal(d.caloriasSugeridas, a.refeicoesLivresSemana, a.vetRefeicoesLivres)?.vetFinal ?? null;
+  const caloriasPlano = vetCorrigido ?? d.caloriasSugeridas;
   const deficitPlano =
-    a.estrategia === "deficit" && d.vet !== null && d.caloriasSugeridas !== null ? d.vet - d.caloriasSugeridas : null;
+    a.estrategia === "deficit" && d.vet !== null && caloriasPlano !== null ? d.vet - caloriasPlano : null;
   const deficitManual = parseNumero(m.deficitKcal);
   const deficitUsado = deficitManual ?? deficitPlano;
   const deficitOrigem =
     deficitManual !== null
       ? "Valor informado para a projeção."
       : deficitPlano !== null
-        ? "Calculado a partir da estratégia energética (VET − calorias sugeridas)."
+        ? vetCorrigido !== null
+          ? "Calculado a partir da estratégia energética com correção por refeição livre (VET − VET corrigido)."
+          : "Calculado a partir da estratégia energética (VET − calorias sugeridas)."
         : "Defina um déficit na estratégia energética ou informe aqui.";
 
   let modelo: ResultadoModelo | null = null;
