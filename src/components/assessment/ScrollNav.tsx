@@ -18,23 +18,23 @@ export function ScrollNav() {
       <div className="fixed right-4 top-4 z-40 no-print">
         <button
           type="button"
-          onClick={irParaTopo}
-          aria-label="Ir para o início da página"
-          title="Ir para o início da página"
-          className={BOTAO}
-        >
-          <ArrowUp size={14} />
-        </button>
-      </div>
-      <div className="fixed bottom-4 right-4 z-40 no-print">
-        <button
-          type="button"
           onClick={irParaFim}
           aria-label="Ir para o fim da página"
           title="Ir para o fim da página"
           className={BOTAO}
         >
           <ArrowDown size={14} />
+        </button>
+      </div>
+      <div className="fixed bottom-4 right-4 z-40 no-print">
+        <button
+          type="button"
+          onClick={irParaTopo}
+          aria-label="Ir para o início da página"
+          title="Ir para o início da página"
+          className={BOTAO}
+        >
+          <ArrowUp size={14} />
         </button>
       </div>
     </>
