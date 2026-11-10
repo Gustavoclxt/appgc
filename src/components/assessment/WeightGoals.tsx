@@ -44,15 +44,15 @@ export function WeightGoals({ a, d, metas, onChange }: Props) {
         </Field>
         {metas.modo === "peso" ? (
           <Field label="Peso desejado" hint={a.pesoDesejado && !metas.pesoDesejado ? "Usando o peso desejado da anamnese." : ""}>
-            <UnitInput value={metas.pesoDesejado || a.pesoDesejado} onChange={(v) => up("pesoDesejado", v)} unidade="kg" casas={2} />
+            <UnitInput value={metas.pesoDesejado || a.pesoDesejado} onChange={(v) => up("pesoDesejado", v)} unidade="kg" casas={2} className="max-w-[8rem]" />
           </Field>
         ) : (
           <Field label="Quanto deseja perder">
-            <UnitInput value={metas.kgPerder} onChange={(v) => up("kgPerder", v)} unidade="kg" casas={2} />
+            <UnitInput value={metas.kgPerder} onChange={(v) => up("kgPerder", v)} unidade="kg" casas={2} className="max-w-[8rem]" />
           </Field>
         )}
         <Field label="Prazo pretendido">
-          <UnitInput value={metas.prazoMeses} onChange={(v) => up("prazoMeses", v)} unidade="meses" casas={1} />
+          <UnitInput value={metas.prazoMeses} onChange={(v) => up("prazoMeses", v)} unidade="meses" casas={1} className="max-w-[8.5rem]" />
         </Field>
       </div>
       <WeightReferenceCards resultado={r} />

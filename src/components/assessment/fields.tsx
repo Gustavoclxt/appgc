@@ -126,15 +126,17 @@ export function UnitInput({
   unidade,
   placeholder,
   casas,
+  className,
 }: {
   value: string;
   onChange: (v: string) => void;
   unidade: string;
   placeholder?: string;
   casas?: number;
+  className?: string;
 }) {
   return (
-    <div className="flex items-center rounded-[10px] bg-white/70 ring-1 ring-line focus-within:ring-2 focus-within:ring-accent/40">
+    <div className={cn("flex items-center rounded-[10px] bg-white/70 ring-1 ring-line focus-within:ring-2 focus-within:ring-accent/40", className)}>
       <input
         value={value}
         placeholder={placeholder}
