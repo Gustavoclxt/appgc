@@ -63,6 +63,7 @@ export function WeightGoals({ a, d, metas, onChange }: Props) {
             value={metas.deficitKcal || (r.deficitPlano !== null ? String(Math.round(r.deficitPlano)) : "")}
             onChange={(v) => up("deficitKcal", v)}
             unidade="kcal/dia"
+            className="max-w-[10rem]"
           />
         </Field>
       </div>
