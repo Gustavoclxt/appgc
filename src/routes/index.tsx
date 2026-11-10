@@ -244,7 +244,7 @@ function Index() {
               GC - NUTRIÇÃO • PERFORMANCE • LONGEVIDADE
             </p>
           </div>
-          <div className="flex items-center gap-3 justify-self-end">
+          <div className="flex items-center gap-3 justify-self-end pr-9">
             <span className="hidden text-right font-mono text-[11px] leading-relaxed text-ink-soft sm:inline">
               Paciente: <span className="text-ink">{dados.nome || "—"}</span>
               <br />
