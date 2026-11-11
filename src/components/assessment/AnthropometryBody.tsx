@@ -2,7 +2,7 @@ import femCostas from "@/assets/silhueta-feminina-costas.png.asset.json";
 import femFrente from "@/assets/silhueta-feminina-frente.png.asset.json";
 import mascCostas from "@/assets/silhueta-masculina-costas.png.asset.json";
 import mascFrente from "@/assets/silhueta-masculina-frente.png.asset.json";
-import { bodyMeasurements, SILHUETAS, type SexoSilhueta, type VistaSilhueta } from "@/lib/assessment/anthropometry-body";
+import { assimetriasCircunferencia, bodyMeasurements, SILHUETAS, type SexoSilhueta, type VistaSilhueta } from "@/lib/assessment/anthropometry-body";
 import { rotuloIndicador, valorComUnidade, type CategoriaAntropometrica } from "@/lib/assessment/anthropometry-groups";
 import type { IndicadorAntropometrico } from "@/lib/assessment/types";
 
@@ -23,6 +23,7 @@ function larguraTexto(texto: string, fonte: string): number {
 
 export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadores: IndicadorAntropometrico[]; categoria: CategoriaAntropometrica; sexo: SexoSilhueta }) {
   const measurements = bodyMeasurements(indicadores, categoria, sexo);
+  const assimetricos = categoria === "Circunferências" ? assimetriasCircunferencia(indicadores) : new Set<string>();
   const views = categoria === "Dobras cutâneas" ? (["front", "back"] as const) : (["front"] as const);
   const ladoALado = views.length > 1;
   return (
@@ -58,7 +59,7 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
                   <text x={left ? 16 : 524} y={labelY - 24} textAnchor={left ? "start" : "end"} className="fill-ink-soft text-[11px]">
                     {rotulo}
                   </text>
-                  <text x={left ? 16 : 524} y={labelY - 9} textAnchor={left ? "start" : "end"} className="fill-accent font-mono text-[14px] font-semibold">{valor}</text>
+                  <text x={left ? 16 : 524} y={labelY - 9} textAnchor={left ? "start" : "end"} className={`${assimetricos.has(indicador.id) ? "fill-yellow-500" : "fill-accent"} font-mono text-[14px] font-semibold`}>{valor}</text>
                 </g>
                 );
               })}
