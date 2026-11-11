@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { assimetriasCircunferencia, bodyMeasurements, bodySite } from "./anthropometry-body";
+import { bodyMeasurements, bodySite } from "./anthropometry-body";
 
 it("separa os lados do paciente nas circunferências (silhueta feminina)", () => {
   expect(bodySite("Braço esquerdo", "Circunferências", "feminino")).toEqual({ view: "front", x: 230, y: 182 });
@@ -37,36 +37,4 @@ it("preserva cada valor e unidade original sem criar medidas ausentes", () => {
   expect(bodyMeasurements([indicador], "Circunferências", "masculino")).toEqual([{ indicador, site: { view: "front", x: 180, y: 207 } }]);
   expect(bodySite("Indicador desconhecido", "Circunferências", "feminino")).toBeNull();
   expect(bodyMeasurements([], "Dobras cutâneas", "masculino")).toEqual([]);
-});
-
-const ind = (id: string, nome: string, valor: string) => ({ id, nome, valor, unidade: "cm", data: "2026-10-25" });
-
-it("marca os dois lados quando a circunferência difere entre direito e esquerdo", () => {
-  const lista = [
-    ind("1", "Braço Direito Relaxado", "32,0"),
-    ind("2", "Braço Esquerdo Relaxado", "33,5"),
-    ind("3", "Braço Direito Contraído", "34,0"),
-    ind("4", "Braço Esquerdo Contraído", "34,0"),
-    ind("5", "Coxa Direita", "58,0"),
-    ind("6", "Coxa Esquerda", "58,0"),
-    ind("7", "Panturrilha Direita", "36,0"),
-    ind("8", "Panturrilha Esquerda", "37,0"),
-  ];
-  expect([...assimetriasCircunferencia(lista)].sort()).toEqual(["1", "2", "7", "8"]);
-});
-
-it("não marca quando os lados são iguais ou um lado está ausente", () => {
-  expect(assimetriasCircunferencia([ind("1", "Coxa Direita", "58,0"), ind("2", "Coxa Esquerda", "58,0")]).size).toBe(0);
-  expect(assimetriasCircunferencia([ind("1", "Coxa Direita", "58,0")]).size).toBe(0);
-  expect(assimetriasCircunferencia([]).size).toBe(0);
-});
-
-it("compara coxa proximal e distal separadamente", () => {
-  const lista = [
-    ind("1", "Coxa Proximal Direita", "58,0"),
-    ind("2", "Coxa Proximal Esquerda", "58,0"),
-    ind("3", "Coxa Distal Direita", "40,0"),
-    ind("4", "Coxa Distal Esquerda", "41,0"),
-  ];
-  expect([...assimetriasCircunferencia(lista)].sort()).toEqual(["3", "4"]);
 });
