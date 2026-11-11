@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { agruparAntropometria, categoriaAntropometrica, podeAnexarExames, rotuloIndicador, valorComUnidade } from "./anthropometry-groups";
+import { agruparAntropometria, categoriaAntropometrica, pesoAntropometricoAnexado, pesoAntropometricoParaResumo, podeAnexarExames, rotuloIndicador, valorComUnidade } from "./anthropometry-groups";
 
 describe("categorias da antropometria", () => {
   it("organiza altura e peso em Medidas", () => {
@@ -67,5 +67,28 @@ describe("valor com unidade", () => {
     expect(valorComUnidade({ valor: "63,58", unidade: "Kg" }, "Medidas")).toBe("63,58 Kg");
     expect(valorComUnidade({ valor: "63,6 Kg", unidade: "" }, "Medidas")).toBe("63,60 Kg");
     expect(valorComUnidade({ valor: "63,58", unidade: "Kg" }, "Circunferências")).toBe("63,6 Kg");
+  });
+});
+describe("pesoAntropometricoAnexado", () => {
+  it("retorna null quando nenhuma antropometria foi anexada", () => {
+    expect(pesoAntropometricoAnexado({ indicadoresAntropometricos: [], dataAvaliacaoAntropometrica: "" })).toBeNull();
+  });
+
+  it("retorna o peso medido mais recente da antropometria anexada", () => {
+    const a = {
+      dataAvaliacaoAntropometrica: "2026-11-01",
+      indicadoresAntropometricos: [
+        { nome: "Peso", valor: "78,50", unidade: "kg", data: "2026-10-01" },
+        { nome: "Peso", valor: "79,00", unidade: "kg", data: "2026-11-01" },
+        { nome: "Cintura", valor: "90", unidade: "cm", data: "2026-11-01" },
+      ],
+    };
+    expect(pesoAntropometricoAnexado(a)).toBe(79);
+  });
+
+  it("mantém o peso referido como alternativa apenas no resumo", () => {
+    const base = { indicadoresAntropometricos: [], dataAvaliacaoAntropometrica: "", peso: "74" };
+    expect(pesoAntropometricoAnexado(base)).toBeNull();
+    expect(pesoAntropometricoParaResumo(base)).toBe(74);
   });
 });

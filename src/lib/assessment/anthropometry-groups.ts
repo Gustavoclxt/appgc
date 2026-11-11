@@ -55,8 +55,8 @@ export const podeAnexarExames = (a: Pick<Assessment, "possuiExames">) => a.possu
 export const observacoesExamesParaRelatorio = (a: Pick<Assessment, "possuiExames" | "observacoesExames">) =>
   podeAnexarExames(a) ? a.observacoesExames : "";
 
-/** Prefer the latest measured weight; never substitute the referred or target weight. */
-export function pesoAntropometricoParaResumo(a: Pick<Assessment, "indicadoresAntropometricos" | "dataAvaliacaoAntropometrica" | "peso">): number | null {
+/** Peso medido mais recente da antropometria anexada; null quando nenhuma antropometria foi anexada. */
+export function pesoAntropometricoAnexado(a: Pick<Assessment, "indicadoresAntropometricos" | "dataAvaliacaoAntropometrica">): number | null {
   const pesos = a.indicadoresAntropometricos.flatMap((i) => {
     if (!/^(peso|peso atual|peso corporal|peso total|peso corporal atual)$/.test(normalizar(i.nome))) return [];
     const unidade = normalizar(i.unidade);
@@ -68,5 +68,10 @@ export function pesoAntropometricoParaResumo(a: Pick<Assessment, "indicadoresAnt
     return [{ kg, data: Number.isFinite(data) ? data : 0 }];
   });
   pesos.sort((a, b) => b.data - a.data);
-  return pesos[0]?.kg ?? parseNumero(a.peso);
+  return pesos[0]?.kg ?? null;
+}
+
+/** Prefer the latest measured weight; never substitute the referred or target weight. */
+export function pesoAntropometricoParaResumo(a: Pick<Assessment, "indicadoresAntropometricos" | "dataAvaliacaoAntropometrica" | "peso">): number | null {
+  return pesoAntropometricoAnexado(a) ?? parseNumero(a.peso);
 }
