@@ -57,7 +57,15 @@ export function Step6Hipertrofia({ a, d }: Pick<StepProps, "a" | "d">) {
     <Panel titulo="Calculadora de Potencial de Hipertrofia" meta="Modelo de Lyle McDonald">
       {potencial ? (
         <>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div className="rounded-[10px] bg-paper p-4 text-center ring-1 ring-line">
+              <p className="text-sm font-medium text-ink-soft">Peso atual</p>
+              <p className="mt-1 font-mono text-lg font-semibold tabular-nums text-ink">
+                {d.pesoKg !== null
+                  ? `${d.pesoKg.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} kg`
+                  : "—"}
+              </p>
+            </div>
             <div className="rounded-[10px] bg-accent-soft p-4 text-center ring-1 ring-accent/20">
               <p className="text-sm font-medium text-ink-soft">Potencial mensal de ganho muscular</p>
               <p className="mt-1 font-mono text-lg font-semibold tabular-nums text-accent">
