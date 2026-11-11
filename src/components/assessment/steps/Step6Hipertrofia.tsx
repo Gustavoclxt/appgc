@@ -1,8 +1,5 @@
-import { useEffect, useState } from "react";
-
 import { pesoAntropometricoAnexado } from "@/lib/assessment/anthropometry-groups";
 import {
-  dataProjetada,
   faixaEmGramas,
   faixaEmKg,
   faixaPeso,
@@ -10,45 +7,9 @@ import {
   objetivoPermiteHipertrofia,
 } from "@/lib/assessment/hypertrophy-potential";
 
+import { LinhaDoTempo } from "../LinhaDoTempo";
 import { Panel } from "../fields";
 import type { StepProps } from "./types";
-
-interface MarcoLinhaDoTempo {
-  rotulo: string;
-  dias: number;
-  ganho: string;
-  peso: string;
-}
-
-function LinhaDoTempo({ marcos }: { marcos: MarcoLinhaDoTempo[] }) {
-  const [hoje, setHoje] = useState<Date | null>(null);
-  useEffect(() => setHoje(new Date()), []);
-
-  return (
-    <ol className="mt-5 sm:grid sm:grid-cols-4 sm:gap-3">
-      {marcos.map((marco, indice) => (
-        <li key={marco.rotulo} className="relative pb-7 pl-9 last:pb-0 sm:pb-0 sm:pl-0 sm:pt-9">
-          {indice < marcos.length - 1 && (
-            <>
-              <span aria-hidden className="absolute bottom-[-4px] left-[7px] top-[19px] w-px bg-line sm:hidden" />
-              <span aria-hidden className="absolute left-[calc(50%+12px)] right-[-50%] top-[11px] hidden h-px bg-line sm:block" />
-            </>
-          )}
-          <span
-            aria-hidden
-            className="absolute left-0 top-1 h-[15px] w-[15px] rounded-full bg-accent ring-4 ring-accent-soft sm:left-1/2 sm:top-[4px] sm:-translate-x-1/2"
-          />
-          <div className="sm:text-center">
-            <p className="text-[13px] font-semibold text-ink">{marco.rotulo}</p>
-            {hoje && <p className="mt-0.5 text-[11px] text-ink-soft">({dataProjetada(hoje, marco.dias)})</p>}
-            <p className="mt-2 font-mono text-lg font-bold tabular-nums text-accent">{marco.peso}</p>
-            <p className="mt-1.5 text-[11px] leading-relaxed text-ink-soft">Ganho muscular: +{marco.ganho}</p>
-          </div>
-        </li>
-      ))}
-    </ol>
-  );
-}
 
 export function Step6Hipertrofia({ a, d }: Pick<StepProps, "a" | "d">) {
   if (!objetivoPermiteHipertrofia(a.objetivos)) return null;
@@ -92,14 +53,14 @@ export function Step6Hipertrofia({ a, d }: Pick<StepProps, "a" | "d">) {
               ...potencial.projecoes.map((projecao) => ({
                 rotulo: `${projecao.dias} dias`,
                 dias: projecao.dias,
-                ganho: faixaEmGramas(projecao.ganho),
-                peso: faixaPeso(projecao.peso),
+                valor: faixaPeso(projecao.peso),
+                detalhe: `Ganho muscular: +${faixaEmGramas(projecao.ganho)}`,
               })),
               {
                 rotulo: "1 ano",
                 dias: 365,
-                ganho: faixaEmKg(potencial.anual.ganho),
-                peso: faixaPeso(potencial.anual.peso),
+                valor: faixaPeso(potencial.anual.peso),
+                detalhe: `Ganho muscular: +${faixaEmKg(potencial.anual.ganho)}`,
               },
             ]}
           />

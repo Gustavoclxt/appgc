@@ -28,3 +28,14 @@ it("mostra o peso após a perda na ordem da menor para a maior perda", () => {
   expect(seisMeses?.perda).toBe("5,00 a 10,00 kg");
   expect(seisMeses?.peso).toBe("95,00 a 90,00 kg");
 });
+
+it("expõe o prazo em meses de cada referência para a linha do tempo", () => {
+  const a = { ...createEmptyAssessment(), peso: "100" };
+  const r = calcularMetasPeso(a, deriveResults(a), metasPesoIniciais());
+  expect(cardsMetasReferencia(r).map((c) => [c.meses, c.prazo])).toEqual([
+    [1, "1 mês"],
+    [3, "3 meses"],
+    [6, "6 meses"],
+  ]);
+});
+

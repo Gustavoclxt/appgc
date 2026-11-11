@@ -17,6 +17,13 @@ export function calculateAge(dataNascimento: string, dataReferencia: string): nu
   return idade >= 0 ? idade : null;
 }
 
+/** Data-calendário de um prazo em meses a partir de uma data base (dia clampado ao fim do mês). */
+export function dataProjetadaEmMeses(base: Date, meses: number): string {
+  const ultimoDia = new Date(Date.UTC(base.getFullYear(), base.getMonth() + meses + 1, 0)).getUTCDate();
+  const data = new Date(Date.UTC(base.getFullYear(), base.getMonth() + meses, Math.min(base.getDate(), ultimoDia)));
+  return data.toLocaleDateString("pt-BR", { timeZone: "UTC", day: "2-digit", month: "2-digit", year: "numeric" });
+}
+
 /** Altura sempre em centímetros. */
 export function alturaEmCm(valor: string, unidade: "cm" | "m"): number | null {
   const n = parseNumero(valor);

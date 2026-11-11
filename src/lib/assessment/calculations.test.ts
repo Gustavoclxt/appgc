@@ -4,9 +4,22 @@ import {
   calculateCardioRange,
   calculateMaxHeartRate,
   calculateTMB,
+  dataProjetadaEmMeses,
   deriveResults,
 } from "./calculations";
 import { createEmptyAssessment } from "./initial-state";
+
+describe("dataProjetadaEmMeses", () => {
+  it("soma meses-calendário à data base", () => {
+    const base = new Date(2026, 10, 11);
+    expect(dataProjetadaEmMeses(base, 1)).toBe("11/12/2026");
+    expect(dataProjetadaEmMeses(base, 3)).toBe("11/02/2027");
+    expect(dataProjetadaEmMeses(base, 6)).toBe("11/05/2027");
+  });
+  it("limita o dia ao último dia do mês de destino", () => {
+    expect(dataProjetadaEmMeses(new Date(2026, 0, 31), 1)).toBe("28/02/2026");
+  });
+});
 
 describe("Tinsley energy equations", () => {
   it("calculates PC as 24.8 × body weight in kg + 10 without unrelated inputs", () => {
