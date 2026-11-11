@@ -26,6 +26,12 @@ it("calibra quadril, axilar média e panturrilha medial na silhueta feminina", (
   expect(bodySite("Axilar média", "Dobras cutâneas", "feminino")).toEqual({ view: "front", x: 142, y: 172 });
   expect(bodySite("Panturrilha medial", "Dobras cutâneas", "feminino")).toEqual({ view: "front", x: 156, y: 433 });
 });
+it("une braço relaxado e contraído em um único ponto por lado", () => {
+  for (const sexo of ["masculino", "feminino"] as const) {
+    expect(bodySite("Braço contraído esquerdo", "Circunferências", sexo)).toEqual(bodySite("Braço relaxado esquerdo", "Circunferências", sexo));
+    expect(bodySite("Braço contraído direito", "Circunferências", sexo)).toEqual(bodySite("Braço relaxado direito", "Circunferências", sexo));
+  }
+});
 it("preserva cada valor e unidade original sem criar medidas ausentes", () => {
   const indicador = { id: "1", nome: "Cintura", valor: "82,5", unidade: "cm", data: "2026-10-25" };
   expect(bodyMeasurements([indicador], "Circunferências", "masculino")).toEqual([{ indicador, site: { view: "front", x: 180, y: 207 } }]);
