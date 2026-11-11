@@ -29,8 +29,8 @@ function LinhaDoTempo({ marcos }: { marcos: MarcoLinhaDoTempo[] }) {
         <li key={marco.rotulo} className="relative pb-7 pl-9 last:pb-0 sm:pb-0 sm:pl-0 sm:pt-9">
           {indice < marcos.length - 1 && (
             <>
-              <span aria-hidden className="absolute bottom-0 left-[7px] top-5 w-px bg-line sm:hidden" />
-              <span aria-hidden className="absolute left-1/2 right-[-0.75rem] top-[11px] hidden h-px bg-line sm:block" />
+              <span aria-hidden className="absolute bottom-[-4px] left-[7px] top-[19px] w-px bg-line sm:hidden" />
+              <span aria-hidden className="absolute left-[calc(50%+12px)] right-[-50%] top-[11px] hidden h-px bg-line sm:block" />
             </>
           )}
           <span
