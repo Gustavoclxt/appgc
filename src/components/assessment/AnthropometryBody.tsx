@@ -51,8 +51,8 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
                 const valor = valorComUnidade(indicador, categoria);
                 const assimetrico = assimetricos.has(indicador.id);
                 const larguraValor = larguraTexto(valor, "bold 14px monospace");
-                const largura = Math.ceil(Math.max(larguraTexto(rotulo, "11px sans-serif"), larguraValor + (assimetrico && !left ? 18 : 0))) + 14;
-                const esferaX = left ? 16 + larguraValor + 12 : 524 - larguraValor - 12;
+                const largura = Math.ceil(Math.max(larguraTexto(rotulo, "11px sans-serif"), larguraValor + (assimetrico && !left ? 22 : 0))) + 14;
+                const esferaX = left ? 16 + larguraValor + 16 : 524 - larguraValor - 16;
                 return (
                 <g key={indicador.id}>
                   <title>{`${rotulo}: ${valor}`}</title>
@@ -63,7 +63,7 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
                     {rotulo}
                   </text>
                   <text x={left ? 16 : 524} y={labelY - 9} textAnchor={left ? "start" : "end"} className="fill-accent font-mono text-[14px] font-semibold">{valor}</text>
-                  {assimetrico && <circle cx={esferaX} cy={labelY - 14} r="5" className="fill-destructive"><title>Assimetria entre os lados</title></circle>}
+                  {assimetrico && <circle cx={esferaX} cy={labelY - 14} r="4" className="fill-destructive"><title>Assimetria entre os lados</title></circle>}
                 </g>
                 );
               })}
