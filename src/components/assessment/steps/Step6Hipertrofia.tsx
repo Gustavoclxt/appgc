@@ -40,8 +40,7 @@ function LinhaDoTempo({ marcos }: { marcos: MarcoLinhaDoTempo[] }) {
           <div className="sm:text-center">
             <p className="text-[13px] font-semibold text-ink">{marco.rotulo}</p>
             {hoje && <p className="mt-0.5 text-[11px] text-ink-soft">({dataProjetada(hoje, marco.dias)})</p>}
-            <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-soft">Peso teórico</p>
-            <p className="mt-0.5 font-mono text-lg font-bold tabular-nums text-accent">{marco.peso}</p>
+            <p className="mt-2 font-mono text-lg font-bold tabular-nums text-accent">{marco.peso}</p>
             <p className="mt-1.5 text-[11px] leading-relaxed text-ink-soft">Ganho muscular: +{marco.ganho}</p>
           </div>
         </li>
