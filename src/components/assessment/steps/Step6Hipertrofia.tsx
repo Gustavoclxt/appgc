@@ -58,30 +58,32 @@ export function Step6Hipertrofia({ a, d }: Pick<StepProps, "a" | "d">) {
     <Panel titulo="Calculadora de Potencial de Hipertrofia" meta="Modelo de Lyle McDonald">
       {potencial ? (
         <>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div className="rounded-[10px] bg-paper p-4 text-center ring-1 ring-line">
-              <p className="text-sm font-medium text-ink-soft">Peso atual</p>
+          <div className="grid grid-cols-1 overflow-hidden rounded-[10px] bg-accent text-accent-foreground sm:grid-cols-3">
+            <div className="p-4 text-center">
+              <p className="text-[12px] font-medium text-accent-foreground/80">Peso atual</p>
               {(() => {
                 const pesoAtual = pesoAntropometricoAnexado(a);
                 return pesoAtual !== null ? (
-                  <p className="mt-1 font-mono text-lg font-semibold tabular-nums text-ink">
-                    {pesoAtual.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} kg
-                  </p>
+                  <>
+                    <p className="mt-1 font-mono text-2xl font-bold tabular-nums">
+                      {pesoAtual.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </p>
+                    <p className="mt-0.5 text-[11px] text-accent-foreground/70">kg</p>
+                  </>
                 ) : (
-                  <p className="mt-1 text-[13px] font-medium text-ink-soft">Anexar antropometria</p>
+                  <p className="mt-2 text-[13px] font-medium text-accent-foreground/80">Anexar antropometria</p>
                 );
               })()}
             </div>
-            <div className="rounded-[10px] bg-accent-soft p-4 text-center ring-1 ring-accent/20">
-              <p className="text-sm font-medium text-ink-soft">Potencial mensal de ganho muscular</p>
-              <p className="mt-1 font-mono text-lg font-semibold tabular-nums text-accent">
-                {faixaEmGramas(potencial.mensal)}<span className="text-[12px] font-normal">/mês</span>
-              </p>
+            <div className="border-t border-accent-foreground/20 p-4 text-center sm:border-l sm:border-t-0">
+              <p className="text-[12px] font-medium text-accent-foreground/80">Potencial mensal de ganho muscular</p>
+              <p className="mt-1 font-mono text-2xl font-bold tabular-nums">{faixaEmGramas(potencial.mensal).replace(/ g$/, "")}</p>
+              <p className="mt-0.5 text-[11px] text-accent-foreground/70">g/mês</p>
             </div>
-            <div className="rounded-[10px] bg-paper p-4 text-center ring-1 ring-line">
-              <p className="text-sm font-medium text-ink-soft">Estágio de treinamento</p>
-              <p className="mt-1 font-display text-lg font-semibold text-ink">{potencial.estagio}</p>
-              <p className="mt-0.5 font-mono text-[11px] text-ink-soft">{formatarMeses(potencial.tempoMeses)} de Musculação</p>
+            <div className="border-t border-accent-foreground/20 p-4 text-center sm:border-l sm:border-t-0">
+              <p className="text-[12px] font-medium text-accent-foreground/80">Estágio de treinamento</p>
+              <p className="mt-1 font-display text-2xl font-bold">{potencial.estagio}</p>
+              <p className="mt-0.5 text-[11px] text-accent-foreground/70">{formatarMeses(potencial.tempoMeses)} de Musculação</p>
             </div>
           </div>
 
