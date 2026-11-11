@@ -9,21 +9,43 @@ import {
 import { Panel } from "../fields";
 import type { StepProps } from "./types";
 
-function Projecao({ titulo, ganho, peso }: { titulo: string; ganho: string; peso: string }) {
+interface MarcoLinhaDoTempo {
+  rotulo: string;
+  ganho: string;
+  peso: string;
+}
+
+function LinhaDoTempo({ marcos }: { marcos: MarcoLinhaDoTempo[] }) {
   return (
-    <article className="rounded-[10px] bg-white/70 p-4 ring-1 ring-line">
-      <h3 className="font-display text-sm font-semibold text-ink">{titulo}</h3>
-      <dl className="mt-3 space-y-3">
-        <div>
-          <dt className="text-[11px] text-ink-soft">Ganho muscular estimado</dt>
-          <dd className="mt-0.5 font-mono text-[13px] font-semibold tabular-nums text-ink">{ganho}</dd>
-        </div>
-        <div className="border-t border-line/70 pt-2.5">
-          <dt className="text-[11px] text-ink-soft">Peso teórico</dt>
-          <dd className="mt-0.5 font-mono text-[13px] font-semibold tabular-nums text-ink">{peso}</dd>
-        </div>
-      </dl>
-    </article>
+    <ol className="mt-4 sm:grid sm:grid-cols-4 sm:gap-3">
+      {marcos.map((marco, indice) => (
+        <li key={marco.rotulo} className="relative pb-6 pl-8 last:pb-0 sm:pb-0 sm:pl-0 sm:pt-8">
+          {indice < marcos.length - 1 && (
+            <>
+              <span aria-hidden className="absolute bottom-0 left-[7px] top-4 w-px bg-line sm:hidden" />
+              <span aria-hidden className="absolute left-1/2 right-[-0.75rem] top-[11px] hidden h-px bg-line sm:block" />
+            </>
+          )}
+          <span
+            aria-hidden
+            className="absolute left-0 top-1 h-[15px] w-[15px] rounded-full bg-accent ring-4 ring-accent-soft sm:left-1/2 sm:top-[4px] sm:-translate-x-1/2"
+          />
+          <div className="sm:text-center">
+            <p className="font-display text-sm font-semibold text-ink">{marco.rotulo}</p>
+            <dl className="mt-2 space-y-2">
+              <div>
+                <dt className="text-[11px] text-ink-soft">Ganho muscular estimado</dt>
+                <dd className="mt-0.5 font-mono text-[13px] font-semibold tabular-nums text-ink">{marco.ganho}</dd>
+              </div>
+              <div>
+                <dt className="text-[11px] text-ink-soft">Peso teórico</dt>
+                <dd className="mt-0.5 font-mono text-[13px] font-semibold tabular-nums text-ink">{marco.peso}</dd>
+              </div>
+            </dl>
+          </div>
+        </li>
+      ))}
+    </ol>
   );
 }
 
@@ -49,21 +71,20 @@ export function Step6Hipertrofia({ a, d }: Pick<StepProps, "a" | "d">) {
             </div>
           </div>
 
-          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            {potencial.projecoes.map((projecao) => (
-              <Projecao
-                key={projecao.dias}
-                titulo={`Projeção para ${projecao.dias} dias`}
-                ganho={faixaEmGramas(projecao.ganho)}
-                peso={faixaPeso(projecao.peso)}
-              />
-            ))}
-            <Projecao
-              titulo="Projeção para 1 ano"
-              ganho={faixaEmKg(potencial.anual.ganho)}
-              peso={faixaPeso(potencial.anual.peso)}
-            />
-          </div>
+          <LinhaDoTempo
+            marcos={[
+              ...potencial.projecoes.map((projecao) => ({
+                rotulo: `${projecao.dias} dias`,
+                ganho: faixaEmGramas(projecao.ganho),
+                peso: faixaPeso(projecao.peso),
+              })),
+              {
+                rotulo: "1 ano",
+                ganho: faixaEmKg(potencial.anual.ganho),
+                peso: faixaPeso(potencial.anual.peso),
+              },
+            ]}
+          />
 
           <div className="mt-4 space-y-2 text-[11px] leading-relaxed text-ink-soft">
             {potencial.recomposicao && (
