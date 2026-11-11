@@ -53,6 +53,31 @@ function TabelaIndicadores({ categoria, indicadores }: { categoria: CategoriaAnt
   );
 }
 
+function TabelaResultados({ indicadores }: { indicadores: GrupoAntropometrico["indicadores"] }) {
+  const esquerda = indicadores.filter((i) => /\bimc\b|%|percentual/i.test(i.nome));
+  const direita = indicadores.filter((i) => !/\bimc\b|%|percentual/i.test(i.nome));
+  const linha = (i: GrupoAntropometrico["indicadores"][number]) => (
+    <tr key={i.id} className="border-t border-line/70">
+      <td className={cn("py-2 pr-4 text-ink", /%\s*massa\s+gorda/i.test(i.nome) && "font-semibold")}>{rotuloIndicador(i.nome)}</td>
+      <td className={cn("py-2 pl-6 font-mono", /%\s*massa\s+gorda/i.test(i.nome) && "font-semibold")}>{valorComUnidade(i, "Resultados")}</td>
+    </tr>
+  );
+  return (
+    <div className="min-w-0 flex-1">
+      <h3 className="mb-2 font-display text-sm font-semibold text-accent">Resultados</h3>
+      <div className="flex flex-wrap items-start gap-x-12 gap-y-4">
+        {[esquerda, direita].filter((coluna) => coluna.length > 0).map((coluna, k) => (
+          <div key={k} className="overflow-x-auto">
+            <table className="w-auto text-left text-[13px]">
+              <tbody>{coluna.map(linha)}</tbody>
+            </table>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function Step4Antropometria({ a, set, d }: StepProps) {
   const [lendo, setLendo] = useState(false);
   const [progresso, setProgresso] = useState(0);
@@ -170,7 +195,7 @@ export function Step4Antropometria({ a, set, d }: StepProps) {
                 {Array.from({ length: pares }, (_, k) => (
                   <div key={`par-${k}`} className="flex flex-wrap items-start gap-x-12 gap-y-6">
                     {medidas[k] && <TabelaIndicadores categoria={medidas[k].categoria} indicadores={medidas[k].indicadores} />}
-                    {resultados[k] && <TabelaIndicadores categoria={resultados[k].categoria} indicadores={resultados[k].indicadores.filter((i) => !/\b(AMB|AGB)\b|[áa]rea\s+(muscular|de\s+gordura)\s+do\s+bra[çc]o/i.test(i.nome))} />}
+                    {resultados[k] && <TabelaResultados indicadores={resultados[k].indicadores.filter((i) => !/\b(AMB|AGB)\b|[áa]rea\s+(muscular|de\s+gordura)\s+do\s+bra[çc]o/i.test(i.nome))} />}
                   </div>
                 ))}
                 {outros.map((grupo) => {
