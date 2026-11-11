@@ -2,7 +2,7 @@ import femCostas from "@/assets/silhueta-feminina-costas.png.asset.json";
 import femFrente from "@/assets/silhueta-feminina-frente.png.asset.json";
 import mascCostas from "@/assets/silhueta-masculina-costas.png.asset.json";
 import mascFrente from "@/assets/silhueta-masculina-frente.png.asset.json";
-import { bodyMeasurements, SILHUETAS, type SexoSilhueta, type VistaSilhueta } from "@/lib/assessment/anthropometry-body";
+import { bodyMeasurements, idsAssimetricos, SILHUETAS, type SexoSilhueta, type VistaSilhueta } from "@/lib/assessment/anthropometry-body";
 import { rotuloIndicador, valorComUnidade, type CategoriaAntropometrica } from "@/lib/assessment/anthropometry-groups";
 import type { IndicadorAntropometrico } from "@/lib/assessment/types";
 
@@ -23,6 +23,7 @@ function larguraTexto(texto: string, fonte: string): number {
 
 export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadores: IndicadorAntropometrico[]; categoria: CategoriaAntropometrica; sexo: SexoSilhueta }) {
   const measurements = bodyMeasurements(indicadores, categoria, sexo);
+  const assimetricos = idsAssimetricos(indicadores, categoria);
   const views = categoria === "Dobras cutâneas" ? (["front", "back"] as const) : (["front"] as const);
   const ladoALado = views.length > 1;
   return (
@@ -48,7 +49,10 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
               {labels.map(({ indicador, site, labelY, left }) => {
                 const rotulo = rotuloIndicador(indicador.nome, categoria);
                 const valor = valorComUnidade(indicador, categoria);
-                const largura = Math.ceil(Math.max(larguraTexto(rotulo, "11px sans-serif"), larguraTexto(valor, "bold 14px monospace"))) + 14;
+                const assimetrico = assimetricos.has(indicador.id);
+                const larguraValor = larguraTexto(valor, "bold 14px monospace");
+                const largura = Math.ceil(Math.max(larguraTexto(rotulo, "11px sans-serif"), larguraValor + (assimetrico && !left ? 18 : 0))) + 14;
+                const esferaX = left ? 16 + larguraValor + 12 : 524 - larguraValor - 12;
                 return (
                 <g key={indicador.id}>
                   <title>{`${rotulo}: ${valor}`}</title>
@@ -59,6 +63,7 @@ export function AnthropometryBody({ indicadores, categoria, sexo }: { indicadore
                     {rotulo}
                   </text>
                   <text x={left ? 16 : 524} y={labelY - 9} textAnchor={left ? "start" : "end"} className="fill-accent font-mono text-[14px] font-semibold">{valor}</text>
+                  {assimetrico && <circle cx={esferaX} cy={labelY - 14} r="5" className="fill-destructive"><title>Assimetria entre os lados</title></circle>}
                 </g>
                 );
               })}

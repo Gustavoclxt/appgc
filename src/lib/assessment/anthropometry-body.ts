@@ -117,3 +117,35 @@ export function bodyMeasurements(indicadores: IndicadorAntropometrico[], categor
     return site ? [{ indicador, site }] : [];
   });
 }
+
+/** Membro bilateral comparável (circunferências), ou null. */
+function membroBilateral(nome: string): { membro: string; lado: "D" | "E" } | null {
+  const n = nome.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ");
+  const lado = /\b(esquerd\w*|esq|e)\b/.test(n) ? "E" : /\b(direit\w*|dir|d)\b/.test(n) ? "D" : null;
+  if (!lado || /\bantebraco\b/.test(n)) return null;
+  if (/\bbraco\b/.test(n)) return { membro: /contraido|flexionado/.test(n) ? "braco-contraido" : "braco-relaxado", lado };
+  if (/\bcoxa\b/.test(n)) return { membro: "coxa", lado };
+  if (/\b(panturrilha|perna)\b/.test(n)) return { membro: "panturrilha", lado };
+  return null;
+}
+
+/** IDs das circunferências cujo valor difere do lado oposto (apenas comparação dos valores informados). */
+export function idsAssimetricos(indicadores: IndicadorAntropometrico[], categoria: CategoriaAntropometrica): Set<string> {
+  const ids = new Set<string>();
+  if (categoria !== "Circunferências") return ids;
+  const grupos = new Map<string, { D?: IndicadorAntropometrico; E?: IndicadorAntropometrico }>();
+  for (const ind of indicadores) {
+    const m = membroBilateral(ind.nome);
+    if (!m) continue;
+    const g = grupos.get(m.membro) ?? {};
+    g[m.lado] ??= ind;
+    grupos.set(m.membro, g);
+  }
+  const num = (v: string) => Number(v.replace(/\./g, "").replace(",", ".").replace(/[^0-9.\-]/g, ""));
+  for (const { D, E } of grupos.values()) {
+    if (!D || !E) continue;
+    const a = num(D.valor), b = num(E.valor);
+    if (Number.isFinite(a) && Number.isFinite(b) && a !== b) { ids.add(D.id); ids.add(E.id); }
+  }
+  return ids;
+}

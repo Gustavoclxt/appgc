@@ -1,4 +1,4 @@
-import { expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { bodyMeasurements, bodySite } from "./anthropometry-body";
 
 it("separa os lados do paciente nas circunferências (silhueta feminina)", () => {
@@ -37,4 +37,13 @@ it("preserva cada valor e unidade original sem criar medidas ausentes", () => {
   expect(bodyMeasurements([indicador], "Circunferências", "masculino")).toEqual([{ indicador, site: { view: "front", x: 180, y: 207 } }]);
   expect(bodySite("Indicador desconhecido", "Circunferências", "feminino")).toBeNull();
   expect(bodyMeasurements([], "Dobras cutâneas", "masculino")).toEqual([]);
+});
+
+import { idsAssimetricos as _ids } from "./anthropometry-body";
+describe("idsAssimetricos", () => {
+  const ind = (id: string, nome: string, valor: string) => ({ id, nome, valor, unidade: "cm", data: "" });
+  it("marca os dois lados quando os valores diferem e ignora lados iguais", () => {
+    const r = _ids([ind("1", "Coxa Direita", "56,5"), ind("2", "Coxa Esquerda", "56,0"), ind("3", "Panturrilha Direita", "36"), ind("4", "Panturrilha Esquerda", "36,0")], "Circunferências");
+    expect([...r].sort()).toEqual(["1", "2"]);
+  });
 });
