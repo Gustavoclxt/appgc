@@ -179,3 +179,9 @@ export const faixaEmKg = (faixa: FaixaEstimativa) => `${numero(faixa.min)} a ${n
 export const faixaPeso = (faixa: FaixaEstimativa) => `${numero(faixa.min)} a ${numero(faixa.max)} kg`;
 export const formatarMeses = (meses: number) =>
   `${meses.toLocaleString("pt-BR", { maximumFractionDigits: 2 })} ${meses === 1 ? "mês" : "meses"}`;
+
+/** Data da projeção: soma dias corridos à data base, sem influência de fuso ou horário de verão. */
+export function dataProjetada(base: Date, dias: number): string {
+  const data = new Date(Date.UTC(base.getFullYear(), base.getMonth(), base.getDate() + dias));
+  return data.toLocaleDateString("pt-BR", { timeZone: "UTC", day: "2-digit", month: "2-digit", year: "numeric" });
+}

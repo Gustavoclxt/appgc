@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { deriveResults } from "./calculations";
 import {
   calcularPotencialHipertrofia,
+  dataProjetada,
   faixaEmGramas,
   faixaEmKg,
   faixaPeso,
@@ -173,5 +174,19 @@ describe("Integração com os resultados derivados e o relatório", () => {
     expect(copia.texto).toContain(linha30);
     expect(copia.html).toContain("Potencial de Hipertrofia");
     expect(copia.html).toContain(linha30);
+  });
+});
+
+describe("dataProjetada", () => {
+  const base = new Date(2026, 10, 11); // 11/11/2026
+
+  it("soma dias corridos à data base", () => {
+    expect(dataProjetada(base, 30)).toBe("11/12/2026");
+    expect(dataProjetada(base, 45)).toBe("26/12/2026");
+  });
+
+  it("atravessa a virada do ano", () => {
+    expect(dataProjetada(base, 60)).toBe("10/01/2027");
+    expect(dataProjetada(base, 365)).toBe("11/11/2027");
   });
 });

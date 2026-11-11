@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
+
 import {
+  dataProjetada,
   faixaEmGramas,
   faixaEmKg,
   faixaPeso,
@@ -11,18 +14,22 @@ import type { StepProps } from "./types";
 
 interface MarcoLinhaDoTempo {
   rotulo: string;
+  dias: number;
   ganho: string;
   peso: string;
 }
 
 function LinhaDoTempo({ marcos }: { marcos: MarcoLinhaDoTempo[] }) {
+  const [hoje, setHoje] = useState<Date | null>(null);
+  useEffect(() => setHoje(new Date()), []);
+
   return (
-    <ol className="mt-4 sm:grid sm:grid-cols-4 sm:gap-3">
+    <ol className="mt-5 sm:grid sm:grid-cols-4 sm:gap-3">
       {marcos.map((marco, indice) => (
-        <li key={marco.rotulo} className="relative pb-6 pl-8 last:pb-0 sm:pb-0 sm:pl-0 sm:pt-8">
+        <li key={marco.rotulo} className="relative pb-7 pl-9 last:pb-0 sm:pb-0 sm:pl-0 sm:pt-9">
           {indice < marcos.length - 1 && (
             <>
-              <span aria-hidden className="absolute bottom-0 left-[7px] top-4 w-px bg-line sm:hidden" />
+              <span aria-hidden className="absolute bottom-0 left-[7px] top-5 w-px bg-line sm:hidden" />
               <span aria-hidden className="absolute left-1/2 right-[-0.75rem] top-[11px] hidden h-px bg-line sm:block" />
             </>
           )}
@@ -31,17 +38,13 @@ function LinhaDoTempo({ marcos }: { marcos: MarcoLinhaDoTempo[] }) {
             className="absolute left-0 top-1 h-[15px] w-[15px] rounded-full bg-accent ring-4 ring-accent-soft sm:left-1/2 sm:top-[4px] sm:-translate-x-1/2"
           />
           <div className="sm:text-center">
-            <p className="font-display text-sm font-semibold text-ink">{marco.rotulo}</p>
-            <dl className="mt-2 space-y-2">
-              <div>
-                <dt className="text-[11px] text-ink-soft">Ganho muscular estimado</dt>
-                <dd className="mt-0.5 font-mono text-[13px] font-semibold tabular-nums text-ink">{marco.ganho}</dd>
-              </div>
-              <div>
-                <dt className="text-[11px] text-ink-soft">Peso teórico</dt>
-                <dd className="mt-0.5 font-mono text-[13px] font-semibold tabular-nums text-ink">{marco.peso}</dd>
-              </div>
-            </dl>
+            <p className="text-[12px] font-medium text-ink-soft">
+              {marco.rotulo}
+              {hoje && <span className="text-ink-soft/80"> ({dataProjetada(hoje, marco.dias)})</span>}
+            </p>
+            <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-soft">Peso teórico</p>
+            <p className="mt-0.5 font-mono text-lg font-bold tabular-nums text-accent">{marco.peso}</p>
+            <p className="mt-1.5 text-[11px] leading-relaxed text-ink-soft">Ganho muscular: +{marco.ganho}</p>
           </div>
         </li>
       ))}
@@ -75,11 +78,13 @@ export function Step6Hipertrofia({ a, d }: Pick<StepProps, "a" | "d">) {
             marcos={[
               ...potencial.projecoes.map((projecao) => ({
                 rotulo: `${projecao.dias} dias`,
+                dias: projecao.dias,
                 ganho: faixaEmGramas(projecao.ganho),
                 peso: faixaPeso(projecao.peso),
               })),
               {
                 rotulo: "1 ano",
+                dias: 365,
                 ganho: faixaEmKg(potencial.anual.ganho),
                 peso: faixaPeso(potencial.anual.peso),
               },
