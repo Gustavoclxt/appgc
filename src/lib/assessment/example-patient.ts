@@ -116,3 +116,131 @@ export function createExampleAtypicalDay(): Refeicao[] {
       : meal,
   );
 }
+
+/** Segundo paciente fictício: preenchido no segundo clique de "Preencher Exemplo". */
+export function createExampleAssessmentAllan(): Assessment {
+  const base = createEmptyAssessment();
+  return {
+    ...base,
+    nome: "Allan Pinheiro Bilinski",
+    dataNascimento: "1987-03-14",
+    sexo: "masculino",
+    profissao: "Analista de TI",
+    jaFezDieta: "nao",
+    objetivos: ["Hipertrofia"],
+    incomodoFisico: "Braços e peito com pouca massa muscular",
+    pesoDesejado: "",
+    maiorDificuldade: "Lembrar de comer no meio da tarde e manter o volume de treino",
+    motivacao: "9",
+    faltaParaDez: "Dormir mais cedo e planejar as refeições da semana",
+    historicoPeso: "Infância: peso adequado\nAdolescência: ganho de massa com o futebol\nVida adulta: oscila 3 a 4 kg e ganha dificuldade para ganhar peso",
+    hma: "Cansaço no fim da tarde e sonolência após o almoço",
+    hmp: "Sem doenças crônicas relatadas; dor lombar leve em treino pesado",
+    hmf: "Pai com dislipidemia; mãe com hipotireoidismo",
+    medicamentos: [],
+    possuiExames: "sim",
+    planoSaude: "sim",
+    observacoesExames: "Exames de rotina de 6 meses atrás",
+    alergia: "nao",
+    restricaoAlimentar: "nao",
+    eaas: "nao",
+    habitosSociais: ["Etilista"],
+    etilismoQuantidade: "2 chopes",
+    etilismoFrequencia: "1x/semana",
+    funcaoEstomacal: ["Normal"],
+    frequenciaEvacuacao: "1 a 2 vezes por dia",
+    bristol: "B4",
+    consumoAgua: "3 L/dia",
+    armstrong: "A3",
+    horaDormir: "00:00",
+    horaAcordar: "07:00",
+    qualidadeSono: "Moderada",
+    entradaTrabalho: "09:00",
+    saidaTrabalho: "18:00",
+    intervaloRefeicoes: "sim",
+    intervaloRefeicoesHorarios: "12:00 às 13:00",
+    cozinhaTrabalho: "sim",
+    praticaAtividadeFisica: "sim",
+    modalidades: [{
+      id: novoId(), modalidade: "Musculação", tempoPratica: "2 anos", horario: "19:00", duracao: "75 min",
+      frequenciaSemanal: "4", diasSemana: "Segunda, Terça, Quinta, Sexta", diasDescanso: "Quarta, Sábado, Domingo",
+      nota: "8", justificativa: "Gosta do treino, mas a rotina de trabalho atrapalha",
+    }],
+    quemPrepara: "propria",
+    comeFora: "sim",
+    comeForaFrequencia: "2x/semana",
+    comeForaDias: "Quarta e sábado",
+    consomeFritos: "as-vezes",
+    fritosFrequencia: "1x/semana",
+    horariosFome: ["Manhã", "Noite"],
+    observacoesFome: "Fome maior à noite, depois do treino",
+    habitoBeliscar: "nao",
+    beliscarDescricao: "",
+    usaSuplemento: "sim",
+    suplementos: [
+      { id: novoId(), nome: "Creatina", dose: "5 g", horario: "Manhã", frequencia: "Diária", observacoes: "" },
+      { id: novoId(), nome: "Whey protein", dose: "30 g", horario: "Pós-treino", frequencia: "Diária", observacoes: "" },
+    ],
+    aceitaWhey: "sim",
+    prefVegetais: ["Alface", "Tomate", "Cenoura", "Brócolis", "Abobrinha"],
+    prefFrutas: ["Banana", "Maçã", "Mamão", "Uva"],
+    prefLeguminosas: ["Feijão", "Lentilha"],
+    prefLacteos: ["Leite", "Iogurte", "Queijo"],
+    prefCafeCha: ["Café com leite", "Café puro", "Chá"],
+    acucarAdocante: "Açúcar",
+    prefProteinas: ["Bovina", "Frango", "Peixe", "Ovos"],
+    prefCarboidratos: ["Arroz", "Batata-doce", "Pão", "Tapioca", "Macarrão"],
+    prefCereais: ["Aveia", "Chia"],
+    prefGorduras: ["Azeite de Oliva", "Oleaginosas"],
+    prefDoces: ["Pasta de Amendoim", "Chocolate"],
+    aversoes: "Fígado",
+    diarioAlimentar: [
+      refeicao("Desjejum", "07:00", "Casa", [["Pão francês", "2 unidades"], ["Ovos mexidos", "4 unidades"], ["Café com leite", "300 ml"]]),
+      refeicao("Lanche da manhã", "10:00", "Trabalho", [["Iogurte grego", "170 g"], ["Aveia", "30 g"], ["Banana", "1 unidade"]]),
+      refeicao("Almoço", "12:30", "Restaurante", [["Arroz branco", "6 colheres de sopa"], ["Feijão", "2 conchas"], ["Peito de frango grelhado", "180 g"], ["Batata-doce", "150 g"], ["Salada de alface, tomate e cenoura", "1 prato"], ["Azeite de oliva", "1 colher de sopa"]]),
+      refeicao("Lanche da tarde", "16:00", "Trabalho", [["Tapioca", "100 g"], ["Ovos mexidos", "2 unidades"], ["Café puro", "50 ml"]]),
+      refeicao("Jantar", "20:00", "Casa", [["Arroz branco", "5 colheres de sopa"], ["Patinho grelhado", "150 g"], ["Feijão", "1 concha"], ["Legumes refogados", "1 prato"], ["Azeite de oliva", "1 colher de sopa"]]),
+      refeicao("Ceia", "22:30", "Casa", [["Iogurte natural", "170 g"], ["Pasta de amendoim", "15 g"]]),
+    ],
+    tempoAlimentacaoAtual: "1 ano",
+    alturaReferida: "1,82",
+    pesoReferido: "79",
+    evolucaoPeso: "Mantendo peso",
+    altura: "1.82",
+    alturaUnidade: "m",
+    peso: "79",
+    percentualGordura: "18",
+    metodoGordura: "Bioimpedância",
+    fatorAtividade: "1.7",
+    estrategia: "superavit",
+    tipoAjuste: "percentual",
+    percentualAjuste: "10",
+    refeicoesLivresSemana: "",
+    vetRefeicoesLivres: "",
+  };
+}
+
+/** Recordatório independente para o dia atípico do segundo paciente de exemplo. */
+export function createExampleAtypicalDayAllan(): Refeicao[] {
+  return createExampleAssessmentAllan().diarioAlimentar.map((meal) =>
+    meal.refeicao === "Jantar"
+      ? refeicao("Jantar", meal.horario, "Casa", [["Picanha", "200 g"], ["Pão de alho", "3 unidades"], ["Cerveja", "3 latas"]])
+      : meal,
+  );
+}
+
+export interface ExemploClinico {
+  criar: () => Assessment;
+  criarDiaAtipico: () => Refeicao[];
+}
+
+/** Pacientes fictícios disponíveis em "Preencher Exemplo", na ordem de uso. */
+export const EXEMPLOS_CLINICOS: ExemploClinico[] = [
+  { criar: createExampleAssessment, criarDiaAtipico: createExampleAtypicalDay },
+  { criar: createExampleAssessmentAllan, criarDiaAtipico: createExampleAtypicalDayAllan },
+];
+
+/** Índice do próximo paciente fictício: o botão alterna entre eles a cada clique. */
+export function proximoExemploClinico(atual: number): number {
+  return (atual + 1) % EXEMPLOS_CLINICOS.length;
+}

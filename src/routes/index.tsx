@@ -28,7 +28,7 @@ import { alimentosDoDiario, calcularComposicaoDasRefeicoes, chaveDiario, comCach
 import { novaRefeicaoAtipica } from "@/components/assessment/AtypicalDay";
 import { deriveResults, fmtData } from "@/lib/assessment/calculations";
 import { createEmptyAssessment, ETAPAS, novoId } from "@/lib/assessment/initial-state";
-import { createExampleAssessment, createExampleAtypicalDay } from "@/lib/assessment/example-patient";
+import { EXEMPLOS_CLINICOS, proximoExemploClinico } from "@/lib/assessment/example-patient";
 import { buildResumo } from "@/lib/assessment/summary";
 import type { AnaliseIA, Assessment, Refeicao } from "@/lib/assessment/types";
 import logoGc from "@/assets/logo-gc.png.asset.json";
@@ -58,6 +58,8 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [etapa, setEtapa] = useState(1);
   const [dados, setDados] = useState<Assessment>(() => createEmptyAssessment());
+  // Índice do paciente fictício já preenchido; -1 = nenhum ainda, então o 1º clique usa o primeiro.
+  const [exemploClinico, setExemploClinico] = useState(-1);
   const [analise, setAnalise] = useState<AnaliseIA | null>(null);
   const [analisando, setAnalisando] = useState(false);
   const [erroAnalise, setErroAnalise] = useState(false);
@@ -273,8 +275,11 @@ function Index() {
               <button
                 type="button"
                 onClick={() => {
-                  setDados(createExampleAssessment());
-                  setDiaAtipico(createExampleAtypicalDay());
+                  const proximo = proximoExemploClinico(exemploClinico);
+                  setExemploClinico(proximo);
+                  const exemplo = EXEMPLOS_CLINICOS[proximo]!;
+                  setDados(exemplo.criar());
+                  setDiaAtipico(exemplo.criarDiaAtipico());
                   setComposicaoAtipica(null);
                   setAnalise(null);
                   setComposicao(null);
