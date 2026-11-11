@@ -62,13 +62,13 @@ export function Step6Hipertrofia({ a, d }: Pick<StepProps, "a" | "d">) {
         <>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="rounded-[10px] bg-accent-soft p-4 ring-1 ring-accent/20">
-              <p className="text-[12px] font-medium text-ink-soft">Potencial mensal de ganho muscular</p>
+              <p className="text-sm font-medium text-ink-soft">Potencial mensal de ganho muscular</p>
               <p className="mt-1 font-mono text-lg font-semibold tabular-nums text-accent">
                 {faixaEmGramas(potencial.mensal)}<span className="text-[12px] font-normal">/mês</span>
               </p>
             </div>
             <div className="rounded-[10px] bg-paper p-4 ring-1 ring-line">
-              <p className="text-[12px] font-medium text-ink-soft">Estágio de treinamento</p>
+              <p className="text-sm font-medium text-ink-soft">Estágio de treinamento</p>
               <p className="mt-1 font-display text-lg font-semibold text-ink">{potencial.estagio}</p>
               <p className="mt-0.5 font-mono text-[11px] text-ink-soft">{formatarMeses(potencial.tempoMeses)} de Musculação</p>
             </div>
