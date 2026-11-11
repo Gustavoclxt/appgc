@@ -78,9 +78,9 @@ describe("pesoAntropometricoAnexado", () => {
     const a = {
       dataAvaliacaoAntropometrica: "2026-11-01",
       indicadoresAntropometricos: [
-        { nome: "Peso", valor: "78,50", unidade: "kg", data: "2026-10-01" },
-        { nome: "Peso", valor: "79,00", unidade: "kg", data: "2026-11-01" },
-        { nome: "Cintura", valor: "90", unidade: "cm", data: "2026-11-01" },
+        { id: "1", nome: "Peso", valor: "78,50", unidade: "kg", data: "2026-10-01" },
+        { id: "2", nome: "Peso", valor: "79,00", unidade: "kg", data: "2026-11-01" },
+        { id: "3", nome: "Cintura", valor: "90", unidade: "cm", data: "2026-11-01" },
       ],
     };
     expect(pesoAntropometricoAnexado(a)).toBe(79);
