@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { AGUA_MAX, escalaAgua, escalaAguaMeio, formatarLitros, formatarLitrosAgua, lerLitrosAgua } from "./hydration";
+import { AGUA_MAX, classificarIngestaoAgua, escalaAgua, escalaAguaMeio, formatarLitros, formatarLitrosAgua, lerLitrosAgua } from "./hydration";
 
 describe("slider de hidratação", () => {
   it("lê litros a partir do valor armazenado na sessão", () => {
@@ -43,5 +43,19 @@ describe("slider de hidratação", () => {
     expect(escalaAguaMeio[1]).toBe(1.5);
     expect(escalaAguaMeio[2]).toBe(2.5);
     expect(escalaAguaMeio[5]).toBe(5.5);
+  });
+});
+
+describe("classificarIngestaoAgua", () => {
+  it("compara com a meta arredondada exibida em Hidratação recomendada", () => {
+    expect(classificarIngestaoAgua(2, 1989.2)).toBe("adequada");
+    expect(classificarIngestaoAgua(1.98, 1989.2)).toBe("moderada");
+  });
+
+  it("moderada acima de 50% da meta, insuficiente em 50% ou menos", () => {
+    expect(classificarIngestaoAgua(1.5, 2000)).toBe("moderada");
+    expect(classificarIngestaoAgua(1.01, 2000)).toBe("moderada");
+    expect(classificarIngestaoAgua(1, 2000)).toBe("insuficiente");
+    expect(classificarIngestaoAgua(0.8, 2000)).toBe("insuficiente");
   });
 });

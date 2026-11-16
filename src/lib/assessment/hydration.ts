@@ -25,3 +25,18 @@ export function formatarLitros(litros: number): string {
 export function formatarLitrosAgua(litros: number): string {
   return `${formatarLitros(litros)} L/dia`;
 }
+
+// Comparação da ingestão com a meta arredondada exibida em "Hidratação recomendada".
+export type IngestaoAgua = "adequada" | "moderada" | "insuficiente";
+
+/**
+ * Compara a ingestão (L/dia) com a meta (mL/dia) arredondada como ela aparece no relatório.
+ * Igual ou acima da meta => adequada; abaixo dela, acima de 50% da meta => moderada;
+ * 50% ou menos => insuficiente.
+ */
+export function classificarIngestaoAgua(litros: number, metaMl: number): IngestaoAgua {
+  const meta = Math.round(metaMl);
+  const ingestao = Math.round(litros * 1000);
+  if (ingestao >= meta) return "adequada";
+  return ingestao > meta * 0.5 ? "moderada" : "insuficiente";
+}

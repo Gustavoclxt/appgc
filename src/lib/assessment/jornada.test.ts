@@ -64,6 +64,28 @@ describe("Jornada de Recomposição Corporal", () => {
     }
   });
 
+  it("ícone da água: ! quando falta mais de 50% da meta e seta para baixo quando falta 50% ou menos", () => {
+    const base = { ...createExampleAssessment(), peso: "70", altura: "180", alturaUnidade: "cm" as const, armstrong: "A3" };
+    // Meta arredondada: 2.100 mL/dia (70 kg x 30 mL/kg), como exibida em "Hidratação recomendada".
+    expect(deriveResults(base).aguaMin).toBe(2100);
+    const linha = (consumoAgua: string) =>
+      construirJornada({ ...base, consumoAgua }, deriveResults(base), null).hoje.habitos.linhas.find((l) => l.rotulo === "Ingestão de água")!;
+    expect(linha("1,5 L/dia").tom).toBe("moderado");
+    expect(linha("1,5 L/dia").seta ?? null).toBeNull();
+    expect(linha("1 L/dia").tom).toBe("atencao");
+    expect(linha("1 L/dia").seta).toBe("down");
+    expect(linha("2,1 L/dia").tom).toBe("ok");
+    expect(linha("2,1 L/dia").seta ?? null).toBeNull();
+  });
+
+  it("cor da urina pode agravar, mas nunca suavizar, o alerta de água abaixo da meta", () => {
+    const base = { ...createExampleAssessment(), peso: "70", altura: "180", alturaUnidade: "cm" as const, consumoAgua: "1,5 L/dia" };
+    const linha = (armstrong: string) =>
+      construirJornada({ ...base, armstrong }, deriveResults(base), null).hoje.habitos.linhas.find((l) => l.rotulo === "Ingestão de água")!;
+    expect(linha("A3").tom).toBe("moderado");
+    expect(linha("A7").tom).toBe("atencao");
+  });
+
   it("exames não têm status moderado: dentro da referência fica ok e não entra na lista", () => {
     const limite = { id: "1", exame: "Glicose", resultado: "74", unidade: "mg/dL", referencia: "70 a 99", status: "dentro" as const };
     expect(exameJornada(limite, "Glicose").tom).toBe("ok");

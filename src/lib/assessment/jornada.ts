@@ -1,7 +1,7 @@
 import { calculateBMI, fmt2, fmtData, fmtInt, parseNumero, type DerivedResults } from "./calculations";
 import { valorComUnidade } from "./anthropometry-groups";
 import { resumoVetFinal } from "./free-meal";
-import { lerLitrosAgua, formatarLitros as litrosBase } from "./hydration";
+import { classificarIngestaoAgua, formatarLitros as litrosBase, lerLitrosAgua } from "./hydration";
 import {
   faixaEmGramas,
   faixaEmKg,
@@ -23,6 +23,24 @@ import { pesoNoDia } from "./weight-projection";
 export const NI = "Não informado";
 export type Tom = "ok" | "moderado" | "atencao" | "neutro";
 export type Seta = "up" | "down" | "igual" | null;
+
+// Piora progressiva dos status: neutro < ok < moderado < atencao.
+const ORDEM_TOM: Record<Tom, number> = { neutro: 0, ok: 1, moderado: 2, atencao: 3 };
+const piorTom = (a: Tom, b: Tom): Tom => (ORDEM_TOM[a] >= ORDEM_TOM[b] ? a : b);
+
+/**
+ * Ícone da ingestão de água. Abaixo da meta arredondada exibida em "Hidratação recomendada",
+ * o volume define o alerta: "!" quando resta mais de 50% da meta e seta vermelha para baixo
+ * quando resta 50% ou menos. A cor da urina (Armstrong) nunca suaviza esse alerta.
+ */
+function statusIngestaoAgua(litros: number | null, metaMl: number | null, arm: number | null): { tom: Tom; seta: Seta } {
+  const porCor: Tom = arm === null ? "neutro" : arm <= 3 ? "ok" : arm <= 5 ? "moderado" : "atencao";
+  if (litros === null || metaMl === null) return { tom: porCor, seta: null };
+  const classe = classificarIngestaoAgua(litros, metaMl);
+  if (classe === "insuficiente") return { tom: "atencao", seta: "down" };
+  if (classe === "moderada") return { tom: piorTom("moderado", porCor), seta: null };
+  return { tom: porCor, seta: null };
+}
 
 export interface LinhaJornada {
   rotulo: string;
@@ -317,6 +335,9 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
   const alcool = estimativaAlcool(a);
   const litros = a.consumoAgua ? lerLitrosAgua(a.consumoAgua) : null;
   const arm = armstrongNivel(a.armstrong);
+  // Meta arredondada como aparece em "Hidratação recomendada"; serve ao ícone e aos pontos de melhora.
+  const metaAguaMl = d.aguaMin !== null ? Math.round(d.aguaMin) : null;
+  const aguaStatus = statusIngestaoAgua(litros, metaAguaMl, arm);
   const habitos: CardJornada = {
     titulo: "Saúde e Estilo de Vida",
     linhas: [
@@ -343,7 +364,8 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
         rotulo: "Ingestão de água",
         valor: litros !== null ? `${formatarLitros(litros)} por dia` : NI,
         detalhe: arm !== null ? `Cor da urina: nível ${arm} de 8 (Armstrong)` : "Armstrong: não informado",
-        tom: arm === null ? "neutro" : arm <= 3 ? "ok" : arm <= 5 ? "moderado" : "atencao",
+        tom: aguaStatus.tom,
+        seta: aguaStatus.seta,
       },
       {
         rotulo: "Bebida alcoólica",
@@ -448,8 +470,7 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
         nota: metas ? "Estimativas que dependem da adesão e da resposta individual." : "Projeção disponível quando o objetivo inclui emagrecimento.",
       };
 
-  // A referência já calculada usa PIO em sobrepeso/obesidade, sem arredondamento.
-  const metaAguaMl = d.aguaMin;
+  // A referência já calculada usa PIO em sobrepeso/obesidade; metaAguaMl arredondada vem do topo da etapa.
   const aguaAdequada = litros !== null && metaAguaMl !== null && litros * 1000 >= metaAguaMl;
   const aguaAbaixoDaMeta = litros !== null && metaAguaMl !== null && litros * 1000 < metaAguaMl;
   const pontosAlimentares = [
