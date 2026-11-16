@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { construirJornada, exameJornada } from "./jornada";
-import { createExampleAssessment } from "./example-patient";
+import { createExampleAssessment, createExampleAssessmentAllan } from "./example-patient";
+import { faixaEmGramas } from "./hypertrophy-potential";
 import { deriveResults, fmt2, fmtInt } from "./calculations";
 
 describe("Jornada de Recomposição Corporal", () => {
@@ -117,5 +118,26 @@ describe("Jornada de Recomposição Corporal", () => {
     const d = deriveResults(a);
     const linha = construirJornada(a, d, null).caminho.projecao.linhas.find((l) => l.rotulo === "Meta calórica diária")!;
     expect(linha.valor).toBe(`${fmtInt(d.caloriasSugeridas as number)} kcal`);
+  });
+
+  it("com Hipertrofia selecionada, a projeção da Jornada é de hipertrofia", () => {
+    const a = createExampleAssessmentAllan();
+    const d = deriveResults(a);
+    const projecao = construirJornada(a, d, null).caminho.projecao;
+    expect(projecao.titulo).toBe("Projeção de hipertrofia");
+    expect(d.potencialHipertrofia).not.toBeNull();
+    expect(projecao.linhas.find((l) => l.rotulo === "Potencial mensal de ganho muscular")!.valor).toBe(
+      faixaEmGramas(d.potencialHipertrofia!.mensal),
+    );
+    expect(projecao.linhas.find((l) => l.rotulo === "Estágio de treinamento")!.valor).toBe(d.potencialHipertrofia!.estagio);
+    expect(projecao.linhas.some((l) => l.rotulo === "Déficit calórico diário")).toBe(false);
+    expect(projecao.linhas.some((l) => l.rotulo === "Peso desejado")).toBe(false);
+  });
+
+  it("com Emagrecimento selecionado, a projeção da Jornada continua de emagrecimento", () => {
+    const a = createExampleAssessment();
+    const projecao = construirJornada(a, deriveResults(a), null).caminho.projecao;
+    expect(projecao.titulo).toBe("Projeção de emagrecimento");
+    expect(projecao.linhas.some((l) => l.rotulo === "Potencial mensal de ganho muscular")).toBe(false);
   });
 });

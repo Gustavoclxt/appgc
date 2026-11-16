@@ -85,6 +85,11 @@ export function objetivoPermiteHipertrofia(objetivos: string[]): boolean {
   });
 }
 
+/** Hipertrofia propriamente dita, sem incluir "Recomposição Corporal". */
+export function objetivoEhHipertrofia(objetivos: string[]): boolean {
+  return objetivos.some((objetivo) => normalizar(objetivo) === "hipertrofia");
+}
+
 /** Interpreta textos como "6 meses", "2 anos" e "1 ano e 6 meses". */
 export function tempoPraticaEmMeses(valor: string): number | null {
   const texto = normalizar(valor).replace(",", ".");

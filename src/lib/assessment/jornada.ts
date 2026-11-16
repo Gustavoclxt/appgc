@@ -2,6 +2,13 @@ import { calculateBMI, fmt2, fmtData, fmtInt, parseNumero, type DerivedResults }
 import { valorComUnidade } from "./anthropometry-groups";
 import { resumoVetFinal } from "./free-meal";
 import { lerLitrosAgua, formatarLitros as litrosBase } from "./hydration";
+import {
+  faixaEmGramas,
+  faixaEmKg,
+  faixaPeso,
+  formatarMeses,
+  objetivoEhHipertrofia,
+} from "./hypertrophy-potential";
 const formatarLitros = (l: number) => `${litrosBase(l).replace(/\s*L$/i, "")} L`;
 import type { Assessment, ExameLaboratorial, IndicadorAntropometrico } from "./types";
 import type { MetasPesoResultado } from "./weight-goals";
@@ -393,17 +400,53 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
       seta: (p ? "down" : null) as Seta,
     };
   });
-  const projecao: CardJornada = {
-    titulo: "Projeção de emagrecimento",
-    linhas: [
-      { rotulo: "Peso desejado", valor: exp ? `${fmt2(exp.pesoAlvo)} kg` : NI, detalhe: exp ? `Perda de ${fmt2(exp.kg)} kg` : undefined },
-      { rotulo: "Prazo estimado", valor: prazo },
-      ...checkpoints,
-      { rotulo: "Déficit calórico diário", valor: deficit !== null ? `${fmtInt(deficit)} kcal` : NI },
-      { rotulo: "Meta calórica diária", valor: metaCalorica !== null ? `${fmtInt(metaCalorica)} kcal` : NI, tom: "ok" },
-    ],
-    nota: metas ? "Estimativas que dependem da adesão e da resposta individual." : "Projeção disponível quando o objetivo inclui emagrecimento.",
+  const metaCaloricaLinha: LinhaJornada = {
+    rotulo: "Meta calórica diária",
+    valor: metaCalorica !== null ? `${fmtInt(metaCalorica)} kcal` : NI,
+    tom: "ok",
   };
+  // Com Hipertrofia selecionada, a projeção da Jornada é de ganho muscular (modelo de Lyle McDonald)
+  // e consome o mesmo resultado já calculado para a etapa de Energia.
+  const potencial = d.potencialHipertrofia;
+  const projecao: CardJornada = objetivoEhHipertrofia(a.objetivos)
+    ? {
+        titulo: "Projeção de hipertrofia",
+        linhas: potencial
+          ? [
+              { rotulo: "Estágio de treinamento", valor: potencial.estagio, detalhe: `${formatarMeses(potencial.tempoMeses)} de musculação` },
+              { rotulo: "Potencial mensal de ganho muscular", valor: faixaEmGramas(potencial.mensal), tom: "ok" },
+              ...potencial.projecoes.map((p) => ({
+                rotulo: `Revisão em ${p.dias} dias`,
+                valor: faixaPeso(p.peso),
+                detalhe: `Ganho muscular: +${faixaEmGramas(p.ganho)}`,
+                seta: "up" as Seta,
+                tom: "ok" as Tom,
+              })),
+              {
+                rotulo: "Projeção em 1 ano",
+                valor: faixaPeso(potencial.anual.peso),
+                detalhe: `Ganho muscular: +${faixaEmKg(potencial.anual.ganho)}`,
+                seta: "up" as Seta,
+                tom: "ok" as Tom,
+              },
+              metaCaloricaLinha,
+            ]
+          : [{ rotulo: "Potencial mensal de ganho muscular", valor: NI, tom: "neutro" as Tom }, metaCaloricaLinha],
+        nota: potencial
+          ? "Estimativas teóricas do modelo de Lyle McDonald, que dependem da adesão e da resposta individual."
+          : "Informe sexo, peso na avaliação antropométrica e o tempo de musculação para calcular as estimativas.",
+      }
+    : {
+        titulo: "Projeção de emagrecimento",
+        linhas: [
+          { rotulo: "Peso desejado", valor: exp ? `${fmt2(exp.pesoAlvo)} kg` : NI, detalhe: exp ? `Perda de ${fmt2(exp.kg)} kg` : undefined },
+          { rotulo: "Prazo estimado", valor: prazo },
+          ...checkpoints,
+          { rotulo: "Déficit calórico diário", valor: deficit !== null ? `${fmtInt(deficit)} kcal` : NI },
+          metaCaloricaLinha,
+        ],
+        nota: metas ? "Estimativas que dependem da adesão e da resposta individual." : "Projeção disponível quando o objetivo inclui emagrecimento.",
+      };
 
   const metaAguaMl = d.pesoKg !== null ? d.pesoKg * 30 : null;
   const pontosAlimentares = [
