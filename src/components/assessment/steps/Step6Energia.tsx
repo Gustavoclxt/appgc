@@ -187,7 +187,7 @@ export function Step6Energia({
                           }
                         }}
                         options={[...kcalPresets, { value: "outro", label: "Outro" }]}
-                        placeholder="Selecione"
+                        placeholder={a.estrategia === "deficit" ? "Selecione o déficit" : "Selecione o superávit"}
                       />
                     </div>
                   </Field>
@@ -221,7 +221,7 @@ export function Step6Energia({
                           }
                         }}
                         options={[...percentuais, { value: "outro", label: "Outro" }]}
-                        placeholder="Selecione"
+                        placeholder={a.estrategia === "deficit" ? "Selecione o déficit" : "Selecione o superávit"}
                       />
                     </div>
                   </Field>
