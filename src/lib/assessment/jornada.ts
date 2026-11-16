@@ -448,7 +448,10 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
         nota: metas ? "Estimativas que dependem da adesão e da resposta individual." : "Projeção disponível quando o objetivo inclui emagrecimento.",
       };
 
-  const metaAguaMl = d.pesoKg !== null ? d.pesoKg * 30 : null;
+  // A referência já calculada usa PIO em sobrepeso/obesidade, sem arredondamento.
+  const metaAguaMl = d.aguaMin;
+  const aguaAdequada = litros !== null && metaAguaMl !== null && litros * 1000 >= metaAguaMl;
+  const aguaAbaixoDaMeta = litros !== null && metaAguaMl !== null && litros * 1000 < metaAguaMl;
   const pontosAlimentares = [
     achados.includes("Excesso de ultraprocessados") || achados.includes("Consumo frequente de frituras") || achados.includes("Frituras ocasionais")
       ? "Reduzir ultraprocessados, frituras e alimentos muito calóricos"
@@ -465,9 +468,14 @@ export function construirJornada(a: Assessment, d: DerivedResults, metas: MetasP
       ...pontosAlimentares.map((p, i) => ({ rotulo: i === 0 ? "Alimentação" : "", valor: p })),
       {
         rotulo: "Água",
-        valor: metaAguaMl !== null ? `Chegar a ${formatarLitros(metaAguaMl / 1000)} por dia` : "Pelo menos 30 mL por kg/dia",
-        detalhe: litros !== null && metaAguaMl !== null && litros * 1000 < metaAguaMl ? `Aumentar aos poucos: +0,5 L a cada 2 semanas (hoje ${formatarLitros(litros)})` : "Meta progressiva de 30 mL/kg/dia",
-        seta: "up",
+        valor: aguaAdequada ? "Ingestão adequada — sem necessidade de ajuste" : metaAguaMl !== null ? `Referência: ${formatarLitros(metaAguaMl / 1000)} por dia` : NI,
+        detalhe: aguaAdequada && litros !== null
+          ? `Ingestão atual: ${formatarLitros(litros)} por dia; meta atingida`
+          : aguaAbaixoDaMeta && litros !== null
+            ? `Aumentar aos poucos: +0,5 L a cada 2 semanas (hoje ${formatarLitros(litros)})`
+            : "Informe a ingestão e os dados antropométricos para avaliar a necessidade de ajuste",
+        seta: aguaAdequada ? "igual" : aguaAbaixoDaMeta ? "up" : null,
+        tom: aguaAdequada ? "ok" : "neutro",
       },
       ...(ehEtilista(a)
         ? [{ rotulo: "Bebida alcoólica", valor: "Reduzir de forma progressiva", detalhe: "Diminuir a frequência e a quantidade a cada mês", seta: "down" as Seta }]

@@ -31,12 +31,37 @@ describe("Jornada de Recomposição Corporal", () => {
     expect(jAcima.hoje.exames.map((e) => e.marcador)).toEqual(["LDL"]);
   });
 
-  it("meta hídrica usa 30 mL/kg/dia", () => {
-    const a = createExampleAssessment();
+  it.each(["2,1 L/dia", "3 L/dia"])("não pede aumento quando a ingestão %s atinge ou supera a meta", (consumoAgua) => {
+    const a = { ...createExampleAssessment(), peso: "70", altura: "180", alturaUnidade: "cm" as const, consumoAgua, armstrong: "A7" };
     const d = deriveResults(a);
-    const j = construirJornada(a, d, null);
-    const agua = j.destino.habitos.linhas.find((l) => l.rotulo === "Água")!;
-    expect(agua.valor).toContain(((d.pesoKg! * 30) / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 }).split(",")[0]);
+    expect(d.aguaMin).toBe(2100);
+    const agua = construirJornada(a, d, null).caminho.habitos.linhas.find((l) => l.rotulo === "Água");
+    expect(agua?.seta).toBe("igual");
+    expect(agua?.tom).toBe("ok");
+  });
+
+  it("sugere aumento somente quando a ingestão conhecida está abaixo da meta", () => {
+    const a = { ...createExampleAssessment(), peso: "70", altura: "180", alturaUnidade: "cm" as const, consumoAgua: "2 L/dia" };
+    const d = deriveResults(a);
+    expect(d.aguaMin).toBe(2100);
+    expect(construirJornada(a, d, null).caminho.habitos.linhas.find((l) => l.rotulo === "Água")?.seta).toBe("up");
+  });
+
+  it("compara a ingestão com a meta baseada no PIO em vez do peso atual", () => {
+    const a = { ...createExampleAssessment(), peso: "100", altura: "200", alturaUnidade: "cm" as const, consumoAgua: "2,995 L/dia" };
+    const d = deriveResults(a);
+    expect(d.pio).toBeCloseTo(99.7, 8);
+    expect(d.aguaMin).toBeCloseTo(2991, 8);
+    expect(construirJornada(a, d, null).caminho.habitos.linhas.find((l) => l.rotulo === "Água")?.seta).toBe("igual");
+  });
+
+  it("não presume necessidade de aumento quando faltam ingestão ou meta", () => {
+    const base = createExampleAssessment();
+    for (const a of [{ ...base, consumoAgua: "" }, { ...base, peso: "", consumoAgua: "3 L/dia" }]) {
+      const agua = construirJornada(a, deriveResults(a), null).caminho.habitos.linhas.find((l) => l.rotulo === "Água");
+      expect(agua?.seta).toBeNull();
+      expect(agua?.tom).toBe("neutro");
+    }
   });
 
   it("exames não têm status moderado: dentro da referência fica ok e não entra na lista", () => {
