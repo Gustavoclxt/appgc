@@ -43,3 +43,4 @@
 - Build the Jornada de Recomposição Corporal once in jornada.ts (screen component and jornada-pdf.ts only render it) so screen and PDF never diverge.
 - Keep exam-date aggregation in exam-dates.ts so the Exames identificados header shows each collection date once instead of repeating it on every table row.
 - Render every projection milestone sequence through the shared LinhaDoTempo component so hypertrophy and weight-loss panels keep one identical timeline layout.
+- Measure Jornada PDF cards at their two-column width before drawing each paired row, reserving the entire first row with its section heading to keep wrapped content and pagination aligned.
