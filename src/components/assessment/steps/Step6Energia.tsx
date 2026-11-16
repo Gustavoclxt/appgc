@@ -173,7 +173,7 @@ export function Step6Energia({
             {a.tipoAjuste === "kcal" ? (
               <>
                 <div className="flex flex-wrap items-end gap-3">
-                  <Field label={a.estrategia === "deficit" ? "Déficit" : "Superávit"}>
+                  <Field>
                     <div className="w-40">
                       <Select
                         value={mostrarKcalPersonalizado ? "outro" : a.kcalAjuste}
@@ -207,7 +207,7 @@ export function Step6Energia({
             ) : (
               <>
                 <div className="flex flex-wrap items-end gap-3">
-                  <Field label={a.estrategia === "deficit" ? "Déficit" : "Superávit"}>
+                  <Field>
                     <div className="w-40">
                       <Select
                         value={mostrarPercentualPersonalizado ? "outro" : a.percentualAjuste}

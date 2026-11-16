@@ -40,14 +40,14 @@ export function Field({
   children,
   className,
 }: {
-  label: string;
+  label?: string;
   hint?: string;
   children: ReactNode;
   className?: string;
 }) {
   return (
     <div className={className}>
-      <label className="mb-1.5 block text-[13px] font-medium text-ink">{label}</label>
+      {label && <label className="mb-1.5 block text-[13px] font-medium text-ink">{label}</label>}
       {children}
       {hint && <p className="mt-1 text-[11px] text-ink-soft">{hint}</p>}
     </div>
