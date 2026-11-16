@@ -48,7 +48,7 @@ export function ExamUpload({ a, set }: Pick<StepProps, "a" | "set">) {
     <>
       {a.exames.length > 0 && !lendo ? (
         <Button type="button" className="h-10 px-4" onClick={() => set("exames", [])}>
-          - Remover Exame
+          - Remover Exames
         </Button>
       ) : (
         <Button type="button" className="h-10 px-4" disabled={lendo} onClick={() => inputRef.current?.click()}>
