@@ -164,7 +164,7 @@ export function Step6Energia({
                 value={a.tipoAjuste}
                 onChange={(v) => v && set("tipoAjuste", v as typeof a.tipoAjuste)}
                 options={[
-                  { value: "kcal", label: "Valor fixo em kcal" },
+                  { value: "kcal", label: "Em calorias" },
                   { value: "percentual", label: "Percentual do VET" },
                 ]}
               />
