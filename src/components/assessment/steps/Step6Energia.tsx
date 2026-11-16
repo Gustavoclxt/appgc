@@ -174,7 +174,7 @@ export function Step6Energia({
               <>
                 <div className="flex flex-wrap items-end gap-3">
                   <Field>
-                    <div className="w-40">
+                    <div className="w-56">
                       <Select
                         value={mostrarKcalPersonalizado ? "outro" : a.kcalAjuste}
                         onChange={(v) => {
@@ -208,7 +208,7 @@ export function Step6Energia({
               <>
                 <div className="flex flex-wrap items-end gap-3">
                   <Field>
-                    <div className="w-40">
+                    <div className="w-56">
                       <Select
                         value={mostrarPercentualPersonalizado ? "outro" : a.percentualAjuste}
                         onChange={(v) => {
