@@ -980,6 +980,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           </Field>
           <Field label="Atualmente está:">
             <OptionRow
+              circular
               value={a.evolucaoPeso}
               onChange={(v) => set("evolucaoPeso", v)}
               options={[
