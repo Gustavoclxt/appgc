@@ -4,10 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverAnchor, PopoverContent } from "@/components/ui/popover";
 import { CONDICOES_COMUNS, adicionarCondicao, condicoesSelecionadas, removerCondicao } from "@/lib/assessment/health-conditions";
 
-export function HealthConditionsSelect({ label, value, onChange }: {
+export function HealthConditionsSelect({ label, value, onChange, choices = CONDICOES_COMUNS, placeholder = "Selecione doenças ou condições de saúde", menuTitle = "Condições comuns", addPlaceholder = "Nome da doença ou condição" }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
+  choices?: string[];
+  placeholder?: string;
+  menuTitle?: string;
+  addPlaceholder?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [adding, setAdding] = useState(false);
@@ -15,7 +19,7 @@ export function HealthConditionsSelect({ label, value, onChange }: {
   const trigger = useRef<HTMLButtonElement>(null);
   const id = useId();
   const selected = condicoesSelecionadas(value);
-  const options = CONDICOES_COMUNS.filter((item) => !selected.some((s) => s.toLocaleLowerCase("pt-BR") === item.toLocaleLowerCase("pt-BR")));
+  const options = choices.filter((item) => !selected.some((s) => s.toLocaleLowerCase("pt-BR") === item.toLocaleLowerCase("pt-BR")));
   const add = () => {
     if (!name.trim()) return;
     onChange(adicionarCondicao(value, name));
@@ -36,13 +40,13 @@ export function HealthConditionsSelect({ label, value, onChange }: {
             </span>
           ))}
           <Button ref={trigger} type="button" variant="ghost" aria-label={`Selecionar condições de ${label}`} aria-expanded={open} aria-haspopup="dialog" aria-controls={open ? id : undefined} className="h-auto min-h-9 min-w-10 flex-1 justify-between whitespace-normal px-2 text-left text-xs font-normal text-ink-soft hover:bg-muted hover:text-ink transition-none" onClick={(event) => { event.stopPropagation(); setOpen(!open); }}>
-            {selected.length === 0 ? <span>Selecione doenças ou condições de saúde</span> : <span className="sr-only">Selecionar condições</span>}
+            {selected.length === 0 ? <span>{placeholder}</span> : <span className="sr-only">Selecionar condições</span>}
             <ChevronDown aria-hidden className="ml-auto" />
           </Button>
         </div>
       </PopoverAnchor>
       <PopoverContent id={id} aria-label={`Condições de ${label}`} align="start" className="w-[var(--radix-popover-trigger-width)] max-w-[calc(100vw-2rem)] max-h-[var(--radix-popover-content-available-height)] overflow-y-auto rounded-lg p-4 sm:p-5 data-[state=open]:animate-none data-[state=closed]:animate-none" onCloseAutoFocus={(event) => { event.preventDefault(); trigger.current?.focus(); }}>
-        <h3 className="mb-3 text-sm font-semibold text-ink">Condições comuns</h3>
+        <h3 className="mb-3 text-sm font-semibold text-ink">{menuTitle}</h3>
         <div className="flex flex-wrap gap-2">
           {options.map((condition) => (
             <Button key={condition} type="button" variant="secondary" className="h-auto min-h-9 max-w-full whitespace-normal rounded-full bg-muted px-3 py-2 text-left text-xs font-normal text-ink hover:bg-accent-soft hover:text-accent transition-none" onClick={() => onChange(adicionarCondicao(value, condition))}>{condition}</Button>
@@ -50,7 +54,7 @@ export function HealthConditionsSelect({ label, value, onChange }: {
         </div>
         {adding ? (
           <form className="mt-4 flex flex-wrap items-center gap-2" onSubmit={(event) => { event.preventDefault(); add(); }}>
-            <input autoFocus aria-label={`Nova condição de ${label}`} value={name} onChange={(event) => setName(event.target.value)} placeholder="Nome da doença ou condição" className="min-w-0 flex-1 rounded-lg border border-input bg-card px-3 py-2 text-sm text-ink outline-none placeholder:text-ink-soft focus:ring-2 focus:ring-ring" />
+            <input autoFocus aria-label={`Nova condição de ${label}`} value={name} onChange={(event) => setName(event.target.value)} placeholder={addPlaceholder} className="min-w-0 flex-1 rounded-lg border border-input bg-card px-3 py-2 text-sm text-ink outline-none placeholder:text-ink-soft focus:ring-2 focus:ring-ring" />
             <Button type="submit" disabled={!name.trim()} className="transition-none"><Plus aria-hidden />Adicionar</Button>
             <Button type="button" variant="ghost" size="icon" aria-label="Cancelar inclusão" className="transition-none" onClick={() => { setAdding(false); setName(""); }}><X aria-hidden /></Button>
           </form>

@@ -4,6 +4,7 @@ import { AGUA_MAX, AGUA_MIN, AGUA_PASSO, escalaAgua, escalaAguaMeio, formatarLit
 import { Slider } from "@/components/ui/slider";
 import { ExamUpload } from "../ExamUpload";
 import { HealthConditionsSelect } from "../HealthConditionsSelect";
+import { condicoesSelecionadas } from "@/lib/assessment/health-conditions";
 
 import {
   ArmstrongSelect,
@@ -277,19 +278,18 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
       <Panel titulo="Revisão de Sistemas e Sono">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label="Função estomacal/intestinal" className="sm:col-span-2">
-            <MultiOptionRow
-              values={a.funcaoEstomacal}
-              onChange={(v) => {
+            <HealthConditionsSelect
+              label="Função estomacal/intestinal"
+              value={a.funcaoEstomacal.join("\n")}
+              placeholder="Selecione condições ou sintomas"
+              menuTitle="Função estomacal/intestinal"
+              addPlaceholder="Nome da condição ou sintoma"
+              onChange={(value) => {
+                const v = condicoesSelecionadas(value);
                 const adicionouNormal = v.includes("Normal") && !a.funcaoEstomacal.includes("Normal");
                 set("funcaoEstomacal", adicionouNormal ? ["Normal"] : v.filter((item) => item !== "Normal"));
               }}
-              options={[
-                { value: "Normal", label: "Normal" },
-                { value: "Azia", label: "Azia" },
-                { value: "Eructação excessiva", label: "Eructação excessiva" },
-                { value: "Refluxo", label: "Refluxo" },
-                { value: "Flatulência excessiva", label: "Flatulência excessiva" },
-              ]}
+              choices={["Normal", "Azia", "Eructação excessiva", "Refluxo", "Flatulência excessiva"]}
             />
           </Field>
           <Field label="Frequência de evacuação" className="w-[190px]">
