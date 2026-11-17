@@ -404,6 +404,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
         </div>
           <Field label="Qualidade do sono">
             <OptionRow
+              circular
               value={a.qualidadeSono}
               onChange={(v) => set("qualidadeSono", v)}
               options={[
