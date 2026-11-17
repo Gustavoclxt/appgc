@@ -3,6 +3,7 @@ import { podeAnexarExames } from "@/lib/assessment/anthropometry-groups";
 import { AGUA_MAX, AGUA_MIN, AGUA_PASSO, escalaAgua, escalaAguaMeio, formatarLitros, formatarLitrosAgua, lerLitrosAgua } from "@/lib/assessment/hydration";
 import { Slider } from "@/components/ui/slider";
 import { ExamUpload } from "../ExamUpload";
+import { HealthConditionsSelect } from "../HealthConditionsSelect";
 
 import {
   ArmstrongSelect,
@@ -118,20 +119,17 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           </Field>
           <h2 className="font-display text-base font-semibold tracking-tight">Condições de saúde</h2>
           <div>
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-5">
               <Field label="HMA">
-                <LongText value={a.hma} onChange={(v) => set("hma", v)} />
+                <HealthConditionsSelect label="HMA" value={a.hma} onChange={(v) => set("hma", v)} />
               </Field>
               <Field label="HMP">
-                <LongText value={a.hmp} onChange={(v) => set("hmp", v)} />
+                <HealthConditionsSelect label="HMP" value={a.hmp} onChange={(v) => set("hmp", v)} />
               </Field>
               <Field label="HMF">
-                <LongText value={a.hmf} onChange={(v) => set("hmf", v)} />
+                <HealthConditionsSelect label="HMF" value={a.hmf} onChange={(v) => set("hmf", v)} />
               </Field>
             </div>
-            <p className="mt-1 text-[11px] text-ink-soft">
-              DM, HAS, DRC, Dislipidemia, Obesidade, Hipotireoidismo, Hipertireoidismo, DRGE, problemas cardiovasculares, Osteoporose, SOP etc.
-            </p>
           </div>
         </div>
         <h2 className="mb-3 mt-7 font-display text-base font-semibold tracking-tight">Medicamentos em uso</h2>

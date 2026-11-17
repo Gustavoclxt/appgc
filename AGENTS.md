@@ -44,3 +44,4 @@
 - Keep exam-date aggregation in exam-dates.ts so the Exames identificados header shows each collection date once instead of repeating it on every table row.
 - Render every projection milestone sequence through the shared LinhaDoTempo component so hypertrophy and weight-loss panels keep one identical timeline layout.
 - Measure Jornada PDF cards at their two-column width before drawing each paired row, reserving the entire first row with its section heading to keep wrapped content and pagination aligned.
+- Keep HMA/HMP/HMF selection in HealthConditionsSelect and health-conditions; store newline-separated items in existing session strings and preserve legacy prose so analysis and reports retain their data without schema changes.
