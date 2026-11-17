@@ -28,14 +28,14 @@ export function HealthConditionsSelect({ label, value, onChange }: {
       <PopoverAnchor asChild>
         <div className="flex min-h-14 w-full flex-wrap items-center gap-2 rounded-lg border border-input bg-card p-2" onClick={() => setOpen(true)}>
           {selected.map((condition) => (
-            <span key={condition} className="flex max-w-full items-center gap-2 rounded-full bg-primary py-1.5 pl-3 pr-1.5 text-sm text-primary-foreground">
+            <span key={condition} className="flex max-w-full items-center gap-2 rounded-full bg-primary py-1.5 pl-3 pr-1.5 text-xs text-primary-foreground">
               <span className="min-w-0 break-words">{condition}</span>
               <Button type="button" variant="ghost" size="icon" className="h-6 w-6 shrink-0 rounded-full text-primary-foreground hover:bg-primary-foreground/15 hover:text-primary-foreground transition-none" aria-label={`Remover ${condition} de ${label}`} onClick={(event) => { event.stopPropagation(); onChange(removerCondicao(value, condition)); }}>
                 <X aria-hidden />
               </Button>
             </span>
           ))}
-          <Button ref={trigger} type="button" variant="ghost" aria-label={`Selecionar condições de ${label}`} aria-expanded={open} aria-haspopup="dialog" aria-controls={open ? id : undefined} className="h-auto min-h-9 min-w-10 flex-1 justify-between whitespace-normal px-2 text-left font-normal text-ink-soft hover:bg-muted hover:text-ink transition-none" onClick={(event) => { event.stopPropagation(); setOpen(!open); }}>
+          <Button ref={trigger} type="button" variant="ghost" aria-label={`Selecionar condições de ${label}`} aria-expanded={open} aria-haspopup="dialog" aria-controls={open ? id : undefined} className="h-auto min-h-9 min-w-10 flex-1 justify-between whitespace-normal px-2 text-left text-xs font-normal text-ink-soft hover:bg-muted hover:text-ink transition-none" onClick={(event) => { event.stopPropagation(); setOpen(!open); }}>
             {selected.length === 0 ? <span>Selecione doenças ou condições de saúde</span> : <span className="sr-only">Selecionar condições</span>}
             <ChevronDown aria-hidden className="ml-auto" />
           </Button>
@@ -45,7 +45,7 @@ export function HealthConditionsSelect({ label, value, onChange }: {
         <h3 className="mb-3 text-sm font-semibold text-ink">Condições comuns</h3>
         <div className="flex flex-wrap gap-2">
           {options.map((condition) => (
-            <Button key={condition} type="button" variant="secondary" className="h-auto min-h-9 max-w-full whitespace-normal rounded-full bg-muted px-3 py-2 text-left text-[13px] font-normal text-ink hover:bg-accent-soft hover:text-accent transition-none" onClick={() => onChange(adicionarCondicao(value, condition))}>{condition}</Button>
+            <Button key={condition} type="button" variant="secondary" className="h-auto min-h-9 max-w-full whitespace-normal rounded-full bg-muted px-3 py-2 text-left text-xs font-normal text-ink hover:bg-accent-soft hover:text-accent transition-none" onClick={() => onChange(adicionarCondicao(value, condition))}>{condition}</Button>
           ))}
         </div>
         {adding ? (

@@ -119,7 +119,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           </Field>
           <h2 className="font-display text-base font-semibold tracking-tight">Condições de saúde</h2>
           <div>
-            <div className="grid grid-cols-1 gap-5">
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
               <Field label="HMA">
                 <HealthConditionsSelect label="HMA" value={a.hma} onChange={(v) => set("hma", v)} />
               </Field>
