@@ -14,8 +14,8 @@ import {
   UnitInput,
 } from "../fields";
 import type { StepProps } from "./types";
+import { FoodPreferencesSelect } from "../FoodPreferencesSelect";
 import {
-  aplicarSelecaoPreferencia,
   cafeCha,
   carboidratos,
   cereais,
@@ -585,10 +585,11 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
       <Panel titulo="Preferências e aversões alimentares">
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           <Field label="Carboidratos">
-            <MultiOptionRow
+            <FoodPreferencesSelect
+              label="Carboidratos"
               values={a.prefCarboidratos}
-              onChange={(v, info) => set("prefCarboidratos", aplicarSelecaoPreferencia(a.prefCarboidratos, v, carboidratos, info?.alvo))}
-              options={carboidratos.map((item) => ({ value: item, label: item }))}
+              options={carboidratos}
+              onChange={(v) => set("prefCarboidratos", v)}
             />
             <div className="mt-2">
               <TextInput
@@ -600,10 +601,11 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           </Field>
 
           <Field label="Proteínas">
-            <MultiOptionRow
+            <FoodPreferencesSelect
+              label="Proteínas"
               values={a.prefProteinas}
-              onChange={(v, info) => set("prefProteinas", aplicarSelecaoPreferencia(a.prefProteinas, v, proteinas, info?.alvo))}
-              options={proteinas.map((item) => ({ value: item, label: item }))}
+              options={proteinas}
+              onChange={(v) => set("prefProteinas", v)}
             />
             <div className="mt-2">
               <TextInput
@@ -615,10 +617,12 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           </Field>
 
           <Field label="Gorduras">
-            <MultiOptionRow
+            <FoodPreferencesSelect
+              label="Gorduras"
               values={a.prefGorduras}
-              onChange={(v, info) => set("prefGorduras", aplicarSelecaoPreferencia(a.prefGorduras, v, gorduras, info?.alvo))}
-              options={gorduras.map((item) => ({ value: item, label: item }))} />
+              options={gorduras}
+              onChange={(v) => set("prefGorduras", v)}
+            />
             <div className="mt-2">
               <TextInput
                 value={a.observacoesPreferencias["gorduras"] ?? ""}
@@ -629,10 +633,11 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           </Field>
 
           <Field label="Vegetais/Saladas">
-            <MultiOptionRow
+            <FoodPreferencesSelect
+              label="Vegetais/Saladas"
               values={a.prefVegetais}
-              onChange={(v, info) => set("prefVegetais", aplicarSelecaoPreferencia(a.prefVegetais, v, vegetais, info?.alvo))}
-              options={vegetais.map((item) => ({ value: item, label: item }))}
+              options={vegetais}
+              onChange={(v) => set("prefVegetais", v)}
             />
             <div className="mt-2">
               <TextInput
@@ -643,10 +648,11 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
             </div>
           </Field>
           <Field label="Frutas">
-            <MultiOptionRow
+            <FoodPreferencesSelect
+              label="Frutas"
               values={a.prefFrutas}
-              onChange={(v, info) => set("prefFrutas", aplicarSelecaoPreferencia(a.prefFrutas, v, frutas, info?.alvo))}
-              options={frutas.map((item) => ({ value: item, label: item }))}
+              options={frutas}
+              onChange={(v) => set("prefFrutas", v)}
             />
             <div className="mt-2">
               <TextInput
@@ -657,10 +663,11 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
             </div>
           </Field>
           <Field label="Leguminosas">
-            <MultiOptionRow
+            <FoodPreferencesSelect
+              label="Leguminosas"
               values={a.prefLeguminosas}
-              onChange={(v, info) => set("prefLeguminosas", aplicarSelecaoPreferencia(a.prefLeguminosas, v, leguminosas, info?.alvo))}
-              options={leguminosas.map((item) => ({ value: item, label: item }))}
+              options={leguminosas}
+              onChange={(v) => set("prefLeguminosas", v)}
             />
             <div className="mt-2">
               <TextInput
@@ -671,10 +678,11 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
             </div>
           </Field>
           <Field label="Cereais e Grãos">
-            <MultiOptionRow
+            <FoodPreferencesSelect
+              label="Cereais e Grãos"
               values={a.prefCereais}
-              onChange={(v, info) => set("prefCereais", aplicarSelecaoPreferencia(a.prefCereais, v, cereais, info?.alvo))}
-              options={cereais.map((item) => ({ value: item, label: item }))}
+              options={cereais}
+              onChange={(v) => set("prefCereais", v)}
             />
             <div className="mt-2">
               <TextInput
@@ -685,10 +693,11 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
             </div>
           </Field>
           <Field label="Laticínios">
-            <MultiOptionRow
+            <FoodPreferencesSelect
+              label="Laticínios"
               values={a.prefLacteos}
-              onChange={(v, info) => set("prefLacteos", aplicarSelecaoPreferencia(a.prefLacteos, v, lacteos, info?.alvo))}
-              options={lacteos.map((item) => ({ value: item, label: item }))}
+              options={lacteos}
+              onChange={(v) => set("prefLacteos", v)}
             />
             <div className="mt-2">
               <TextInput
@@ -700,10 +709,11 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           </Field>
 
           <Field label="Doces">
-            <MultiOptionRow
+            <FoodPreferencesSelect
+              label="Doces"
               values={a.prefDoces}
-              onChange={(v, info) => set("prefDoces", aplicarSelecaoPreferencia(a.prefDoces, v, doces, info?.alvo))}
-              options={doces.map((item) => ({ value: item, label: item }))}
+              options={doces}
+              onChange={(v) => set("prefDoces", v)}
             />
             <div className="mt-2">
               <TextInput
@@ -714,10 +724,11 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
             </div>
           </Field>
           <Field label="Bebidas">
-            <MultiOptionRow
+            <FoodPreferencesSelect
+              label="Bebidas"
               values={a.prefCafeCha}
-              onChange={(v, info) => set("prefCafeCha", aplicarSelecaoPreferencia(a.prefCafeCha, v, cafeCha, info?.alvo))}
-              options={cafeCha.map((item) => ({ value: item, label: item }))}
+              options={cafeCha}
+              onChange={(v) => set("prefCafeCha", v)}
             />
             <div className="mt-2">
               <TextInput
