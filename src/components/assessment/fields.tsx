@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 import { limitarCasasDecimais } from "@/lib/assessment/numeric";
@@ -315,9 +316,26 @@ export function OptionRow({
   options: { value: string; label: string }[];
 }) {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className={cn("flex flex-wrap items-center", options.some((o) => o.label === "Sim" || o.label === "Não") ? "gap-x-6 gap-y-2" : "gap-2")}>
       {options.map((o) => {
         const ativo = value === o.value;
+        if (o.label === "Sim" || o.label === "Não") {
+          return (
+            <Button
+              key={o.value}
+              type="button"
+              variant="ghost"
+              aria-pressed={ativo}
+              onClick={() => onChange(ativo ? "" : o.value)}
+              className="h-auto min-h-9 gap-2 rounded-sm px-0 py-2 text-[13px] font-normal text-ink hover:bg-transparent hover:text-ink focus-visible:ring-2 focus-visible:ring-ring transition-none [&_svg]:size-4"
+            >
+              <span aria-hidden className={cn("flex h-4 w-4 shrink-0 items-center justify-center rounded-full border", ativo ? "border-accent" : "border-ink-soft/60")}>
+                {ativo && <span className="h-2 w-2 rounded-full bg-accent" />}
+              </span>
+              {o.label}
+            </Button>
+          );
+        }
         return (
           <button
             key={o.value}
