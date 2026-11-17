@@ -234,6 +234,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           </Field>
           <Field label="Hábitos sociais" className="sm:col-start-2">
             <MultiOptionRow
+              circular
               values={a.habitosSociais}
               onChange={(v) => {
                 const adicionouNenhum = v.includes("Nenhum") && !a.habitosSociais.includes("Nenhum");

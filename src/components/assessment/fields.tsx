@@ -362,10 +362,12 @@ export function MultiOptionRow({
   values,
   onChange,
   options,
+  circular = false,
 }: {
   values: string[];
   onChange: (v: string[], info?: { alvo: string; porIntervalo: boolean }) => void;
   options: { value: string; label: string; className?: string; breakAfter?: boolean }[];
+  circular?: boolean;
 }) {
   const ancoraNova = useRef<string | null>(null);
   const toggle = (v: string) =>
@@ -383,24 +385,45 @@ export function MultiOptionRow({
     toggle(v);
   };
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className={cn("flex flex-wrap", circular ? "gap-x-6 gap-y-2" : "gap-2")}>
       {options.map((o) => {
         const ativo = values.includes(o.value);
         return (
           <Fragment key={o.value}>
-            <button
-              type="button"
-              onClick={(e) => selecionar(o.value, e.shiftKey)}
-              className={cn(
-                "rounded-[10px] px-3 py-2 text-[13px] transition-colors",
-                o.className,
-                ativo
-                  ? "bg-accent text-white ring-1 ring-accent/40"
-                  : "bg-white/70 text-ink ring-1 ring-line hover:bg-white",
-              )}
-            >
-              {o.label}
-            </button>
+            {circular ? (
+              <Button
+                type="button"
+                variant="ghost"
+                aria-pressed={ativo}
+                onClick={(e) => selecionar(o.value, e.shiftKey)}
+                className="h-auto min-h-9 gap-2 rounded-sm px-0 py-2 text-[13px] font-normal text-ink hover:bg-transparent hover:text-ink focus-visible:ring-2 focus-visible:ring-ring transition-none [&_svg]:size-4"
+              >
+                <span
+                  aria-hidden
+                  className={cn(
+                    "flex h-4 w-4 shrink-0 items-center justify-center rounded-full border",
+                    ativo ? "border-accent" : "border-ink-soft/60",
+                  )}
+                >
+                  {ativo && <span className="h-2 w-2 rounded-full bg-accent" />}
+                </span>
+                {o.label}
+              </Button>
+            ) : (
+              <button
+                type="button"
+                onClick={(e) => selecionar(o.value, e.shiftKey)}
+                className={cn(
+                  "rounded-[10px] px-3 py-2 text-[13px] transition-colors",
+                  o.className,
+                  ativo
+                    ? "bg-accent text-white ring-1 ring-accent/40"
+                    : "bg-white/70 text-ink ring-1 ring-line hover:bg-white",
+                )}
+              >
+                {o.label}
+              </button>
+            )}
             {o.breakAfter && <div aria-hidden className={cn("h-0 w-full sm:hidden", o.className)} />}
           </Fragment>
         );
