@@ -207,6 +207,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           </Field>
           <Field label="Possui alguma restrição alimentar?" className="sm:col-start-2">
             <OptionRow
+              circular
               value={a.restricaoAlimentar}
               onChange={(v) => set("restricaoAlimentar", v as typeof a.restricaoAlimentar)}
               options={[

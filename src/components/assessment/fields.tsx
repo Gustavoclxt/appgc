@@ -310,16 +310,18 @@ export function OptionRow({
   value,
   onChange,
   options,
+  circular = false,
 }: {
   value: string;
   onChange: (v: string) => void;
   options: { value: string; label: string }[];
+  circular?: boolean;
 }) {
   return (
-    <div className={cn("flex flex-wrap items-center", options.some((o) => o.label === "Sim" || o.label === "Não") ? "gap-x-6 gap-y-2" : "gap-2")}>
+    <div className={cn("flex flex-wrap items-center", circular || options.some((o) => o.label === "Sim" || o.label === "Não") ? "gap-x-6 gap-y-2" : "gap-2")}>
       {options.map((o) => {
         const ativo = value === o.value;
-        if (o.label === "Sim" || o.label === "Não") {
+        if (circular || o.label === "Sim" || o.label === "Não") {
           return (
             <Button
               key={o.value}
