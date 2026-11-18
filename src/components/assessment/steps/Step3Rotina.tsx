@@ -743,6 +743,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
 
           <Field label="Utiliza açúcar ou adoçante?">
             <OptionRow
+              circular
               value={a.acucarAdocante}
               onChange={(v) => set("acucarAdocante", v)}
               options={[
