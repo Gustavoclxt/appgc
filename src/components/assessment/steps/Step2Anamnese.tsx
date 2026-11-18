@@ -49,6 +49,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
                 if (!v.includes("Emagrecimento")) set("pesoDesejado", "");
               }}
               options={objetivos}
+              circular
             />
           </Field>
           <Field label="O que mais lhe incomoda atualmente em seu físico?">

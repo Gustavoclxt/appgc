@@ -396,7 +396,10 @@ export function MultiOptionRow({
                 variant="ghost"
                 aria-pressed={ativo}
                 onClick={(e) => selecionar(o.value, e.shiftKey)}
-                className="h-auto min-h-9 gap-2 rounded-sm px-0 py-2 text-[13px] font-normal text-ink hover:bg-transparent hover:text-ink focus-visible:ring-2 focus-visible:ring-ring transition-none [&_svg]:size-4"
+                className={cn(
+                  "h-auto min-h-9 gap-2 rounded-sm px-0 py-2 text-[13px] font-normal text-ink hover:bg-transparent hover:text-ink focus-visible:ring-2 focus-visible:ring-ring transition-none [&_svg]:size-4",
+                  o.className,
+                )}
               >
                 <span
                   aria-hidden
