@@ -227,7 +227,7 @@ export function Step6Energia({
                     </div>
                   </Field>
                   {mostrarPercentualPersonalizado && (
-                    <Field label="Percentual personalizado">
+                    <Field>
                       <div className="w-28">
                         <UnitInput
                           value={a.percentualAjuste}
