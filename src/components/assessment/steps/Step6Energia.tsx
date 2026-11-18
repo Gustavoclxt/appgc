@@ -161,6 +161,7 @@ export function Step6Energia({
           <div className="space-y-4">
             <Field label="Forma do ajuste">
               <OptionRow
+                circular
                 value={a.tipoAjuste}
                 onChange={(v) => v && set("tipoAjuste", v as typeof a.tipoAjuste)}
                 options={[
