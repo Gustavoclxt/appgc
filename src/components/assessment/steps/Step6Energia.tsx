@@ -193,7 +193,7 @@ export function Step6Energia({
                     </div>
                   </Field>
                   {mostrarKcalPersonalizado && (
-                    <Field label="Valor personalizado">
+                    <Field>
                       <div className="w-28">
                         <UnitInput
                           value={a.kcalAjuste}
