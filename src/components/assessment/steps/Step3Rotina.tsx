@@ -403,6 +403,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           <Field label="Em casa, quem prepara os alimentos?">
             <div className="flex flex-wrap items-center gap-2">
               <OptionRow
+                circular
                 value={a.quemPrepara}
                 onChange={(v) => set("quemPrepara", v as typeof a.quemPrepara)}
                 options={[
@@ -466,6 +467,7 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           </Field>
           <Field label="Em quais horários sente mais fome ou vontade de comer?">
             <MultiOptionRow
+              circular
               values={a.horariosFome}
               onChange={(v) => set("horariosFome", v)}
               options={[
