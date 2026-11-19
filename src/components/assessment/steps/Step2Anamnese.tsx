@@ -58,14 +58,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           <Field label="Qual sua maior dificuldade relacionada ao seu objetivo?" className="sm:col-start-2">
             <TextInput value={a.maiorDificuldade} onChange={(v) => set("maiorDificuldade", v)} />
           </Field>
-          {a.objetivos.includes("Emagrecimento") && (
-            <Field label="Peso desejado (Opcional - em caso de emagrecimento)">
-              <div className="w-[120px]">
-                <UnitInput value={a.pesoDesejado} onChange={(v) => set("pesoDesejado", v)} unidade="kg" />
-              </div>
-            </Field>
-          )}
-          <Field label="De 0 a 10, como está sua motivação?" className="sm:col-start-2">
+          <Field label="De 0 a 10, como está sua motivação?" className="sm:col-start-1">
             <div>
               <Slider
                   value={[Number.isFinite(Number(a.motivacao)) && a.motivacao !== "" ? Number(a.motivacao) : 0]}
@@ -104,8 +97,15 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
             </div>
           </Field>
           {a.motivacao !== "" && Number(a.motivacao) < 10 && (
-            <Field label="O que falta para chegar em 10?" className="sm:col-span-2">
+            <Field label="O que falta para chegar em 10?" className="sm:col-start-2">
               <TextInput value={a.faltaParaDez} onChange={(v) => set("faltaParaDez", v)} />
+            </Field>
+          )}
+          {a.objetivos.includes("Emagrecimento") && (
+            <Field label="Peso desejado (Opcional - em caso de emagrecimento)" className="sm:col-start-1">
+              <div className="w-[120px]">
+                <UnitInput value={a.pesoDesejado} onChange={(v) => set("pesoDesejado", v)} unidade="kg" />
+              </div>
             </Field>
           )}
         </div>
