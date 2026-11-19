@@ -55,6 +55,9 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
           <Field label="O que mais lhe incomoda atualmente em seu físico?">
             <TextInput value={a.incomodoFisico} onChange={(v) => set("incomodoFisico", v)} />
           </Field>
+          <Field label="Qual sua maior dificuldade relacionada ao seu objetivo?" className="sm:col-start-2">
+            <TextInput value={a.maiorDificuldade} onChange={(v) => set("maiorDificuldade", v)} />
+          </Field>
           {a.objetivos.includes("Emagrecimento") && (
             <Field label="Peso desejado (Opcional - em caso de emagrecimento)">
               <div className="w-[120px]">
@@ -62,9 +65,6 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
               </div>
             </Field>
           )}
-          <Field label="Qual sua maior dificuldade relacionada ao seu objetivo?" className="sm:col-start-1">
-            <TextInput value={a.maiorDificuldade} onChange={(v) => set("maiorDificuldade", v)} />
-          </Field>
           <Field label="De 0 a 10, como está sua motivação?" className="sm:col-start-2">
             <div>
               <Slider
