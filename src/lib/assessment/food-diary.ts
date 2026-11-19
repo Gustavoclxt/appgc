@@ -20,6 +20,35 @@ export const LOCAIS_REFEICAO = [
   "Hotel",
 ] as const;
 
+// Algarismo romano exibido à esquerda do título de cada refeição (I., II., III. ...),
+// derivado da posição da refeição na lista — adicionar ou remover refeições renumera automaticamente.
+export function numeralRomano(n: number): string {
+  const tabela: Array<[number, string]> = [
+    [1000, "M"],
+    [900, "CM"],
+    [500, "D"],
+    [400, "CD"],
+    [100, "C"],
+    [90, "XC"],
+    [50, "L"],
+    [40, "XL"],
+    [10, "X"],
+    [9, "IX"],
+    [5, "V"],
+    [4, "IV"],
+    [1, "I"],
+  ];
+  let resto = Math.max(0, Math.floor(n));
+  let resultado = "";
+  for (const [valor, simbolo] of tabela) {
+    while (resto >= valor) {
+      resultado += simbolo;
+      resto -= valor;
+    }
+  }
+  return resultado;
+}
+
 export function opcoesDeLocal(valorAtual: string): { value: string; label: string }[] {
   const opcoes: { value: string; label: string }[] = LOCAIS_REFEICAO.map((local) => ({ value: local, label: local }));
   // Um valor que não esteja na lista (ex.: copiado de outra avaliação) precisa continuar visível.

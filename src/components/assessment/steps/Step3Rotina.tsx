@@ -28,7 +28,7 @@ import {
   vegetais,
 } from "@/lib/assessment/food-preferences";
 import { agruparItensPorRefeicao, chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
-import { opcoesDeLocal } from "@/lib/assessment/food-diary";
+import { numeralRomano, opcoesDeLocal } from "@/lib/assessment/food-diary";
 import { DIAS_SEMANA, selecionarDias } from "@/lib/assessment/training-days";
 import { Slider } from "@/components/ui/slider";
 
@@ -772,13 +772,20 @@ export function Step3Rotina({ a, set, d, composicao, calculando, onCalcular, dia
           {a.diarioAlimentar.map((r, i) => (
             <div key={r.id} className="rounded-[10px] bg-white/50 p-4 ring-1 ring-line">
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_auto_1fr_auto]">
-                <TextInput
-                  value={r.refeicao}
-                  placeholder="Refeição"
-                  onChange={(v) =>
-                    set("diarioAlimentar", a.diarioAlimentar.map((x, j) => (j === i ? { ...x, refeicao: v } : x)))
-                  }
-                />
+                <div className="flex items-center gap-2">
+                  <span className="w-8 shrink-0 text-right font-mono text-sm font-semibold text-ink-soft">
+                    {numeralRomano(i + 1)}.
+                  </span>
+                  <div className="flex-1">
+                    <TextInput
+                      value={r.refeicao}
+                      placeholder="Refeição"
+                      onChange={(v) =>
+                        set("diarioAlimentar", a.diarioAlimentar.map((x, j) => (j === i ? { ...x, refeicao: v } : x)))
+                      }
+                    />
+                  </div>
+                </div>
                 <TextInput
                   type="time"
                   value={r.horario}

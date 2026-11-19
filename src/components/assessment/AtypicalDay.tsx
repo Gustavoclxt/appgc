@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { novoId } from "@/lib/assessment/initial-state";
 import { agruparItensPorRefeicao, chaveDiario, composicaoParaRelatorio, type ComposicaoDiario } from "@/lib/assessment/diet-composition";
-import { opcoesDeLocal } from "@/lib/assessment/food-diary";
+import { numeralRomano, opcoesDeLocal } from "@/lib/assessment/food-diary";
 import type { Refeicao } from "@/lib/assessment/types";
 import { RowButton, Select, TextInput } from "./fields";
 
@@ -51,10 +51,17 @@ export function AtypicalDay({ refeicoes, onChange, composicao, calculando, onCal
     <section aria-labelledby="dia-atipico-titulo" className="mt-6 border-t border-line pt-6">
       <h2 id="dia-atipico-titulo" className="mb-5 font-display text-base font-semibold tracking-tight">Dia atípico</h2>
       <div className="space-y-4">
-        {refeicoes.map(r => (
+        {refeicoes.map((r, i) => (
           <div key={r.id} className="rounded-lg bg-card/50 p-4 ring-1 ring-line">
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_auto_1fr_auto]">
-              <TextInput value={r.refeicao} placeholder="Refeição" onChange={v => atualizar(r.id, { refeicao: v })} />
+              <div className="flex items-center gap-2">
+                <span className="w-8 shrink-0 text-right font-mono text-sm font-semibold text-ink-soft">
+                  {numeralRomano(i + 1)}.
+                </span>
+                <div className="flex-1">
+                  <TextInput value={r.refeicao} placeholder="Refeição" onChange={v => atualizar(r.id, { refeicao: v })} />
+                </div>
+              </div>
               <TextInput type="time" value={r.horario} onChange={v => atualizar(r.id, { horario: v })} />
               <Select value={r.local} placeholder="Local" options={opcoesDeLocal(r.local)} onChange={v => atualizar(r.id, { local: v })} />
               <RowButton className="bg-paper hover:bg-line/60 h-auto whitespace-normal" onClick={() => onChange(refeicoes.filter(x => x.id !== r.id))}>Remover refeição</RowButton>
