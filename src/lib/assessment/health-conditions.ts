@@ -1,11 +1,10 @@
 export const CONDICOES_COMUNS = [
-  "Alergia à Proteína do Leite de Vaca (APLV)", "Anemia", "Anemia ferropriva", "Ansiedade",
-  "Asma", "Câncer", "Cardiopatia congênita", "Colite", "Constipação funcional", "Depressão",
+  "Alergia à Proteína do Leite de Vaca (APLV)", "Anemia", "Ansiedade",
+  "Asma", "Câncer", "Cardiopatia congênita", "Colite", "Depressão",
   "Dermatite atópica", "Diabetes", "Diabetes tipo 1", "Diabetes tipo 2", "Dislipidemia",
-  "Doença celíaca", "Doença renal crônica (DRC)", "Dor de cabeça", "Dor de estômago",
-  "Endócrino", "Epilepsia", "Gastrite", "Hepatite", "Herpes", "Hipertensão",
+  "Doença celíaca", "Doença renal crônica (DRC)", "Enxaqueca", "Epilepsia", "Gastrite", "Hepatite", "Herpes", "Hipertensão",
   "Hipertireoidismo", "Hipoglicemia", "Hipotireoidismo", "Intolerância à lactose",
-  "Irritabilidade", "Obesidade", "Osteoporose", "Prematuridade", "Problemas cardíacos",
+  "Obesidade", "Osteoporose", "Problemas cardíacos",
   "Problemas circulatórios", "Problemas renais", "Refluxo gastroesofágico", "Rinite",
   "Síndrome dos ovários policísticos (SOP)", "Sinusite", "TDAH", "Transtorno do Espectro Autista (TEA)",
 ];

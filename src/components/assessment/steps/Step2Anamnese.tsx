@@ -291,7 +291,7 @@ export function Step2Anamnese({ a, set, d }: StepProps) {
                 const adicionouNormal = v.includes("Normal") && !a.funcaoEstomacal.includes("Normal");
                 set("funcaoEstomacal", adicionouNormal ? ["Normal"] : v.filter((item) => item !== "Normal"));
               }}
-              choices={["Normal", "Azia", "Eructação excessiva", "Refluxo", "Flatulência excessiva"]}
+              choices={["Normal", "Azia", "Eructação excessiva", "Refluxo", "Flatulência excessiva", "Dor de estômago", "Gastrite", "Cólica abdominal", "Constipação"]}
             />
           </Field>
           <Field label="Frequência de evacuação" className="w-[190px]">
