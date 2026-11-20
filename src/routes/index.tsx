@@ -2,9 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
-import { useWebMCP } from "use-webmcp-tool";
-import { runWebMCPTool } from "@/lib/webmcp-telemetry";
-import { resumoEtapaAgente, validarEtapaAgente } from "@/lib/assessment/agent-navigation";
 
 import { Field, TextInput } from "@/components/assessment/fields";
 
@@ -94,36 +91,6 @@ function Index() {
   );
 
   const etapaAtual = ETAPAS.find((e) => e.id === etapa) ?? ETAPAS[0];
-
-  const selecionarEtapa = useCallback((proxima: number) => {
-    if (!Number.isInteger(proxima) || !ETAPAS.some(item => item.id === proxima)) {
-      throw new Error("Etapa inválida.");
-    }
-    setEtapa(proxima);
-  }, []);
-
-  useWebMCP({
-    name: "consultar_etapa",
-    description: "Consulta a etapa aberta e as etapas do formulário, sem retornar dados pessoais ou clínicos.",
-    annotations: { readOnlyHint: true },
-    execute: () => runWebMCPTool("consultar_etapa", () => resumoEtapaAgente(etapa)),
-  });
-
-  useWebMCP({
-    name: "navegar_avaliacao",
-    description: "Abre Dados, Rotina, Avaliação ou Energia sem alterar respostas. Não abre Relatórios, pois essa etapa inicia análise remota automaticamente.",
-    inputSchema: {
-      type: "object",
-      properties: { etapa: { type: "integer", enum: [1, 2, 3, 4], description: "1: Dados; 2: Rotina; 3: Avaliação; 4: Energia." } },
-      required: ["etapa"],
-      additionalProperties: false,
-    },
-    execute: ({ etapa: proxima }: { etapa: number }) => runWebMCPTool("navegar_avaliacao", () => {
-      const destino = validarEtapaAgente(proxima);
-      selecionarEtapa(destino);
-      return `Etapa aberta: ${ETAPAS.find(item => item.id === destino)?.nomeCompleto}.`;
-    }),
-  });
 
   const analiseEmCursoRef = useRef(false);
 
@@ -291,7 +258,7 @@ function Index() {
         </div>
       </header>
 
-      <StepRail etapaAtual={etapa} onSelecionar={selecionarEtapa} />
+      <StepRail etapaAtual={etapa} onSelecionar={setEtapa} />
 
       <main className="mx-auto max-w-6xl px-6 pt-8 pb-16">
         <div className="mb-6 flex flex-wrap items-end justify-between gap-4 no-print">

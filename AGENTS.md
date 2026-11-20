@@ -46,4 +46,3 @@
 - Measure Jornada PDF cards at their two-column width before drawing each paired row, reserving the entire first row with its section heading to keep wrapped content and pagination aligned.
 - Keep HMA/HMP/HMF selection in HealthConditionsSelect and health-conditions; store newline-separated items in existing session strings and preserve legacy prose so analysis and reports retain their data without schema changes.
 - Reuse HealthConditionsSelect with field-specific choices for digestive symptoms; adapt to the existing array at the field boundary so reports and selection rules remain unchanged.
-- Keep WebMCP registrations in the assessment route with shared navigation and fail-open telemetry; exclude automatic report analysis so agent navigation never sends clinical data.

@@ -1,6 +1,4 @@
 # Roadmap
-- [ ] MCP remoto: bloqueado pela ausência de autorização para acesso público; adicionar login contraria o fluxo sem login vigente.
-- [ ] Adicionar ferramentas de navegador para consultar a etapa atual e navegar pelo formulário, sem iniciar análise ou exportação.
 - [x] Transformar HMA/HMP/HMF em seleções múltiplas com etiquetas removíveis e inclusão de condições personalizadas, preservando os históricos na sessão.
 - [x] Adicionar Tinsley (PC) e Tinsley (MLG) ao cálculo energético e validar seleção, resultados e falta de dados.
 - [x] Corrigir o prefixo DC nas silhuetas e formatar medidas antropométricas com uma casa decimal, preservando os valores originais.
